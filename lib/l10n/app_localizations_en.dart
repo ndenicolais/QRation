@@ -860,6 +860,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_subtitle_theme_option_dark => 'Dark';
 
   @override
+  String get settings_subtitle_theme_option_system => 'System';
+
+  @override
   String get settings_title_language => 'Language';
 
   @override
@@ -1459,4 +1462,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_25 =>
       'Sped up the transition from the splash screen to scanning and lightened bold text weight throughout the app.';
+
+  @override
+  String get changelog_v2_0_0_bullet_26 =>
+      'Added a \"System\" theme option that automatically follows the device\'s light/dark setting.';
 }

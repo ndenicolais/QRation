@@ -880,6 +880,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings_subtitle_theme_option_dark => 'Scuro';
 
   @override
+  String get settings_subtitle_theme_option_system => 'Sistema';
+
+  @override
   String get settings_title_language => 'Lingua';
 
   @override
@@ -1485,4 +1488,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_25 =>
       'Velocizzato il passaggio dalla schermata iniziale alla scansione e alleggerito il peso dei caratteri in bold in tutta l\'app.';
+
+  @override
+  String get changelog_v2_0_0_bullet_26 =>
+      'Aggiunta l\'opzione tema \"Sistema\", che segue automaticamente l\'impostazione chiaro/scuro del dispositivo.';
 }

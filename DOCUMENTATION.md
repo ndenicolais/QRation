@@ -492,7 +492,7 @@ Configurazione globale dell'app organizzata in 4 sezioni.
 
 | Sezione | Impostazione | Dettaglio |
 |---|---|---|
-| **Generale** | Tema | Chiaro / Scuro, tramite `SegmentedButton<bool>` |
+| **Generale** | Tema | Sistema / Chiaro / Scuro, tramite `SegmentedButton<ThemeMode>` (Sistema segue la luminosità del dispositivo) |
 | **Generale** | Colore principale | Selezione di una tra 8 palette predefinite (`AccentPresets` in `lib/core/theme/accent_presets.dart`), ognuna con una tonalità ottimizzata per il tema chiaro e una per lo scuro; segmenti mostrano solo lo swatch colorato (senza etichetta testuale, nome disponibile tramite `Tooltip` a pressione prolungata) tramite `SegmentedButton<int>` (scroll orizzontale se non entra tutto a schermo) |
 | **Generale** | Lingua | Italiano / English, tramite `SegmentedButton<String>` (cambia `Get.locale`) |
 | **Scansione** | Beep | Abilita/disabilita suono alla scansione |
@@ -543,9 +543,9 @@ L'app usa **GetX** come sistema di state management. I controller sono registrat
 
 | Controller | Responsabilità |
 |---|---|
-| `ThemeController` | Tema attivo (light/dark) e colore principale selezionato (`AccentPreset`, indice persistito in `SharedPreferences`), applicati a `AppTheme.lightTheme`/`darkTheme` tramite il parametro `primary`, aggiornamento `SystemChrome` |
+| `ThemeController` | Modalità tema (`ThemeMode` system/light/dark, `isDark` = luminosità effettiva) e colore principale selezionato (`AccentPreset`, indice persistito in `SharedPreferences`), applicati a `AppTheme.lightTheme`/`darkTheme` tramite il parametro `primary`, aggiornamento `SystemChrome` |
 | `AuthController` | Stato autenticazione, operazioni login/logout/signup, recupero dati utente |
-| `SettingsController` | Stato impostazioni reattive (isDark, accentIndex, beepEnabled, vibrateEnabled), sincronizzazione con `SharedPreferences` e `ThemeController` |
+| `SettingsController` | Stato impostazioni reattive (themeMode delegato a `ThemeController`, accentIndex, beepEnabled, vibrateEnabled), sincronizzazione con `SharedPreferences` e `ThemeController` |
 | `CodeDetailsController` | Stato e azioni della schermata Dettaglio codice (preferito, note, salvataggio/condivisione immagine, apertura URL/email/telefono/SMS/contatto/mappa/Wi-Fi/calendario, eliminazione) |
 | `CodeCreateStandardController` | Stato del form di creazione QR standard (`TextEditingController` per campo, colori/arrotondamento occhi e moduli, prefisso telefonico, cifratura Wi-Fi), generazione del contenuto per tipo e creazione del `CodeModel` |
 | `DatabaseController` | Statistiche codici (totali, creati, scansionati, distribuzione per tipo), generazione export PDF/Excel/CSV ed export/import JSON |
@@ -652,11 +652,11 @@ Per ridurre ulteriormente la sensazione di grassetto invasivo, tutti i punti del
 - **Chiaro** (`AppTheme.lightTheme({Color primary})`)
 - **Scuro** (`AppTheme.darkTheme({Color primary})`)
 
-La preferenza chiaro/scuro è salvata in `SharedPreferences` alla chiave `theme_preference` (bool). Il `ThemeController` aggiorna anche il `SystemChrome` (colore della status bar e navigation bar) in base al tema attivo.
+La modalità tema (`ThemeMode.system`/`light`/`dark`) è salvata in `SharedPreferences` alla chiave `theme_mode` (`String`, nome dell'enum; default `system`). Al primo avvio dopo l'aggiornamento il vecchio booleano `theme_preference` viene migrato (`true` → `dark`, `false` → `light`) e rimosso. Il `ThemeController` aggiorna anche il `SystemChrome` (colore della status bar e navigation bar) in base alla luminosità effettiva e, tramite `WidgetsBindingObserver.didChangePlatformBrightness`, lo riallinea quando in modalità Sistema l'utente cambia tema dal dispositivo.
 
 **Colore principale personalizzabile:** `lightTheme`/`darkTheme` accettano un parametro opzionale `primary` (default `AppColors.qrBlue`/`AppColors.qrGold`, cioè il comportamento storico) che rimpiazza gli usi "brand/accent" del colore identitario del tema (es. `colorScheme.primary`/`tertiary`, app bar, bottom/navigation bar, bottoni, focus border, checkbox/switch selezionati, date/time picker, cursore testo, chip e icone `ListTile`); gli usi del colore "complementare" (oro in chiaro, blu in scuro) restano invariati per non introdurre problemi di contrasto. L'utente sceglie tra 8 palette predefinite in `AccentPresets` (`lib/core/theme/accent_presets.dart`, preset `'blue'` = valori storici); l'indice selezionato è salvato in `SharedPreferences` alla chiave `accent_preset_index` e gestito da `ThemeController`.
 
-**Unica sorgente di verità:** `ThemeController` espone solo lo stato osservabile (`isDark`, `currentAccent`) e non chiama mai `Get.changeTheme`. È `QrationApp` (`app.dart`), dentro l'`Obx` che avvolge `GetMaterialApp`, a costruire `theme:`/`darkTheme:` con `currentAccent.light`/`.dark` e `themeMode` da `isDark`: ogni cambio di tema o accent ricostruisce l'app con i valori corretti, evitando che un rebuild riporti l'accent al colore di default.
+**Unica sorgente di verità:** `ThemeController` espone solo lo stato osservabile (`themeMode`, `currentAccent`) e non chiama mai `Get.changeTheme`. È `QrationApp` (`app.dart`), dentro l'`Obx` che avvolge `GetMaterialApp`, a costruire `theme:`/`darkTheme:` con `currentAccent.light`/`.dark` e `themeMode` dal controller: ogni cambio di tema o accent ricostruisce l'app con i valori corretti, evitando che un rebuild riporti l'accent al colore di default.
 
 **Colori:** Definiti in `app_colors.dart`. Palette distinta per tema chiaro e scuro.
 
@@ -723,7 +723,7 @@ Riepilogo di tutte le chiavi salvate in `SharedPreferences`:
 
 | Chiave | Tipo | Default | Descrizione |
 |---|---|---|---|
-| `theme_preference` | `bool` | `false` | Tema: `false` = chiaro, `true` = scuro |
+| `theme_mode` | `String` | `system` | Tema: `system`, `light` o `dark` (sostituisce il vecchio `theme_preference` bool, migrato automaticamente) |
 | `language_code` | `String` | `''` (sistema) | Lingua: `en` / `it` |
 | `beepEnabled` | `bool` | `false` | Beep audio alla scansione |
 | `vibrateEnabled` | `bool` | `false` | Vibrazione alla scansione |

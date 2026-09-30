@@ -1712,6 +1712,12 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settings_subtitle_theme_option_dark;
 
+  /// No description provided for @settings_subtitle_theme_option_system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settings_subtitle_theme_option_system;
+
   /// No description provided for @settings_title_language.
   ///
   /// In en, this message translates to:
@@ -2821,6 +2827,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sped up the transition from the splash screen to scanning and lightened bold text weight throughout the app.'**
   String get changelog_v2_0_0_bullet_25;
+
+  /// No description provided for @changelog_v2_0_0_bullet_26.
+  ///
+  /// In en, this message translates to:
+  /// **'Added a \"System\" theme option that automatically follows the device\'s light/dark setting.'**
+  String get changelog_v2_0_0_bullet_26;
 }
 
 class _AppLocalizationsDelegate

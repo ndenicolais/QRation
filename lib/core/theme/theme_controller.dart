@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -15,12 +15,22 @@ import 'package:qration/core/theme/accent_presets.dart';
 import 'package:qration/core/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ThemeController extends GetxController {
-  static const String _themeKey = 'theme_preference';
-  static const String _accentKey = 'accent_preset_index';
+class ThemeController extends GetxController with WidgetsBindingObserver {
+  static const String themeModeKey = 'theme_mode';
+  static const String legacyThemeKey = 'theme_preference';
+  static const String accentKey = 'accent_preset_index';
 
-  final _isDark = false.obs;
-  bool get isDark => _isDark.value;
+  final _themeMode = ThemeMode.system.obs;
+  ThemeMode get themeMode => _themeMode.value;
+
+  /// Effective brightness, resolving [ThemeMode.system] against the platform.
+  bool get isDark => switch (_themeMode.value) {
+        ThemeMode.dark => true,
+        ThemeMode.light => false,
+        ThemeMode.system =>
+          WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark,
+      };
 
   final _accentIndex = 0.obs;
   int get accentIndex => _accentIndex.value;
@@ -29,57 +39,73 @@ class ThemeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     _loadTheme();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if (_themeMode.value == ThemeMode.system) _applySystemChrome();
   }
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    _isDark.value = prefs.getBool(_themeKey) ?? false;
-    final storedAccent = prefs.getInt(_accentKey) ?? 0;
+    _themeMode.value = await _readThemeMode(prefs);
+    final storedAccent = prefs.getInt(accentKey) ?? 0;
     _accentIndex.value =
         storedAccent >= 0 && storedAccent < AccentPresets.all.length
             ? storedAccent
             : 0;
-    _applySystemChrome(_isDark.value);
+    _applySystemChrome();
   }
 
-  Future<void> toggleTheme() async {
-    _isDark.value = !_isDark.value;
-    _applySystemChrome(_isDark.value);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_themeKey, _isDark.value);
+  /// Reads the three-state preference, migrating the legacy light/dark bool.
+  Future<ThemeMode> _readThemeMode(SharedPreferences prefs) async {
+    final stored = prefs.getString(themeModeKey);
+    if (stored != null) {
+      return ThemeMode.values.firstWhere(
+        (mode) => mode.name == stored,
+        orElse: () => ThemeMode.system,
+      );
+    }
+    final legacy = prefs.getBool(legacyThemeKey);
+    if (legacy == null) return ThemeMode.system;
+    final migrated = legacy ? ThemeMode.dark : ThemeMode.light;
+    await prefs.setString(themeModeKey, migrated.name);
+    await prefs.remove(legacyThemeKey);
+    return migrated;
   }
 
-  Future<void> setDark() async {
-    _isDark.value = true;
-    _applySystemChrome(true);
+  Future<void> setThemeMode(ThemeMode mode) async {
+    _themeMode.value = mode;
+    _applySystemChrome();
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_themeKey, true);
-  }
-
-  Future<void> setLight() async {
-    _isDark.value = false;
-    _applySystemChrome(false);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_themeKey, false);
+    await prefs.setString(themeModeKey, mode.name);
   }
 
   Future<void> setAccent(int index) async {
     if (index < 0 || index >= AccentPresets.all.length) return;
     _accentIndex.value = index;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_accentKey, index);
+    await prefs.setInt(accentKey, index);
   }
 
-  void _applySystemChrome(bool isDark) {
+  void _applySystemChrome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final dark = isDark;
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        statusBarIconBrightness: dark ? Brightness.light : Brightness.dark,
         systemNavigationBarColor:
-            isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+            dark ? AppColors.surfaceDark : AppColors.surfaceLight,
         systemNavigationBarIconBrightness:
-            isDark ? Brightness.light : Brightness.dark,
+            dark ? Brightness.light : Brightness.dark,
       ));
     });
   }

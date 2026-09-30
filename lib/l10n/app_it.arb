@@ -299,6 +299,7 @@
   "settings_title_theme": "Tema",
   "settings_subtitle_theme_option_light": "Chiaro",
   "settings_subtitle_theme_option_dark": "Scuro",
+  "settings_subtitle_theme_option_system": "Sistema",
   "settings_title_language": "Lingua",
   "settings_subtitle_language_option_english": "Inglese",
   "settings_subtitle_language_option_italian": "Italiano",
@@ -497,5 +498,6 @@
   "changelog_v2_0_0_bullet_22": "Aggiunta la possibilità di personalizzare il colore principale dell'app dalle Impostazioni, scegliendo tra 8 palette predefinite, oltre al tema chiaro/scuro già presente.",
   "changelog_v2_0_0_bullet_23": "Risolto un problema per cui un QR code, in particolare con logo incorporato, una volta salvato come immagine poteva non essere riconosciuto scansionandolo da immagine.",
   "changelog_v2_0_0_bullet_24": "Rinnovata la selezione di tema, lingua e colore principale nelle Impostazioni con un nuovo layout a pulsanti segmentati.",
-  "changelog_v2_0_0_bullet_25": "Velocizzato il passaggio dalla schermata iniziale alla scansione e alleggerito il peso dei caratteri in bold in tutta l'app."
+  "changelog_v2_0_0_bullet_25": "Velocizzato il passaggio dalla schermata iniziale alla scansione e alleggerito il peso dei caratteri in bold in tutta l'app.",
+  "changelog_v2_0_0_bullet_26": "Aggiunta l'opzione tema \"Sistema\", che segue automaticamente l'impostazione chiaro/scuro del dispositivo."
 }

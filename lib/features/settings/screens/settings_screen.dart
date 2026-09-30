@@ -183,23 +183,28 @@ class SettingsScreenState extends State<SettingsScreen> {
     return _buildSettingsSection(
       title: l10n.settings_title_general,
       children: [
-        Obx(() => _buildSegmentedTile<bool>(
+        Obx(() => _buildSegmentedTile<ThemeMode>(
               icon: MingCuteIcons.mgc_palette_fill,
               title: l10n.settings_title_theme,
               segments: [
                 ButtonSegment(
-                  value: false,
+                  value: ThemeMode.system,
+                  icon: Icon(MingCuteIcons.mgc_cellphone_fill, size: 16.r),
+                  label: Text(l10n.settings_subtitle_theme_option_system),
+                ),
+                ButtonSegment(
+                  value: ThemeMode.light,
                   icon: Icon(MingCuteIcons.mgc_sun_fill, size: 16.r),
                   label: Text(l10n.settings_subtitle_theme_option_light),
                 ),
                 ButtonSegment(
-                  value: true,
+                  value: ThemeMode.dark,
                   icon: Icon(MingCuteIcons.mgc_moon_fill, size: 16.r),
                   label: Text(l10n.settings_subtitle_theme_option_dark),
                 ),
               ],
-              selected: {_settingsCtrl.isDark},
-              onChanged: (value) => _settingsCtrl.toggleTheme(value),
+              selected: {_settingsCtrl.themeMode},
+              onChanged: (value) => _settingsCtrl.setThemeMode(value),
             )),
         _buildSegmentedTile<String>(
           icon: MingCuteIcons.mgc_world_2_fill,

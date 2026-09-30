@@ -18,7 +18,7 @@
 - **Dettaglio codice** — Visualizza, copia, condividi, salva in galleria, apri o elimina ogni codice
 - **Export dati** — Esporta i codici in CSV, Excel o PDF con statistiche; backup e ripristino JSON
 - **Autenticazione** — Login con email/password o Google Sign-In; gestione profilo e eliminazione account
-- **Tema** — Supporto a tema chiaro e scuro
+- **Tema** — Tema chiaro, scuro o automatico (segue il sistema)
 - **Lingua** — Interfaccia in italiano e inglese
 
 ---

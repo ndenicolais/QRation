@@ -56,8 +56,7 @@ class QrationApp extends StatelessWidget {
               darkTheme: AppTheme.darkTheme(
                 primary: themeController.currentAccent.dark,
               ),
-              themeMode:
-                  themeController.isDark ? ThemeMode.dark : ThemeMode.light,
+              themeMode: themeController.themeMode,
               localizationsDelegates: const [
                 AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
