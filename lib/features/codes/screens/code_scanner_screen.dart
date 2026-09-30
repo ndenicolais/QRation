@@ -1,4 +1,4 @@
-﻿// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -171,6 +172,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
             style: const TextStyle(color: Colors.white)),
         actions: [
           IconButton(
+            tooltip: l10n.code_scanner_screen_tooltip_gallery,
             icon: const Icon(MingCuteIcons.mgc_photo_album_line,
                 color: Colors.white),
             onPressed: _pickImage,
@@ -198,7 +200,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                       onDetect: _onDetect,
                     ),
                     // Scan overlay
-                    _ScanOverlay(),
+                    _ScanOverlay(animate: widget.isActive),
                     // Hint
                     Positioned(
                       top: 20,
@@ -282,13 +284,32 @@ class _ScannerScreenState extends State<ScannerScreen> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              _ControlButton(
-                                icon: MingCuteIcons.mgc_flash_line,
-                                onTap: _controller.toggleTorch,
+                              ValueListenableBuilder<MobileScannerState>(
+                                valueListenable: _controller,
+                                builder: (context, state, _) {
+                                  final torch = state.torchState;
+                                  final isOn = torch == TorchState.on;
+                                  return _ControlButton(
+                                    icon: isOn
+                                        ? MingCuteIcons.mgc_flash_fill
+                                        : MingCuteIcons.mgc_flash_line,
+                                    tooltip: isOn
+                                        ? l10n
+                                            .code_scanner_screen_tooltip_torch_off
+                                        : l10n
+                                            .code_scanner_screen_tooltip_torch_on,
+                                    highlighted: isOn,
+                                    onTap: torch == TorchState.unavailable
+                                        ? null
+                                        : _controller.toggleTorch,
+                                  );
+                                },
                               ),
                               const SizedBox(width: 16),
                               _ControlButton(
                                 icon: MingCuteIcons.mgc_refresh_2_line,
+                                tooltip: l10n
+                                    .code_scanner_screen_tooltip_switch_camera,
                                 onTap: _controller.switchCamera,
                               ),
                             ],
@@ -314,52 +335,158 @@ class _ScannerScreenState extends State<ScannerScreen> {
   }
 }
 
-class _ScanOverlay extends StatelessWidget {
+class _ScanOverlay extends StatefulWidget {
+  const _ScanOverlay({required this.animate});
+
+  /// Runs the laser animation only while the scanner tab is visible.
+  final bool animate;
+
+  static const double windowSize = 264;
+  static const double windowRadius = 24;
+
+  @override
+  State<_ScanOverlay> createState() => _ScanOverlayState();
+}
+
+class _ScanOverlayState extends State<_ScanOverlay>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _laser = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1800),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.animate) _laser.repeat(reverse: true);
+  }
+
+  @override
+  void didUpdateWidget(covariant _ScanOverlay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.animate == oldWidget.animate) return;
+    if (widget.animate) {
+      _laser.repeat(reverse: true);
+    } else {
+      _laser.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _laser.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 264,
-            height: 264,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.15),
-              ),
-              color: Colors.black.withValues(alpha: 0.08),
+    const size = _ScanOverlay.windowSize;
+    const laserInset = 20.0;
+    final laserPosition = CurvedAnimation(
+      parent: _laser,
+      curve: Curves.easeInOut,
+    );
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Dims the camera preview outside the framing window.
+        IgnorePointer(
+          child: CustomPaint(
+            painter: _ScrimPainter(
+              windowSize: size,
+              radius: _ScanOverlay.windowRadius,
+              color: Colors.black.withValues(alpha: 0.5),
             ),
           ),
-          SizedBox(
-            width: 260,
-            height: 260,
-            child: CustomPaint(
-              painter: _CornerPainter(),
-            ),
-          ),
-          Positioned(
-            top: 130,
-            left: 24,
-            right: 24,
-            child: Container(
-              height: 2,
-              decoration: BoxDecoration(
-                color: AppColors.qrGold,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.qrGold.withValues(alpha: 0.6),
-                    blurRadius: 10,
+        ),
+        Center(
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(_ScanOverlay.windowRadius),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.15),
+                    ),
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: CustomPaint(
+                    size: const Size.square(size - 4),
+                    painter: _CornerPainter(),
+                  ),
+                ),
+                AnimatedBuilder(
+                  animation: laserPosition,
+                  builder: (context, child) => Positioned(
+                    top: laserInset +
+                        laserPosition.value * (size - 2 * laserInset),
+                    left: 24,
+                    right: 24,
+                    child: child!,
+                  ),
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                      color: AppColors.qrGold,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.qrGold.withValues(alpha: 0.6),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
+}
+
+/// Paints [color] over the whole area except a centered rounded window.
+class _ScrimPainter extends CustomPainter {
+  _ScrimPainter({
+    required this.windowSize,
+    required this.radius,
+    required this.color,
+  });
+
+  final double windowSize;
+  final double radius;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final window = RRect.fromRectAndRadius(
+      Rect.fromCenter(
+        center: size.center(Offset.zero),
+        width: windowSize,
+        height: windowSize,
+      ),
+      Radius.circular(radius),
+    );
+    final path = Path()
+      ..fillType = PathFillType.evenOdd
+      ..addRect(Offset.zero & size)
+      ..addRRect(window);
+    canvas.drawPath(path, Paint()..color = color);
+  }
+
+  @override
+  bool shouldRepaint(covariant _ScrimPainter oldDelegate) =>
+      oldDelegate.windowSize != windowSize ||
+      oldDelegate.radius != radius ||
+      oldDelegate.color != color;
 }
 
 class _CornerPainter extends CustomPainter {
@@ -442,22 +569,50 @@ class _ZoomSlider extends StatelessWidget {
 
 class _ControlButton extends StatelessWidget {
   final IconData icon;
-  final VoidCallback onTap;
-  const _ControlButton({required this.icon, required this.onTap});
+  final String tooltip;
+  final VoidCallback? onTap;
+  final bool highlighted;
+  const _ControlButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onTap,
+    this.highlighted = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          color: Colors.white12,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.white30),
+    final enabled = onTap != null;
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: highlighted
+            ? AppColors.qrGold.withValues(alpha: 0.25)
+            : Colors.white12,
+        shape: CircleBorder(
+          side: BorderSide(
+            color: highlighted ? AppColors.qrGold : Colors.white30,
+          ),
         ),
-        child: Icon(icon, color: Colors.white, size: 26),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: enabled
+              ? () {
+                  HapticFeedback.selectionClick();
+                  onTap!();
+                }
+              : null,
+          child: SizedBox(
+            width: 56,
+            height: 56,
+            child: Icon(
+              icon,
+              color: enabled
+                  ? (highlighted ? AppColors.qrGold : Colors.white)
+                  : Colors.white38,
+              size: 26,
+            ),
+          ),
+        ),
       ),
     );
   }
