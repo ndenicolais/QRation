@@ -96,6 +96,7 @@ void main() {
         moduleRounded: 0,
       );
 
+      // ignore: experimental_member_use
       final shape = decoration.shape as PrettyQrCustomShape;
       expect(shape.shape, isA<PrettyQrSquaresSymbol>());
       expect((shape.shape as PrettyQrSquaresSymbol).color, Colors.green);

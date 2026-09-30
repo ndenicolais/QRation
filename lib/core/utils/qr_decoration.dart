@@ -41,6 +41,9 @@ PrettyQrDecoration buildQrDecoration({
   return PrettyQrDecoration(
     background: Colors.white,
     quietZone: PrettyQrQuietZone.standard,
+    // The only pretty_qr_code API that styles finder patterns (eyes)
+    // separately from the modules; re-check on package upgrades.
+    // ignore: experimental_member_use
     shape: PrettyQrShape.custom(moduleShape, finderPattern: eyeShape),
     image: logoImage != null
         ? PrettyQrDecorationImage(image: logoImage, scale: 0.2)

@@ -221,7 +221,7 @@ class _CustomizationRow extends StatelessWidget {
           () => Switch(
             value: rounded.value == 1,
             onChanged: (value) => rounded.value = value ? 1 : 0,
-            activeColor: Theme.of(context).colorScheme.tertiary,
+            activeThumbColor: Theme.of(context).colorScheme.tertiary,
             activeTrackColor: Theme.of(context).colorScheme.secondary,
             inactiveThumbColor: Theme.of(context).colorScheme.secondary,
             inactiveTrackColor: Theme.of(context).colorScheme.primary,

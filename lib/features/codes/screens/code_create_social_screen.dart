@@ -495,7 +495,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
               value: _controller.eyeRounded.value == 1,
               onChanged: (value) =>
                   _controller.eyeRounded.value = value ? 1 : 0,
-              activeColor: Theme.of(context).colorScheme.tertiary,
+              activeThumbColor: Theme.of(context).colorScheme.tertiary,
               activeTrackColor: Theme.of(context).colorScheme.secondary,
               inactiveThumbColor: Theme.of(context).colorScheme.secondary,
               inactiveTrackColor: Theme.of(context).colorScheme.primary,
@@ -541,7 +541,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
               value: _controller.moduleRounded.value == 1,
               onChanged: (value) =>
                   _controller.moduleRounded.value = value ? 1 : 0,
-              activeColor: Theme.of(context).colorScheme.tertiary,
+              activeThumbColor: Theme.of(context).colorScheme.tertiary,
               activeTrackColor: Theme.of(context).colorScheme.secondary,
               inactiveThumbColor: Theme.of(context).colorScheme.secondary,
               inactiveTrackColor: Theme.of(context).colorScheme.primary,

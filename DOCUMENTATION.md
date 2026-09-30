@@ -26,7 +26,7 @@
    - [Database](#513-database)
 6. [Controllers (State Management)](#6-controllers-state-management)
 7. [Servizi](#7-servizi)
-   - [Autenticazione (auth_service)](#71-autenticazione-auth_service)
+   - [Autenticazione (AuthController)](#71-autenticazione-authcontroller)
    - [Codici (codes_service)](#72-codici-codes_service)
    - [Export CSV (csv_service)](#73-export-csv-csv_service)
    - [Export Excel (excel_service)](#74-export-excel-excel_service)
@@ -138,7 +138,7 @@ qration/
 │   │   ├── auth/
 │   │   │   ├── controllers/        # AuthController
 │   │   │   ├── screens/            # login, signup, reset_password
-│   │   │   ├── services/           # auth_service (Firebase + Google Sign-In), session_store
+│   │   │   ├── services/           # session_store (flag "Ricordami")
 │   │   │   └── widgets/            # auth_divider
 │   │   ├── codes/
 │   │   │   ├── controllers/        # CodeDetailsController, CodeCreateStandardController, CodeCreateSocialController, ScannerController
@@ -527,6 +527,8 @@ In precedenza, dopo l'eliminazione lo schermo restava comunque nero: la causa re
 
 Configurazione globale dell'app organizzata in 4 sezioni.
 
+La screen contiene solo il contenuto delle sezioni; i mattoni visivi sono in `lib/features/settings/widgets/settings_tiles.dart`, accanto a `section_card.dart`: `SettingsGroup` (titolo + card della sezione), `SettingsNavTile` (voce con freccia che apre una schermata o esegue un'azione), `SettingsSwitchTile` (voce con `Switch`) e `SettingsSegmentedTile<T>` (voce con `SegmentedButton` a scelta singola, scrollabile orizzontalmente). Lo stato arriva da `SettingsController` tramite `Obx`; la lingua, non osservabile, viene salvata e applicata con `Get.updateLocale`.
+
 | Sezione | Impostazione | Dettaglio |
 |---|---|---|
 | **Generale** | Tema | Sistema / Chiaro / Scuro, tramite `SegmentedButton<ThemeMode>` (Sistema segue la luminosità del dispositivo) |
@@ -598,11 +600,11 @@ L'app usa **GetX** come sistema di state management. I controller sono registrat
 
 ## 7. Servizi
 
-### 7.1 Autenticazione (auth_service)
+### 7.1 Autenticazione (AuthController)
 
-**Percorso:** `lib/features/auth/services/auth_service.dart`
+**Percorso:** `lib/features/auth/controllers/auth_controller.dart` (+ `lib/features/auth/services/session_store.dart` per il flag "Ricordami")
 
-Gestisce tutta la logica di autenticazione tramite Firebase Auth e Firestore.
+Gestisce tutta la logica di autenticazione tramite Firebase Auth e Firestore. In precedenza esisteva anche un `auth_service.dart` con una copia divergente di queste operazioni, non usato da nessun file: è stato rimosso.
 
 **Operazioni:**
 - **Registrazione email/password:** controlla se l'email è già registrata su Firestore, crea le credenziali Firebase Auth, salva il `UserModel` su Firestore
