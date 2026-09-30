@@ -17,6 +17,7 @@ import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/widgets/app_button.dart';
 import 'package:qration/core/widgets/app_textfield.dart';
 import 'package:qration/features/auth/controllers/auth_controller.dart';
+import 'package:qration/features/auth/widgets/auth_divider.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -124,6 +125,15 @@ class SignupScreen extends StatelessWidget {
                       label: l10n.signup_button,
                       isLoading: controller.isLoading.value,
                       onPressed: () => controller.signup(formKey),
+                    )),
+                const SizedBox(height: 16),
+                AuthDivider(label: l10n.login_or),
+                const SizedBox(height: 16),
+                Obx(() => AppButton.outlined(
+                      label: l10n.login_google,
+                      isLoading: controller.isLoading.value,
+                      icon: MingCuteIcons.mgc_google_fill,
+                      onPressed: controller.loginWithGoogle,
                     )),
                 const SizedBox(height: 32),
                 Center(

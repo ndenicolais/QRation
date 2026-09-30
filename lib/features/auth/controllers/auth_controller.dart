@@ -17,7 +17,7 @@ import 'package:logger/logger.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 import 'package:qration/features/user/models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:qration/features/auth/services/session_store.dart';
 
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
@@ -25,6 +25,7 @@ class AuthController extends GetxController {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final _googleSignIn = GoogleSignIn();
+  final _session = SessionStore();
   final _logger = Logger();
 
   // Form controllers
@@ -109,8 +110,10 @@ class AuthController extends GetxController {
         }
       }
 
+      // Google sign-in is always remembered: the account is already managed
+      // by the device, so asking again at every launch adds no security.
       rememberMe.value = true;
-      await _saveSession();
+      await _saveSession(uid: user?.uid);
       Get.offAllNamed(AppRoutes.home);
     } catch (e) {
       _handleAuthError(e);
@@ -183,9 +186,7 @@ class AuthController extends GetxController {
     try {
       await _auth.signOut();
       await _googleSignIn.signOut();
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('remember_me');
-      await prefs.remove('user_id');
+      await _session.clear();
       Get.offAllNamed(AppRoutes.welcome);
     } catch (e) {
       _logger.e('Logout error: $e');
@@ -218,9 +219,8 @@ class AuthController extends GetxController {
   // ─── HELPERS ─────────────────────────────────────────────────────────────
 
   Future<void> _saveSession({String? uid}) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('remember_me', true);
-    await prefs.setString('user_id', uid ?? _auth.currentUser?.uid ?? '');
+    final id = uid ?? _auth.currentUser?.uid;
+    if (id != null) await _session.save(id);
   }
 
   void _handleAuthError(dynamic e) {

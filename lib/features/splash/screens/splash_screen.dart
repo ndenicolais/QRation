@@ -8,7 +8,6 @@
 // Contact: ndn21dev@gmail.com
 // GitHub: https://github.com/ndenicolais
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -16,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/theme/app_colors.dart';
+import 'package:qration/features/auth/services/session_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -39,8 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     final prefs = await SharedPreferences.getInstance();
-    final rememberMe = prefs.getBool('remember_me') ?? false;
-    final userId = prefs.getString('user_id') ?? '';
     final seenOnboarding = prefs.getBool('seen_onboarding') ?? false;
 
     if (!seenOnboarding) {
@@ -48,23 +46,36 @@ class _SplashScreenState extends State<SplashScreen> {
       return;
     }
 
-    if (rememberMe && userId.isNotEmpty) {
-      try {
-        final user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .get();
+    try {
+      final session = SessionStore();
+      final rememberedUid = await session.rememberedUserId();
+      if (rememberedUid != null) {
+        final user = await _restoredUser();
+        _logger.d('Session restore: remembered=$rememberedUid '
+            'firebase=${user?.uid}');
+        if (await session.canRestore(user?.uid)) {
           Get.offAllNamed(AppRoutes.home);
           return;
         }
-      } catch (e) {
-        _logger.e('Session restore failed: $e');
       }
+    } catch (e) {
+      _logger.e('Session restore failed: $e');
     }
 
     Get.offAllNamed(AppRoutes.welcome);
+  }
+
+  /// Firebase restores the persisted user asynchronously at startup, so
+  /// `currentUser` (and the first `authStateChanges()` event, which replays
+  /// it) can still be null here. Only called when a session is remembered:
+  /// wait for the first signed-in user, giving up after a timeout.
+  Future<User?> _restoredUser() async {
+    final auth = FirebaseAuth.instance;
+    if (auth.currentUser != null) return auth.currentUser;
+    return auth
+        .authStateChanges()
+        .firstWhere((user) => user != null)
+        .timeout(const Duration(seconds: 5), onTimeout: () => null);
   }
 
   @override

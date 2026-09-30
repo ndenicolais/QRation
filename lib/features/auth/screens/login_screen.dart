@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -17,6 +17,7 @@ import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/widgets/app_button.dart';
 import 'package:qration/core/widgets/app_textfield.dart';
 import 'package:qration/features/auth/controllers/auth_controller.dart';
+import 'package:qration/features/auth/widgets/auth_divider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -114,7 +115,7 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () => controller.login(formKey),
                     )),
                 const SizedBox(height: 16),
-                _Divider(label: l10n.login_or),
+                AuthDivider(label: l10n.login_or),
                 const SizedBox(height: 16),
                 Obx(() => AppButton.outlined(
                       label: l10n.login_google,
@@ -158,26 +159,6 @@ class _Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Image.asset('assets/images/app_logo.png', height: 80),
-    );
-  }
-}
-
-class _Divider extends StatelessWidget {
-  final String label;
-  const _Divider({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        const Expanded(child: Divider()),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(label, style: theme.textTheme.bodySmall),
-        ),
-        const Expanded(child: Divider()),
-      ],
     );
   }
 }
