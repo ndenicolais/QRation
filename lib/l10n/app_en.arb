@@ -373,6 +373,10 @@
   "database_screen_csv_error": "Unable to generate CSV",
   "database_screen_export_menu": "Export JSON",
   "database_screen_import_menu": "Import JSON",
+  "database_screen_backup_title": "JSON backup",
+  "database_screen_backup_last_export": "Last export",
+  "database_screen_backup_last_import": "Last import",
+  "database_screen_backup_never": "Never",
   "database_screen_export_success": "JSON exported in the Download folder",
   "database_screen_export_error": "Error during export",
   "database_screen_import_success": "JSON successfully imported!",
@@ -521,5 +525,8 @@
   "changelog_v2_0_0_bullet_32": "Empty screens now suggest what to do next: create your first code from Favorites, scan from History, or clear the filters when a search finds nothing.",
   "changelog_v2_0_0_bullet_33": "The chosen app language is applied right from startup, without a brief flash in the device language.",
   "changelog_v2_0_0_bullet_34": "Refreshed scanner: the flashlight button shows whether it is on, the scan line is animated, the area outside the frame is dimmed, and the buttons give touch and haptic feedback.",
-  "changelog_v2_0_0_bullet_35": "History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active."
+  "changelog_v2_0_0_bullet_35": "History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.",
+  "changelog_v2_0_0_bullet_36": "You can now sign up with Google directly from the registration screen.",
+  "changelog_v2_0_0_bullet_37": "Signing in with Google now always keeps you logged in, and the saved session is restored reliably at startup, even offline or after reinstalling the app from a backup.",
+  "changelog_v2_0_0_bullet_38": "The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled."
 }

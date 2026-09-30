@@ -8,6 +8,7 @@
 // Contact: ndn21dev@gmail.com
 // GitHub: https://github.com/ndenicolais
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -15,16 +16,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:qration/core/utils/downloads_saver.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 import 'package:qration/features/export/services/csv_service.dart';
 import 'package:qration/features/export/services/excel_service.dart';
 import 'package:qration/features/export/services/pdf_service.dart';
+import 'package:qration/features/settings/services/backup_history.dart';
 
 enum ImportResult { success, cancelled, error }
 
 class DatabaseController extends GetxController {
+  DatabaseController({String userId = '', DateTime Function()? clock})
+      : _backupHistory = BackupHistory(userId),
+        _clock = clock ?? DateTime.now;
+
   final CodesRepository _codesService = Get.find<CodesRepository>();
+  final BackupHistory _backupHistory;
+  final DateTime Function() _clock;
 
   PdfService? _pdfService;
   ExcelService? _excelService;
@@ -44,6 +53,9 @@ class DatabaseController extends GetxController {
   final standardCodesByScanned = Rxn<Map<String, int>>();
   final socialCodesByScanned = Rxn<Map<String, int>>();
 
+  final lastExportAt = Rxn<DateTime>();
+  final lastImportAt = Rxn<DateTime>();
+
   Object? lastError;
 
   void attachServices(
@@ -60,6 +72,12 @@ class DatabaseController extends GetxController {
   void onInit() {
     super.onInit();
     loadData();
+    loadBackupHistory();
+  }
+
+  Future<void> loadBackupHistory() async {
+    lastExportAt.value = await _backupHistory.lastExport();
+    lastImportAt.value = await _backupHistory.lastImport();
   }
 
   Future<void> loadData() async {
@@ -132,8 +150,18 @@ class DatabaseController extends GetxController {
       final formattedDate =
           DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
       final filePath = '${directory.path}/qration_db_$formattedDate.json';
-      final file = File(filePath);
-      await file.writeAsString(jsonCodes);
+      final bytes = utf8.encode(jsonCodes);
+      await File(filePath).writeAsBytes(bytes);
+      // The directory above is app-private on Android (removed on uninstall):
+      // copy the backup to the public Downloads folder too.
+      await saveBytesToPublicDownloads(
+        fileName: 'qration_db_$formattedDate.json',
+        mimeType: 'application/json',
+        bytes: bytes,
+      );
+      final now = _clock();
+      await _backupHistory.recordExport(now);
+      lastExportAt.value = now;
       return true;
     } catch (e) {
       lastError = e;
@@ -158,6 +186,9 @@ class DatabaseController extends GetxController {
       File file = File(result.files.single.path!);
       String jsonCodes = await file.readAsString();
       await _codesService.importCodesFromJson(jsonCodes);
+      final now = _clock();
+      await _backupHistory.recordImport(now);
+      lastImportAt.value = now;
       return ImportResult.success;
     } catch (e) {
       lastError = e;

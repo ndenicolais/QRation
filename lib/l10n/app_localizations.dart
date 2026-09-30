@@ -2150,6 +2150,30 @@ abstract class AppLocalizations {
   /// **'Import JSON'**
   String get database_screen_import_menu;
 
+  /// No description provided for @database_screen_backup_title.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON backup'**
+  String get database_screen_backup_title;
+
+  /// No description provided for @database_screen_backup_last_export.
+  ///
+  /// In en, this message translates to:
+  /// **'Last export'**
+  String get database_screen_backup_last_export;
+
+  /// No description provided for @database_screen_backup_last_import.
+  ///
+  /// In en, this message translates to:
+  /// **'Last import'**
+  String get database_screen_backup_last_import;
+
+  /// No description provided for @database_screen_backup_never.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get database_screen_backup_never;
+
   /// No description provided for @database_screen_export_success.
   ///
   /// In en, this message translates to:
@@ -2965,6 +2989,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.'**
   String get changelog_v2_0_0_bullet_35;
+
+  /// No description provided for @changelog_v2_0_0_bullet_36.
+  ///
+  /// In en, this message translates to:
+  /// **'You can now sign up with Google directly from the registration screen.'**
+  String get changelog_v2_0_0_bullet_36;
+
+  /// No description provided for @changelog_v2_0_0_bullet_37.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in with Google now always keeps you logged in, and the saved session is restored reliably at startup, even offline or after reinstalling the app from a backup.'**
+  String get changelog_v2_0_0_bullet_37;
+
+  /// No description provided for @changelog_v2_0_0_bullet_38.
+  ///
+  /// In en, this message translates to:
+  /// **'The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.'**
+  String get changelog_v2_0_0_bullet_38;
 }
 
 class _AppLocalizationsDelegate

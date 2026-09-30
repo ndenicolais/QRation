@@ -138,7 +138,8 @@ qration/
 │   │   ├── auth/
 │   │   │   ├── controllers/        # AuthController
 │   │   │   ├── screens/            # login, signup, reset_password
-│   │   │   └── services/           # auth_service (Firebase + Google Sign-In)
+│   │   │   ├── services/           # auth_service (Firebase + Google Sign-In), session_store
+│   │   │   └── widgets/            # auth_divider
 │   │   ├── codes/
 │   │   │   ├── controllers/        # CodeDetailsController, CodeCreateStandardController, CodeCreateSocialController, ScannerController
 │   │   │   ├── models/             # CodeModel, CodeSocial, CodeTypes (parser per ogni tipo)
@@ -276,6 +277,10 @@ Schermata di avvio visualizzata al lancio dell'app. Mostra il logo animato e rei
 
 La permanenza minima sulla splash (`Future.delayed`, 350ms) esiste solo per dare tempo all'animazione del logo di essere visibile prima del redirect automatico.
 
+**Ripristino della sessione:** lo splash va in Home solo se `SessionStore.canRestore(uid)` è vero, cioè se esiste un utente Firebase autenticato **e** il "Ricordami" salvato (`remember_me` + `user_id`) si riferisce proprio a quell'utente. Poiché Firebase ripristina l'utente persistito in modo asincrono all'avvio, `currentUser` può essere ancora `null`: in quel caso lo splash attende il primo evento di `authStateChanges()` (timeout 3 s) invece di leggerlo in modo sincrono. In precedenza lo splash faceva anche una lettura Firestore del profilo utente il cui fallimento (ad esempio offline e senza cache) rimandava al Welcome pur con sessione valida: la lettura è stata rimossa.
+
+**Backup automatico Android e sessione Firebase:** Firebase Auth salva l'utente in `shared_prefs/com.google.firebase.auth.api.Store.<id>.xml`, cifrato con una chiave del Keystore Android (`...api.crypto.<id>.xml`). La chiave del Keystore non viene mai inclusa nei backup: se Auto Backup ripristina quei file dopo una reinstallazione, Firebase non riesce né a leggerli né a sovrascriverli, e ogni nuovo login resta solo in memoria (l'hot reload sembra funzionare, un riavvio dell'app riporta al Welcome con `currentUser == null`). Per questo `AndroidManifest.xml` dichiara `android:fullBackupContent="@xml/backup_rules"` (Android 6–11) e `android:dataExtractionRules="@xml/data_extraction_rules"` (Android 12+), che escludono questi due file dal backup e dal trasferimento tra dispositivi. I nomi dei file includono `base64("[DEFAULT]")+base64(mobilesdk_app_id)`: vanno aggiornati se cambia l'app Firebase in `google-services.json`. Su un dispositivo già in questo stato basta cancellare i due file (o i dati dell'app) e rifare il login.
+
 ---
 
 ### 5.2 Onboarding
@@ -306,12 +311,13 @@ Gestione completa dell'autenticazione tramite Firebase Auth.
 - **Login (`login_screen.dart`):**
   - Login con email e password
   - Login con Google (un tap, OAuth 2.0)
-  - Opzione "Ricordami" (salva credenziali in `SharedPreferences`)
+  - Opzione "Ricordami" (salva in `SharedPreferences` il flag di sessione, non le credenziali); con Google la sessione è sempre ricordata
   - Link a Registrazione e Reset password
 - **Signup (`signup_screen.dart`):**
   - Registrazione con nome, email e password
   - Validazione form (email duplicata, password sicura)
   - Creazione profilo utente su Firestore dopo la registrazione
+  - Registrazione con Google: stesso pulsante "Continua con Google" del Login (`loginWithGoogle`, che crea il profilo Firestore se manca), separato dal form dal divisore condiviso `AuthDivider` (`lib/features/auth/widgets/auth_divider.dart`)
 - **Reset password (`reset_password_screen.dart`):**
   - Invio email di reset tramite Firebase Auth
 
@@ -563,6 +569,8 @@ Schermata avanzata di gestione dati accessibile dalle impostazioni.
 **Import/Export JSON:**
 - Importa un file JSON precedentemente esportato per ripristinare i dati
 - Esporta tutti i codici in formato JSON
+- L'export scrive il file nella directory restituita da `getDownloadsDirectory()` (su Android è privata dell'app e viene cancellata alla disinstallazione) e ne salva una copia anche nella cartella Download pubblica con `saveBytesToPublicDownloads` (`application/json`), come già avveniva per PDF/Excel/CSV
+- **Sezione "Backup JSON"** (`BackupSection`, `lib/features/settings/widgets/backup_section.dart`): mostra data e ora dell'ultima esportazione e dell'ultima importazione riuscite, oppure "Mai". I timestamp sono salvati sul dispositivo da `BackupHistory` (`lib/features/settings/services/backup_history.dart`) in `SharedPreferences`, con chiavi per utente (`backup_last_export_<uid>`, `backup_last_import_<uid>`), ed esposti da `DatabaseController` come `lastExportAt`/`lastImportAt`
 
 Tutte le operazioni mostrano una barra di avanzamento animata.
 
@@ -584,7 +592,7 @@ L'app usa **GetX** come sistema di state management. I controller sono registrat
 | `CodeCreateSocialController` | Stato del form di creazione QR social (campi URL/Spotify/WhatsApp, colori/arrotondamento occhi e moduli, logo, prefisso), costruzione del contenuto per social (`buildContent`) e creazione del `CodeModel` |
 | `ScannerController` | Pipeline di scansione: filtro duplicati (`RescanGuard`) e flag `isProcessing`, feedback beep/vibrazione secondo `ScannerPreferencesController`, costruzione del `CodeModel` (template social per i link) e salvataggio con timeout di 3 s |
 | `FavoritesController` | Stream dei preferiti sottoscritto una sola volta, stato di caricamento/errore e liste per tab (creati/scansionati) ordinate per data |
-| `DatabaseController` | Statistiche codici (totali, creati, scansionati, distribuzione per tipo), generazione export PDF/Excel/CSV ed export/import JSON |
+| `DatabaseController` | Statistiche codici (totali, creati, scansionati, distribuzione per tipo), generazione export PDF/Excel/CSV, export/import JSON (con copia nella Download pubblica) e timestamp dell'ultimo backup (`lastExportAt`/`lastImportAt`, via `BackupHistory`, per utente) |
 
 ---
 
@@ -600,9 +608,9 @@ Gestisce tutta la logica di autenticazione tramite Firebase Auth e Firestore.
 - **Registrazione email/password:** controlla se l'email è già registrata su Firestore, crea le credenziali Firebase Auth, salva il `UserModel` su Firestore
 - **Login email/password:** cerca l'email su Firestore per ottenere l'email primaria, esegue `signInWithEmailAndPassword`. Gestisce errori specifici (`email_not_found`, `invalid_password`)
 - **Login con Google:** avvia il flusso OAuth `GoogleSignIn`, ottiene le credenziali Google, esegue `signInWithCredential`. Se è un nuovo utente Google, crea il `UserModel` su Firestore
-- **Ricorda me:** se attivo, salva `remember_me = true` e `user_id` in `SharedPreferences`
+- **Ricorda me:** gestito da `SessionStore` (`lib/features/auth/services/session_store.dart`), che salva `remember_me = true` e `user_id` in `SharedPreferences`. Con email/password avviene solo se la checkbox è attiva; con Google e dopo la registrazione avviene sempre
 - **Recupero dati utente:** legge il documento `users/{uid}` da Firestore e restituisce `UserModel`
-- **Logout:** esegue `signOut` su Firebase Auth e Google Sign-In, cancella `SharedPreferences`
+- **Logout:** esegue `signOut` su Firebase Auth e Google Sign-In e cancella la sessione salvata (`SessionStore.clear()`)
 - **Reset password:** invia email di reset tramite `sendPasswordResetEmail`
 - **Eliminazione account:** elimina tutti i codici dell'utente da Firestore, elimina il documento utente, quindi elimina l'account Firebase Auth
 
@@ -767,6 +775,8 @@ Riepilogo di tutte le chiavi salvate in `SharedPreferences`:
 | `vibrateEnabled` | `bool` | `false` | Vibrazione alla scansione |
 | `remember_me` | `bool` | `false` | Mantieni sessione al riavvio |
 | `user_id` | `String` | `''` | UID Firebase dell'utente autenticato |
+| `backup_last_export_<uid>` | `int` | assente | Millisecondi epoch dell'ultima esportazione JSON riuscita per quell'utente |
+| `backup_last_import_<uid>` | `int` | assente | Millisecondi epoch dell'ultima importazione JSON riuscita per quell'utente |
 
 ---
 

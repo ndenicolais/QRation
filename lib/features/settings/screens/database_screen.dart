@@ -22,6 +22,7 @@ import 'package:qration/features/export/services/csv_service.dart';
 import 'package:qration/features/export/services/excel_service.dart';
 import 'package:qration/features/export/services/pdf_service.dart';
 import 'package:qration/features/settings/controllers/database_controller.dart';
+import 'package:qration/features/settings/widgets/backup_section.dart';
 import 'package:qration/features/settings/widgets/export_section.dart';
 import 'package:qration/features/settings/widgets/loading_overlays.dart';
 import 'package:qration/features/settings/widgets/statistics_section.dart';
@@ -37,7 +38,9 @@ class DatabaseScreen extends StatefulWidget {
 class DatabaseScreenState extends State<DatabaseScreen>
     with TickerProviderStateMixin {
   final User? currentUser = FirebaseAuth.instance.currentUser;
-  final DatabaseController _controller = Get.put(DatabaseController());
+  final DatabaseController _controller = Get.put(
+    DatabaseController(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+  );
   late AnimationController _loadingController;
   late AnimationController _loadingPdfController;
 
@@ -177,6 +180,11 @@ class DatabaseScreenState extends State<DatabaseScreen>
                                     _controller.standardCodesByScanned.value,
                                 socialCodesByScanned:
                                     _controller.socialCodesByScanned.value,
+                              ),
+                              SizedBox(height: 28.h),
+                              BackupSection(
+                                lastExportAt: _controller.lastExportAt.value,
+                                lastImportAt: _controller.lastImportAt.value,
                               ),
                               SizedBox(height: 28.h),
                               ExportSection(

@@ -373,6 +373,10 @@
   "database_screen_csv_error": "Impossibile generare il CSV",
   "database_screen_export_menu": "Esporta JSON",
   "database_screen_import_menu": "Importa JSON",
+  "database_screen_backup_title": "Backup JSON",
+  "database_screen_backup_last_export": "Ultima esportazione",
+  "database_screen_backup_last_import": "Ultima importazione",
+  "database_screen_backup_never": "Mai",
   "database_screen_export_success" : "JSON esportato nella cartella Download",
   "database_screen_export_error": "Errore durante l'esportazione",
   "database_screen_import_success": "JSON importato con successo!",
@@ -521,5 +525,8 @@
   "changelog_v2_0_0_bullet_32": "Le schermate vuote ora suggeriscono cosa fare: creare il primo codice dai Preferiti, scansionare dalla Cronologia o azzerare i filtri quando una ricerca non trova risultati.",
   "changelog_v2_0_0_bullet_33": "La lingua scelta per l'app viene applicata fin dall'avvio, senza un breve passaggio nella lingua del dispositivo.",
   "changelog_v2_0_0_bullet_34": "Scanner rinnovato: il pulsante della torcia mostra se è accesa, la linea di scansione è animata, l'area fuori dal riquadro è oscurata e i pulsanti danno un riscontro al tocco e con vibrazione.",
-  "changelog_v2_0_0_bullet_35": "I filtri della Cronologia sono ora riuniti in un unico pannello con chip descrittivi, e l'icona del filtro mostra quanti filtri sono attivi."
+  "changelog_v2_0_0_bullet_35": "I filtri della Cronologia sono ora riuniti in un unico pannello con chip descrittivi, e l'icona del filtro mostra quanti filtri sono attivi.",
+  "changelog_v2_0_0_bullet_36": "Ora puoi registrarti con Google direttamente dalla schermata di registrazione.",
+  "changelog_v2_0_0_bullet_37": "L'accesso con Google mantiene sempre la sessione attiva e la sessione salvata viene ripristinata correttamente all'avvio, anche offline o dopo aver reinstallato l'app da un backup.",
+  "changelog_v2_0_0_bullet_38": "La pagina Database mostra quando è stato esportato e importato l'ultimo backup JSON, e i backup esportati vengono ora salvati anche nella cartella Download pubblica, così non vanno persi disinstallando l'app."
 }

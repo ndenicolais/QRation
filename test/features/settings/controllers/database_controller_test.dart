@@ -14,6 +14,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 import 'package:qration/features/settings/controllers/database_controller.dart';
+import 'package:qration/features/settings/services/backup_history.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockCodesRepository extends Mock implements CodesRepository {}
 
@@ -22,6 +24,7 @@ void main() {
 
   setUp(() {
     Get.testMode = true;
+    SharedPreferences.setMockInitialValues({});
     repository = MockCodesRepository();
     Get.put<CodesRepository>(repository);
   });
@@ -68,5 +71,17 @@ void main() {
 
     expect(controller.isLoading.value, isFalse);
     expect(controller.hasError.value, isTrue);
+  });
+
+  test('loadBackupHistory exposes the stored export and import times',
+      () async {
+    final exportAt = DateTime(2026, 9, 1, 8, 30);
+    await BackupHistory('uid-1').recordExport(exportAt);
+    final controller = DatabaseController(userId: 'uid-1');
+
+    await controller.loadBackupHistory();
+
+    expect(controller.lastExportAt.value, exportAt);
+    expect(controller.lastImportAt.value, isNull);
   });
 }

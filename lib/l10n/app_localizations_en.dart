@@ -1082,6 +1082,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_screen_import_menu => 'Import JSON';
 
   @override
+  String get database_screen_backup_title => 'JSON backup';
+
+  @override
+  String get database_screen_backup_last_export => 'Last export';
+
+  @override
+  String get database_screen_backup_last_import => 'Last import';
+
+  @override
+  String get database_screen_backup_never => 'Never';
+
+  @override
   String get database_screen_export_success =>
       'JSON exported in the Download folder';
 
@@ -1542,4 +1554,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_35 =>
       'History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.';
+
+  @override
+  String get changelog_v2_0_0_bullet_36 =>
+      'You can now sign up with Google directly from the registration screen.';
+
+  @override
+  String get changelog_v2_0_0_bullet_37 =>
+      'Signing in with Google now always keeps you logged in, and the saved session is restored reliably at startup, even offline or after reinstalling the app from a backup.';
+
+  @override
+  String get changelog_v2_0_0_bullet_38 =>
+      'The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.';
 }

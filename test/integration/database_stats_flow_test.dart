@@ -23,6 +23,7 @@ import 'package:qration/features/codes/services/codes_repository.dart';
 import 'package:qration/features/settings/controllers/database_controller.dart';
 import 'package:qration/features/settings/widgets/export_section.dart';
 import 'package:qration/features/settings/widgets/statistics_section.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../support/widget_test_helpers.dart';
 
@@ -34,6 +35,7 @@ void main() {
 
   setUp(() async {
     Get.testMode = true;
+    SharedPreferences.setMockInitialValues({});
     repository = MockCodesRepository();
     Get.put<CodesRepository>(repository);
 
