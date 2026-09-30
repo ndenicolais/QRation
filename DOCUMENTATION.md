@@ -140,7 +140,7 @@ qration/
 │   │   │   ├── screens/            # login, signup, reset_password
 │   │   │   └── services/           # auth_service (Firebase + Google Sign-In)
 │   │   ├── codes/
-│   │   │   ├── controllers/        # CodeDetailsController, CodeCreateStandardController
+│   │   │   ├── controllers/        # CodeDetailsController, CodeCreateStandardController, CodeCreateSocialController, ScannerController
 │   │   │   ├── models/             # CodeModel, CodeSocial, CodeTypes (parser per ogni tipo)
 │   │   │   ├── screens/            # scanner, create_types, create_standard, create_social, details
 │   │   │   ├── services/           # CodesRepository (interfaccia) + CodesService (Firestore CRUD)
@@ -149,6 +149,7 @@ qration/
 │   │   ├── export/
 │   │   │   └── services/           # csv_service, excel_service, pdf_service
 │   │   ├── favorites/
+│   │   │   ├── controllers/        # FavoritesController
 │   │   │   └── screens/            # favorites_screen
 │   │   ├── history/
 │   │   │   ├── controllers/        # HistoryController (stream, ricerca con debounce, filtri, selezione)
@@ -333,11 +334,11 @@ Schermata contenitore con **bottom navigation bar** a 5 voci. Gestisce la naviga
 
 Lo scanner (`ScannerScreen`) è il primo tab (indice 0) invece che uno schermo raggiungibile solo tramite tap, così l'utente può scansionare un codice subito dopo aver aperto l'app, senza passaggi intermedi. Vivendo dentro l'`IndexedStack` di Home, riceve un flag `isActive` che ne avvia/ferma la fotocamera (`MobileScannerController.start()`/`stop()`) quando l'utente entra o esce dal tab, per non tenerla accesa in background mentre si naviga in altre sezioni.
 
-In `_onDetect`, il flag `_isProcessing` evita di elaborare più scansioni in parallelo mentre una è già in corso. Beep e vibrazione di conferma sono racchiusi in blocchi try/catch dedicati (un fallimento del plugin audio/vibrazione, es. su device senza vibratore o output audio, non deve bloccare il riconoscimento del codice) e il reset di `_isProcessing` avviene in un `finally` attorno a `_processBarcode`, così anche un errore nell'elaborazione del barcode non lascia lo scanner bloccato sul primo scan.
+La pipeline di scansione vive in `ScannerController` (`lib/features/codes/controllers/scanner_controller.dart`); `ScannerScreen` gestisce solo fotocamera (`MobileScannerController`), permessi, zoom, galleria e navigazione. In `_onDetect`, `ScannerController.tryBeginDetection` (flag osservabile `isProcessing` + `RescanGuard`) evita di elaborare più scansioni in parallelo mentre una è già in corso. Beep e vibrazione di conferma (`playFeedback`, iniettabili nel costruttore per i test) sono racchiusi in blocchi try/catch dedicati (un fallimento del plugin audio/vibrazione, es. su device senza vibratore o output audio, non deve bloccare il riconoscimento del codice) e il reset (`endDetection`) avviene in un `finally` attorno a `_processBarcode`, così anche un errore nell'elaborazione del barcode non lascia lo scanner bloccato sul primo scan.
 
-Beep e vibrazione vengono letti da `ScannerPreferencesController` (`lib/core/controllers/`) a ogni rilevamento, non copiati in `initState`: poiché `ScannerScreen` vive nell'`IndexedStack` di Home e non viene mai ricreata, una copia locale renderebbe le modifiche fatte nelle Impostazioni invisibili fino al riavvio dell'app.
+Beep e vibrazione vengono letti da `ScannerPreferencesController` (`lib/core/controllers/`, tramite `ScannerController`) a ogni rilevamento, non copiati in `initState`: poiché `ScannerScreen` vive nell'`IndexedStack` di Home e non viene mai ricreata, una copia locale renderebbe le modifiche fatte nelle Impostazioni invisibili fino al riavvio dell'app.
 
-Le rilevazioni ripetute dello stesso codice sono filtrate da `RescanGuard` (`lib/core/utils/rescan_guard.dart`): la fotocamera segnala continuamente il codice inquadrato, quindi lo stesso valore viene ignorato finché resta in vista e viene accettato di nuovo solo dopo essere rimasto fuori inquadratura per almeno 2 secondi. Al ritorno dai dettagli il `finally` di `_onDetect` chiama `touch()`, così il cooldown parte da quel momento: il codice ancora inquadrato non riapre subito i dettagli, ma è possibile riscansionarlo spostando la fotocamera e tornando a inquadrarlo (in precedenza `_lastScanned` non veniva mai azzerato e lo stesso codice non era più scansionabile finché lo scanner restava vivo). Un codice diverso viene invece accettato immediatamente.
+Le rilevazioni ripetute dello stesso codice sono filtrate da `RescanGuard` (`lib/core/utils/rescan_guard.dart`): la fotocamera segnala continuamente il codice inquadrato, quindi lo stesso valore viene ignorato finché resta in vista e viene accettato di nuovo solo dopo essere rimasto fuori inquadratura per almeno 2 secondi. Al ritorno dai dettagli il `finally` di `_onDetect` chiama `endDetection()`, che invoca `touch()`, così il cooldown parte da quel momento: il codice ancora inquadrato non riapre subito i dettagli, ma è possibile riscansionarlo spostando la fotocamera e tornando a inquadrarlo (in precedenza `_lastScanned` non veniva mai azzerato e lo stesso codice non era più scansionabile finché lo scanner restava vivo). Un codice diverso viene invece accettato immediatamente.
 
 Dopo aver salvato il codice, `_processBarcode` naviga ai dettagli con `Get.toNamed` (non `Get.offNamed`): essendo `ScannerScreen` un tab dentro l'`IndexedStack` di Home e non più una route indipendente, la route corrente al momento dello scan è l'intera Home. `Get.toNamed` apre `CodeDetailsScreen` **sopra** la Home, preservando il tab-shell sottostante (tornando indietro l'utente rimane sullo stesso tab); `Get.offNamed` sostituirebbe invece l'intera Home, comportamento sbagliato per questa architettura.
 
@@ -345,7 +346,7 @@ Dopo aver salvato il codice, `_processBarcode` naviga ai dettagli con `Get.toNam
 
 Prima di `Get.toNamed`, `_processBarcode` ferma anche la fotocamera (`_controller.stop()`), riavviandola (`_controller.start()`) al ritorno se il tab è ancora attivo: lasciare la preview della fotocamera attiva sotto la route appena spinta poteva causare un crash del renderer Impeller (`Invalid external texture`) quando la sua `SurfaceTexture` veniva oscurata da `CodeDetailsScreen`, impedendo di fatto alla nuova schermata di comparire anche se la navigazione GetX era già avvenuta correttamente.
 
-Mentre `_isProcessing` è `true` (dal rilevamento del barcode fino al `finally` di `_onDetect`), lo scanner mostra un overlay scuro con `AppLoader` sopra la fotocamera, per dare un feedback visivo durante l'attesa del salvataggio — che con connessione assente può arrivare fino ai 3 secondi del timeout di `addCode` prima di procedere comunque alla navigazione.
+Mentre `isProcessing` è `true` (dal rilevamento del barcode fino al `finally` di `_onDetect`), lo scanner mostra un overlay scuro con `AppLoader` sopra la fotocamera, per dare un feedback visivo durante l'attesa del salvataggio — che con connessione assente può arrivare fino ai 3 secondi del timeout di `addCode` prima di procedere comunque alla navigazione.
 
 Il tab Home mostrava in precedenza una dashboard (`_HomeBody`) con un'unica card che rimandava, con un tap in più, alla selezione del tipo di codice (`CodeCreateTypesScreen`, raggiunta tramite la route `codeCreateTypes`). Poiché quella dashboard esponeva solo quell'azione, è stata rimossa: il tab Home mostra ora `CodeCreateTypesScreen` direttamente come corpo, senza passaggio intermedio né route dedicata (la costante `AppRoutes.codeCreateTypes` e la relativa `GetPage` sono state rimosse). Di conseguenza `CodeCreateTypesScreen` non ha più un proprio `AppBar` con freccia indietro, in linea con gli altri tab (`ScannerScreen`, `FavoritesScreen`, `HistoryScreen`, `SettingsScreen`), che vivono anch'essi senza `AppBar` dentro l'`IndexedStack` di Home.
 
@@ -412,6 +413,7 @@ Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in b
 - Stessa personalizzazione visiva (colore/arrotondamento occhi e moduli, logo opzionale) dello Step 2a, replicata indipendentemente
 - Il contenuto viene formattato automaticamente con l'URL base del social
 - Anteprima live del QR code
+- Stato e logica in `CodeCreateSocialController` (`lib/features/codes/controllers/`), speculare a `CodeCreateStandardController`: `TextEditingController` dei campi, stile osservabile (colori, arrotondamenti, logo, prefisso WhatsApp), `buildContent()` per la costruzione del contenuto (URL, URI di ricerca Spotify `spotify:search:<artista>;<brano>`, link `wa.me` con prefisso) e `createQrCode()` per il salvataggio. La screen gestisce solo validazione del form, toast e navigazione; il dialog di conferma all'uscita usa `showDiscardDialog` condiviso (`widgets/code_create/discard_dialog.dart`) come la creazione standard
 
 ---
 
@@ -443,9 +445,9 @@ Schermata di visualizzazione e gestione di un singolo codice.
 
 ### 5.9 Preferiti
 
-**Percorso:** `lib/features/favorites/screens/favorites_screen.dart`
+**Percorso:** `lib/features/favorites/screens/favorites_screen.dart` (UI) + `lib/features/favorites/controllers/favorites_controller.dart` (stato)
 
-Lista dei codici marcati come preferiti, organizzata in due tab:
+Lista dei codici marcati come preferiti, organizzata in due tab. `FavoritesController` si iscrive una sola volta a `getFavoriteCodesStream()` ed espone `isLoading`, `error`, `hasFavorites` e le liste `createdCodes`/`scannedCodes` già divise per sorgente e ordinate per data decrescente (ricalcolate solo a ogni evento dello stream, non a ogni rebuild).
 
 | Tab | Contenuto |
 |---|---|
@@ -565,6 +567,9 @@ L'app usa **GetX** come sistema di state management. I controller sono registrat
 | `HistoryController` | Stato e azioni della Cronologia: sottoscrizione unica allo stream dei codici, ricerca con debounce (300 ms), filtri tipo/social/sorgente con lista filtrata memoizzata, selezione multipla ed eliminazione in blocco |
 | `CodeDetailsController` | Stato e azioni della schermata Dettaglio codice (preferito, note, salvataggio/condivisione immagine, apertura URL/email/telefono/SMS/contatto/mappa/Wi-Fi/calendario, eliminazione) |
 | `CodeCreateStandardController` | Stato del form di creazione QR standard (`TextEditingController` per campo, colori/arrotondamento occhi e moduli, prefisso telefonico, cifratura Wi-Fi), generazione del contenuto per tipo e creazione del `CodeModel` |
+| `CodeCreateSocialController` | Stato del form di creazione QR social (campi URL/Spotify/WhatsApp, colori/arrotondamento occhi e moduli, logo, prefisso), costruzione del contenuto per social (`buildContent`) e creazione del `CodeModel` |
+| `ScannerController` | Pipeline di scansione: filtro duplicati (`RescanGuard`) e flag `isProcessing`, feedback beep/vibrazione secondo `ScannerPreferencesController`, costruzione del `CodeModel` (template social per i link) e salvataggio con timeout di 3 s |
+| `FavoritesController` | Stream dei preferiti sottoscritto una sola volta, stato di caricamento/errore e liste per tab (creati/scansionati) ordinate per data |
 | `DatabaseController` | Statistiche codici (totali, creati, scansionati, distribuzione per tipo), generazione export PDF/Excel/CSV ed export/import JSON |
 
 ---

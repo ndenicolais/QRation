@@ -8,9 +8,6 @@
 // Contact: ndn21dev@gmail.com
 // GitHub: https://github.com/ndenicolais
 
-import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
@@ -18,19 +15,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:qration/core/controllers/scanner_preferences_controller.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/theme/app_colors.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
 import 'package:qration/core/widgets/app_loader.dart';
-import 'package:qration/core/utils/code_social_template.dart';
 import 'package:qration/core/utils/code_type_conversion.dart';
 import 'package:qration/core/utils/permission_helper.dart';
-import 'package:qration/core/utils/rescan_guard.dart';
-import 'package:qration/features/codes/models/code_model.dart';
-import 'package:qration/features/codes/services/codes_repository.dart';
-import 'package:vibration/vibration.dart';
+import 'package:qration/features/codes/controllers/scanner_controller.dart';
 
 class ScannerScreen extends StatefulWidget {
   final bool isActive;
@@ -43,22 +35,18 @@ class ScannerScreen extends StatefulWidget {
 
 class _ScannerScreenState extends State<ScannerScreen> {
   final _logger = Logger();
-  final CodesRepository _codesService = Get.find<CodesRepository>();
   final _controller = MobileScannerController();
   final _picker = ImagePicker();
-  final _audio = AudioPlayer();
-
-  final _scanPrefs = Get.find<ScannerPreferencesController>();
-  final _rescanGuard = RescanGuard();
+  late final ScannerController _scanController;
 
   double _zoomLevel = 0;
   bool _permissionGranted = false;
   bool _permissionError = false;
-  bool _isProcessing = false;
 
   @override
   void initState() {
     super.initState();
+    _scanController = Get.put(ScannerController());
     _init();
   }
 
@@ -85,65 +73,30 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    _audio.dispose();
+    Get.delete<ScannerController>();
     super.dispose();
   }
 
   Future<void> _onDetect(BarcodeCapture capture) async {
-    if (_isProcessing) return;
     final barcode = capture.barcodes.firstOrNull;
     final value = barcode?.rawValue;
-    if (barcode == null || value == null || !_rescanGuard.accept(value)) {
+    if (barcode == null ||
+        value == null ||
+        !_scanController.tryBeginDetection(value)) {
       return;
     }
 
-    if (mounted) setState(() => _isProcessing = true);
-
-    try {
-      if (_scanPrefs.beepEnabled) {
-        await _audio.play(AssetSource('sounds/beep.mp3'));
-      }
-    } catch (e) {
-      _logger.e('Error playing beep sound: $e');
-    }
-    try {
-      if (_scanPrefs.vibrateEnabled && await Vibration.hasVibrator()) {
-        await Vibration.vibrate();
-      }
-    } catch (e) {
-      _logger.e('Error triggering vibration: $e');
-    }
-
+    await _scanController.playFeedback();
     try {
       await _processBarcode(value, barcode.type);
     } finally {
-      // Start the rescan cooldown from the return to the scanner, not from
-      // the original detection.
-      _rescanGuard.touch();
-      _isProcessing = false;
-      if (mounted) setState(() {});
+      _scanController.endDetection();
     }
   }
 
   Future<void> _processBarcode(String content, BarcodeType type) async {
     try {
-      final CodeModel code;
-      if (_isSocialUrl(content)) {
-        code = createCodeSocialTemplate(content);
-      } else {
-        code = CodeModel(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          barcode: Barcode(rawValue: content, type: type),
-          date: DateTime.now(),
-          source: CodeSource.scanned,
-        );
-      }
-      try {
-        await _codesService.addCode(code).timeout(const Duration(seconds: 3));
-      } on TimeoutException {
-        // Firestore write is queued locally (offline persistence) but hasn't
-        // been acknowledged by the server yet; don't block navigation on it.
-      }
+      final code = await _scanController.saveScannedCode(content, type);
       // Stop the camera before pushing the details screen: with Impeller,
       // leaving the preview running underneath a pushed route while its
       // SurfaceTexture gets obscured can crash rendering with an
@@ -172,13 +125,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
       }
     }
   }
-
-  bool _isSocialUrl(String content) =>
-      content.startsWith('http') ||
-      content.startsWith('https') ||
-      content.startsWith('www.') ||
-      content.startsWith('spotify:') ||
-      content.startsWith('whatsapp://');
 
   Future<void> _pickImage() async {
     final file = await _picker.pickImage(source: ImageSource.gallery);
@@ -354,13 +300,14 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     // saved, so the ~1-3s Firestore round-trip (longer when
                     // offline, capped by the addCode timeout) doesn't read as
                     // a frozen screen.
-                    if (_isProcessing)
-                      Container(
-                        color: Colors.black.withValues(alpha: 0.55),
-                        child: const Center(
-                          child: AppLoader(color: Colors.white),
-                        ),
-                      ),
+                    Obx(() => _scanController.isProcessing.value
+                        ? Container(
+                            color: Colors.black.withValues(alpha: 0.55),
+                            child: const Center(
+                              child: AppLoader(color: Colors.white),
+                            ),
+                          )
+                        : const SizedBox.shrink()),
                   ],
                 ),
     );

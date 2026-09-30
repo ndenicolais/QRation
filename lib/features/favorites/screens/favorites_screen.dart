@@ -19,7 +19,7 @@ import 'package:qration/core/utils/code_type_icon.dart';
 import 'package:qration/core/utils/code_type_body.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/screens/code_details_screen.dart';
-import 'package:qration/features/codes/services/codes_repository.dart';
+import 'package:qration/features/favorites/controllers/favorites_controller.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
 import 'package:qration/core/widgets/app_empty_state.dart';
 
@@ -32,7 +32,7 @@ class FavoritesScreen extends StatefulWidget {
 
 class FavoritesScreenState extends State<FavoritesScreen>
     with SingleTickerProviderStateMixin {
-  final CodesRepository _codesService = Get.find<CodesRepository>();
+  late final FavoritesController _controller;
   late TabController _tabController;
 
   @override
@@ -56,10 +56,12 @@ class FavoritesScreenState extends State<FavoritesScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _controller = Get.put(FavoritesController());
   }
 
   @override
   void dispose() {
+    Get.delete<FavoritesController>();
     _tabController.dispose();
     super.dispose();
   }
@@ -121,55 +123,46 @@ class FavoritesScreenState extends State<FavoritesScreen>
   }
 
   Widget _buildTabBarView(BuildContext context) {
-    return StreamBuilder<List<CodeModel>>(
-      stream: _codesService.getFavoriteCodesStream(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return Obx(() {
+      if (_controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-        if (snapshot.hasError) {
-          return AppErrorState(
-            title:
-                '${AppLocalizations.of(context)!.favorites_screen_error_state} ${snapshot.error}',
-          );
-        }
-
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return AppEmptyState(
-            icon: MingCuteIcons.mgc_inbox_2_fill,
-            message: AppLocalizations.of(context)!.favorites_screen_empty_state,
-          );
-        }
-
-        final List<CodeModel> favoriteCodes = snapshot.data!;
-
-        return TabBarView(
-          controller: _tabController,
-          children: [
-            _buildCodesList(
-              context,
-              favoriteCodes,
-              CodeSource.created,
-            ),
-            _buildCodesList(
-              context,
-              favoriteCodes,
-              CodeSource.scanned,
-            ),
-          ],
+      final error = _controller.error.value;
+      if (error != null) {
+        return AppErrorState(
+          title:
+              '${AppLocalizations.of(context)!.favorites_screen_error_state} $error',
         );
-      },
-    );
+      }
+
+      if (!_controller.hasFavorites.value) {
+        return AppEmptyState(
+          icon: MingCuteIcons.mgc_inbox_2_fill,
+          message: AppLocalizations.of(context)!.favorites_screen_empty_state,
+        );
+      }
+
+      return TabBarView(
+        controller: _tabController,
+        children: [
+          _buildCodesList(
+            context,
+            _controller.createdCodes.toList(),
+            CodeSource.created,
+          ),
+          _buildCodesList(
+            context,
+            _controller.scannedCodes.toList(),
+            CodeSource.scanned,
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildCodesList(
-      BuildContext context, List<CodeModel> favoriteCodes, CodeSource source) {
-    final List<CodeModel> filteredCodes =
-        favoriteCodes.where((CodeModel code) => code.source == source).toList();
-
-    filteredCodes.sort((a, b) => b.date.compareTo(a.date));
-
+      BuildContext context, List<CodeModel> filteredCodes, CodeSource source) {
     if (filteredCodes.isEmpty) {
       return AppEmptyState(
         icon: source == CodeSource.created

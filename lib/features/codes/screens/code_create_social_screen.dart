@@ -17,14 +17,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:qration/core/utils/logo_saver.dart';
 import 'package:qration/core/utils/qr_decoration.dart';
-import 'package:qration/features/codes/models/code_model.dart';
+import 'package:qration/features/codes/controllers/code_create_social_controller.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
 import 'package:qration/features/codes/screens/code_details_screen.dart';
-import 'package:qration/features/codes/services/codes_repository.dart';
+import 'package:qration/features/codes/widgets/code_create/discard_dialog.dart';
 import 'package:qration/core/widgets/app_button.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 
@@ -38,20 +36,9 @@ class CodeCreateSocialScreen extends StatefulWidget {
 }
 
 class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
-  final CodesRepository _codesService = Get.find<CodesRepository>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late TextEditingController urlController;
-  late TextEditingController spotifyArtistController;
-  late TextEditingController spotifySongController;
-  late TextEditingController whatsappController;
-  Color _eyeColor = Colors.black;
-  int _eyeRounded = 0;
-  Color _moduleColor = Colors.black;
-  int _moduleRounded = 0;
-  String? _logoPath;
-  late String _contentType;
+  late final CodeCreateSocialController _controller;
   final String _content = '';
-  String selectedPrefix = '+39';
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +46,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
-        final hasContent = urlController.text.isNotEmpty ||
-            spotifyArtistController.text.isNotEmpty ||
-            spotifySongController.text.isNotEmpty ||
-            whatsappController.text.isNotEmpty;
-        if (!hasContent) {
-          Get.back();
-          return;
-        }
-        final shouldPop = await _showDiscardDialog(context);
-        if (shouldPop && context.mounted) Get.back();
+        await _confirmBack(context);
       },
       child: Scaffold(
         appBar: _buildAppBar(context),
@@ -103,75 +81,24 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
   @override
   void initState() {
     super.initState();
-    _contentType = widget.socialMedia.name;
-    urlController = TextEditingController(
-      text: _getInitialUrlForSocialMedia(widget.socialMedia.url),
+    _controller = Get.put(
+      CodeCreateSocialController(socialMedia: widget.socialMedia),
     );
-    spotifyArtistController = TextEditingController();
-    spotifySongController = TextEditingController();
-    whatsappController = TextEditingController();
-  }
-
-  Future<bool> _showDiscardDialog(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(l10n.discard_dialog_title),
-            content: Text(l10n.discard_dialog_message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(l10n.discard_dialog_cancel),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(l10n.discard_dialog_confirm),
-              ),
-            ],
-          ),
-        ) ??
-        false;
   }
 
   @override
   void dispose() {
-    urlController.dispose();
-    spotifyArtistController.dispose();
-    spotifySongController.dispose();
-    whatsappController.dispose();
+    Get.delete<CodeCreateSocialController>();
     super.dispose();
   }
 
-  String _getInitialUrlForSocialMedia(String socialMediaUrl) {
-    if (socialMediaUrl.contains("spotify.com")) {
-      return 'https://open.spotify.com/';
-    } else if (socialMediaUrl.contains("whatsapp.com")) {
-      return 'https://wa.me/';
+  Future<void> _confirmBack(BuildContext context) async {
+    if (!_controller.hasContent()) {
+      Get.back();
+      return;
     }
-    return '';
-  }
-
-  String _buildUrlForSocialMedia() {
-    if (widget.socialMedia.name == 'Spotify') {
-      final artist = spotifyArtistController.text.trim();
-      final song = spotifySongController.text.trim();
-      if (artist.isNotEmpty && song.isNotEmpty) {
-        return 'spotify:search:$artist;$song';
-      } else {
-        return 'https://open.spotify.com/';
-      }
-    }
-
-    if (widget.socialMedia.name == 'WhatsApp') {
-      final phoneNumber = whatsappController.text.trim();
-      if (phoneNumber.isEmpty) {
-        return '';
-      }
-      final fullPhoneNumber = selectedPrefix + phoneNumber;
-      return 'https://wa.me/$fullPhoneNumber';
-    }
-    return urlController.text;
+    final shouldPop = await showDiscardDialog(context);
+    if (shouldPop && context.mounted) Get.back();
   }
 
   Future<void> _createQrCode() async {
@@ -179,7 +106,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       return;
     }
 
-    String content = _buildUrlForSocialMedia().trim();
+    final content = _controller.buildContent();
 
     if (content.isEmpty) {
       showErrorToast(
@@ -189,50 +116,28 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       return;
     }
 
-    Barcode barcode = Barcode(
-      rawValue: content,
-      type: BarcodeType.url,
-    );
-
-    CodeModel code = CodeModel(
-      id: '',
-      barcode: barcode,
-      date: DateTime.now(),
-      source: CodeSource.created,
-      eyeColor: _eyeColor,
-      eyeRounded: _eyeRounded,
-      moduleColor: _moduleColor,
-      moduleRounded: _moduleRounded,
-      socialMedia: widget.socialMedia,
-      logoPath: _logoPath,
-    );
-
-    try {
-      await _codesService.addCode(code);
-      if (mounted) {
-        showSuccessToast(
-          context,
-          AppLocalizations.of(context)!.code_create_social_screen_toast_success,
-        );
-      }
-
-      Get.off(() => CodeDetailsScreen(code: code));
-    } catch (e) {
-      if (mounted) {
-        showErrorToast(context,
-            '${AppLocalizations.of(context)!.code_create_social_screen_toast_error} $e');
-      }
+    final success = await _controller.createQrCode(content);
+    if (!mounted) return;
+    if (success) {
+      showSuccessToast(
+        context,
+        AppLocalizations.of(context)!.code_create_social_screen_toast_success,
+      );
+      Get.off(() => CodeDetailsScreen(code: _controller.lastCreatedCode!));
+    } else {
+      showErrorToast(context,
+          '${AppLocalizations.of(context)!.code_create_social_screen_toast_error} ${_controller.lastError}');
     }
   }
 
   Widget _buildInputFields(BuildContext context) {
-    if (widget.socialMedia.name == 'Spotify') {
+    if (_controller.isSpotify) {
       return Column(
         children: [
           _buildSpotifyField(
             label: AppLocalizations.of(context)!
                 .code_create_social_screen_spotify_artist_label,
-            controller: spotifyArtistController,
+            controller: _controller.spotifyArtistController,
             textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
@@ -247,7 +152,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
           _buildSpotifyField(
             label: AppLocalizations.of(context)!
                 .code_create_social_screen_spotify_song_label,
-            controller: spotifySongController,
+            controller: _controller.spotifySongController,
             textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.done,
             keyboardType: TextInputType.text,
@@ -261,13 +166,13 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
           ),
         ],
       );
-    } else if (widget.socialMedia.name == 'WhatsApp') {
+    } else if (_controller.isWhatsApp) {
       return _buildPhoneNumberField();
     } else {
       return _buildTextField(
         label:
             AppLocalizations.of(context)!.code_create_social_screen_url_label,
-        controller: urlController,
+        controller: _controller.urlController,
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
             return AppLocalizations.of(context)!
@@ -379,9 +284,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
           children: [
             CountryCodePicker(
               onChanged: (countryCode) {
-                setState(() {
-                  selectedPrefix = countryCode.dialCode!;
-                });
+                _controller.selectedPrefix.value = countryCode.dialCode!;
               },
               initialSelection: 'IT',
               showCountryOnly: false,
@@ -396,7 +299,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
                 decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!
                         .code_create_social_screen_whatsapp_label),
-                controller: whatsappController,
+                controller: _controller.whatsappController,
                 keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.done,
                 validator: (value) {
@@ -427,21 +330,10 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
           MingCuteIcons.mgc_large_arrow_left_fill,
           color: Theme.of(context).colorScheme.secondary,
         ),
-        onPressed: () async {
-          final hasContent = urlController.text.isNotEmpty ||
-              spotifyArtistController.text.isNotEmpty ||
-              spotifySongController.text.isNotEmpty ||
-              whatsappController.text.isNotEmpty;
-          if (!hasContent) {
-            Get.back();
-            return;
-          }
-          final shouldPop = await _showDiscardDialog(context);
-          if (shouldPop && context.mounted) Get.back();
-        },
+        onPressed: () => _confirmBack(context),
       ),
       title: Text(
-        _contentType,
+        widget.socialMedia.name,
         style: AppFonts.montserrat(
           color: Theme.of(context).colorScheme.secondary,
           fontWeight: FontWeight.w500,
@@ -458,18 +350,22 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       width: 220.w,
       height: 220.h,
       child: Center(
-        child: PrettyQrView.data(
-          data: _content,
-          errorCorrectLevel:
-              _logoPath != null ? QrErrorCorrectLevel.H : QrErrorCorrectLevel.M,
-          decoration: buildQrDecoration(
-            eyeColor: _eyeColor,
-            eyeRounded: _eyeRounded,
-            moduleColor: _moduleColor,
-            moduleRounded: _moduleRounded,
-            logoImage: _logoPath != null ? FileImage(File(_logoPath!)) : null,
-          ),
-        ),
+        child: Obx(() {
+          final logoPath = _controller.logoPath.value;
+          return PrettyQrView.data(
+            data: _content,
+            errorCorrectLevel: logoPath != null
+                ? QrErrorCorrectLevel.H
+                : QrErrorCorrectLevel.M,
+            decoration: buildQrDecoration(
+              eyeColor: _controller.eyeColor.value,
+              eyeRounded: _controller.eyeRounded.value,
+              moduleColor: _controller.moduleColor.value,
+              moduleRounded: _controller.moduleRounded.value,
+              logoImage: logoPath != null ? FileImage(File(logoPath)) : null,
+            ),
+          );
+        }),
       ),
     );
   }
@@ -522,145 +418,140 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
           ),
         ),
         SizedBox(height: 10.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: _pickLogo,
-              child: Container(
-                width: 60.w,
-                height: 60.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.secondary),
-                  image: _logoPath != null
-                      ? DecorationImage(
-                          image: FileImage(File(_logoPath!)),
-                          fit: BoxFit.cover,
-                        )
+        Obx(() {
+          final logoPath = _controller.logoPath.value;
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: _controller.pickLogo,
+                child: Container(
+                  width: 60.w,
+                  height: 60.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.r),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.secondary),
+                    image: logoPath != null
+                        ? DecorationImage(
+                            image: FileImage(File(logoPath)),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                  ),
+                  child: logoPath == null
+                      ? Icon(Icons.add_photo_alternate_outlined,
+                          color: Theme.of(context).colorScheme.secondary)
                       : null,
                 ),
-                child: _logoPath == null
-                    ? Icon(Icons.add_photo_alternate_outlined,
-                        color: Theme.of(context).colorScheme.secondary)
-                    : null,
               ),
-            ),
-            if (_logoPath != null)
-              IconButton(
-                onPressed: () => setState(() => _logoPath = null),
-                icon: Icon(Icons.close,
-                    color: Theme.of(context).colorScheme.secondary),
-              ),
-          ],
-        ),
+              if (logoPath != null)
+                IconButton(
+                  onPressed: _controller.removeLogo,
+                  icon: Icon(Icons.close,
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+            ],
+          );
+        }),
       ],
     );
-  }
-
-  Future<void> _pickLogo() async {
-    final path = await pickAndSaveLogo();
-    if (path != null) setState(() => _logoPath = path);
   }
 
   Widget _buildEyeCustomizationRow() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.code_create_social_screen_eye_color,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        SizedBox(height: 5.h),
-        GestureDetector(
-          onTap: () => pickColor(context, true),
-          child: Container(
-            width: 40.w,
-            height: 40.h,
-            decoration: BoxDecoration(
-              color: _eyeColor,
-              borderRadius: BorderRadius.circular(15.r),
-              border:
-                  Border.all(color: Theme.of(context).colorScheme.secondary),
+    return Obx(() => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.code_create_social_screen_eye_color,
+              style: AppFonts.montserrat(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 10.h),
-        Text(
-          AppLocalizations.of(context)!.code_create_social_screen_eye_rounded,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        Switch(
-          value: _eyeRounded == 1,
-          onChanged: (value) {
-            setState(() {
-              _eyeRounded = value ? 1 : 0;
-            });
-          },
-          activeColor: Theme.of(context).colorScheme.tertiary,
-          activeTrackColor: Theme.of(context).colorScheme.secondary,
-          inactiveThumbColor: Theme.of(context).colorScheme.secondary,
-          inactiveTrackColor: Theme.of(context).colorScheme.primary,
-        ),
-      ],
-    );
+            SizedBox(height: 5.h),
+            GestureDetector(
+              onTap: () => pickColor(context, true),
+              child: Container(
+                width: 40.w,
+                height: 40.h,
+                decoration: BoxDecoration(
+                  color: _controller.eyeColor.value,
+                  borderRadius: BorderRadius.circular(15.r),
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+              ),
+            ),
+            SizedBox(height: 10.h),
+            Text(
+              AppLocalizations.of(context)!
+                  .code_create_social_screen_eye_rounded,
+              style: AppFonts.montserrat(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            Switch(
+              value: _controller.eyeRounded.value == 1,
+              onChanged: (value) =>
+                  _controller.eyeRounded.value = value ? 1 : 0,
+              activeColor: Theme.of(context).colorScheme.tertiary,
+              activeTrackColor: Theme.of(context).colorScheme.secondary,
+              inactiveThumbColor: Theme.of(context).colorScheme.secondary,
+              inactiveTrackColor: Theme.of(context).colorScheme.primary,
+            ),
+          ],
+        ));
   }
 
   Widget _buildModuleCustomizationRow() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.code_create_social_screen_module_color,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        SizedBox(height: 5.h),
-        GestureDetector(
-          onTap: () => pickColor(context, false),
-          child: Container(
-            width: 40.w,
-            height: 40.h,
-            decoration: BoxDecoration(
-              color: _moduleColor,
-              borderRadius: BorderRadius.circular(15.r),
-              border:
-                  Border.all(color: Theme.of(context).colorScheme.secondary),
+    return Obx(() => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              AppLocalizations.of(context)!
+                  .code_create_social_screen_module_color,
+              style: AppFonts.montserrat(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 10.h),
-        Text(
-          AppLocalizations.of(context)!
-              .code_create_social_screen_module_rounded,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        Switch(
-          value: _moduleRounded == 1,
-          onChanged: (value) {
-            setState(() {
-              _moduleRounded = value ? 1 : 0;
-            });
-          },
-          activeColor: Theme.of(context).colorScheme.tertiary,
-          activeTrackColor: Theme.of(context).colorScheme.secondary,
-          inactiveThumbColor: Theme.of(context).colorScheme.secondary,
-          inactiveTrackColor: Theme.of(context).colorScheme.primary,
-        ),
-      ],
-    );
+            SizedBox(height: 5.h),
+            GestureDetector(
+              onTap: () => pickColor(context, false),
+              child: Container(
+                width: 40.w,
+                height: 40.h,
+                decoration: BoxDecoration(
+                  color: _controller.moduleColor.value,
+                  borderRadius: BorderRadius.circular(15.r),
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+              ),
+            ),
+            SizedBox(height: 10.h),
+            Text(
+              AppLocalizations.of(context)!
+                  .code_create_social_screen_module_rounded,
+              style: AppFonts.montserrat(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            Switch(
+              value: _controller.moduleRounded.value == 1,
+              onChanged: (value) =>
+                  _controller.moduleRounded.value = value ? 1 : 0,
+              activeColor: Theme.of(context).colorScheme.tertiary,
+              activeTrackColor: Theme.of(context).colorScheme.secondary,
+              inactiveThumbColor: Theme.of(context).colorScheme.secondary,
+              inactiveTrackColor: Theme.of(context).colorScheme.primary,
+            ),
+          ],
+        ));
   }
 
   void pickColor(BuildContext context, bool isEyeColor) async {
-    Color color = isEyeColor ? _eyeColor : _moduleColor;
+    final color =
+        isEyeColor ? _controller.eyeColor.value : _controller.moduleColor.value;
 
     showDialog(
       context: context,
@@ -679,13 +570,11 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
           child: ColorPicker(
             pickerColor: color,
             onColorChanged: (newColor) {
-              setState(() {
-                if (isEyeColor) {
-                  _eyeColor = newColor;
-                } else {
-                  _moduleColor = newColor;
-                }
-              });
+              if (isEyeColor) {
+                _controller.eyeColor.value = newColor;
+              } else {
+                _controller.moduleColor.value = newColor;
+              }
             },
           ),
         ),
