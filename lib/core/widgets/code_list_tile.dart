@@ -37,6 +37,7 @@ class CodeListTile extends StatelessWidget {
     this.selectable = false,
     this.selected = false,
     this.onSelectedChanged,
+    this.onLongPress,
   });
 
   final CodeModel code;
@@ -47,6 +48,9 @@ class CodeListTile extends StatelessWidget {
   final bool selectable;
   final bool selected;
   final ValueChanged<bool>? onSelectedChanged;
+
+  /// Optional long-press action (e.g. entering selection mode).
+  final VoidCallback? onLongPress;
 
   /// Padding shared by the lists hosting these tiles.
   static EdgeInsets get listPadding =>
@@ -78,6 +82,7 @@ class CodeListTile extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: selectable ? () => onSelectedChanged?.call(!selected) : onTap,
+        onLongPress: onLongPress,
         contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
         leading: selectable
             ? Checkbox(

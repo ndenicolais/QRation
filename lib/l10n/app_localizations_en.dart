@@ -886,6 +886,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'Selected codes have been successfully deleted!';
 
   @override
+  String history_screen_deleted_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count codes deleted',
+      one: '1 code deleted',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get history_screen_tooltip_close_selection => 'Exit selection mode';
 
   @override
@@ -1598,4 +1609,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_42 =>
       'Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced.';
+
+  @override
+  String get changelog_v2_0_0_bullet_43 =>
+      'Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted.';
 }

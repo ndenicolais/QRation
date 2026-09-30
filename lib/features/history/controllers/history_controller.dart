@@ -179,6 +179,14 @@ class HistoryController extends GetxController with SyncStatusMixin {
     isSelecting.value = true;
   }
 
+  /// Long-press entry point: starts selection with [id] already selected.
+  void startSelectionWith(String id) {
+    selectedIds
+      ..clear()
+      ..add(id);
+    isSelecting.value = true;
+  }
+
   void cancelSelection() {
     selectedIds.clear();
     isSelecting.value = false;

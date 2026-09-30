@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -121,115 +122,193 @@ class HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildSearchBar(BuildContext context) {
-    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.r),
       child: Obx(() {
         final isSelecting = _controller.isSelecting.value;
-        final hasSearch = _controller.searchInput.value.isNotEmpty;
-        return Row(
-          children: [
-            if (isSelecting)
-              IconButton(
-                tooltip: AppLocalizations.of(context)!
-                    .history_screen_tooltip_close_selection,
-                icon: Icon(
-                  MingCuteIcons.mgc_close_fill,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                onPressed: _controller.cancelSelection,
+        // The search row turns into a contextual selection bar.
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          switchInCurve: Curves.easeOut,
+          switchOutCurve: Curves.easeIn,
+          transitionBuilder: (child, animation) => FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, -0.25),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          ),
+          child: isSelecting
+              ? _buildSelectionBar(context)
+              : _buildSearchRow(context),
+        );
+      }),
+    );
+  }
+
+  Widget _buildSearchRow(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final hasSearch = _controller.searchInput.value.isNotEmpty;
+    final activeFilters = _controller.activeFilterCount;
+    return Row(
+      key: const ValueKey('search'),
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _searchController,
+            focusNode: _searchFocusNode,
+            onTapOutside: (event) =>
+                FocusManager.instance.primaryFocus?.unfocus(),
+            style: AppFonts.montserrat(
+              color: theme.colorScheme.onSurface,
+              fontSize: 14.sp,
+            ),
+            cursorColor: theme.colorScheme.primary,
+            onChanged: _controller.onSearchChanged,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                MingCuteIcons.mgc_search_2_fill,
+                size: 18.sp,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
-            Expanded(
-              child: TextField(
-                controller: _searchController,
-                focusNode: _searchFocusNode,
-                onTapOutside: (event) =>
-                    FocusManager.instance.primaryFocus?.unfocus(),
-                style: AppFonts.montserrat(
-                  color: theme.colorScheme.onSurface,
-                  fontSize: 14.sp,
-                ),
-                cursorColor: theme.colorScheme.primary,
-                onChanged: _controller.onSearchChanged,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    MingCuteIcons.mgc_search_2_fill,
-                    size: 18.sp,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                  suffixIcon: hasSearch
-                      ? IconButton(
-                          tooltip: AppLocalizations.of(context)!
-                              .history_screen_tooltip_clear_search,
-                          icon: Icon(
-                            Icons.clear,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          onPressed: _resetFocus,
-                        )
-                      : null,
-                  filled: true,
-                  fillColor: theme.colorScheme.surfaceContainerHighest
-                      .withValues(alpha: 0.35),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-                  labelText:
-                      AppLocalizations.of(context)!.history_screen_search_label,
-                  labelStyle: AppFonts.montserrat(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontSize: 13.sp,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.outline,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.outline,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.primary,
-                      width: 1.4,
-                    ),
-                  ),
+              suffixIcon: hasSearch
+                  ? IconButton(
+                      tooltip: l10n.history_screen_tooltip_clear_search,
+                      icon: Icon(
+                        Icons.clear,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                      onPressed: _resetFocus,
+                    )
+                  : null,
+              filled: true,
+              fillColor: theme.colorScheme.surfaceContainerHighest
+                  .withValues(alpha: 0.35),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+              labelText: l10n.history_screen_search_label,
+              labelStyle: AppFonts.montserrat(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 13.sp,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(color: theme.colorScheme.outline),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(color: theme.colorScheme.outline),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
+                  width: 1.4,
                 ),
               ),
             ),
-            if (!isSelecting)
-              IconButton(
-                tooltip:
-                    AppLocalizations.of(context)!.history_screen_tooltip_filter,
-                icon: Badge(
-                  isLabelVisible: _controller.activeFilterCount > 0,
-                  label: Text('${_controller.activeFilterCount}'),
-                  child: Icon(
-                    MingCuteIcons.mgc_filter_fill,
-                    color: _controller.activeFilterCount > 0
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.onSurface,
-                  ),
-                ),
-                onPressed: () => showHistoryFilterSheet(context, _controller),
+          ),
+        ),
+        IconButton(
+          tooltip: l10n.history_screen_tooltip_filter,
+          icon: Badge(
+            isLabelVisible: activeFilters > 0,
+            label: Text('$activeFilters'),
+            child: Icon(
+              MingCuteIcons.mgc_filter_fill,
+              color: activeFilters > 0
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.onSurface,
+            ),
+          ),
+          onPressed: () => showHistoryFilterSheet(context, _controller),
+        ),
+        IconButton(
+          tooltip: l10n.history_screen_tooltip_select_mode,
+          icon: Icon(
+            MingCuteIcons.mgc_delete_3_fill,
+            color: theme.colorScheme.onSurface,
+          ),
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            _controller.startSelection();
+          },
+        ),
+      ],
+    );
+  }
+
+  /// Contextual bar shown while selecting: close, count, select all, delete.
+  Widget _buildSelectionBar(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final selectedCount = _controller.selectedIds.length;
+    final allSelected = _controller.allSelected;
+    return Container(
+      key: const ValueKey('selection'),
+      height: 52.h,
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            tooltip: l10n.history_screen_tooltip_close_selection,
+            icon: Icon(
+              MingCuteIcons.mgc_close_line,
+              color: theme.colorScheme.onSurface,
+            ),
+            onPressed: _controller.cancelSelection,
+          ),
+          Expanded(
+            child: Text(
+              '$selectedCount ${l10n.history_screen_selected_count}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppFonts.montserrat(
+                color: theme.colorScheme.onSurface,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
               ),
-            if (!isSelecting)
-              IconButton(
-                tooltip: AppLocalizations.of(context)!
-                    .history_screen_tooltip_select_mode,
-                icon: Icon(
-                  MingCuteIcons.mgc_delete_3_fill,
-                  color: theme.colorScheme.onSurface,
-                ),
-                onPressed: _controller.startSelection,
-              ),
-          ],
-        );
-      }),
+            ),
+          ),
+          IconButton(
+            tooltip: allSelected
+                ? l10n.history_screen_deselect_all
+                : l10n.history_screen_select_all,
+            icon: Icon(
+              allSelected
+                  ? MingCuteIcons.mgc_check_circle_fill
+                  : MingCuteIcons.mgc_check_circle_line,
+              color: theme.colorScheme.primary,
+            ),
+            onPressed: _controller.filteredCodes.isEmpty
+                ? null
+                : () {
+                    HapticFeedback.selectionClick();
+                    _controller.toggleSelectAll();
+                  },
+          ),
+          IconButton(
+            tooltip: l10n.history_screen_tooltip_delete,
+            icon: Icon(
+              MingCuteIcons.mgc_delete_3_fill,
+              color: selectedCount == 0
+                  ? theme.colorScheme.onSurface.withAlpha(100)
+                  : theme.colorScheme.error,
+            ),
+            onPressed: selectedCount == 0
+                ? null
+                : () => _showDeleteSelectedDialog(context),
+          ),
+        ],
+      ),
     );
   }
 
@@ -240,12 +319,11 @@ class HistoryScreenState extends State<HistoryScreen> {
       message: AppLocalizations.of(context)!
           .history_screen_delete_selected_description,
       onConfirm: () async {
-        await _controller.deleteSelected();
+        final deleted = await _controller.deleteSelected();
         if (!context.mounted) return;
         showSuccessToast(
           context,
-          AppLocalizations.of(context)!
-              .history_screen_delete_selected_toast_success,
+          AppLocalizations.of(context)!.history_screen_deleted_count(deleted),
         );
       },
     );
@@ -290,9 +368,6 @@ class HistoryScreenState extends State<HistoryScreen> {
                     : _buildCodesListView(filteredCodes, isSelecting),
               ),
             ),
-            if (isSelecting)
-              Obx(() =>
-                  _buildSelectionBottomBar(context, _controller.filteredCodes)),
           ],
         );
       }),
@@ -313,69 +388,19 @@ class HistoryScreenState extends State<HistoryScreen> {
               showSource: true,
               selectable: isSelecting,
               selected: _controller.selectedIds.contains(code.id),
-              onSelectedChanged: (_) => _controller.toggleSelected(code.id),
+              onSelectedChanged: (_) {
+                HapticFeedback.selectionClick();
+                _controller.toggleSelected(code.id);
+              },
+              onLongPress: isSelecting
+                  ? null
+                  : () {
+                      HapticFeedback.mediumImpact();
+                      _controller.startSelectionWith(code.id);
+                    },
               onTap: () => Get.toNamed(AppRoutes.codeDetails, arguments: code),
             ));
       },
-    );
-  }
-
-  Widget _buildSelectionBottomBar(
-      BuildContext context, List<CodeModel> filteredCodes) {
-    final theme = Theme.of(context);
-    final selectedCount = _controller.selectedIds.length;
-    final allSelected = _controller.allSelected;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        border: Border(
-          top: BorderSide(color: theme.colorScheme.outline),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              '$selectedCount ${AppLocalizations.of(context)!.history_screen_selected_count}',
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.onSurface,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          TextButton(
-            onPressed:
-                filteredCodes.isEmpty ? null : _controller.toggleSelectAll,
-            child: Text(
-              allSelected
-                  ? AppLocalizations.of(context)!.history_screen_deselect_all
-                  : AppLocalizations.of(context)!.history_screen_select_all,
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.primary,
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          IconButton(
-            tooltip:
-                AppLocalizations.of(context)!.history_screen_tooltip_delete,
-            icon: Icon(
-              MingCuteIcons.mgc_delete_3_fill,
-              color: selectedCount == 0
-                  ? theme.colorScheme.onSurface.withAlpha(100)
-                  : theme.colorScheme.error,
-            ),
-            onPressed: selectedCount == 0
-                ? null
-                : () => _showDeleteSelectedDialog(context),
-          ),
-        ],
-      ),
     );
   }
 }

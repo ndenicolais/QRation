@@ -907,6 +907,17 @@ class AppLocalizationsIt extends AppLocalizations {
       'I codici selezionati sono stati eliminati con successo!';
 
   @override
+  String history_screen_deleted_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count codici eliminati',
+      one: '1 codice eliminato',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get history_screen_tooltip_close_selection => 'Esci dalla selezione';
 
   @override
@@ -1625,4 +1636,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_42 =>
       'Trascina verso il basso Cronologia e Preferiti per aggiornarli; un piccolo avviso indica quando sei offline o quando ci sono modifiche ancora da sincronizzare.';
+
+  @override
+  String get changelog_v2_0_0_bullet_43 =>
+      'Selezione dei codici in Cronologia più comoda: tieni premuto un codice per iniziare a selezionare, la barra di ricerca diventa una barra di selezione animata e la conferma indica quanti codici sono stati eliminati.';
 }

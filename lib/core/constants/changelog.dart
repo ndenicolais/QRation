@@ -65,6 +65,7 @@ final List<ChangelogEntry> changelogEntries = [
       l10n.changelog_v2_0_0_bullet_40,
       l10n.changelog_v2_0_0_bullet_41,
       l10n.changelog_v2_0_0_bullet_42,
+      l10n.changelog_v2_0_0_bullet_43,
     ],
   ),
 ];

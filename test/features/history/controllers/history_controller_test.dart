@@ -220,6 +220,16 @@ void main() {
       expect(controller.searchKeyword.value, 'hello');
     });
 
+    test('startSelectionWith selects only the pressed code', () {
+      controller.startSelection();
+      controller.toggleSelected('x');
+
+      controller.startSelectionWith('1');
+
+      expect(controller.isSelecting.value, isTrue);
+      expect(controller.selectedIds, {'1'});
+    });
+
     test('select all toggles between all filtered and none', () async {
       stream.add(codes);
       await pumpEventQueue();

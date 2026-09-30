@@ -83,18 +83,39 @@ void main() {
     final l10n =
         AppLocalizations.of(tester.element(find.byType(HistoryScreen)))!;
     await tester.tap(find.byTooltip(l10n.history_screen_tooltip_select_mode));
-    await tester.pump();
+    await tester.pumpAndSettle();
     expect(find.byType(Checkbox), findsNWidgets(2));
+    // The search field is replaced by the contextual selection bar.
+    expect(find.byType(TextField), findsNothing);
 
-    await tester.tap(find.text(l10n.history_screen_select_all));
+    await tester.tap(find.byTooltip(l10n.history_screen_select_all));
     await tester.pump();
     expect(
         find.text('2 ${l10n.history_screen_selected_count}'), findsOneWidget);
 
     await tester
         .tap(find.byTooltip(l10n.history_screen_tooltip_close_selection));
-    await tester.pump();
+    await tester.pumpAndSettle();
     expect(find.byType(Checkbox), findsNothing);
+    expect(find.byType(TextField), findsOneWidget);
+  });
+
+  testWidgets('long press selects the pressed code', (tester) async {
+    await pumpHistory(tester);
+    stream.add([code('1', 'first code'), code('2', 'second code')]);
+    await tester.pump();
+
+    await tester.longPress(find.text('second code'));
+    await tester.pumpAndSettle();
+
+    final l10n =
+        AppLocalizations.of(tester.element(find.byType(HistoryScreen)))!;
+    expect(
+        find.text('1 ${l10n.history_screen_selected_count}'), findsOneWidget);
+    final checked = tester
+        .widgetList<Checkbox>(find.byType(Checkbox))
+        .where((c) => c.value == true);
+    expect(checked.length, 1);
   });
 
   testWidgets('filter sheet filters live and shows the active count',

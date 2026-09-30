@@ -1760,6 +1760,12 @@ abstract class AppLocalizations {
   /// **'Selected codes have been successfully deleted!'**
   String get history_screen_delete_selected_toast_success;
 
+  /// No description provided for @history_screen_deleted_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 code deleted} other{{count} codes deleted}}'**
+  String history_screen_deleted_count(int count);
+
   /// No description provided for @history_screen_tooltip_close_selection.
   ///
   /// In en, this message translates to:
@@ -3061,6 +3067,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced.'**
   String get changelog_v2_0_0_bullet_42;
+
+  /// No description provided for @changelog_v2_0_0_bullet_43.
+  ///
+  /// In en, this message translates to:
+  /// **'Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted.'**
+  String get changelog_v2_0_0_bullet_43;
 }
 
 class _AppLocalizationsDelegate

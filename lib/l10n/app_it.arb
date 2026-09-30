@@ -306,6 +306,7 @@
   "history_screen_deselect_all": "Deseleziona tutto",
   "history_screen_delete_selected_description": "Sei sicuro di voler eliminare i codici selezionati?",
   "history_screen_delete_selected_toast_success": "I codici selezionati sono stati eliminati con successo!",
+  "history_screen_deleted_count": "{count, plural, =1{1 codice eliminato} other{{count} codici eliminati}}",
   "history_screen_tooltip_close_selection": "Esci dalla selezione",
   "history_screen_tooltip_clear_search": "Cancella ricerca",
   "history_screen_tooltip_filter": "Filtra",
@@ -537,5 +538,6 @@
   "changelog_v2_0_0_bullet_39": "Nuova veste grafica per Dettaglio codice, Crea codice, Info e Profilo, coerente con il resto dell'app: testi più leggibili, azioni rapide con etichetta nel dettaglio e layout più ordinato.",
   "changelog_v2_0_0_bullet_40": "L'anteprima del QR durante la creazione ora si aggiorna in tempo reale per ogni tipo di codice, compresi quelli social.",
   "changelog_v2_0_0_bullet_41": "Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi.",
-  "changelog_v2_0_0_bullet_42": "Trascina verso il basso Cronologia e Preferiti per aggiornarli; un piccolo avviso indica quando sei offline o quando ci sono modifiche ancora da sincronizzare."
+  "changelog_v2_0_0_bullet_42": "Trascina verso il basso Cronologia e Preferiti per aggiornarli; un piccolo avviso indica quando sei offline o quando ci sono modifiche ancora da sincronizzare.",
+  "changelog_v2_0_0_bullet_43": "Selezione dei codici in Cronologia più comoda: tieni premuto un codice per iniziare a selezionare, la barra di ricerca diventa una barra di selezione animata e la conferma indica quanti codici sono stati eliminati."
 }
