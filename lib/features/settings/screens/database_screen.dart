@@ -35,14 +35,9 @@ class DatabaseScreen extends StatefulWidget {
   DatabaseScreenState createState() => DatabaseScreenState();
 }
 
-class DatabaseScreenState extends State<DatabaseScreen>
-    with TickerProviderStateMixin {
+class DatabaseScreenState extends State<DatabaseScreen> {
   final User? currentUser = FirebaseAuth.instance.currentUser;
-  final DatabaseController _controller = Get.put(
-    DatabaseController(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
-  );
-  late AnimationController _loadingController;
-  late AnimationController _loadingPdfController;
+  final DatabaseController _controller = Get.find<DatabaseController>();
 
   @override
   void initState() {
@@ -52,22 +47,6 @@ class DatabaseScreenState extends State<DatabaseScreen>
     final excelService = ExcelService(context, codesService, currentUser);
     final csvService = CSVService(context, codesService, currentUser);
     _controller.attachServices(pdfService, excelService, csvService);
-    _loadingController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    )..repeat();
-    _loadingPdfController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _loadingController.dispose();
-    _loadingPdfController.dispose();
-    Get.delete<DatabaseController>();
-    super.dispose();
   }
 
   Future<void> _shareFile(String? filePath) async {

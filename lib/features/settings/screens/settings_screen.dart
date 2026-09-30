@@ -32,7 +32,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class SettingsScreenState extends State<SettingsScreen> {
-  final _settingsCtrl = Get.put(SettingsController());
+  final _settingsCtrl = Get.find<SettingsController>();
   final _authCtrl = Get.find<AuthController>();
 
   @override

@@ -11,6 +11,10 @@
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/core/routes/app_routes.dart';
+import 'package:qration/features/codes/bindings/code_bindings.dart';
+import 'package:qration/features/codes/bindings/scanner_binding.dart';
+import 'package:qration/features/home/bindings/home_binding.dart';
+import 'package:qration/features/settings/bindings/settings_binding.dart';
 import 'package:qration/features/auth/screens/login_screen.dart';
 import 'package:qration/features/auth/screens/reset_password_screen.dart';
 import 'package:qration/features/auth/screens/signup_screen.dart';
@@ -60,14 +64,17 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.home,
+      binding: HomeBinding(),
       page: () => const HomeScreen(),
     ),
     GetPage(
       name: AppRoutes.scanner,
+      binding: ScannerBinding(),
       page: () => const ScannerScreen(),
     ),
     GetPage(
       name: AppRoutes.codeCreateStandard,
+      binding: CodeCreateStandardBinding(),
       page: () {
         final arguments = Get.arguments;
         if (arguments is! BarcodeType) return const HomeScreen();
@@ -76,6 +83,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.codeCreateSocial,
+      binding: CodeCreateSocialBinding(),
       page: () {
         final arguments = Get.arguments;
         if (arguments is! CodeSocial) return const HomeScreen();
@@ -84,6 +92,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.codeDetails,
+      binding: CodeDetailsBinding(),
       transition: Transition.fade,
       transitionDuration: const Duration(milliseconds: 250),
       page: () {
@@ -102,10 +111,12 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.settings,
+      binding: SettingsBinding(),
       page: () => const SettingsScreen(),
     ),
     GetPage(
       name: AppRoutes.settingsDatabase,
+      binding: DatabaseBinding(),
       page: () => const DatabaseScreen(),
     ),
     GetPage(

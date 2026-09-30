@@ -51,13 +51,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = Get.put(CodeCreateStandardController(type: widget.type));
-  }
-
-  @override
-  void dispose() {
-    Get.delete<CodeCreateStandardController>();
-    super.dispose();
+    _controller = Get.find<CodeCreateStandardController>();
   }
 
   @override

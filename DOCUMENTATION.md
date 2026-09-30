@@ -586,7 +586,17 @@ Tutte le operazioni mostrano una barra di avanzamento animata.
 
 ## 6. Controllers (State Management)
 
-L'app usa **GetX** come sistema di state management. I controller sono registrati con `Get.put` / `Get.find`.
+L'app usa **GetX** come sistema di state management. Le screen ottengono i controller solo con `Get.find`; la registrazione è centralizzata nei **binding**:
+
+| Binding | Dove | Registra |
+|---|---|---|
+| `AppBinding` (`lib/core/bindings/app_binding.dart`) | chiamato in `main()` prima di `runApp` (`QrationApp` legge `ThemeController` già al primo frame) | permanenti: `ThemeController`, `ScannerPreferencesController`, `CodesRepository` (`CodesService`), `AuthController` |
+| `HomeBinding` (`features/home/bindings/`) | `GetPage` di `home` | `ScannerController`, `FavoritesController`, `HistoryController`, `SettingsController` (i tab vivono nell'`IndexedStack` di Home, quindi seguono la rotta Home: vengono rimossi al logout con `offAllNamed` e ricreati per l'utente successivo) |
+| `ScannerBinding` | `scanner` | `ScannerController` |
+| `SettingsBinding` / `DatabaseBinding` (`features/settings/bindings/`) | `settings` / `settingsDatabase` | `SettingsController` / `DatabaseController` (con l'uid dell'utente corrente) |
+| `CodeCreateStandardBinding`, `CodeCreateSocialBinding`, `CodeDetailsBinding` (`features/codes/bindings/code_bindings.dart`) | `codeCreateStandard`, `codeCreateSocial`, `codeDetails` | il controller della schermata, costruito con l'argomento della rotta (`Get.arguments`: `BarcodeType`, `CodeSocial`, `CodeModel`). Se l'argomento manca o è del tipo sbagliato non registrano nulla, e la `GetPage` ripiega su `HomeScreen` |
+
+I binding di rotta usano `Get.lazyPut`: grazie alla smart management di GetX il controller viene creato alla prima `Get.find` e rimosso quando la rotta viene chiusa, sostituendo i `Get.put`/`Get.delete` che prima erano sparsi in `initState`/`dispose` delle screen (e, per `AuthController`, perfino dentro `build()` di Login, Registrazione, Reset password e Home). Poiché `AuthController` è ora permanente, `clearForm()` svuota i campi del form (email, password, nome, conferma) e resetta "Ricordami" dopo login, registrazione, reset password e logout, così i dati digitati non restano in memoria né ricompaiono alla visita successiva.
 
 | Controller | Responsabilità |
 |---|---|

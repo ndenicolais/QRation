@@ -96,15 +96,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = Get.put(
-      CodeCreateSocialController(socialMedia: widget.socialMedia),
-    );
-  }
-
-  @override
-  void dispose() {
-    Get.delete<CodeCreateSocialController>();
-    super.dispose();
+    _controller = Get.find<CodeCreateSocialController>();
   }
 
   Future<void> _confirmBack(BuildContext context) async {

@@ -41,21 +41,11 @@ class CodeDetailsScreen extends StatefulWidget {
 class CodeDetailsScreenState extends State<CodeDetailsScreen> {
   late final CodeDetailsController _controller;
   late CodeTypeText _contentType;
-  String get _tag => widget.code.id;
 
   @override
   void initState() {
     super.initState();
-    _controller = Get.put(
-      CodeDetailsController(widget.code),
-      tag: _tag,
-    );
-  }
-
-  @override
-  void dispose() {
-    Get.delete<CodeDetailsController>(tag: _tag);
-    super.dispose();
+    _controller = Get.find<CodeDetailsController>();
   }
 
   @override

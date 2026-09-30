@@ -47,7 +47,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   void initState() {
     super.initState();
-    _scanController = Get.put(ScannerController());
+    _scanController = Get.find<ScannerController>();
     _init();
   }
 
@@ -74,7 +74,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    Get.delete<ScannerController>();
     super.dispose();
   }
 

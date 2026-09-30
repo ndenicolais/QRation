@@ -51,6 +51,19 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
+  /// Clears the shared login/signup form. The controller is app-wide
+  /// (AppBinding), so without this the typed email and password would stay
+  /// in memory and reappear on the next visit to the auth screens.
+  void clearForm() {
+    emailController.clear();
+    passwordController.clear();
+    nameController.clear();
+    confirmPasswordController.clear();
+    passwordVisible.value = false;
+    confirmPasswordVisible.value = false;
+    rememberMe.value = false;
+  }
+
   void togglePassword() => passwordVisible.value = !passwordVisible.value;
   void toggleConfirmPassword() =>
       confirmPasswordVisible.value = !confirmPasswordVisible.value;
@@ -74,6 +87,7 @@ class AuthController extends GetxController {
       );
 
       if (rememberMe.value) await _saveSession();
+      clearForm();
       Get.offAllNamed(AppRoutes.home);
     } catch (e) {
       _handleAuthError(e);
@@ -114,6 +128,7 @@ class AuthController extends GetxController {
       // by the device, so asking again at every launch adds no security.
       rememberMe.value = true;
       await _saveSession(uid: user?.uid);
+      clearForm();
       Get.offAllNamed(AppRoutes.home);
     } catch (e) {
       _handleAuthError(e);
@@ -148,7 +163,8 @@ class AuthController extends GetxController {
               ).toFirestore(),
             );
         await _saveSession(uid: result.user!.uid);
-        _logger.i('User registered: ${emailController.text}');
+        _logger.i('User registered');
+        clearForm();
         Get.offAllNamed(AppRoutes.home);
       }
     } catch (e) {
@@ -172,6 +188,7 @@ class AuthController extends GetxController {
       if (snapshot.docs.isEmpty) throw Exception('email_not_found');
 
       await _auth.sendPasswordResetEmail(email: emailController.text.trim());
+      clearForm();
       Get.back();
     } catch (e) {
       _handleAuthError(e);
@@ -187,6 +204,7 @@ class AuthController extends GetxController {
       await _auth.signOut();
       await _googleSignIn.signOut();
       await _session.clear();
+      clearForm();
       Get.offAllNamed(AppRoutes.welcome);
     } catch (e) {
       _logger.e('Logout error: $e');

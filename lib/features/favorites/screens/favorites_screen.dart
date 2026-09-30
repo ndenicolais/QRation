@@ -58,12 +58,11 @@ class FavoritesScreenState extends State<FavoritesScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _controller = Get.put(FavoritesController());
+    _controller = Get.find<FavoritesController>();
   }
 
   @override
   void dispose() {
-    Get.delete<FavoritesController>();
     _tabController.dispose();
     super.dispose();
   }

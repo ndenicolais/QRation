@@ -43,12 +43,11 @@ class HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = Get.put(HistoryController());
+    _controller = Get.find<HistoryController>();
   }
 
   @override
   void dispose() {
-    Get.delete<HistoryController>();
     _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();

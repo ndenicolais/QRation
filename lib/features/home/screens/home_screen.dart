@@ -10,14 +10,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/widgets/app_changelog_dialog.dart';
 import 'package:qration/features/codes/screens/code_create_types_screen.dart';
 import 'package:qration/features/codes/screens/code_scanner_screen.dart';
 import 'package:qration/features/favorites/screens/favorites_screen.dart';
 import 'package:qration/features/history/screens/history_screen.dart';
-import 'package:qration/features/auth/controllers/auth_controller.dart';
 import 'package:qration/features/settings/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Get.put(AuthController());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) AppChangelogDialog.maybeShow(context);
     });

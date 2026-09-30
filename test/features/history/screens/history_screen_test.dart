@@ -18,6 +18,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
+import 'package:qration/features/history/controllers/history_controller.dart';
 import 'package:qration/features/history/screens/history_screen.dart';
 import 'package:qration/features/history/widgets/history_filter_sheet.dart';
 import 'package:qration/l10n/app_localizations.dart';
@@ -33,6 +34,8 @@ void main() {
     final repository = MockCodesRepository();
     when(() => repository.getCodesStream()).thenAnswer((_) => stream.stream);
     Get.put<CodesRepository>(repository);
+    // In the app HomeBinding registers it for the Home route.
+    Get.put(HistoryController());
   });
 
   tearDown(() async {

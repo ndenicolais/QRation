@@ -23,7 +23,7 @@ class ResetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AuthController());
+    final controller = Get.find<AuthController>();
     final formKey = GlobalKey<FormState>();
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
