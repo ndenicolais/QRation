@@ -423,6 +423,8 @@ Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in b
 
 Schermata di visualizzazione e gestione di un singolo codice.
 
+**Navigazione e transizione:** tutti i punti di ingresso (Scanner, Cronologia, Preferiti, creazione standard e social) aprono il dettaglio tramite la route `AppRoutes.codeDetails` con il `CodeModel` come argomento (`Get.toNamed`, oppure `Get.offNamed` dopo la creazione). La transizione è definita una sola volta nella `GetPage` in `app_pages.dart` (`Transition.fade`, 250 ms), invece di essere ripetuta in ogni `Get.to(...)` con 500 ms. L'icona del tipo nella card di lista (`CodeListTile`) e quella nel chip "Tipo" del dettaglio (`CodeInfoRow`, parametro `typeIconHeroTag`) condividono il tag `codeIconHeroTag(code.id)`, così l'icona "vola" dalla lista al dettaglio e ritorno. Poiché Cronologia e Preferiti restano costruiti nell'`IndexedStack` di `HomeScreen` anche quando non visibili, ogni tab è avvolto in `HeroMode(enabled: i == _selectedIndex)`: solo il tab attivo partecipa alle animazioni `Hero`, evitando tag duplicati quando lo stesso codice compare in entrambe le liste.
+
 **Informazioni mostrate:**
 - Data di creazione/scansione
 - Tipo del codice (con icona)

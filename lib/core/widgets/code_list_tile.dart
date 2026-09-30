@@ -20,6 +20,9 @@ import 'package:qration/core/utils/code_type_icon.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/l10n/app_localizations.dart';
 
+/// Hero tag linking a code's type icon in a list to the details screen.
+String codeIconHeroTag(String codeId) => 'code-type-icon-$codeId';
+
 /// Card used by every code list (History, Favorites).
 ///
 /// In normal mode tapping the card or the trailing arrow calls [onTap]; with
@@ -85,7 +88,10 @@ class CodeListTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
               )
-            : Icon(icon.icon, color: colorScheme.primary),
+            : Hero(
+                tag: codeIconHeroTag(code.id),
+                child: Icon(icon.icon, color: colorScheme.primary),
+              ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

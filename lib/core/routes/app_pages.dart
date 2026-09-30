@@ -84,6 +84,8 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.codeDetails,
+      transition: Transition.fade,
+      transitionDuration: const Duration(milliseconds: 250),
       page: () {
         final arguments = Get.arguments;
         if (arguments is! CodeModel) return const HomeScreen();

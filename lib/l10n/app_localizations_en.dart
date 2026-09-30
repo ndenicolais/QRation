@@ -1482,4 +1482,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_30 =>
       'History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.';
+
+  @override
+  String get changelog_v2_0_0_bullet_31 =>
+      'Faster, smoother opening of code details, with the type icon animating from the list into the details screen.';
 }

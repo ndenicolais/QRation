@@ -1508,4 +1508,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_30 =>
       'Cronologia e Preferiti ora condividono lo stesso stile delle card e, nella Cronologia, un tocco in qualsiasi punto della card apre il dettaglio del codice.';
+
+  @override
+  String get changelog_v2_0_0_bullet_31 =>
+      'Apertura del dettaglio di un codice più rapida e fluida, con l\'icona del tipo che si anima dalla lista alla schermata di dettaglio.';
 }

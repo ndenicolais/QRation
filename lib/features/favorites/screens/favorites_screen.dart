@@ -16,7 +16,7 @@ import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/widgets/code_list_tile.dart';
 import 'package:qration/features/codes/models/code_model.dart';
-import 'package:qration/features/codes/screens/code_details_screen.dart';
+import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/favorites/controllers/favorites_controller.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
 import 'package:qration/core/widgets/app_empty_state.dart';
@@ -177,13 +177,7 @@ class FavoritesScreenState extends State<FavoritesScreen>
         final code = filteredCodes[index];
         return CodeListTile(
           code: code,
-          onTap: () async {
-            await Get.to(
-              () => CodeDetailsScreen(code: code),
-              transition: Transition.fade,
-              duration: const Duration(milliseconds: 500),
-            );
-          },
+          onTap: () => Get.toNamed(AppRoutes.codeDetails, arguments: code),
         );
       },
     );

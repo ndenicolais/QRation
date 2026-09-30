@@ -56,7 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: IndexedStack(index: _selectedIndex, children: pages),
+        body: IndexedStack(
+          index: _selectedIndex,
+          // Offstage tabs keep their widgets alive: disable their heroes so
+          // the same code shown in two tabs never duplicates a Hero tag.
+          children: [
+            for (var i = 0; i < pages.length; i++)
+              HeroMode(enabled: i == _selectedIndex, child: pages[i]),
+          ],
+        ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,

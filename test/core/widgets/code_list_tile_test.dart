@@ -42,6 +42,22 @@ void main() {
     expect(taps, 2);
   });
 
+  testWidgets('type icon is a Hero only outside selection mode',
+      (tester) async {
+    await pumpLocalizedWidget(
+      tester,
+      CodeListTile(code: code, onTap: () {}),
+    );
+    final hero = tester.widget<Hero>(find.byType(Hero));
+    expect(hero.tag, codeIconHeroTag('1'));
+
+    await pumpLocalizedWidget(
+      tester,
+      CodeListTile(code: code, onTap: () {}, selectable: true),
+    );
+    expect(find.byType(Hero), findsNothing);
+  });
+
   testWidgets('showSource adds the source label', (tester) async {
     await pumpLocalizedWidget(
       tester,

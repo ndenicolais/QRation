@@ -28,6 +28,7 @@ class CodeInfoRow extends StatelessWidget {
     required this.typeLabel,
     required this.typeIcon,
     required this.typeContent,
+    this.typeIconHeroTag,
   });
 
   final String dateLabel;
@@ -35,6 +36,9 @@ class CodeInfoRow extends StatelessWidget {
   final String typeLabel;
   final IconData? typeIcon;
   final String typeContent;
+
+  /// When set, the type icon flies in from the list card it was opened from.
+  final String? typeIconHeroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +64,7 @@ class CodeInfoRow extends StatelessWidget {
             label: typeLabel,
             value: typeContent,
             icon: typeIcon,
+            iconHeroTag: typeIconHeroTag,
           ),
         ),
       ],
@@ -68,11 +73,17 @@ class CodeInfoRow extends StatelessWidget {
 }
 
 class _InfoChip extends StatelessWidget {
-  const _InfoChip({required this.label, required this.value, this.icon});
+  const _InfoChip({
+    required this.label,
+    required this.value,
+    this.icon,
+    this.iconHeroTag,
+  });
 
   final String label;
   final String value;
   final IconData? icon;
+  final String? iconHeroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +109,13 @@ class _InfoChip extends StatelessWidget {
           Row(
             children: [
               if (icon != null) ...[
-                Icon(icon, size: 16.sp, color: secondary),
+                if (iconHeroTag != null)
+                  Hero(
+                    tag: iconHeroTag!,
+                    child: Icon(icon, size: 16.sp, color: secondary),
+                  )
+                else
+                  Icon(icon, size: 16.sp, color: secondary),
                 SizedBox(width: 6.w),
               ],
               Expanded(

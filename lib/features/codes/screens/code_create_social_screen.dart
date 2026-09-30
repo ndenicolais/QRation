@@ -21,7 +21,7 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:qration/core/utils/qr_decoration.dart';
 import 'package:qration/features/codes/controllers/code_create_social_controller.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
-import 'package:qration/features/codes/screens/code_details_screen.dart';
+import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/codes/widgets/code_create/discard_dialog.dart';
 import 'package:qration/core/widgets/app_button.dart';
 import 'package:qration/core/widgets/app_toast.dart';
@@ -123,7 +123,8 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
         context,
         AppLocalizations.of(context)!.code_create_social_screen_toast_success,
       );
-      Get.off(() => CodeDetailsScreen(code: _controller.lastCreatedCode!));
+      Get.offNamed(AppRoutes.codeDetails,
+          arguments: _controller.lastCreatedCode);
     } else {
       showErrorToast(context,
           '${AppLocalizations.of(context)!.code_create_social_screen_toast_error} ${_controller.lastError}');

@@ -2857,6 +2857,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.'**
   String get changelog_v2_0_0_bullet_30;
+
+  /// No description provided for @changelog_v2_0_0_bullet_31.
+  ///
+  /// In en, this message translates to:
+  /// **'Faster, smoother opening of code details, with the type icon animating from the list into the details screen.'**
+  String get changelog_v2_0_0_bullet_31;
 }
 
 class _AppLocalizationsDelegate

@@ -22,7 +22,7 @@ import 'package:qration/core/utils/code_type_text.dart';
 import 'package:qration/core/utils/isbn_formatter.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 import 'package:qration/features/codes/controllers/code_create_standard_controller.dart';
-import 'package:qration/features/codes/screens/code_details_screen.dart';
+import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/codes/widgets/code_create/code_create_app_bar.dart';
 import 'package:qration/features/codes/widgets/code_create/discard_dialog.dart';
 import 'package:qration/features/codes/widgets/code_create/generate_button.dart';
@@ -158,7 +158,8 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         context,
         AppLocalizations.of(context)!.code_create_standard_screen_toast_success,
       );
-      Get.off(() => CodeDetailsScreen(code: _controller.lastCreatedCode!));
+      Get.offNamed(AppRoutes.codeDetails,
+          arguments: _controller.lastCreatedCode);
     } else {
       showErrorToast(
         context,

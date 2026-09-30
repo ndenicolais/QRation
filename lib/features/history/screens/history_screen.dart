@@ -17,7 +17,7 @@ import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
-import 'package:qration/features/codes/screens/code_details_screen.dart';
+import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/history/controllers/history_controller.dart';
 import 'package:qration/core/utils/code_type_icon.dart';
 import 'package:qration/core/widgets/code_list_tile.dart';
@@ -396,11 +396,7 @@ class HistoryScreenState extends State<HistoryScreen> {
               selectable: isSelecting,
               selected: _controller.selectedIds.contains(code.id),
               onSelectedChanged: (_) => _controller.toggleSelected(code.id),
-              onTap: () => Get.to(
-                () => CodeDetailsScreen(code: code),
-                transition: Transition.fade,
-                duration: const Duration(milliseconds: 500),
-              ),
+              onTap: () => Get.toNamed(AppRoutes.codeDetails, arguments: code),
             ));
       },
     );

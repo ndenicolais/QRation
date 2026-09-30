@@ -18,6 +18,7 @@ import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/utils/code_type_text.dart';
 import 'package:qration/core/widgets/app_delete_dialog.dart';
 import 'package:qration/core/widgets/app_toast.dart';
+import 'package:qration/core/widgets/code_list_tile.dart';
 import 'package:qration/features/codes/controllers/code_details_controller.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/widgets/code_details/code_action_buttons.dart';
@@ -94,6 +95,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                       typeLabel: l10n.code_details_screen_type_title,
                       typeIcon: _controller.contentIcon.icon,
                       typeContent: _contentType.type,
+                      typeIconHeroTag: codeIconHeroTag(widget.code.id),
                     ),
                     CodeQrSection(
                       title: l10n.code_details_screen_title_title,
