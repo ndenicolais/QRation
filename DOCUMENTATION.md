@@ -460,6 +460,8 @@ Schermata di visualizzazione e gestione di un singolo codice.
 | **Apri** | Apre URL nel browser / compone email / chiama numero / connette Wi-Fi / aggiunge contatto / aggiunge evento calendario |
 | **Elimina** | Elimina il codice da Firestore |
 
+**Sincronizzazione e pull-to-refresh (Cronologia e Preferiti):** `CodesRepository.getSyncStatusStream()` ascolta la collection dei codici con `snapshots(includeMetadataChanges: true)` e traduce i metadata Firestore in `SyncStatus` (`CodesService.syncStatusFrom`: `hasPendingWrites` → `pending`, altrimenti `isFromCache` → `offline`, altrimenti `synced`). `HistoryController` e `FavoritesController` usano il mixin `SyncStatusMixin` (`features/codes/controllers/sync_status_mixin.dart`), che espone `syncStatus` e `refreshCodes()`. Lo stato `offline` viene mostrato solo dopo 2 s (`offlineGracePeriod`), perché all'avvio Firestore risponde prima dalla cache anche con la rete attiva e il banner altrimenti lampeggerebbe a ogni apertura; `pending` è immediato. `SyncStatusBanner` (`core/widgets/sync_status_banner.dart`) mostra un avviso sopra la lista solo in quei due stati. Il pull-to-refresh (`RefreshIndicator`) chiama `CodesRepository.refreshCodes()`, cioè una lettura `GetOptions(source: Source.server)` che aggiorna cache e stream; se il server non è raggiungibile compare un toast. Le liste usano `AlwaysScrollableScrollPhysics` e gli stati vuoti sono avvolti in `PullToRefreshFill`, così il gesto funziona anche con pochi elementi o nessuno. Nei Preferiti c'è un `RefreshIndicator` per ogni tab, perché uno esterno non riceverebbe lo scroll verticale delle liste annidate nel `TabBarView` orizzontale.
+
 ---
 
 ### 5.9 Preferiti

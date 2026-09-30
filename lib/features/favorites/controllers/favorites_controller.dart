@@ -12,10 +12,11 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:qration/features/codes/models/code_model.dart';
+import 'package:qration/features/codes/controllers/sync_status_mixin.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 
 /// State of the Favorites tab: favorite codes split by source.
-class FavoritesController extends GetxController {
+class FavoritesController extends GetxController with SyncStatusMixin {
   final CodesRepository _repository = Get.find<CodesRepository>();
   StreamSubscription<List<CodeModel>>? _subscription;
 
@@ -30,6 +31,7 @@ class FavoritesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    startSyncStatus(_repository);
     _subscription = _repository.getFavoriteCodesStream().listen(
       (codes) {
         error.value = null;
@@ -44,6 +46,8 @@ class FavoritesController extends GetxController {
       },
     );
   }
+
+  Future<bool> refreshCodes() => refreshFromServer(_repository);
 
   @override
   void onClose() {

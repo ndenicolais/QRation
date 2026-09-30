@@ -31,12 +31,16 @@ CodeModel _code(String id, CodeSource source, int day) => CodeModel(
 void main() {
   late MockCodesRepository repository;
   late StreamController<List<CodeModel>> stream;
+  late StreamController<SyncStatus> syncStream;
   late FavoritesController controller;
 
   setUp(() {
     Get.testMode = true;
     repository = MockCodesRepository();
     stream = StreamController<List<CodeModel>>();
+    syncStream = StreamController<SyncStatus>();
+    when(() => repository.getSyncStatusStream())
+        .thenAnswer((_) => syncStream.stream);
     when(() => repository.getFavoriteCodesStream())
         .thenAnswer((_) => stream.stream);
     Get.put<CodesRepository>(repository);
@@ -46,6 +50,7 @@ void main() {
   tearDown(() async {
     Get.reset();
     await stream.close();
+    await syncStream.close();
   });
 
   test('is loading until the first stream event', () async {

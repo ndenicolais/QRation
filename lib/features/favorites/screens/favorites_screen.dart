@@ -20,6 +20,8 @@ import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/favorites/controllers/favorites_controller.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
 import 'package:qration/core/widgets/app_empty_state.dart';
+import 'package:qration/core/widgets/app_toast.dart';
+import 'package:qration/core/widgets/sync_status_banner.dart';
 import 'package:qration/core/widgets/app_loader.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -123,7 +125,26 @@ class FavoritesScreenState extends State<FavoritesScreen>
     );
   }
 
+  Future<void> _refresh() async {
+    final ok = await _controller.refreshCodes();
+    if (!ok && mounted) {
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.sync_refresh_offline,
+      );
+    }
+  }
+
   Widget _buildTabBarView(BuildContext context) {
+    return Column(
+      children: [
+        Obx(() => SyncStatusBanner(status: _controller.syncStatus.value)),
+        Expanded(child: _buildTabContent(context)),
+      ],
+    );
+  }
+
+  Widget _buildTabContent(BuildContext context) {
     return Obx(() {
       if (_controller.isLoading.value) {
         return const Center(child: AppLoader());
@@ -138,12 +159,18 @@ class FavoritesScreenState extends State<FavoritesScreen>
       }
 
       if (!_controller.hasFavorites.value) {
-        return AppEmptyState(
-          icon: MingCuteIcons.mgc_inbox_2_fill,
-          message: AppLocalizations.of(context)!.favorites_screen_empty_state,
-          actionLabel:
-              AppLocalizations.of(context)!.favorites_screen_empty_action,
-          onAction: widget.onCreateCode,
+        return RefreshIndicator(
+          onRefresh: _refresh,
+          child: PullToRefreshFill(
+            child: AppEmptyState(
+              icon: MingCuteIcons.mgc_inbox_2_fill,
+              message:
+                  AppLocalizations.of(context)!.favorites_screen_empty_state,
+              actionLabel:
+                  AppLocalizations.of(context)!.favorites_screen_empty_action,
+              onAction: widget.onCreateCode,
+            ),
+          ),
         );
       }
 
@@ -167,25 +194,33 @@ class FavoritesScreenState extends State<FavoritesScreen>
 
   Widget _buildCodesList(
       BuildContext context, List<CodeModel> filteredCodes, CodeSource source) {
-    if (filteredCodes.isEmpty) {
-      return AppEmptyState(
-        icon: source == CodeSource.created
-            ? MingCuteIcons.mgc_qrcode_fill
-            : MingCuteIcons.mgc_scan_fill,
-        message: AppLocalizations.of(context)!.favorites_screen_empty_state,
-      );
-    }
-
-    return ListView.builder(
-      itemCount: filteredCodes.length,
-      padding: CodeListTile.listPadding,
-      itemBuilder: (context, index) {
-        final code = filteredCodes[index];
-        return CodeListTile(
-          code: code,
-          onTap: () => Get.toNamed(AppRoutes.codeDetails, arguments: code),
-        );
-      },
+    // One RefreshIndicator per tab: an outer one would not see the
+    // vertical scroll of lists nested in the horizontal TabBarView.
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: filteredCodes.isEmpty
+          ? PullToRefreshFill(
+              child: AppEmptyState(
+                icon: source == CodeSource.created
+                    ? MingCuteIcons.mgc_qrcode_fill
+                    : MingCuteIcons.mgc_scan_fill,
+                message:
+                    AppLocalizations.of(context)!.favorites_screen_empty_state,
+              ),
+            )
+          : ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: filteredCodes.length,
+              padding: CodeListTile.listPadding,
+              itemBuilder: (context, index) {
+                final code = filteredCodes[index];
+                return CodeListTile(
+                  code: code,
+                  onTap: () =>
+                      Get.toNamed(AppRoutes.codeDetails, arguments: code),
+                );
+              },
+            ),
     );
   }
 }

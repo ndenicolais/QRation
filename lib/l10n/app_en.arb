@@ -294,6 +294,9 @@
   "history_filter_sheet_show_results": "Show results",
   "history_screen_error_state": "Error:",
   "history_screen_delete_title": "Delete",
+  "sync_status_offline": "You are offline: showing codes saved on this device",
+  "sync_status_pending": "Changes waiting to be synced",
+  "sync_refresh_offline": "Can't refresh: no connection",
   "history_screen_empty_state": "No saved codes",
   "history_screen_empty_action": "Scan now",
   "history_screen_empty_filtered": "No results for the active filters",
@@ -533,5 +536,6 @@
   "changelog_v2_0_0_bullet_38": "The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.",
   "changelog_v2_0_0_bullet_39": "Refreshed look for Code details, Create code, Info and Profile, consistent with the rest of the app: more readable text, labeled quick actions in code details and a clearer layout.",
   "changelog_v2_0_0_bullet_40": "The QR preview while creating a code now updates live for every code type, including social codes.",
-  "changelog_v2_0_0_bullet_41": "Settings now show the language actually in use, and switches that are off no longer look switched on."
+  "changelog_v2_0_0_bullet_41": "Settings now show the language actually in use, and switches that are off no longer look switched on.",
+  "changelog_v2_0_0_bullet_42": "Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced."
 }

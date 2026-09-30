@@ -866,6 +866,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get history_screen_delete_title => 'Elimina';
 
   @override
+  String get sync_status_offline =>
+      'Sei offline: vedi i codici salvati sul dispositivo';
+
+  @override
+  String get sync_status_pending => 'Modifiche in attesa di sincronizzazione';
+
+  @override
+  String get sync_refresh_offline =>
+      'Impossibile aggiornare: nessuna connessione';
+
+  @override
   String get history_screen_empty_state => 'Nessun codice salvato';
 
   @override
@@ -1610,4 +1621,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_41 =>
       'Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi.';
+
+  @override
+  String get changelog_v2_0_0_bullet_42 =>
+      'Trascina verso il basso Cronologia e Preferiti per aggiornarli; un piccolo avviso indica quando sei offline o quando ci sono modifiche ancora da sincronizzare.';
 }

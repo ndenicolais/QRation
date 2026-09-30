@@ -83,12 +83,16 @@ void main() {
   group('HistoryController', () {
     late MockCodesRepository repository;
     late StreamController<List<CodeModel>> stream;
+    late StreamController<SyncStatus> syncStream;
     late HistoryController controller;
 
     setUp(() async {
       Get.testMode = true;
       repository = MockCodesRepository();
       stream = StreamController<List<CodeModel>>();
+      syncStream = StreamController<SyncStatus>();
+      when(() => repository.getSyncStatusStream())
+          .thenAnswer((_) => syncStream.stream);
       when(() => repository.getCodesStream()).thenAnswer((_) => stream.stream);
       Get.put<CodesRepository>(repository);
       controller = Get.put(
@@ -99,6 +103,7 @@ void main() {
     tearDown(() async {
       Get.reset();
       await stream.close();
+      await syncStream.close();
     });
 
     test('is loading until the first stream event', () async {

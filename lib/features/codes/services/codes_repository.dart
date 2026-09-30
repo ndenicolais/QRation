@@ -15,12 +15,29 @@ import 'package:qration/features/codes/models/code_model.dart';
 /// via `Get.find<CodesRepository>()` instead of instantiating a concrete
 /// Firestore-backed service directly, so the implementation can be swapped
 /// or mocked (e.g. in tests) without touching UI code.
+/// Sync state of the local code cache with the server.
+enum SyncStatus {
+  /// Data comes from the server and every local change was sent.
+  synced,
+
+  /// Data comes from the local cache only (no connection).
+  offline,
+
+  /// Local changes are waiting to be sent to the server.
+  pending,
+}
+
 abstract class CodesRepository {
   Future<void> addCode(CodeModel code);
   Future<void> deleteCode(String id);
   Future<void> updateCodeNotes(String id, String notes);
   Future<void> deleteAllCodes();
   Stream<List<CodeModel>> getCodesStream();
+  Stream<SyncStatus> getSyncStatusStream();
+
+  /// Forces a read from the server, refreshing the local cache and the
+  /// streams above. Throws when the server can't be reached.
+  Future<void> refreshCodes();
   Stream<List<CodeModel>> getFavoriteCodesStream();
   Future<void> toggleFavoriteStatus(String codeId, bool isFavorite);
   Stream<List<CodeModel>> getSocialCodesStream();

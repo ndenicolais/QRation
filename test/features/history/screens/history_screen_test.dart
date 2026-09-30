@@ -33,6 +33,8 @@ void main() {
     stream = StreamController<List<CodeModel>>();
     final repository = MockCodesRepository();
     when(() => repository.getCodesStream()).thenAnswer((_) => stream.stream);
+    when(() => repository.getSyncStatusStream())
+        .thenAnswer((_) => const Stream.empty());
     Get.put<CodesRepository>(repository);
     // In the app HomeBinding registers it for the Home route.
     Get.put(HistoryController());

@@ -294,6 +294,9 @@
   "history_filter_sheet_show_results": "Mostra risultati",
   "history_screen_delete_title": "Elimina",
   "history_screen_error_state": "Errore:",
+  "sync_status_offline": "Sei offline: vedi i codici salvati sul dispositivo",
+  "sync_status_pending": "Modifiche in attesa di sincronizzazione",
+  "sync_refresh_offline": "Impossibile aggiornare: nessuna connessione",
   "history_screen_empty_state": "Nessun codice salvato",
   "history_screen_empty_action": "Scansiona ora",
   "history_screen_empty_filtered": "Nessun risultato per i filtri attivi",
@@ -533,5 +536,6 @@
   "changelog_v2_0_0_bullet_38": "La pagina Database mostra quando è stato esportato e importato l'ultimo backup JSON, e i backup esportati vengono ora salvati anche nella cartella Download pubblica, così non vanno persi disinstallando l'app.",
   "changelog_v2_0_0_bullet_39": "Nuova veste grafica per Dettaglio codice, Crea codice, Info e Profilo, coerente con il resto dell'app: testi più leggibili, azioni rapide con etichetta nel dettaglio e layout più ordinato.",
   "changelog_v2_0_0_bullet_40": "L'anteprima del QR durante la creazione ora si aggiorna in tempo reale per ogni tipo di codice, compresi quelli social.",
-  "changelog_v2_0_0_bullet_41": "Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi."
+  "changelog_v2_0_0_bullet_41": "Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi.",
+  "changelog_v2_0_0_bullet_42": "Trascina verso il basso Cronologia e Preferiti per aggiornarli; un piccolo avviso indica quando sei offline o quando ci sono modifiche ancora da sincronizzare."
 }

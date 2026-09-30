@@ -109,6 +109,33 @@ class CodesService implements CodesRepository {
     }
   }
 
+  @override
+  Stream<SyncStatus> getSyncStatusStream() {
+    return getCodesCollection()
+        .snapshots(includeMetadataChanges: true)
+        .map((snapshot) => syncStatusFrom(
+              isFromCache: snapshot.metadata.isFromCache,
+              hasPendingWrites: snapshot.metadata.hasPendingWrites,
+            ))
+        .distinct();
+  }
+
+  /// Pending writes win over the cache flag: they matter to the user even
+  /// when the data itself is up to date.
+  static SyncStatus syncStatusFrom({
+    required bool isFromCache,
+    required bool hasPendingWrites,
+  }) {
+    if (hasPendingWrites) return SyncStatus.pending;
+    if (isFromCache) return SyncStatus.offline;
+    return SyncStatus.synced;
+  }
+
+  @override
+  Future<void> refreshCodes() async {
+    await getCodesCollection().get(const GetOptions(source: Source.server));
+  }
+
   // Function that gets codes favorites list
   @override
   Stream<List<CodeModel>> getFavoriteCodesStream() {

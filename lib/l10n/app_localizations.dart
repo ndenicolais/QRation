@@ -1688,6 +1688,24 @@ abstract class AppLocalizations {
   /// **'Delete'**
   String get history_screen_delete_title;
 
+  /// No description provided for @sync_status_offline.
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline: showing codes saved on this device'**
+  String get sync_status_offline;
+
+  /// No description provided for @sync_status_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes waiting to be synced'**
+  String get sync_status_pending;
+
+  /// No description provided for @sync_refresh_offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t refresh: no connection'**
+  String get sync_refresh_offline;
+
   /// No description provided for @history_screen_empty_state.
   ///
   /// In en, this message translates to:
@@ -3037,6 +3055,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings now show the language actually in use, and switches that are off no longer look switched on.'**
   String get changelog_v2_0_0_bullet_41;
+
+  /// No description provided for @changelog_v2_0_0_bullet_42.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced.'**
+  String get changelog_v2_0_0_bullet_42;
 }
 
 class _AppLocalizationsDelegate

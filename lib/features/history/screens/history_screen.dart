@@ -24,6 +24,7 @@ import 'package:qration/core/widgets/app_delete_dialog.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
 import 'package:qration/core/widgets/app_empty_state.dart';
 import 'package:qration/core/widgets/app_toast.dart';
+import 'package:qration/core/widgets/sync_status_banner.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key, this.onScanNow});
@@ -250,6 +251,16 @@ class HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
+  Future<void> _refresh() async {
+    final ok = await _controller.refreshCodes();
+    if (!ok && mounted) {
+      showErrorToast(
+        context,
+        AppLocalizations.of(context)!.sync_refresh_offline,
+      );
+    }
+  }
+
   Widget _buildCodesList(BuildContext context) {
     return Expanded(
       child: Obx(() {
@@ -270,10 +281,14 @@ class HistoryScreenState extends State<HistoryScreen> {
 
         return Column(
           children: [
+            Obx(() => SyncStatusBanner(status: _controller.syncStatus.value)),
             Expanded(
-              child: filteredCodes.isEmpty && !isSelecting
-                  ? _buildEmptyState(context)
-                  : _buildCodesListView(filteredCodes, isSelecting),
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: filteredCodes.isEmpty && !isSelecting
+                    ? PullToRefreshFill(child: _buildEmptyState(context))
+                    : _buildCodesListView(filteredCodes, isSelecting),
+              ),
             ),
             if (isSelecting)
               Obx(() =>
@@ -286,6 +301,8 @@ class HistoryScreenState extends State<HistoryScreen> {
 
   Widget _buildCodesListView(List<CodeModel> filteredCodes, bool isSelecting) {
     return ListView.builder(
+      // Short lists must still overscroll for pull-to-refresh.
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: filteredCodes.length,
       padding: CodeListTile.listPadding,
       itemBuilder: (context, index) {

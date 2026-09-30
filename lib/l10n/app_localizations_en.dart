@@ -846,6 +846,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get history_screen_delete_title => 'Delete';
 
   @override
+  String get sync_status_offline =>
+      'You are offline: showing codes saved on this device';
+
+  @override
+  String get sync_status_pending => 'Changes waiting to be synced';
+
+  @override
+  String get sync_refresh_offline => 'Can\'t refresh: no connection';
+
+  @override
   String get history_screen_empty_state => 'No saved codes';
 
   @override
@@ -1584,4 +1594,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_41 =>
       'Settings now show the language actually in use, and switches that are off no longer look switched on.';
+
+  @override
+  String get changelog_v2_0_0_bullet_42 =>
+      'Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced.';
 }

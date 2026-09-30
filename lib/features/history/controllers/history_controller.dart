@@ -13,11 +13,12 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/features/codes/models/code_model.dart';
+import 'package:qration/features/codes/controllers/sync_status_mixin.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 
 /// State and actions of the History tab: code stream, search, type/source
 /// filters and multi-selection deletion.
-class HistoryController extends GetxController {
+class HistoryController extends GetxController with SyncStatusMixin {
   HistoryController({this.searchDebounce = const Duration(milliseconds: 300)});
 
   final Duration searchDebounce;
@@ -81,6 +82,7 @@ class HistoryController extends GetxController {
       ],
       (_) => _refreshFiltered(),
     );
+    startSyncStatus(_repository);
     _subscription = _repository.getCodesStream().listen(
       (codes) {
         error.value = null;
@@ -93,6 +95,8 @@ class HistoryController extends GetxController {
       },
     );
   }
+
+  Future<bool> refreshCodes() => refreshFromServer(_repository);
 
   @override
   void onClose() {
