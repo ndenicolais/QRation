@@ -19,6 +19,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 import 'package:qration/features/history/screens/history_screen.dart';
+import 'package:qration/features/history/widgets/history_filter_sheet.dart';
 import 'package:qration/l10n/app_localizations.dart';
 
 class MockCodesRepository extends Mock implements CodesRepository {}
@@ -89,6 +90,50 @@ void main() {
         .tap(find.byTooltip(l10n.history_screen_tooltip_close_selection));
     await tester.pump();
     expect(find.byType(Checkbox), findsNothing);
+  });
+
+  testWidgets('filter sheet filters live and shows the active count',
+      (tester) async {
+    await pumpHistory(tester);
+    stream.add([
+      code('1', 'first code'),
+      CodeModel(
+        id: '2',
+        barcode: const Barcode(rawValue: 'tel:123', type: BarcodeType.phone),
+        date: DateTime(2026, 1, 2),
+        source: CodeSource.created,
+      ),
+    ]);
+    await tester.pump();
+
+    final l10n =
+        AppLocalizations.of(tester.element(find.byType(HistoryScreen)))!;
+    await tester.tap(find.byTooltip(l10n.history_screen_tooltip_filter));
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.history_filter_sheet_title), findsOneWidget);
+
+    await tester.tap(find.descendant(
+      of: find.byType(HistoryFilterSheet),
+      matching: find.text(l10n.history_screen_filter_created),
+    ));
+    await tester.pump();
+    await tester.tap(find.text(l10n.history_filter_sheet_show_results));
+    await tester.pumpAndSettle();
+
+    expect(find.text('first code'), findsNothing);
+    final badge = tester.widget<Badge>(find.byType(Badge));
+    expect(badge.isLabelVisible, isTrue);
+    expect((badge.label! as Text).data, '1');
+
+    await tester.tap(find.byTooltip(l10n.history_screen_tooltip_filter));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.history_screen_clear_filters));
+    await tester.pump();
+    await tester.tap(find.text(l10n.history_filter_sheet_show_results));
+    await tester.pumpAndSettle();
+
+    expect(find.text('first code'), findsOneWidget);
+    expect(tester.widget<Badge>(find.byType(Badge)).isLabelVisible, isFalse);
   });
 
   testWidgets('empty history offers to scan', (tester) async {

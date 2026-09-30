@@ -630,6 +630,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get code_scanner_screen_camera_hint => 'Scan the QR code';
 
   @override
+  String get code_scanner_screen_tooltip_gallery => 'Scan from an image';
+
+  @override
+  String get code_scanner_screen_tooltip_torch_on => 'Turn on the flashlight';
+
+  @override
+  String get code_scanner_screen_tooltip_torch_off => 'Turn off the flashlight';
+
+  @override
+  String get code_scanner_screen_tooltip_switch_camera => 'Switch camera';
+
+  @override
   String get code_scanner_screen_image_scan_toast_error =>
       'Failed to scan QR code:';
 
@@ -805,6 +817,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get history_screen_filter_scanned => 'Scanned';
+
+  @override
+  String get history_filter_sheet_title => 'Filters';
+
+  @override
+  String get history_filter_sheet_source => 'Source';
+
+  @override
+  String get history_filter_sheet_types => 'Code type';
+
+  @override
+  String get history_filter_sheet_social => 'Social';
+
+  @override
+  String get history_filter_sheet_show_results => 'Show results';
 
   @override
   String get history_screen_error_state => 'Error:';
@@ -1507,4 +1534,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_33 =>
       'The chosen app language is applied right from startup, without a brief flash in the device language.';
+
+  @override
+  String get changelog_v2_0_0_bullet_34 =>
+      'Refreshed scanner: the flashlight button shows whether it is on, the scan line is animated, the area outside the frame is dimmed, and the buttons give touch and haptic feedback.';
+
+  @override
+  String get changelog_v2_0_0_bullet_35 =>
+      'History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.';
 }

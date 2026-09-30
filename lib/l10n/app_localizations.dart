@@ -1268,6 +1268,30 @@ abstract class AppLocalizations {
   /// **'Scan the QR code'**
   String get code_scanner_screen_camera_hint;
 
+  /// No description provided for @code_scanner_screen_tooltip_gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan from an image'**
+  String get code_scanner_screen_tooltip_gallery;
+
+  /// No description provided for @code_scanner_screen_tooltip_torch_on.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on the flashlight'**
+  String get code_scanner_screen_tooltip_torch_on;
+
+  /// No description provided for @code_scanner_screen_tooltip_torch_off.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off the flashlight'**
+  String get code_scanner_screen_tooltip_torch_off;
+
+  /// No description provided for @code_scanner_screen_tooltip_switch_camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch camera'**
+  String get code_scanner_screen_tooltip_switch_camera;
+
   /// No description provided for @code_scanner_screen_image_scan_toast_error.
   ///
   /// In en, this message translates to:
@@ -1609,6 +1633,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scanned'**
   String get history_screen_filter_scanned;
+
+  /// No description provided for @history_filter_sheet_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get history_filter_sheet_title;
+
+  /// No description provided for @history_filter_sheet_source.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get history_filter_sheet_source;
+
+  /// No description provided for @history_filter_sheet_types.
+  ///
+  /// In en, this message translates to:
+  /// **'Code type'**
+  String get history_filter_sheet_types;
+
+  /// No description provided for @history_filter_sheet_social.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get history_filter_sheet_social;
+
+  /// No description provided for @history_filter_sheet_show_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Show results'**
+  String get history_filter_sheet_show_results;
 
   /// No description provided for @history_screen_error_state.
   ///
@@ -2899,6 +2953,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The chosen app language is applied right from startup, without a brief flash in the device language.'**
   String get changelog_v2_0_0_bullet_33;
+
+  /// No description provided for @changelog_v2_0_0_bullet_34.
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshed scanner: the flashlight button shows whether it is on, the scan line is animated, the area outside the frame is dimmed, and the buttons give touch and haptic feedback.'**
+  String get changelog_v2_0_0_bullet_34;
+
+  /// No description provided for @changelog_v2_0_0_bullet_35.
+  ///
+  /// In en, this message translates to:
+  /// **'History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.'**
+  String get changelog_v2_0_0_bullet_35;
 }
 
 class _AppLocalizationsDelegate

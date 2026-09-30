@@ -200,6 +200,21 @@ void main() {
       expect(controller.filteredCodes.length, 3);
     });
 
+    test('activeFilterCount counts sheet filters, not the search', () async {
+      controller.onSearchChanged('hello');
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+      expect(controller.activeFilterCount, 0);
+
+      controller.toggleStandardType(BarcodeType.url);
+      controller.toggleSocialType('Instagram');
+      controller.setSource(CodeSource.scanned);
+      expect(controller.activeFilterCount, 3);
+
+      controller.clearSheetFilters();
+      expect(controller.activeFilterCount, 0);
+      expect(controller.searchKeyword.value, 'hello');
+    });
+
     test('select all toggles between all filtered and none', () async {
       stream.add(codes);
       await pumpEventQueue();

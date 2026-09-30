@@ -645,6 +645,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get code_scanner_screen_camera_hint => 'Inquadra il codice QR';
 
   @override
+  String get code_scanner_screen_tooltip_gallery => 'Scansiona da un\'immagine';
+
+  @override
+  String get code_scanner_screen_tooltip_torch_on => 'Accendi la torcia';
+
+  @override
+  String get code_scanner_screen_tooltip_torch_off => 'Spegni la torcia';
+
+  @override
+  String get code_scanner_screen_tooltip_switch_camera => 'Cambia fotocamera';
+
+  @override
   String get code_scanner_screen_image_scan_toast_error =>
       'Scansione del codice QR non riuscita:';
 
@@ -825,6 +837,21 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get history_screen_filter_scanned => 'Scansionati';
+
+  @override
+  String get history_filter_sheet_title => 'Filtri';
+
+  @override
+  String get history_filter_sheet_source => 'Origine';
+
+  @override
+  String get history_filter_sheet_types => 'Tipo di codice';
+
+  @override
+  String get history_filter_sheet_social => 'Social';
+
+  @override
+  String get history_filter_sheet_show_results => 'Mostra risultati';
 
   @override
   String get history_screen_error_state => 'Errore:';
@@ -1533,4 +1560,12 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_33 =>
       'La lingua scelta per l\'app viene applicata fin dall\'avvio, senza un breve passaggio nella lingua del dispositivo.';
+
+  @override
+  String get changelog_v2_0_0_bullet_34 =>
+      'Scanner rinnovato: il pulsante della torcia mostra se è accesa, la linea di scansione è animata, l\'area fuori dal riquadro è oscurata e i pulsanti danno un riscontro al tocco e con vibrazione.';
+
+  @override
+  String get changelog_v2_0_0_bullet_35 =>
+      'I filtri della Cronologia sono ora riuniti in un unico pannello con chip descrittivi, e l\'icona del filtro mostra quanti filtri sono attivi.';
 }

@@ -14,14 +14,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/features/codes/models/code_model.dart';
-import 'package:qration/features/codes/models/code_social_model.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/history/controllers/history_controller.dart';
-import 'package:qration/core/utils/code_type_icon.dart';
+import 'package:qration/features/history/widgets/history_filter_sheet.dart';
 import 'package:qration/core/widgets/code_list_tile.dart';
-import 'package:qration/core/constants/app_constants.dart';
 import 'package:qration/core/widgets/app_loader.dart';
 import 'package:qration/core/widgets/app_delete_dialog.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
@@ -68,8 +65,6 @@ class HistoryScreenState extends State<HistoryScreen> {
               children: [
                 _buildSearchBar(context),
                 SizedBox(height: 10.h),
-                _buildStandardFilterOptions(),
-                _buildSocialFilterOptions(),
                 _buildCodesList(context),
               ],
             ),
@@ -210,13 +205,17 @@ class HistoryScreenState extends State<HistoryScreen> {
               IconButton(
                 tooltip:
                     AppLocalizations.of(context)!.history_screen_tooltip_filter,
-                icon: Icon(
-                  MingCuteIcons.mgc_filter_fill,
-                  color: theme.colorScheme.onSurface,
+                icon: Badge(
+                  isLabelVisible: _controller.activeFilterCount > 0,
+                  label: Text('${_controller.activeFilterCount}'),
+                  child: Icon(
+                    MingCuteIcons.mgc_filter_fill,
+                    color: _controller.activeFilterCount > 0
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurface,
+                  ),
                 ),
-                onPressed: () {
-                  _openFilterDrawer(context);
-                },
+                onPressed: () => showHistoryFilterSheet(context, _controller),
               ),
             if (!isSelecting)
               IconButton(
@@ -231,56 +230,6 @@ class HistoryScreenState extends State<HistoryScreen> {
           ],
         );
       }),
-    );
-  }
-
-  void _openFilterDrawer(BuildContext context) {
-    Widget sourceTile(IconData icon, String label, CodeSource? source) {
-      return ListTile(
-        leading: Icon(
-          icon,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        title: Text(
-          label,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 14.sp,
-          ),
-        ),
-        onTap: () {
-          _controller.setSource(source);
-          Get.back();
-        },
-      );
-    }
-
-    final l10n = AppLocalizations.of(context)!;
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            sourceTile(
-              MingCuteIcons.mgc_rows_4_line,
-              l10n.history_screen_filter_all,
-              null,
-            ),
-            sourceTile(
-              MingCuteIcons.mgc_qrcode_line,
-              l10n.history_screen_filter_created,
-              CodeSource.created,
-            ),
-            sourceTile(
-              MingCuteIcons.mgc_scan_line,
-              l10n.history_screen_filter_scanned,
-              CodeSource.scanned,
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -299,75 +248,6 @@ class HistoryScreenState extends State<HistoryScreen> {
               .history_screen_delete_selected_toast_success,
         );
       },
-    );
-  }
-
-  Widget _buildFilterChip({
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onToggle,
-  }) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.r),
-      child: FilterChip(
-        backgroundColor:
-            theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
-        selectedColor: theme.colorScheme.primary.withValues(alpha: 0.16),
-        label: Icon(
-          icon,
-          size: 18.sp,
-          color: isSelected
-              ? theme.colorScheme.primary
-              : theme.colorScheme.onSurfaceVariant,
-        ),
-        side: BorderSide(
-          color: isSelected
-              ? theme.colorScheme.primary.withValues(alpha: 0.65)
-              : theme.colorScheme.outline,
-        ),
-        elevation: isSelected ? 1.2 : 0,
-        showCheckmark: false,
-        selected: isSelected,
-        onSelected: (_) => onToggle(),
-      ),
-    );
-  }
-
-  Widget _buildStandardFilterOptions() {
-    final List<BarcodeType> barcodeTypes =
-        AppConstants.customOrderedBarcodeTypes;
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Obx(() => Row(
-            children: barcodeTypes
-                .map((type) => _buildFilterChip(
-                      icon: CodeTypeIcon.fromBarcodeType(type, '').icon,
-                      isSelected:
-                          _controller.selectedStandardTypes.contains(type),
-                      onToggle: () => _controller.toggleStandardType(type),
-                    ))
-                .toList(),
-          )),
-    );
-  }
-
-  Widget _buildSocialFilterOptions() {
-    final List<CodeSocial> socialCodes = AppConstants.socialCodesList;
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Obx(() => Row(
-            children: socialCodes
-                .map((social) => _buildFilterChip(
-                      icon: social.icon,
-                      isSelected:
-                          _controller.selectedSocialTypes.contains(social.name),
-                      onToggle: () => _controller.toggleSocialType(social.name),
-                    ))
-                .toList(),
-          )),
     );
   }
 

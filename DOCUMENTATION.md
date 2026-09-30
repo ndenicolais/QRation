@@ -153,7 +153,8 @@ qration/
 │   │   │   └── screens/            # favorites_screen
 │   │   ├── history/
 │   │   │   ├── controllers/        # HistoryController (stream, ricerca con debounce, filtri, selezione)
-│   │   │   └── screens/            # history_screen
+│   │   │   ├── screens/            # history_screen
+│   │   │   └── widgets/            # history_filter_sheet
 │   │   ├── home/
 │   │   │   └── screens/            # home_screen (bottom nav container)
 │   │   ├── onboarding/
@@ -372,6 +373,12 @@ Scansione di QR code e codici a barre tramite fotocamera del dispositivo.
 - **Rilevamento social:** se il contenuto corrisponde a un URL di social network noto, crea automaticamente un `CodeModel` con i metadati social
 - Al completamento della scansione, naviga direttamente al **Dettaglio codice**
 
+**Overlay e controlli:**
+- `_ScanOverlay` oscura l'anteprima fuori dal riquadro di inquadratura (264×264, raggio 24) con `_ScrimPainter`, un `CustomPainter` che riempie l'intera area con un path `PathFillType.evenOdd` (rettangolo pieno + riquadro arrotondato come "foro").
+- La linea laser è animata da un `AnimationController` (1,8 s, avanti/indietro, `Curves.easeInOut`) che scorre dentro il riquadro. L'animazione gira solo quando il tab Scanner è attivo (`animate: widget.isActive`): essendo nell'`IndexedStack` di Home, altrimenti continuerebbe a consumare frame anche in background.
+- Il pulsante torcia è avvolto in un `ValueListenableBuilder<MobileScannerState>` sul `MobileScannerController` (che è un `ValueNotifier`): icona piena ed evidenziata in oro quando `torchState == TorchState.on`, tooltip "Accendi/Spegni la torcia", disabilitato se `TorchState.unavailable` (es. fotocamera frontale).
+- `_ControlButton` usa `Material` + `InkWell` circolari (ripple visibile) con `HapticFeedback.selectionClick()` al tocco e un `Tooltip` obbligatorio; anche il pulsante galleria nell'app bar ha ora il suo tooltip.
+
 **Permessi richiesti:** `CAMERA`
 
 ---
@@ -479,9 +486,12 @@ Le card sono `CodeListTile` (`showSource: true` per mostrare "Created"/"Scanned"
 
 **Funzionalità:**
 - **Ricerca testuale** per contenuto del codice
-- **Filtro per tipo standard:** chip selezionabili per ogni `BarcodeType`
-- **Filtro per tipo social:** chip selezionabili per ogni social network
-- **Filtro per sorgente:** tutti / solo scansionati / solo creati
+- **Pannello filtri unico** (`HistoryFilterSheet` in `lib/features/history/widgets/history_filter_sheet.dart`, aperto con `showHistoryFilterSheet` dall'icona filtro): bottom sheet con i colori standard del tema (non più `colorScheme.primary`) e tre sezioni:
+  - **Origine:** `SegmentedButton` Tutti / Creati / Scansionati
+  - **Tipo di codice:** `FilterChip` con icona **ed etichetta** (`CodeTypeText`) per ogni `BarcodeType`, disposti in un `Wrap`
+  - **Social:** `FilterChip` con icona e nome per ogni social network
+  - I filtri si applicano in tempo reale (il sheet osserva `HistoryController` con `Obx`); in fondo "Azzera i filtri" (`clearSheetFilters()`, lascia intatta la ricerca) e "Mostra risultati" (chiude il sheet)
+- **Indicatore filtri attivi:** l'icona filtro nella barra di ricerca è avvolta in un `Badge` con `HistoryController.activeFilterCount` (tipi + social + origine; la ricerca è esclusa perché già visibile nel campo) e diventa del colore primario quando ci sono filtri attivi. Le due righe di chip sempre visibili sotto la ricerca sono state rimosse, recuperando spazio verticale per la lista
 - **Modalità selezione multipla:** un unico pulsante Cestino nella barra di ricerca avvia la selezione (in precedenza era un'icona checkbox separata da quella di eliminazione, ridondante); una volta selezionati uno o più codici, il pulsante Cestino nella bottom bar di selezione li elimina in blocco
 - **Caricamento** da Firestore con indicatore di progresso animato
 

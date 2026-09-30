@@ -221,6 +221,10 @@
 
   "code_scanner_screen_title": "QR Scanner",
   "code_scanner_screen_camera_hint": "Scan the QR code",
+  "code_scanner_screen_tooltip_gallery": "Scan from an image",
+  "code_scanner_screen_tooltip_torch_on": "Turn on the flashlight",
+  "code_scanner_screen_tooltip_torch_off": "Turn off the flashlight",
+  "code_scanner_screen_tooltip_switch_camera": "Switch camera",
   "code_scanner_screen_image_scan_toast_error": "Failed to scan QR code:",
   "code_scanner_screen_image_empty_toast_error": "No image selected",
   "code_scanner_screen_scan_qr_empty_toast_error": "No QR code found in the image",
@@ -281,6 +285,11 @@
   "history_screen_filter_all": "All",
   "history_screen_filter_created": "Created",
   "history_screen_filter_scanned": "Scanned",
+  "history_filter_sheet_title": "Filters",
+  "history_filter_sheet_source": "Source",
+  "history_filter_sheet_types": "Code type",
+  "history_filter_sheet_social": "Social",
+  "history_filter_sheet_show_results": "Show results",
   "history_screen_error_state": "Error:",
   "history_screen_delete_title": "Delete",
   "history_screen_empty_state": "No saved codes",
@@ -510,5 +519,7 @@
   "changelog_v2_0_0_bullet_30": "History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.",
   "changelog_v2_0_0_bullet_31": "Faster, smoother opening of code details, with the type icon animating from the list into the details screen.",
   "changelog_v2_0_0_bullet_32": "Empty screens now suggest what to do next: create your first code from Favorites, scan from History, or clear the filters when a search finds nothing.",
-  "changelog_v2_0_0_bullet_33": "The chosen app language is applied right from startup, without a brief flash in the device language."
+  "changelog_v2_0_0_bullet_33": "The chosen app language is applied right from startup, without a brief flash in the device language.",
+  "changelog_v2_0_0_bullet_34": "Refreshed scanner: the flashlight button shows whether it is on, the scan line is animated, the area outside the frame is dimmed, and the buttons give touch and haptic feedback.",
+  "changelog_v2_0_0_bullet_35": "History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active."
 }

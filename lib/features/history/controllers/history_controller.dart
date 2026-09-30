@@ -50,6 +50,13 @@ class HistoryController extends GetxController {
   /// False when the user has no codes at all (as opposed to no matches).
   bool get hasCodes => _allCodes.isNotEmpty;
 
+  /// Number of filters set in the filter sheet (search excluded, since the
+  /// search field already shows it).
+  int get activeFilterCount =>
+      selectedStandardTypes.length +
+      selectedSocialTypes.length +
+      (selectedSource.value != null ? 1 : 0);
+
   bool get hasActiveFilters =>
       searchKeyword.value.isNotEmpty ||
       selectedStandardTypes.isNotEmpty ||
@@ -153,6 +160,11 @@ class HistoryController extends GetxController {
   /// Resets search, type and source filters at once.
   void clearFilters() {
     clearSearch();
+    clearSheetFilters();
+  }
+
+  /// Resets the filters of the filter sheet, keeping the search.
+  void clearSheetFilters() {
     selectedStandardTypes.clear();
     selectedSocialTypes.clear();
     selectedSource.value = null;
