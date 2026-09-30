@@ -11,12 +11,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:qration/core/utils/logo_saver.dart';
+import 'package:qration/features/codes/controllers/qr_style_mixin.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 
-class CodeCreateSocialController extends GetxController {
+class CodeCreateSocialController extends GetxController with QrStyleMixin {
   CodeCreateSocialController({required this.socialMedia})
       : urlController = TextEditingController(
           text: initialUrlFor(socialMedia.url),
@@ -30,11 +30,6 @@ class CodeCreateSocialController extends GetxController {
   final spotifySongController = TextEditingController();
   final whatsappController = TextEditingController();
 
-  final eyeColor = Colors.black.obs;
-  final eyeRounded = 0.obs;
-  final moduleColor = Colors.black.obs;
-  final moduleRounded = 0.obs;
-  final Rx<String?> logoPath = Rx<String?>(null);
   final selectedPrefix = '+39'.obs;
   final isLoading = false.obs;
 
@@ -86,13 +81,6 @@ class CodeCreateSocialController extends GetxController {
     }
     return urlController.text.trim();
   }
-
-  Future<void> pickLogo() async {
-    final path = await pickAndSaveLogo();
-    if (path != null) logoPath.value = path;
-  }
-
-  void removeLogo() => logoPath.value = null;
 
   Future<bool> createQrCode(String content) async {
     isLoading.value = true;

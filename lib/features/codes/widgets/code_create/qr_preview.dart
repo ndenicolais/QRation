@@ -12,46 +12,67 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/utils/qr_decoration.dart';
-import 'package:qration/features/codes/controllers/code_create_standard_controller.dart';
+import 'package:qration/core/widgets/section_card.dart';
+import 'package:qration/features/codes/controllers/qr_style_mixin.dart';
+import 'package:qration/l10n/app_localizations.dart';
 
+/// Live preview of the QR code being created, used by both the standard and
+/// the social creation screens.
+///
+/// Rebuilds when [contentListenable] (the form's text fields) notifies or
+/// when an observable read by [data] or [style] changes.
 class QrPreview extends StatelessWidget {
-  const QrPreview({super.key, required this.controller});
+  const QrPreview({
+    super.key,
+    required this.style,
+    required this.contentListenable,
+    required this.data,
+  });
 
-  final CodeCreateStandardController controller;
+  final QrStyleMixin style;
+  final Listenable contentListenable;
+
+  /// Current QR content; empty while the form is incomplete.
+  final String Function() data;
 
   @override
   Widget build(BuildContext context) {
-    final defaultController = controller.controllers['default'];
-
-    return SizedBox(
-      width: 220.w,
-      height: 220.h,
+    return SectionCard(
+      title: AppLocalizations.of(context)!.code_create_preview_title,
+      icon: MingCuteIcons.mgc_qrcode_fill,
       child: Center(
-        child: AnimatedBuilder(
-          animation: defaultController ?? Listenable.merge(const []),
-          builder: (context, _) {
-            return Obx(
-              () => PrettyQrView.data(
-                data: (defaultController?.text.isEmpty ?? true)
-                    ? " "
-                    : defaultController!.text,
-                errorCorrectLevel: controller.logoPath.value != null
-                    ? QrErrorCorrectLevel.H
-                    : QrErrorCorrectLevel.M,
-                decoration: buildQrDecoration(
-                  eyeColor: controller.eyeColor.value,
-                  eyeRounded: controller.eyeRounded.value,
-                  moduleColor: controller.moduleColor.value,
-                  moduleRounded: controller.moduleRounded.value,
-                  logoImage: controller.logoPath.value != null
-                      ? FileImage(File(controller.logoPath.value!))
-                      : null,
-                ),
-              ),
-            );
-          },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppRadius.medium),
+          child: SizedBox(
+            width: 200.w,
+            height: 200.w,
+            child: AnimatedBuilder(
+              animation: contentListenable,
+              builder: (context, _) => Obx(() {
+                final content = data();
+                final logoPath = style.logoPath.value;
+                return PrettyQrView.data(
+                  // A blank space still renders a valid placeholder code.
+                  data: content.isEmpty ? ' ' : content,
+                  errorCorrectLevel: logoPath != null
+                      ? QrErrorCorrectLevel.H
+                      : QrErrorCorrectLevel.M,
+                  decoration: buildQrDecoration(
+                    eyeColor: style.eyeColor.value,
+                    eyeRounded: style.eyeRounded.value,
+                    moduleColor: style.moduleColor.value,
+                    moduleRounded: style.moduleRounded.value,
+                    logoImage:
+                        logoPath != null ? FileImage(File(logoPath)) : null,
+                  ),
+                );
+              }),
+            ),
+          ),
         ),
       ),
     );

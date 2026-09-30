@@ -87,7 +87,8 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
             child: SingleChildScrollView(
               child: Center(
                 child: Column(
-                  spacing: 12.h,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 16.h,
                   children: [
                     CodeInfoRow(
                       dateLabel: l10n.code_details_screen_date_title,
@@ -102,17 +103,16 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                       code: widget.code,
                       screenshotController: _controller.screenshotController,
                     ),
-                    CodeContentCard(
-                      title: l10n.code_details_screen_content_title,
-                      code: widget.code,
-                      controller: _controller,
-                    ),
-                    SizedBox(height: 12.h),
                     CodeActionButtons(
                       controller: _controller,
                       onCopy: () => _copyToClipboard(
                           context, widget.code.barcode.rawValue ?? ''),
                       onSave: _saveQRCode,
+                    ),
+                    CodeContentCard(
+                      title: l10n.code_details_screen_content_title,
+                      code: widget.code,
+                      controller: _controller,
                     ),
                   ],
                 ),
@@ -157,12 +157,12 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
 
   void _showNotesBottomSheet() {
     final notesController = TextEditingController(text: widget.code.notes);
-    final primary = Theme.of(context).colorScheme.primary;
+    final colorScheme = Theme.of(context).colorScheme;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.secondary,
+      showDragHandle: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppRadius.dialog),
@@ -172,7 +172,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
         return Padding(
           padding: EdgeInsets.fromLTRB(
             20.r,
-            20.r,
+            0,
             20.r,
             MediaQuery.of(context).viewInsets.bottom + 20.r,
           ),
@@ -183,7 +183,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
               Text(
                 AppLocalizations.of(context)!.code_details_screen_notes_title,
                 style: AppFonts.montserrat(
-                  color: primary,
+                  color: colorScheme.onSurface,
                   fontSize: AppFontSizes.medium,
                   fontWeight: FontWeight.w500,
                 ),
@@ -195,12 +195,12 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                   hintText: AppLocalizations.of(context)!
                       .code_details_screen_notes_hint,
                   hintStyle: AppFonts.montserrat(
-                    color: primary.withValues(alpha: 0.5),
+                    color: colorScheme.onSurfaceVariant,
                     fontSize: AppFontSizes.small,
                   ),
                 ),
                 style: AppFonts.montserrat(
-                  color: primary,
+                  color: colorScheme.onSurface,
                   fontSize: AppFontSizes.small,
                 ),
                 maxLines: 5,
@@ -216,7 +216,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                       AppLocalizations.of(context)!
                           .code_details_screen_notes_cancel,
                       style: AppFonts.montserrat(
-                        color: primary,
+                        color: colorScheme.primary,
                         fontSize: AppFontSizes.small,
                       ),
                     ),
@@ -228,8 +228,8 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                       if (context.mounted) Get.back();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: primary,
-                      foregroundColor: Theme.of(context).colorScheme.tertiary,
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
                       // Overrides the app theme's minimumSize(double.infinity, 52):
                       // inside a Row the child gets unbounded width constraints,
                       // and an infinite minimumSize width crashes layout.

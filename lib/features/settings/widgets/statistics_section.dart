@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_colors.dart';
-import 'package:qration/features/settings/widgets/section_card.dart';
+import 'package:qration/core/widgets/section_card.dart';
 
 class StatisticsSection extends StatelessWidget {
   const StatisticsSection({

@@ -10,9 +10,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:qration/features/settings/widgets/section_card.dart';
+import 'package:qration/core/widgets/section_card.dart';
 
-import '../../../support/widget_test_helpers.dart';
+import '../../support/widget_test_helpers.dart';
 
 void main() {
   testWidgets('renders the title, icon and child content', (tester) async {

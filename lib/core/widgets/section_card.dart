@@ -41,7 +41,7 @@ class SectionCard extends StatelessWidget {
                 style: AppFonts.montserrat(
                   color: theme.colorScheme.primary,
                   fontSize: 15.sp,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   letterSpacing: 0.2,
                 ),
               ),

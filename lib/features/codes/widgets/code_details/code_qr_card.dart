@@ -18,6 +18,8 @@ import 'package:qration/core/theme/app_font_sizes.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/utils/qr_decoration.dart';
 import 'package:qration/features/codes/models/code_model.dart';
+import 'package:qration/core/widgets/section_card.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:screenshot/screenshot.dart';
 
 class CodeInfoRow extends StatelessWidget {
@@ -49,7 +51,7 @@ class CodeInfoRow extends StatelessWidget {
       parsedDate = null;
     }
     final formattedDate = parsedDate != null
-        ? DateFormat('yyyy-MM-dd HH:mm').format(parsedDate)
+        ? DateFormat('dd/MM/yyyy HH:mm').format(parsedDate)
         : date;
 
     return Row(
@@ -87,12 +89,14 @@ class _InfoChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final secondary = Theme.of(context).colorScheme.secondary;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(AppRadius.medium),
+        color: theme.cardTheme.color ?? colorScheme.surface,
+        borderRadius: BorderRadius.circular(AppRadius.large),
+        border: Border.all(color: colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +104,7 @@ class _InfoChip extends StatelessWidget {
           Text(
             label,
             style: AppFonts.montserrat(
-              color: secondary.withValues(alpha: 0.6),
+              color: colorScheme.onSurfaceVariant,
               fontSize: AppFontSizes.extraSmall,
               fontWeight: FontWeight.w500,
             ),
@@ -112,18 +116,19 @@ class _InfoChip extends StatelessWidget {
                 if (iconHeroTag != null)
                   Hero(
                     tag: iconHeroTag!,
-                    child: Icon(icon, size: 16.sp, color: secondary),
+                    child: Icon(icon, size: 16.sp, color: colorScheme.primary),
                   )
                 else
-                  Icon(icon, size: 16.sp, color: secondary),
+                  Icon(icon, size: 16.sp, color: colorScheme.primary),
                 SizedBox(width: 6.w),
               ],
               Expanded(
                 child: Text(
                   value,
                   style: AppFonts.montserrat(
-                    color: secondary,
+                    color: colorScheme.onSurface,
                     fontSize: AppFontSizes.small,
+                    fontWeight: FontWeight.w500,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -151,23 +156,13 @@ class CodeQrSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          title,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: AppFontSizes.mediumLarge,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Container(
-          padding: EdgeInsets.all(12.r),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(AppRadius.medium),
-          ),
+    return SectionCard(
+      title: title,
+      icon: MingCuteIcons.mgc_qrcode_fill,
+      child: Center(
+        // The QR decoration paints its own white background and quiet zone.
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppRadius.medium),
           child: SizedBox(
             width: 220.w,
             height: 220.h,
@@ -200,7 +195,7 @@ class CodeQrSection extends StatelessWidget {
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

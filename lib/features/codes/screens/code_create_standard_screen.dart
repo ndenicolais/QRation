@@ -1,4 +1,4 @@
-﻿// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -26,6 +26,8 @@ import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/codes/widgets/code_create/code_create_app_bar.dart';
 import 'package:qration/features/codes/widgets/code_create/discard_dialog.dart';
 import 'package:qration/features/codes/widgets/code_create/generate_button.dart';
+import 'package:qration/core/widgets/section_card.dart';
+import 'package:qration/core/widgets/app_button.dart';
 import 'package:qration/features/codes/widgets/code_create/qr_preview.dart';
 import 'package:qration/features/codes/widgets/code_create/qr_style_customizer.dart';
 import 'package:qration/features/codes/widgets/code_create/custom_picker_field.dart';
@@ -84,24 +86,32 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
       child: Scaffold(
         appBar: CodeCreateAppBar(
           title: _contentType.type,
-          controller: _controller,
+          hasContent: _controller.hasContent,
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.r).copyWith(
-              top: 20.h,
-              bottom: 20.h,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 20.h,
-                children: [
-                  _buildInputFields(context),
-                  QrPreview(controller: _controller),
-                  QrStyleCustomizer(controller: _controller),
-                  GenerateButton(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 16.h,
+              children: [
+                SectionCard(
+                  title: AppLocalizations.of(context)!
+                      .code_details_screen_content_title,
+                  icon: MingCuteIcons.mgc_edit_2_fill,
+                  child: _buildInputFields(context),
+                ),
+                QrPreview(
+                  style: _controller,
+                  contentListenable:
+                      Listenable.merge(_controller.controllers.values.toList()),
+                  data: _previewContent,
+                ),
+                QrStyleCustomizer(style: _controller),
+                Obx(
+                  () => GenerateButton(
+                    isLoading: _controller.isLoading.value,
                     label: AppLocalizations.of(context)!
                         .code_create_standard_screen_create_button,
                     onPressed: () async {
@@ -115,13 +125,23 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
                       await _createQrCode(result.content!);
                     },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  /// Content for the live preview: empty while the form is incomplete.
+  String _previewContent() {
+    try {
+      return _controller.generateContent(context).content ?? '';
+    } catch (_) {
+      // e.g. a partially typed date that DateTime.parse can't read yet.
+      return '';
+    }
   }
 
   void _showLocationPicker() async {
@@ -182,6 +202,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         isUrlField: true,
       ),
       BarcodeType.email: Column(
+        spacing: 12.h,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -210,6 +231,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         controllerKey: 'phone',
       ),
       BarcodeType.sms: Column(
+        spacing: 12.h,
         children: [
           _buildPhoneNumberField(
             label: AppLocalizations.of(context)!
@@ -226,6 +248,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         ],
       ),
       BarcodeType.contactInfo: Column(
+        spacing: 12.h,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -257,6 +280,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         ],
       ),
       BarcodeType.geo: Column(
+        spacing: 12.h,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -273,38 +297,16 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
             textInputAction: TextInputAction.done,
           ),
           SizedBox(height: 10.h),
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
-              foregroundColor: Theme.of(context).colorScheme.secondary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
+          AppButton.outlined(
+            label: AppLocalizations.of(context)!
+                .code_create_standard_screen_geo_select_button,
+            icon: MingCuteIcons.mgc_location_fill,
             onPressed: _showLocationPicker,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  MingCuteIcons.mgc_location_fill,
-                  size: 22.sp,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                SizedBox(width: 12.w),
-                Text(
-                  AppLocalizations.of(context)!
-                      .code_create_standard_screen_geo_select_button,
-                  style: AppFonts.montserrat(
-                    fontSize: 16.sp,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
           ),
         ],
       ),
       BarcodeType.wifi: Column(
+        spacing: 12.h,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -327,7 +329,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
                     AppLocalizations.of(context)!
                         .code_create_standard_screen_wifi_type_label,
                     style: AppFonts.montserrat(
-                      color: Theme.of(context).colorScheme.tertiary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                   Obx(
@@ -340,7 +342,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
                           child: Text(
                             encryption,
                             style: AppFonts.montserrat(
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         );
@@ -359,13 +361,11 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
                     AppLocalizations.of(context)!
                         .code_create_standard_screen_wifi_hidden_label,
                     style: AppFonts.montserrat(
-                      color: Theme.of(context).colorScheme.tertiary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                   Obx(
                     () => Checkbox(
-                      checkColor: Theme.of(context).colorScheme.primary,
-                      activeColor: Theme.of(context).colorScheme.secondary,
                       value: _controller.isHiddenNetwork.value,
                       onChanged: (bool? newValue) {
                         _controller.isHiddenNetwork.value = newValue!;
@@ -379,6 +379,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         ],
       ),
       BarcodeType.calendarEvent: Column(
+        spacing: 12.h,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -467,10 +468,9 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
       textCapitalization: textCapitalization,
       textInputAction: textInputAction,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      cursorColor: Theme.of(context).colorScheme.tertiary,
       decoration: InputDecoration(labelText: label),
       style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
       inputFormatters: isbnFormatters,
       onChanged: isISBNField ? (value) => setState(() {}) : null,
@@ -496,7 +496,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
           showCountryOnly: false,
           showOnlyCountryWhenClosed: false,
           textStyle: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -507,10 +507,9 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
             textInputAction: textInputAction,
             onTapOutside: (event) =>
                 FocusManager.instance.primaryFocus?.unfocus(),
-            cursorColor: Theme.of(context).colorScheme.tertiary,
             decoration: InputDecoration(labelText: label),
             style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {

@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:qration/core/utils/logo_saver.dart';
 import 'package:qration/core/utils/validator.dart';
+import 'package:qration/features/codes/controllers/qr_style_mixin.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 
@@ -25,7 +25,7 @@ class GeneratedContent {
   final String? error;
 }
 
-class CodeCreateStandardController extends GetxController {
+class CodeCreateStandardController extends GetxController with QrStyleMixin {
   CodeCreateStandardController({required this.type});
 
   final BarcodeType type;
@@ -33,11 +33,6 @@ class CodeCreateStandardController extends GetxController {
 
   final Map<String, TextEditingController> controllers = {};
 
-  final eyeColor = Colors.black.obs;
-  final eyeRounded = 0.obs;
-  final moduleColor = Colors.black.obs;
-  final moduleRounded = 0.obs;
-  final Rx<String?> logoPath = Rx<String?>(null);
   final selectedPrefix = '+39'.obs;
   final selectedEncryption = 'WPA/WPA2'.obs;
   final isHiddenNetwork = false.obs;
@@ -342,13 +337,6 @@ END:VCARD''');
     if (emptyError != null) return emptyError;
     return GeneratedContent.success(content);
   }
-
-  Future<void> pickLogo() async {
-    final path = await pickAndSaveLogo();
-    if (path != null) logoPath.value = path;
-  }
-
-  void removeLogo() => logoPath.value = null;
 
   Future<bool> createQrCode(String content) async {
     isLoading.value = true;

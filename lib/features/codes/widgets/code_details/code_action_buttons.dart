@@ -1,4 +1,4 @@
-﻿// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -9,13 +9,17 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
+import 'package:qration/core/theme/app_fonts.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/features/codes/controllers/code_details_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
+/// Row of labeled quick actions (copy, favorite, save image, share).
 class CodeActionButtons extends StatelessWidget {
   const CodeActionButtons({
     super.key,
@@ -32,62 +36,103 @@ class CodeActionButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildActionButton(
-          context,
-          MingCuteIcons.mgc_copy_fill,
-          onCopy,
-          'btnCopy',
-          l10n.code_details_screen_action_button_copy,
+        Expanded(
+          child: _ActionTile(
+            icon: MingCuteIcons.mgc_copy_2_fill,
+            label: l10n.code_details_screen_action_button_copy,
+            onTap: onCopy,
+          ),
         ),
-        Obx(() => _buildActionButton(
-              context,
-              controller.isFavorite.value
-                  ? Icons.favorite
-                  : Icons.favorite_border,
-              controller.toggleFavorite,
-              'btnFavorites',
-              l10n.code_details_screen_action_button_favorite,
-            )),
-        _buildActionButton(
-          context,
-          MingCuteIcons.mgc_download_2_fill,
-          onSave,
-          'btnSave',
-          l10n.code_details_screen_action_button_save,
+        SizedBox(width: 10.w),
+        Expanded(
+          child: Obx(() {
+            final isFavorite = controller.isFavorite.value;
+            return _ActionTile(
+              icon: isFavorite
+                  ? MingCuteIcons.mgc_heart_fill
+                  : MingCuteIcons.mgc_heart_line,
+              label: l10n.code_details_screen_action_button_favorite,
+              onTap: controller.toggleFavorite,
+              highlighted: isFavorite,
+            );
+          }),
         ),
-        _buildActionButton(
-          context,
-          MingCuteIcons.mgc_share_2_fill,
-          () {
-            Share.share(controller.code.barcode.rawValue ?? '');
-          },
-          'btnShare',
-          l10n.code_details_screen_action_button_share,
+        SizedBox(width: 10.w),
+        Expanded(
+          child: _ActionTile(
+            icon: MingCuteIcons.mgc_download_2_fill,
+            label: l10n.code_details_screen_action_button_save,
+            onTap: onSave,
+          ),
+        ),
+        SizedBox(width: 10.w),
+        Expanded(
+          child: _ActionTile(
+            icon: MingCuteIcons.mgc_share_2_fill,
+            label: l10n.code_details_screen_action_button_share,
+            onTap: () => Share.share(controller.code.barcode.rawValue ?? ''),
+          ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildActionButton(
-    BuildContext context,
-    IconData icon,
-    VoidCallback onPressed,
-    String heroTag,
-    String tooltip,
-  ) {
-    return SizedBox(
-      width: 52.w,
-      height: 52.h,
-      child: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        heroTag: heroTag,
-        tooltip: tooltip,
-        onPressed: onPressed,
-        child: Icon(
-          icon,
-          color: Theme.of(context).colorScheme.primary,
+class _ActionTile extends StatelessWidget {
+  const _ActionTile({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.highlighted = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final bool highlighted;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    return Material(
+      color: highlighted
+          ? colorScheme.primary.withValues(alpha: 0.14)
+          : theme.cardTheme.color ?? colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.large),
+        side: BorderSide(
+          color: highlighted
+              ? colorScheme.primary.withValues(alpha: 0.6)
+              : colorScheme.outline,
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 4.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: colorScheme.primary, size: 24.sp),
+              SizedBox(height: 6.h),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppFonts.montserrat(
+                  color: colorScheme.onSurface,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

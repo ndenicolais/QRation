@@ -30,27 +30,14 @@ class CodeDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Colors and title style come from the theme appBarTheme.
     return AppBar(
       leading: IconButton(
         tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        icon: Icon(
-          MingCuteIcons.mgc_large_arrow_left_fill,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        onPressed: () {
-          Get.back();
-        },
+        icon: const Icon(MingCuteIcons.mgc_large_arrow_left_fill),
+        onPressed: Get.back,
       ),
-      title: Text(
-        AppLocalizations.of(context)!.code_details_screen_title,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      centerTitle: true,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.secondary,
+      title: Text(AppLocalizations.of(context)!.code_details_screen_title),
       actions: [
         _PopupMenu(onEditNotes: onEditNotes, onDelete: onDelete),
       ],
@@ -67,11 +54,7 @@ class _PopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      color: Theme.of(context).colorScheme.primary,
-      icon: Icon(
-        MingCuteIcons.mgc_more_2_fill,
-        color: Theme.of(context).colorScheme.secondary,
-      ),
+      icon: const Icon(MingCuteIcons.mgc_more_2_fill),
       onSelected: (value) {
         // PopupMenuButton's own route is still closing at this point;
         // opening another route (bottom sheet/dialog) synchronously here
@@ -98,6 +81,7 @@ class _PopupMenu extends StatelessWidget {
             'delete',
             MingCuteIcons.mgc_delete_3_fill,
             AppLocalizations.of(context)!.code_details_screen_menu_delete,
+            color: Theme.of(context).colorScheme.error,
           ),
         ];
       },
@@ -108,21 +92,20 @@ class _PopupMenu extends StatelessWidget {
     BuildContext context,
     String value,
     IconData icon,
-    String text,
-  ) {
+    String text, {
+    Color? color,
+  }) {
+    final itemColor = color ?? Theme.of(context).colorScheme.onSurface;
     return PopupMenuItem<String>(
       value: value,
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+          Icon(icon, color: itemColor),
           SizedBox(width: 10.w),
           Text(
             text,
             style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.secondary,
+              color: itemColor,
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
             ),

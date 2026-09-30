@@ -9,7 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/widgets/app_button.dart';
 
 class GenerateButton extends StatelessWidget {
@@ -17,17 +17,19 @@ class GenerateButton extends StatelessWidget {
     super.key,
     required this.label,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   final String label;
   final VoidCallback onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
-    return AppButton.outlined(
+    return AppButton(
       label: label,
-      foregroundColor: Theme.of(context).colorScheme.primary,
-      width: 220.w,
+      icon: MingCuteIcons.mgc_qrcode_fill,
+      isLoading: isLoading,
       onPressed: onPressed,
     );
   }

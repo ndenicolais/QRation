@@ -13,7 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
-import 'package:qration/features/settings/widgets/section_card.dart';
+import 'package:qration/core/widgets/section_card.dart';
 import 'package:qration/l10n/app_localizations.dart';
 
 /// When the JSON backup was last exported and imported on this device.

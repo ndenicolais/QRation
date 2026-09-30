@@ -1,4 +1,4 @@
-// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -14,111 +14,49 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
-import 'package:qration/features/codes/controllers/code_create_standard_controller.dart';
+import 'package:qration/core/theme/app_radius.dart';
+import 'package:qration/core/widgets/section_card.dart';
+import 'package:qration/features/codes/controllers/qr_style_mixin.dart';
 
+/// Eye/module color and rounding plus optional center logo, shared by the
+/// standard and social creation screens.
 class QrStyleCustomizer extends StatelessWidget {
-  const QrStyleCustomizer({super.key, required this.controller});
+  const QrStyleCustomizer({super.key, required this.style});
 
-  final CodeCreateStandardController controller;
+  final QrStyleMixin style;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                Text(
-                  l10n.code_create_standard_screen_eye_title,
-                  style: AppFonts.montserrat(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                _CustomizationRow(
-                  colorLabel: l10n.code_create_standard_screen_eye_color,
-                  roundedLabel: l10n.code_create_standard_screen_eye_rounded,
-                  color: controller.eyeColor,
-                  rounded: controller.eyeRounded,
-                  onPickColor: () => _pickColor(context, controller.eyeColor),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  l10n.code_create_standard_screen_module_title,
-                  style: AppFonts.montserrat(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                _CustomizationRow(
-                  colorLabel: l10n.code_create_standard_screen_module_color,
-                  roundedLabel: l10n.code_create_standard_screen_module_rounded,
-                  color: controller.moduleColor,
-                  rounded: controller.moduleRounded,
-                  onPickColor: () =>
-                      _pickColor(context, controller.moduleColor),
-                ),
-              ],
-            ),
-          ],
-        ),
-        SizedBox(height: 20.h),
-        Text(
-          l10n.code_create_standard_screen_logo_title,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.tertiary,
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w500,
+    return SectionCard(
+      title: l10n.code_create_style_title,
+      icon: MingCuteIcons.mgc_palette_fill,
+      child: Column(
+        children: [
+          _StyleRow(
+            title: l10n.code_create_standard_screen_eye_title,
+            colorLabel: l10n.code_create_standard_screen_eye_color,
+            roundedLabel: l10n.code_create_standard_screen_eye_rounded,
+            color: style.eyeColor,
+            rounded: style.eyeRounded,
+            onPickColor: () => _pickColor(context, style.eyeColor),
           ),
-        ),
-        SizedBox(height: 10.h),
-        Obx(
-          () => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: controller.pickLogo,
-                child: Container(
-                  width: 60.w,
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.r),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary),
-                    image: controller.logoPath.value != null
-                        ? DecorationImage(
-                            image: FileImage(File(controller.logoPath.value!)),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
-                  ),
-                  child: controller.logoPath.value == null
-                      ? Icon(Icons.add_photo_alternate_outlined,
-                          color: Theme.of(context).colorScheme.secondary)
-                      : null,
-                ),
-              ),
-              if (controller.logoPath.value != null)
-                IconButton(
-                  onPressed: controller.removeLogo,
-                  icon: Icon(Icons.close,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-            ],
+          Divider(height: 24.h),
+          _StyleRow(
+            title: l10n.code_create_standard_screen_module_title,
+            colorLabel: l10n.code_create_standard_screen_module_color,
+            roundedLabel: l10n.code_create_standard_screen_module_rounded,
+            color: style.moduleColor,
+            rounded: style.moduleRounded,
+            onPickColor: () => _pickColor(context, style.moduleColor),
           ),
-        ),
-      ],
+          Divider(height: 24.h),
+          _LogoRow(
+              style: style, title: l10n.code_create_standard_screen_logo_title),
+        ],
+      ),
     );
   }
 
@@ -127,15 +65,7 @@ class QrStyleCustomizer extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        title: Text(
-          l10n.code_create_standard_screen_dialog_color_text,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        title: Text(l10n.code_create_standard_screen_dialog_color_text),
         content: SingleChildScrollView(
           child: Obx(
             () => ColorPicker(
@@ -146,21 +76,8 @@ class QrStyleCustomizer extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(
-                Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            child: Text(
-              l10n.code_create_standard_screen_dialog_color_select,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.tertiary,
-                fontSize: 16.sp,
-              ),
-            ),
-            onPressed: () {
-              Get.back();
-            },
+            onPressed: Get.back,
+            child: Text(l10n.code_create_standard_screen_dialog_color_select),
           ),
         ],
       ),
@@ -168,8 +85,9 @@ class QrStyleCustomizer extends StatelessWidget {
   }
 }
 
-class _CustomizationRow extends StatelessWidget {
-  const _CustomizationRow({
+class _StyleRow extends StatelessWidget {
+  const _StyleRow({
+    required this.title,
     required this.colorLabel,
     required this.roundedLabel,
     required this.color,
@@ -177,6 +95,7 @@ class _CustomizationRow extends StatelessWidget {
     required this.onPickColor,
   });
 
+  final String title;
   final String colorLabel;
   final String roundedLabel;
   final Rx<Color> color;
@@ -185,48 +104,121 @@ class _CustomizationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final colorScheme = Theme.of(context).colorScheme;
+    return Row(
       children: [
-        Text(
-          colorLabel,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
+        Expanded(
+          child: Text(
+            title,
+            style: AppFonts.montserrat(
+              color: colorScheme.onSurface,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-        SizedBox(height: 5.h),
-        GestureDetector(
-          onTap: onPickColor,
-          child: Obx(
-            () => Container(
-              width: 40.w,
-              height: 40.h,
-              decoration: BoxDecoration(
-                color: color.value,
-                borderRadius: BorderRadius.circular(15.r),
-                border:
-                    Border.all(color: Theme.of(context).colorScheme.secondary),
+        Tooltip(
+          message: colorLabel,
+          child: InkWell(
+            onTap: onPickColor,
+            customBorder: const CircleBorder(),
+            child: Obx(
+              () => Container(
+                width: 36.r,
+                height: 36.r,
+                decoration: BoxDecoration(
+                  color: color.value,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: colorScheme.outline, width: 2),
+                ),
               ),
             ),
           ),
         ),
-        SizedBox(height: 10.h),
+        SizedBox(width: 16.w),
         Text(
           roundedLabel,
           style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
+            color: colorScheme.onSurfaceVariant,
+            fontSize: 12.sp,
           ),
         ),
+        SizedBox(width: 4.w),
+        // Colors come from the theme switchTheme (neutral track when off).
         Obx(
           () => Switch(
             value: rounded.value == 1,
             onChanged: (value) => rounded.value = value ? 1 : 0,
-            activeThumbColor: Theme.of(context).colorScheme.tertiary,
-            activeTrackColor: Theme.of(context).colorScheme.secondary,
-            inactiveThumbColor: Theme.of(context).colorScheme.secondary,
-            inactiveTrackColor: Theme.of(context).colorScheme.primary,
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _LogoRow extends StatelessWidget {
+  const _LogoRow({required this.style, required this.title});
+
+  final QrStyleMixin style;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: AppFonts.montserrat(
+              color: colorScheme.onSurface,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Obx(() {
+          final logoPath = style.logoPath.value;
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (logoPath != null)
+                IconButton(
+                  tooltip:
+                      MaterialLocalizations.of(context).deleteButtonTooltip,
+                  onPressed: style.removeLogo,
+                  icon: Icon(
+                    MingCuteIcons.mgc_close_line,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              InkWell(
+                onTap: style.pickLogo,
+                borderRadius: BorderRadius.circular(AppRadius.medium),
+                child: Container(
+                  width: 52.r,
+                  height: 52.r,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.medium),
+                    border: Border.all(color: colorScheme.outline, width: 2),
+                    image: logoPath != null
+                        ? DecorationImage(
+                            image: FileImage(File(logoPath)),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                  ),
+                  child: logoPath == null
+                      ? Icon(
+                          MingCuteIcons.mgc_pic_line,
+                          color: colorScheme.primary,
+                        )
+                      : null,
+                ),
+              ),
+            ],
+          );
+        }),
       ],
     );
   }

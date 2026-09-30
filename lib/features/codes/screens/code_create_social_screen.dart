@@ -8,22 +8,21 @@
 // Contact: ndn21dev@gmail.com
 // GitHub: https://github.com/ndenicolais
 
-import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
-import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:qration/core/utils/qr_decoration.dart';
 import 'package:qration/features/codes/controllers/code_create_social_controller.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
 import 'package:qration/core/routes/app_routes.dart';
+import 'package:qration/core/widgets/section_card.dart';
+import 'package:qration/features/codes/widgets/code_create/code_create_app_bar.dart';
 import 'package:qration/features/codes/widgets/code_create/discard_dialog.dart';
-import 'package:qration/core/widgets/app_button.dart';
+import 'package:qration/features/codes/widgets/code_create/generate_button.dart';
+import 'package:qration/features/codes/widgets/code_create/qr_preview.dart';
+import 'package:qration/features/codes/widgets/code_create/qr_style_customizer.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 
 class CodeCreateSocialScreen extends StatefulWidget {
@@ -38,7 +37,6 @@ class CodeCreateSocialScreen extends StatefulWidget {
 class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final CodeCreateSocialController _controller;
-  final String _content = '';
 
   @override
   Widget build(BuildContext context) {
@@ -49,27 +47,44 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
         await _confirmBack(context);
       },
       child: Scaffold(
-        appBar: _buildAppBar(context),
+        appBar: CodeCreateAppBar(
+          title: widget.socialMedia.name,
+          hasContent: _controller.hasContent,
+        ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.r).copyWith(
-              top: 20.h,
-              bottom: 20.h,
-            ),
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 20.h,
-                  children: [
-                    _buildInputFields(context),
-                    _buildQrCodeDisplay(context),
-                    _buildQrCodeAspect(context),
-                    _buildGenerateButton(context),
-                  ],
-                ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 16.h,
+                children: [
+                  SectionCard(
+                    title: AppLocalizations.of(context)!
+                        .code_details_screen_content_title,
+                    icon: widget.socialMedia.icon,
+                    child: _buildInputFields(context),
+                  ),
+                  QrPreview(
+                    style: _controller,
+                    contentListenable: Listenable.merge([
+                      _controller.urlController,
+                      _controller.spotifyArtistController,
+                      _controller.spotifySongController,
+                      _controller.whatsappController,
+                    ]),
+                    data: _controller.buildContent,
+                  ),
+                  QrStyleCustomizer(style: _controller),
+                  Obx(() => GenerateButton(
+                        label: AppLocalizations.of(context)!
+                            .code_create_social_screen_create_button,
+                        isLoading: _controller.isLoading.value,
+                        onPressed: _createQrCode,
+                      )),
+                ],
               ),
             ),
           ),
@@ -134,6 +149,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
   Widget _buildInputFields(BuildContext context) {
     if (_controller.isSpotify) {
       return Column(
+        spacing: 12.h,
         children: [
           _buildSpotifyField(
             label: AppLocalizations.of(context)!
@@ -219,10 +235,9 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       textCapitalization: textCapitalization ?? TextCapitalization.none,
       textInputAction: textInputAction,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      cursorColor: Theme.of(context).colorScheme.tertiary,
       decoration: decoration,
       style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -263,10 +278,9 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       textCapitalization: textCapitalization ?? TextCapitalization.none,
       textInputAction: textInputAction,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      cursorColor: Theme.of(context).colorScheme.tertiary,
       decoration: decoration,
       style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
       validator: (value) {
         if (validator != null) {
@@ -291,7 +305,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
               showCountryOnly: false,
               showOnlyCountryWhenClosed: false,
               textStyle: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -320,298 +334,6 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
           ],
         ),
       ],
-    );
-  }
-
-  AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      leading: IconButton(
-        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        icon: Icon(
-          MingCuteIcons.mgc_large_arrow_left_fill,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        onPressed: () => _confirmBack(context),
-      ),
-      title: Text(
-        widget.socialMedia.name,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      centerTitle: true,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.secondary,
-    );
-  }
-
-  Widget _buildQrCodeDisplay(BuildContext context) {
-    return SizedBox(
-      width: 220.w,
-      height: 220.h,
-      child: Center(
-        child: Obx(() {
-          final logoPath = _controller.logoPath.value;
-          return PrettyQrView.data(
-            data: _content,
-            errorCorrectLevel: logoPath != null
-                ? QrErrorCorrectLevel.H
-                : QrErrorCorrectLevel.M,
-            decoration: buildQrDecoration(
-              eyeColor: _controller.eyeColor.value,
-              eyeRounded: _controller.eyeRounded.value,
-              moduleColor: _controller.moduleColor.value,
-              moduleRounded: _controller.moduleRounded.value,
-              logoImage: logoPath != null ? FileImage(File(logoPath)) : null,
-            ),
-          );
-        }),
-      ),
-    );
-  }
-
-  Widget _buildQrCodeAspect(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                Text(
-                  AppLocalizations.of(context)!
-                      .code_create_social_screen_eye_title,
-                  style: AppFonts.montserrat(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                _buildEyeCustomizationRow(),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  AppLocalizations.of(context)!
-                      .code_create_social_screen_module_title,
-                  style: AppFonts.montserrat(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                _buildModuleCustomizationRow(),
-              ],
-            ),
-          ],
-        ),
-        SizedBox(height: 20.h),
-        Text(
-          AppLocalizations.of(context)!.code_create_social_screen_logo_title,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(height: 10.h),
-        Obx(() {
-          final logoPath = _controller.logoPath.value;
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: _controller.pickLogo,
-                child: Container(
-                  width: 60.w,
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.r),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary),
-                    image: logoPath != null
-                        ? DecorationImage(
-                            image: FileImage(File(logoPath)),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
-                  ),
-                  child: logoPath == null
-                      ? Icon(Icons.add_photo_alternate_outlined,
-                          color: Theme.of(context).colorScheme.secondary)
-                      : null,
-                ),
-              ),
-              if (logoPath != null)
-                IconButton(
-                  onPressed: _controller.removeLogo,
-                  icon: Icon(Icons.close,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-            ],
-          );
-        }),
-      ],
-    );
-  }
-
-  Widget _buildEyeCustomizationRow() {
-    return Obx(() => Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.code_create_social_screen_eye_color,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            SizedBox(height: 5.h),
-            GestureDetector(
-              onTap: () => pickColor(context, true),
-              child: Container(
-                width: 40.w,
-                height: 40.h,
-                decoration: BoxDecoration(
-                  color: _controller.eyeColor.value,
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Text(
-              AppLocalizations.of(context)!
-                  .code_create_social_screen_eye_rounded,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            Switch(
-              value: _controller.eyeRounded.value == 1,
-              onChanged: (value) =>
-                  _controller.eyeRounded.value = value ? 1 : 0,
-              activeThumbColor: Theme.of(context).colorScheme.tertiary,
-              activeTrackColor: Theme.of(context).colorScheme.secondary,
-              inactiveThumbColor: Theme.of(context).colorScheme.secondary,
-              inactiveTrackColor: Theme.of(context).colorScheme.primary,
-            ),
-          ],
-        ));
-  }
-
-  Widget _buildModuleCustomizationRow() {
-    return Obx(() => Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppLocalizations.of(context)!
-                  .code_create_social_screen_module_color,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            SizedBox(height: 5.h),
-            GestureDetector(
-              onTap: () => pickColor(context, false),
-              child: Container(
-                width: 40.w,
-                height: 40.h,
-                decoration: BoxDecoration(
-                  color: _controller.moduleColor.value,
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Text(
-              AppLocalizations.of(context)!
-                  .code_create_social_screen_module_rounded,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            Switch(
-              value: _controller.moduleRounded.value == 1,
-              onChanged: (value) =>
-                  _controller.moduleRounded.value = value ? 1 : 0,
-              activeThumbColor: Theme.of(context).colorScheme.tertiary,
-              activeTrackColor: Theme.of(context).colorScheme.secondary,
-              inactiveThumbColor: Theme.of(context).colorScheme.secondary,
-              inactiveTrackColor: Theme.of(context).colorScheme.primary,
-            ),
-          ],
-        ));
-  }
-
-  void pickColor(BuildContext context, bool isEyeColor) async {
-    final color =
-        isEyeColor ? _controller.eyeColor.value : _controller.moduleColor.value;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        title: Text(
-          AppLocalizations.of(context)!
-              .code_create_social_screen_dialog_color_text,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        content: SingleChildScrollView(
-          child: ColorPicker(
-            pickerColor: color,
-            onColorChanged: (newColor) {
-              if (isEyeColor) {
-                _controller.eyeColor.value = newColor;
-              } else {
-                _controller.moduleColor.value = newColor;
-              }
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(
-                Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            child: Text(
-              AppLocalizations.of(context)!
-                  .code_create_social_screen_dialog_color_select,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.tertiary,
-                fontSize: 16.sp,
-              ),
-            ),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGenerateButton(BuildContext context) {
-    return AppButton.outlined(
-      label:
-          AppLocalizations.of(context)!.code_create_social_screen_create_button,
-      foregroundColor: Theme.of(context).colorScheme.primary,
-      width: 220.w,
-      onPressed: () {
-        _createQrCode();
-      },
     );
   }
 }
