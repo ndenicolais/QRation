@@ -1094,6 +1094,18 @@ abstract class AppLocalizations {
   /// **'Create'**
   String get code_create_standard_screen_create_button;
 
+  /// No description provided for @code_create_preview_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get code_create_preview_title;
+
+  /// No description provided for @code_create_style_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Style'**
+  String get code_create_style_title;
+
   /// No description provided for @code_create_standard_screen_toast_success.
   ///
   /// In en, this message translates to:
@@ -2393,7 +2405,7 @@ abstract class AppLocalizations {
   /// No description provided for @info_screen_origin_text.
   ///
   /// In en, this message translates to:
-  /// **'ORIGIN'**
+  /// **'Origin'**
   String get info_screen_origin_text;
 
   /// No description provided for @info_screen_origin_description.
@@ -2405,7 +2417,7 @@ abstract class AppLocalizations {
   /// No description provided for @info_screen_description_text.
   ///
   /// In en, this message translates to:
-  /// **'DESCRIPTION'**
+  /// **'Description'**
   String get info_screen_description_text;
 
   /// No description provided for @info_screen_description_description.
@@ -2417,7 +2429,7 @@ abstract class AppLocalizations {
   /// No description provided for @info_screen_credits_text.
   ///
   /// In en, this message translates to:
-  /// **'CREDITS'**
+  /// **'Credits'**
   String get info_screen_credits_text;
 
   /// No description provided for @info_screen_credits_a_text.
@@ -2459,7 +2471,7 @@ abstract class AppLocalizations {
   /// No description provided for @info_screen_version_text.
   ///
   /// In en, this message translates to:
-  /// **'VERSION'**
+  /// **'Version'**
   String get info_screen_version_text;
 
   /// No description provided for @policy_screen_title.
@@ -3007,6 +3019,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.'**
   String get changelog_v2_0_0_bullet_38;
+
+  /// No description provided for @changelog_v2_0_0_bullet_39.
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshed look for Code details, Create code, Info and Profile, consistent with the rest of the app: more readable text, labeled quick actions in code details and a clearer layout.'**
+  String get changelog_v2_0_0_bullet_39;
+
+  /// No description provided for @changelog_v2_0_0_bullet_40.
+  ///
+  /// In en, this message translates to:
+  /// **'The QR preview while creating a code now updates live for every code type, including social codes.'**
+  String get changelog_v2_0_0_bullet_40;
+
+  /// No description provided for @changelog_v2_0_0_bullet_41.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings now show the language actually in use, and switches that are off no longer look switched on.'**
+  String get changelog_v2_0_0_bullet_41;
 }
 
 class _AppLocalizationsDelegate

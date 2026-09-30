@@ -169,7 +169,8 @@ qration/
 │   │   │   └── screens/            # splash_screen
 │   │   ├── user/
 │   │   │   ├── models/             # UserModel
-│   │   │   └── screens/            # user_screen, delete_account_screen
+│   │   │   ├── screens/            # user_screen, delete_account_screen
+│   │   │   └── widgets/            # account_info_card
 │   │   └── welcome/
 │   │       └── screens/            # welcome_screen
 │   └── l10n/                       # Localizzazione (ARB files: EN + IT)
@@ -418,14 +419,15 @@ Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in b
 | Patente | Dati patente |
 
 - **Personalizzazione visiva:** color picker per colore occhi e moduli; switch per arrotondamento; selezione opzionale di un **logo** dalla galleria, incorporato al centro del QR (`pretty_qr_code`'s `PrettyQrDecorationImage`, scale 0.2, salvato solo localmente sul device in `<app documents>/logos/`). Quando è presente un logo, il livello di correzione d'errore del QR passa da `M` a `H` (in tutti i punti di rendering: anteprima, dettaglio, export PDF), per compensare l'area coperta dal logo e mantenere il codice scansionabile anche da immagine statica. Ogni QR viene inoltre renderizzato con un **quiet zone** standard di 4 moduli (`buildQrDecoration()` in `qr_decoration.dart`, `PrettyQrQuietZone.standard`): senza questo margine i moduli arrivano fino al bordo dell'immagine catturata/salvata, impedendo ai decoder (es. `mobile_scanner`'s `analyzeImage`, usato dalla scansione "da galleria") di individuare i finder pattern
-- **Anteprima live** del QR code generato mentre si compila il form
+- **Anteprima live** (`QrPreview`, `widgets/code_create/qr_preview.dart`) per **tutti** i tipi: si aggiorna a ogni modifica dei campi (`Listenable.merge` dei `TextEditingController`) e delle scelte osservabili (prefisso, cifratura Wi-Fi, stile), usando `generateContent()`; finché il form è incompleto mostra un QR segnaposto. In precedenza l'anteprima si aggiornava solo per il tipo Testo
+- **Layout:** campi del form in una `SectionCard` "Contenuto", poi le card "Anteprima" e "Stile" (`QrStyleCustomizer`) e il pulsante "Crea" pieno a tutta larghezza (`GenerateButton`, con indicatore di caricamento durante il salvataggio). App bar (`CodeCreateAppBar`, generica con callback `hasContent`) e switch prendono i colori dal tema
 - Validazione campi con messaggi di errore
 
 **Step 2b — Creazione social (`code_create_social_screen.dart`):**
 - Form semplificato con il campo username/profilo per il social selezionato
-- Stessa personalizzazione visiva (colore/arrotondamento occhi e moduli, logo opzionale) dello Step 2a, replicata indipendentemente
+- Stessi widget dello Step 2a (`CodeCreateAppBar`, `QrPreview`, `QrStyleCustomizer`, `GenerateButton`): lo stato di stile (colori e arrotondamento di occhi e moduli, logo) è nel mixin `QrStyleMixin` (`controllers/qr_style_mixin.dart`), condiviso da `CodeCreateStandardController` e `CodeCreateSocialController`
 - Il contenuto viene formattato automaticamente con l'URL base del social
-- Anteprima live del QR code
+- Anteprima live del QR code col contenuto reale (`buildContent()`): in precedenza mostrava sempre un QR vuoto con il solo stile
 - Stato e logica in `CodeCreateSocialController` (`lib/features/codes/controllers/`), speculare a `CodeCreateStandardController`: `TextEditingController` dei campi, stile osservabile (colori, arrotondamenti, logo, prefisso WhatsApp), `buildContent()` per la costruzione del contenuto (URL, URI di ricerca Spotify `spotify:search:<artista>;<brano>`, link `wa.me` con prefisso) e `createQrCode()` per il salvataggio. La screen gestisce solo validazione del form, toast e navigazione; il dialog di conferma all'uscita usa `showDiscardDialog` condiviso (`widgets/code_create/discard_dialog.dart`) come la creazione standard
 
 ---
@@ -437,6 +439,8 @@ Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in b
 Schermata di visualizzazione e gestione di un singolo codice.
 
 **Navigazione e transizione:** tutti i punti di ingresso (Scanner, Cronologia, Preferiti, creazione standard e social) aprono il dettaglio tramite la route `AppRoutes.codeDetails` con il `CodeModel` come argomento (`Get.toNamed`, oppure `Get.offNamed` dopo la creazione). La transizione è definita una sola volta nella `GetPage` in `app_pages.dart` (`Transition.fade`, 250 ms), invece di essere ripetuta in ogni `Get.to(...)` con 500 ms. L'icona del tipo nella card di lista (`CodeListTile`) e quella nel chip "Tipo" del dettaglio (`CodeInfoRow`, parametro `typeIconHeroTag`) condividono il tag `codeIconHeroTag(code.id)`, così l'icona "vola" dalla lista al dettaglio e ritorno. Poiché Cronologia e Preferiti restano costruiti nell'`IndexedStack` di `HomeScreen` anche quando non visibili, ogni tab è avvolto in `HeroMode(enabled: i == _selectedIndex)`: solo il tab attivo partecipa alle animazioni `Hero`, evitando tag duplicati quando lo stesso codice compare in entrambe le liste.
+
+**Layout:** app bar con i colori del tema (`code_details_app_bar.dart`; nel menu la voce "Elimina" è nel colore di errore); chip "Data" (formato `dd/MM/yyyy HH:mm`, come nelle liste) e "Tipo" come card neutre con bordo (`CodeInfoRow`); `SectionCard` "Codice QR" (`CodeQrSection`); riga di azioni rapide con etichetta (`CodeActionButtons`: Copia, Preferito 'evidenziato quando attivo', Salva, Condividi, con ripple e feedback aptico, al posto dei `FloatingActionButton` senza testo); `SectionCard` "Contenuto" (`CodeContentCard`) con l'azione specifica del tipo come `ElevatedButton` a tutta larghezza. In precedenza card e app bar usavano il colore principale come sfondo pieno.
 
 **Informazioni mostrate:**
 - Data di creazione/scansione
@@ -512,7 +516,9 @@ In precedenza, dopo l'eliminazione lo schermo restava comunque nero: la causa re
 **Percorso:** `lib/features/user/screens/`
 
 **Profilo utente (`user_screen.dart`):**
-- Visualizza avatar, nome, email e data di registrazione
+- Intestazione con avatar (foto o iniziale, bordo nel colore principale), nome ed email
+- `AccountInfoCard` (`lib/features/user/widgets/account_info_card.dart`, spostata da `settings/widgets` perché usata solo qui): ID, nome, email e data di creazione (`dd/MM/yyyy`), con divisori del tema
+- Pulsanti "Esci" e "Elimina account" come `AppButton.outlined` (il secondo nel colore di errore)
 - Dati caricati da Firestore tramite `AuthController`
 
 **Eliminazione account (`delete_account_screen.dart`):**
@@ -709,6 +715,8 @@ La modalità tema (`ThemeMode.system`/`light`/`dark`) è salvata in `SharedPrefe
 **Responsività UI:** Tutte le dimensioni (padding, font size, icon size) usano `flutter_screenutil` con suffissi `.sp`, `.r`, `.w`, `.h` per adattarsi a qualsiasi schermo.
 
 **Token condivisi:** `AppFontSizes` (`app_font_sizes.dart`) e `AppRadius` (`app_radius.dart`) centralizzano i valori di font size e border radius ricorrenti, da preferire ai valori `.sp`/`.r` inline quando coincidono con un token esistente.
+
+**Linea guida visiva delle schermate:** le app bar non impostano colori propri (valgono `appBarTheme`: sfondo superficie, titolo e icone nel colore principale), gli `Switch` usano `switchTheme` (traccia neutra da spento, colore principale da acceso), i testi usano `onSurface`/`onSurfaceVariant` e i contenuti sono raggruppati in `SectionCard` (`lib/core/widgets/section_card.dart`: titolo con icona + card con bordo; spostata da `settings/widgets` perché usata anche da Dettaglio, Crea, Info e Database). Il colore principale si usa solo per accenti, icone e azione principale. Dettaglio codice, Crea codice, Info e Profilo sono stati riallineati a questa linea: in precedenza usavano il colore principale come sfondo pieno di app bar e card e il colore secondario per i testi, con contrasti insufficienti (ad esempio testo blu su blu in Info e nel form di creazione). Le intestazioni di Info ora sono con iniziale maiuscola come nel resto dell'app.
 
 **Stati vuoti/errore:** `AppEmptyState` (`app_empty_state.dart`) e `AppErrorState` (`app_error_state.dart`), entrambi in `lib/core/widgets/`, forniscono la UI standard per liste vuote e stati di errore, da riusare al posto di implementazioni inline. `lib/core/widgets/` contiene un file per ogni widget condiviso (`app_button.dart`, `app_textfield.dart`, `app_toast.dart`, `app_loader.dart`, `app_empty_state.dart`, `app_error_state.dart`, `app_delete_dialog.dart`, `app_changelog_dialog.dart`), tutti con convenzione `App*`. La cartella `lib/widgets/` (ex contenitore di widget "globali" ma di fatto usati da una sola feature ciascuno) è stata rimossa: `custom_picker_field.dart`, `full_screen_map.dart` e `custom_loader.dart` sono ora in `lib/features/codes/widgets/code_create/` (usati solo dal flusso di creazione standard), `custom_expansiontile.dart` è in `lib/features/settings/widgets/` (usato solo da `support_screen.dart`).
 

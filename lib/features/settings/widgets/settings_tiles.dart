@@ -119,14 +119,8 @@ class SettingsSwitchTile extends StatelessWidget {
             ),
         ],
       ),
-      trailing: Switch(
-        value: value,
-        onChanged: onChanged,
-        activeThumbColor: colorScheme.tertiary,
-        activeTrackColor: colorScheme.secondary,
-        inactiveThumbColor: colorScheme.secondary,
-        inactiveTrackColor: colorScheme.primary,
-      ),
+      // Colors come from the theme switchTheme (neutral track when off).
+      trailing: Switch(value: value, onChanged: onChanged),
     );
   }
 }

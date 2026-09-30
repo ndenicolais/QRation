@@ -532,6 +532,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get code_create_standard_screen_create_button => 'Create';
 
   @override
+  String get code_create_preview_title => 'Preview';
+
+  @override
+  String get code_create_style_title => 'Style';
+
+  @override
   String get code_create_standard_screen_toast_success =>
       'QR code successfully added!';
 
@@ -1203,21 +1209,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get info_screen_title => 'Info';
 
   @override
-  String get info_screen_origin_text => 'ORIGIN';
+  String get info_screen_origin_text => 'Origin';
 
   @override
   String get info_screen_origin_description =>
       'The name of the app is a fusion between \'QR\' and \'Creation\', just to specify the two main features of the application and, that is, scanning and creating QR Codes.';
 
   @override
-  String get info_screen_description_text => 'DESCRIPTION';
+  String get info_screen_description_text => 'Description';
 
   @override
   String get info_screen_description_description =>
       'This app allows you to scan and generate QR codes, which can be saved in your personal account for easy and safe management. You can access all saved QR codes at any time. In addition, each code allows a different function to be performed according to its type.';
 
   @override
-  String get info_screen_credits_text => 'CREDITS';
+  String get info_screen_credits_text => 'Credits';
 
   @override
   String get info_screen_credits_a_text => 'Idea';
@@ -1238,7 +1244,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get info_screen_credits_c_value => 'Nicola De Nicolais';
 
   @override
-  String get info_screen_version_text => 'VERSION';
+  String get info_screen_version_text => 'Version';
 
   @override
   String get policy_screen_title => 'Privacy Policy';
@@ -1566,4 +1572,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_38 =>
       'The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.';
+
+  @override
+  String get changelog_v2_0_0_bullet_39 =>
+      'Refreshed look for Code details, Create code, Info and Profile, consistent with the rest of the app: more readable text, labeled quick actions in code details and a clearer layout.';
+
+  @override
+  String get changelog_v2_0_0_bullet_40 =>
+      'The QR preview while creating a code now updates live for every code type, including social codes.';
+
+  @override
+  String get changelog_v2_0_0_bullet_41 =>
+      'Settings now show the language actually in use, and switches that are off no longer look switched on.';
 }

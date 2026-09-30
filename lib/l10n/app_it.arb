@@ -190,6 +190,8 @@
   "code_create_standard_screen_dialog_color_text": "Scegli un colore",
   "code_create_standard_screen_dialog_color_select": "Seleziona",
   "code_create_standard_screen_create_button": "Crea",
+  "code_create_preview_title": "Anteprima",
+  "code_create_style_title": "Stile",
   "code_create_standard_screen_toast_success": "Codice QR aggiunto con successo!",
   "code_create_standard_screen_toast_error": "Errore nel salvataggio del codice QR:",
 
@@ -417,18 +419,18 @@
   "user_screen_logout_button": "Esci",
 
   "info_screen_title": "Info",
-  "info_screen_origin_text": "ORIGINE",
+  "info_screen_origin_text": "Origine",
   "info_screen_origin_description": "Il nome dell'app è una fusione tra 'QR' e 'Creation', proprio per specificare le due funzionalità principali dell'applicazione e, cioè, la scansione e la creazione di QR Codes.",
-  "info_screen_description_text": "DESCRIZIONE",
+  "info_screen_description_text": "Descrizione",
   "info_screen_description_description": "Questa applicazione consente di scansionare e generare codici QR, che possono essere salvati nel tuo account personale per una gestione facile e sicura. È possibile accedere a tutti i codici QR salvati in qualsiasi momento. Inoltre ogni codice permette di eseguire una funzione diversa in base alla sua tipologia.",
-  "info_screen_credits_text": "CREDITI",
+  "info_screen_credits_text": "Crediti",
   "info_screen_credits_a_text": "Ideazione",
   "info_screen_credits_a_value": "Nicola De Nicolais",
   "info_screen_credits_b_text": "Sviluppo",
   "info_screen_credits_b_value": "Nicola De Nicolais",
   "info_screen_credits_c_text": "Design",
   "info_screen_credits_c_value": "Nicola De Nicolais",
-  "info_screen_version_text": "VERSIONE",
+  "info_screen_version_text": "Versione",
 
   "policy_screen_title": "Privacy Policy",
 
@@ -528,5 +530,8 @@
   "changelog_v2_0_0_bullet_35": "I filtri della Cronologia sono ora riuniti in un unico pannello con chip descrittivi, e l'icona del filtro mostra quanti filtri sono attivi.",
   "changelog_v2_0_0_bullet_36": "Ora puoi registrarti con Google direttamente dalla schermata di registrazione.",
   "changelog_v2_0_0_bullet_37": "L'accesso con Google mantiene sempre la sessione attiva e la sessione salvata viene ripristinata correttamente all'avvio, anche offline o dopo aver reinstallato l'app da un backup.",
-  "changelog_v2_0_0_bullet_38": "La pagina Database mostra quando è stato esportato e importato l'ultimo backup JSON, e i backup esportati vengono ora salvati anche nella cartella Download pubblica, così non vanno persi disinstallando l'app."
+  "changelog_v2_0_0_bullet_38": "La pagina Database mostra quando è stato esportato e importato l'ultimo backup JSON, e i backup esportati vengono ora salvati anche nella cartella Download pubblica, così non vanno persi disinstallando l'app.",
+  "changelog_v2_0_0_bullet_39": "Nuova veste grafica per Dettaglio codice, Crea codice, Info e Profilo, coerente con il resto dell'app: testi più leggibili, azioni rapide con etichetta nel dettaglio e layout più ordinato.",
+  "changelog_v2_0_0_bullet_40": "L'anteprima del QR durante la creazione ora si aggiorna in tempo reale per ogni tipo di codice, compresi quelli social.",
+  "changelog_v2_0_0_bullet_41": "Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi."
 }

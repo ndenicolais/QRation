@@ -105,7 +105,11 @@ class SettingsScreenState extends State<SettingsScreen> {
               label: Text(l10n.settings_subtitle_language_option_english),
             ),
           ],
-          selected: Get.locale?.languageCode == 'it' ? 'it' : 'en',
+          // Without a saved preference Get.locale is null: show the language
+          // the app is actually using.
+          selected: Localizations.localeOf(context).languageCode == 'it'
+              ? 'it'
+              : 'en',
           onChanged: _saveLanguagePreference,
         ),
         Obx(() => SettingsSegmentedTile<int>(

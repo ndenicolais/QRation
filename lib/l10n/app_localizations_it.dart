@@ -542,6 +542,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get code_create_standard_screen_create_button => 'Crea';
 
   @override
+  String get code_create_preview_title => 'Anteprima';
+
+  @override
+  String get code_create_style_title => 'Stile';
+
+  @override
   String get code_create_standard_screen_toast_success =>
       'Codice QR aggiunto con successo!';
 
@@ -1227,21 +1233,21 @@ class AppLocalizationsIt extends AppLocalizations {
   String get info_screen_title => 'Info';
 
   @override
-  String get info_screen_origin_text => 'ORIGINE';
+  String get info_screen_origin_text => 'Origine';
 
   @override
   String get info_screen_origin_description =>
       'Il nome dell\'app è una fusione tra \'QR\' e \'Creation\', proprio per specificare le due funzionalità principali dell\'applicazione e, cioè, la scansione e la creazione di QR Codes.';
 
   @override
-  String get info_screen_description_text => 'DESCRIZIONE';
+  String get info_screen_description_text => 'Descrizione';
 
   @override
   String get info_screen_description_description =>
       'Questa applicazione consente di scansionare e generare codici QR, che possono essere salvati nel tuo account personale per una gestione facile e sicura. È possibile accedere a tutti i codici QR salvati in qualsiasi momento. Inoltre ogni codice permette di eseguire una funzione diversa in base alla sua tipologia.';
 
   @override
-  String get info_screen_credits_text => 'CREDITI';
+  String get info_screen_credits_text => 'Crediti';
 
   @override
   String get info_screen_credits_a_text => 'Ideazione';
@@ -1262,7 +1268,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get info_screen_credits_c_value => 'Nicola De Nicolais';
 
   @override
-  String get info_screen_version_text => 'VERSIONE';
+  String get info_screen_version_text => 'Versione';
 
   @override
   String get policy_screen_title => 'Privacy Policy';
@@ -1592,4 +1598,16 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_38 =>
       'La pagina Database mostra quando è stato esportato e importato l\'ultimo backup JSON, e i backup esportati vengono ora salvati anche nella cartella Download pubblica, così non vanno persi disinstallando l\'app.';
+
+  @override
+  String get changelog_v2_0_0_bullet_39 =>
+      'Nuova veste grafica per Dettaglio codice, Crea codice, Info e Profilo, coerente con il resto dell\'app: testi più leggibili, azioni rapide con etichetta nel dettaglio e layout più ordinato.';
+
+  @override
+  String get changelog_v2_0_0_bullet_40 =>
+      'L\'anteprima del QR durante la creazione ora si aggiorna in tempo reale per ogni tipo di codice, compresi quelli social.';
+
+  @override
+  String get changelog_v2_0_0_bullet_41 =>
+      'Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi.';
 }

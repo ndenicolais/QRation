@@ -12,9 +12,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/features/settings/widgets/section_card.dart';
+import 'package:qration/core/widgets/section_card.dart';
 
 class AccountInfoCard extends StatelessWidget {
   const AccountInfoCard({super.key, required this.currentUser});
@@ -26,7 +27,7 @@ class AccountInfoCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final creationTime = currentUser.metadata.creationTime;
     final formattedDate = creationTime != null
-        ? '${creationTime.day}/${creationTime.month}/${creationTime.year}'
+        ? DateFormat('dd/MM/yyyy').format(creationTime)
         : 'N/A';
 
     return SectionCard(
@@ -131,10 +132,7 @@ class _InfoDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      height: 1,
-      thickness: 1,
-      color: Theme.of(context).colorScheme.outlineVariant,
-    );
+    // Color and thickness come from the theme dividerTheme.
+    return const Divider(height: 1);
   }
 }

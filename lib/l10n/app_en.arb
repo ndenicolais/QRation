@@ -190,6 +190,8 @@
   "code_create_standard_screen_dialog_color_text": "Choose a color",
   "code_create_standard_screen_dialog_color_select": "Select",
   "code_create_standard_screen_create_button": "Create",
+  "code_create_preview_title": "Preview",
+  "code_create_style_title": "Style",
   "code_create_standard_screen_toast_success": "QR code successfully added!",
   "code_create_standard_screen_toast_error": "Error saving QR code:",
 
@@ -417,18 +419,18 @@
   "user_screen_logout_button": "Log Out",
 
   "info_screen_title": "Info",
-  "info_screen_origin_text": "ORIGIN",
+  "info_screen_origin_text": "Origin",
   "info_screen_origin_description": "The name of the app is a fusion between 'QR' and 'Creation', just to specify the two main features of the application and, that is, scanning and creating QR Codes.",
-  "info_screen_description_text": "DESCRIPTION",
+  "info_screen_description_text": "Description",
   "info_screen_description_description": "This app allows you to scan and generate QR codes, which can be saved in your personal account for easy and safe management. You can access all saved QR codes at any time. In addition, each code allows a different function to be performed according to its type.",
-  "info_screen_credits_text": "CREDITS",
+  "info_screen_credits_text": "Credits",
   "info_screen_credits_a_text": "Idea",
   "info_screen_credits_a_value": "Nicola De Nicolais",
   "info_screen_credits_b_text": "Development",
   "info_screen_credits_b_value": "Nicola De Nicolais",
   "info_screen_credits_c_text": "Design",
   "info_screen_credits_c_value": "Nicola De Nicolais",
-  "info_screen_version_text": "VERSION",
+  "info_screen_version_text": "Version",
 
   "policy_screen_title": "Privacy Policy",
 
@@ -528,5 +530,8 @@
   "changelog_v2_0_0_bullet_35": "History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.",
   "changelog_v2_0_0_bullet_36": "You can now sign up with Google directly from the registration screen.",
   "changelog_v2_0_0_bullet_37": "Signing in with Google now always keeps you logged in, and the saved session is restored reliably at startup, even offline or after reinstalling the app from a backup.",
-  "changelog_v2_0_0_bullet_38": "The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled."
+  "changelog_v2_0_0_bullet_38": "The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.",
+  "changelog_v2_0_0_bullet_39": "Refreshed look for Code details, Create code, Info and Profile, consistent with the rest of the app: more readable text, labeled quick actions in code details and a clearer layout.",
+  "changelog_v2_0_0_bullet_40": "The QR preview while creating a code now updates live for every code type, including social codes.",
+  "changelog_v2_0_0_bullet_41": "Settings now show the language actually in use, and switches that are off no longer look switched on."
 }

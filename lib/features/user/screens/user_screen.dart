@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -16,10 +16,11 @@ import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/routes/app_routes.dart';
-import 'package:qration/core/theme/app_colors.dart';
+import 'package:qration/core/widgets/app_button.dart';
+import 'package:qration/core/widgets/app_loader.dart';
 import 'package:qration/features/auth/controllers/auth_controller.dart';
-import 'package:qration/features/settings/widgets/account_info_card.dart';
 import 'package:qration/features/user/models/user_model.dart';
+import 'package:qration/features/user/widgets/account_info_card.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
@@ -52,141 +53,128 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     final firebaseUser = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // Colors and title style come from the theme appBarTheme.
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.primary,
-        elevation: 0,
         leading: IconButton(
           tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          icon: Icon(
-            MingCuteIcons.mgc_large_arrow_left_fill,
-            color: theme.colorScheme.secondary,
-          ),
-          onPressed: () => Get.back(),
+          icon: const Icon(MingCuteIcons.mgc_large_arrow_left_fill),
+          onPressed: Get.back,
         ),
-        title: Text(
-          l10n.user_screen_title,
-          style: AppFonts.montserrat(
-            color: theme.colorScheme.secondary,
-            fontWeight: FontWeight.w500,
-            fontSize: 18.sp,
-          ),
-        ),
-        centerTitle: true,
+        title: Text(l10n.user_screen_title),
       ),
       body: SafeArea(
         child: _loading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: AppLoader())
             : SingleChildScrollView(
-                padding: EdgeInsets.all(24.r),
+                padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 16.h),
-                    _buildAvatar(theme, firebaseUser),
+                    _ProfileHeader(user: _user, firebaseUser: firebaseUser),
                     SizedBox(height: 24.h),
                     if (firebaseUser != null)
                       AccountInfoCard(currentUser: firebaseUser),
-                    SizedBox(height: 32.h),
-                    _buildLogoutButton(context, l10n, theme),
+                    SizedBox(height: 28.h),
+                    AppButton.outlined(
+                      label: l10n.user_screen_logout_button,
+                      icon: MingCuteIcons.mgc_exit_fill,
+                      onPressed: _authCtrl.logout,
+                    ),
                     SizedBox(height: 12.h),
-                    _buildDeleteAccountButton(context, l10n, theme),
+                    AppButton.outlined(
+                      label: l10n.settings_tile_delete_account,
+                      icon: MingCuteIcons.mgc_delete_2_fill,
+                      foregroundColor: colorScheme.error,
+                      onPressed: () => Get.toNamed(AppRoutes.deleteAccount),
+                    ),
                   ],
                 ),
               ),
       ),
     );
   }
+}
 
-  Widget _buildAvatar(ThemeData theme, User? firebaseUser) {
-    final name = _user?.userName ?? firebaseUser?.displayName ?? '';
+/// Avatar with the user's photo (or initial), name and email.
+class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({required this.user, required this.firebaseUser});
+
+  final UserModel? user;
+  final User? firebaseUser;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final name = user?.userName ?? firebaseUser?.displayName ?? '';
+    final email = user?.userEmail ?? firebaseUser?.email ?? '';
+    final photoUrl = user?.userImage ?? firebaseUser?.photoURL;
     final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
-    final photoUrl = _user?.userImage ?? firebaseUser?.photoURL;
 
-    return Center(
-      child: Container(
-        width: 96.r,
-        height: 96.r,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: theme.colorScheme.secondary,
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: photoUrl != null && photoUrl.isNotEmpty
-            ? Image.network(
-                photoUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _buildInitial(theme, initial),
-              )
-            : _buildInitial(theme, initial),
-      ),
-    );
-  }
-
-  Widget _buildInitial(ThemeData theme, String initial) {
-    return Center(
+    final fallback = Center(
       child: Text(
         initial,
         style: AppFonts.montserrat(
-          color: theme.colorScheme.primary,
-          fontSize: 42.sp,
-          fontWeight: FontWeight.w600,
+          color: colorScheme.primary,
+          fontSize: 40.sp,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
-  }
 
-  Widget _buildLogoutButton(
-      BuildContext context, AppLocalizations l10n, ThemeData theme) {
-    return SizedBox(
-      width: double.infinity,
-      height: 52.h,
-      child: OutlinedButton.icon(
-        icon: Icon(MingCuteIcons.mgc_exit_fill,
-            color: theme.colorScheme.secondary),
-        label: Text(
-          l10n.user_screen_logout_button,
-          style: AppFonts.montserrat(
-            color: theme.colorScheme.secondary,
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w500,
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(3.r),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: colorScheme.primary, width: 2),
+          ),
+          child: Container(
+            width: 96.r,
+            height: 96.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: colorScheme.primary.withValues(alpha: 0.14),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: photoUrl != null && photoUrl.isNotEmpty
+                ? Image.network(
+                    photoUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => fallback,
+                  )
+                : fallback,
           ),
         ),
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(color: theme.colorScheme.secondary),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
-        ),
-        onPressed: () => _authCtrl.logout(),
-      ),
-    );
-  }
-
-  Widget _buildDeleteAccountButton(
-      BuildContext context, AppLocalizations l10n, ThemeData theme) {
-    return SizedBox(
-      width: double.infinity,
-      height: 52.h,
-      child: OutlinedButton.icon(
-        icon: const Icon(MingCuteIcons.mgc_delete_fill, color: AppColors.error),
-        label: Text(
-          l10n.settings_tile_delete_account,
-          style: AppFonts.montserrat(
-            color: AppColors.error,
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w500,
+        if (name.isNotEmpty) ...[
+          SizedBox(height: 14.h),
+          Text(
+            name,
+            textAlign: TextAlign.center,
+            style: AppFonts.montserrat(
+              color: colorScheme.onSurface,
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: AppColors.error),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
-        ),
-        onPressed: () => Get.toNamed(AppRoutes.deleteAccount),
-      ),
+        ],
+        if (email.isNotEmpty) ...[
+          SizedBox(height: 4.h),
+          Text(
+            email,
+            textAlign: TextAlign.center,
+            style: AppFonts.montserrat(
+              color: colorScheme.onSurfaceVariant,
+              fontSize: 13.sp,
+            ),
+          ),
+        ],
+      ],
     );
   }
 }
