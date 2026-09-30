@@ -275,6 +275,7 @@
   "favorites_screen_tab_scanned": "Scanned",
   "favorites_screen_error_state": "Error:",
   "favorites_screen_empty_state": "No favorites codes",
+  "favorites_screen_empty_action": "Create your first code",
 
   "history_screen_search_label": "Search",
   "history_screen_filter_all": "All",
@@ -283,6 +284,9 @@
   "history_screen_error_state": "Error:",
   "history_screen_delete_title": "Delete",
   "history_screen_empty_state": "No saved codes",
+  "history_screen_empty_action": "Scan now",
+  "history_screen_empty_filtered": "No results for the active filters",
+  "history_screen_clear_filters": "Clear filters",
   "history_screen_selected_count": "selected",
   "history_screen_select_all": "Select all",
   "history_screen_deselect_all": "Deselect all",
@@ -504,5 +508,7 @@
   "changelog_v2_0_0_bullet_28": "Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.",
   "changelog_v2_0_0_bullet_29": "Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.",
   "changelog_v2_0_0_bullet_30": "History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.",
-  "changelog_v2_0_0_bullet_31": "Faster, smoother opening of code details, with the type icon animating from the list into the details screen."
+  "changelog_v2_0_0_bullet_31": "Faster, smoother opening of code details, with the type icon animating from the list into the details screen.",
+  "changelog_v2_0_0_bullet_32": "Empty screens now suggest what to do next: create your first code from Favorites, scan from History, or clear the filters when a search finds nothing.",
+  "changelog_v2_0_0_bullet_33": "The chosen app language is applied right from startup, without a brief flash in the device language."
 }

@@ -39,7 +39,8 @@ void main() {
     await stream.close();
   });
 
-  Future<void> pumpHistory(WidgetTester tester) async {
+  Future<void> pumpHistory(WidgetTester tester,
+      {VoidCallback? onScanNow}) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -47,10 +48,10 @@ void main() {
     await tester.pumpWidget(
       ScreenUtilInit(
         designSize: const Size(390, 844),
-        builder: (_, __) => const MaterialApp(
+        builder: (_, __) => MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: HistoryScreen(),
+          home: HistoryScreen(onScanNow: onScanNow),
         ),
       ),
     );
@@ -90,8 +91,9 @@ void main() {
     expect(find.byType(Checkbox), findsNothing);
   });
 
-  testWidgets('shows the empty state when there are no codes', (tester) async {
-    await pumpHistory(tester);
+  testWidgets('empty history offers to scan', (tester) async {
+    var scanRequests = 0;
+    await pumpHistory(tester, onScanNow: () => scanRequests++);
 
     stream.add([]);
     await tester.pump();
@@ -99,5 +101,30 @@ void main() {
     final l10n =
         AppLocalizations.of(tester.element(find.byType(HistoryScreen)))!;
     expect(find.text(l10n.history_screen_empty_state), findsOneWidget);
+
+    await tester.tap(find.text(l10n.history_screen_empty_action));
+    expect(scanRequests, 1);
+  });
+
+  testWidgets('no matches offers to clear the filters', (tester) async {
+    await pumpHistory(tester);
+
+    stream.add([code('1', 'first code')]);
+    await tester.pump();
+
+    final l10n =
+        AppLocalizations.of(tester.element(find.byType(HistoryScreen)))!;
+    await tester.enterText(find.byType(TextField), 'zzz');
+    await tester.pump(const Duration(milliseconds: 350));
+
+    expect(find.text(l10n.history_screen_empty_filtered), findsOneWidget);
+
+    await tester.tap(find.text(l10n.history_screen_clear_filters));
+    await tester.pump();
+
+    expect(find.text('first code'), findsOneWidget);
+    expect(find.text('zzz'), findsNothing);
+    // Let the search debounce re-armed by clearing settle.
+    await tester.pump(const Duration(milliseconds: 350));
   });
 }

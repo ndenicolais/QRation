@@ -1580,6 +1580,12 @@ abstract class AppLocalizations {
   /// **'No favorites codes'**
   String get favorites_screen_empty_state;
 
+  /// No description provided for @favorites_screen_empty_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first code'**
+  String get favorites_screen_empty_action;
+
   /// No description provided for @history_screen_search_label.
   ///
   /// In en, this message translates to:
@@ -1621,6 +1627,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No saved codes'**
   String get history_screen_empty_state;
+
+  /// No description provided for @history_screen_empty_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan now'**
+  String get history_screen_empty_action;
+
+  /// No description provided for @history_screen_empty_filtered.
+  ///
+  /// In en, this message translates to:
+  /// **'No results for the active filters'**
+  String get history_screen_empty_filtered;
+
+  /// No description provided for @history_screen_clear_filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get history_screen_clear_filters;
 
   /// No description provided for @history_screen_selected_count.
   ///
@@ -2863,6 +2887,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Faster, smoother opening of code details, with the type icon animating from the list into the details screen.'**
   String get changelog_v2_0_0_bullet_31;
+
+  /// No description provided for @changelog_v2_0_0_bullet_32.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty screens now suggest what to do next: create your first code from Favorites, scan from History, or clear the filters when a search finds nothing.'**
+  String get changelog_v2_0_0_bullet_32;
+
+  /// No description provided for @changelog_v2_0_0_bullet_33.
+  ///
+  /// In en, this message translates to:
+  /// **'The chosen app language is applied right from startup, without a brief flash in the device language.'**
+  String get changelog_v2_0_0_bullet_33;
 }
 
 class _AppLocalizationsDelegate

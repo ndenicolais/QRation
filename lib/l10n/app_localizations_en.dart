@@ -792,6 +792,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get favorites_screen_empty_state => 'No favorites codes';
 
   @override
+  String get favorites_screen_empty_action => 'Create your first code';
+
+  @override
   String get history_screen_search_label => 'Search';
 
   @override
@@ -811,6 +814,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get history_screen_empty_state => 'No saved codes';
+
+  @override
+  String get history_screen_empty_action => 'Scan now';
+
+  @override
+  String get history_screen_empty_filtered =>
+      'No results for the active filters';
+
+  @override
+  String get history_screen_clear_filters => 'Clear filters';
 
   @override
   String get history_screen_selected_count => 'selected';
@@ -1486,4 +1499,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_31 =>
       'Faster, smoother opening of code details, with the type icon animating from the list into the details screen.';
+
+  @override
+  String get changelog_v2_0_0_bullet_32 =>
+      'Empty screens now suggest what to do next: create your first code from Favorites, scan from History, or clear the filters when a search finds nothing.';
+
+  @override
+  String get changelog_v2_0_0_bullet_33 =>
+      'The chosen app language is applied right from startup, without a brief flash in the device language.';
 }

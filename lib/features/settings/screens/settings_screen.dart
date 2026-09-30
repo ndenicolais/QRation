@@ -10,6 +10,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qration/app.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -69,12 +70,12 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   Future<String> _loadLanguagePreference() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('language_code') ?? '';
+    return prefs.getString(QrationApp.languageKey) ?? '';
   }
 
   Future<void> _saveLanguagePreference(String languageCode) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language_code', languageCode);
+    await prefs.setString(QrationApp.languageKey, languageCode);
     setState(() {});
     Get.updateLocale(Locale(languageCode));
   }

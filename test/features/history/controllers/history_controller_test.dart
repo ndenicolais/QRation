@@ -166,6 +166,40 @@ void main() {
       expect(controller.filteredCodes.length, 3);
     });
 
+    test('hasCodes and hasActiveFilters distinguish the empty states',
+        () async {
+      stream.add([]);
+      await pumpEventQueue();
+      expect(controller.hasCodes, isFalse);
+      expect(controller.hasActiveFilters, isFalse);
+
+      stream.add(codes);
+      await pumpEventQueue();
+      controller.setSource(CodeSource.created);
+      controller.toggleStandardType(BarcodeType.text);
+
+      expect(controller.hasCodes, isTrue);
+      expect(controller.hasActiveFilters, isTrue);
+      expect(controller.filteredCodes, isEmpty);
+    });
+
+    test('clearFilters resets search, types and source', () async {
+      stream.add(codes);
+      await pumpEventQueue();
+      controller.onSearchChanged('nothing matches');
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+      controller.toggleStandardType(BarcodeType.url);
+      controller.toggleSocialType('Instagram');
+      controller.setSource(CodeSource.created);
+      expect(controller.filteredCodes, isEmpty);
+
+      controller.clearFilters();
+
+      expect(controller.hasActiveFilters, isFalse);
+      expect(controller.searchInput.value, isEmpty);
+      expect(controller.filteredCodes.length, 3);
+    });
+
     test('select all toggles between all filtered and none', () async {
       stream.add(codes);
       await pumpEventQueue();

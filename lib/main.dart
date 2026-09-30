@@ -39,5 +39,5 @@ Future<void> main() async {
   Get.put(ThemeController());
   Get.put(ScannerPreferencesController());
   Get.put<CodesRepository>(CodesService());
-  runApp(const QrationApp());
+  runApp(QrationApp(initialLocale: await QrationApp.loadSavedLocale()));
 }

@@ -29,7 +29,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // Scanner tab is first: the app should be immediately usable to scan on open.
-  int _selectedIndex = 0;
+  int _selectedIndex = _scanTab;
+
+  static const _scanTab = 0;
+  static const _createTab = 1;
+
+  void _goToTab(int index) => setState(() => _selectedIndex = index);
 
   @override
   void initState() {
@@ -46,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
 
     final pages = [
-      ScannerScreen(isActive: _selectedIndex == 0),
+      ScannerScreen(isActive: _selectedIndex == _scanTab),
       CodeCreateTypesScreen(),
-      const FavoritesScreen(),
-      const HistoryScreen(),
+      FavoritesScreen(onCreateCode: () => _goToTab(_createTab)),
+      HistoryScreen(onScanNow: () => _goToTab(_scanTab)),
       const SettingsScreen(),
     ];
 
@@ -79,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: NavigationBar(
             height: 68,
             selectedIndex: _selectedIndex,
-            onDestinationSelected: (i) => setState(() => _selectedIndex = i),
+            onDestinationSelected: _goToTab,
             destinations: [
               NavigationDestination(
                 icon: const Icon(MingCuteIcons.mgc_scan_2_line, size: 20),

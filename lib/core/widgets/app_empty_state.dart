@@ -15,11 +15,17 @@ class AppEmptyState extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
 
+  /// Optional call to action shown below the message (both must be set).
+  final String? actionLabel;
+  final VoidCallback? onAction;
+
   const AppEmptyState({
     super.key,
     required this.message,
     required this.icon,
     this.iconColor,
+    this.actionLabel,
+    this.onAction,
   });
 
   @override
@@ -42,6 +48,13 @@ class AppEmptyState extends StatelessWidget {
               style: theme.textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
+            if (actionLabel != null && onAction != null) ...[
+              const SizedBox(height: 20),
+              FilledButton.tonal(
+                onPressed: onAction,
+                child: Text(actionLabel!),
+              ),
+            ],
           ],
         ),
       ),

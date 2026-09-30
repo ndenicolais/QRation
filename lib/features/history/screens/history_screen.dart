@@ -29,7 +29,10 @@ import 'package:qration/core/widgets/app_empty_state.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 
 class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({super.key});
+  const HistoryScreen({super.key, this.onScanNow});
+
+  /// Empty-state call to action (e.g. switch Home to the Scanner tab).
+  final VoidCallback? onScanNow;
 
   @override
   HistoryScreenState createState() => HistoryScreenState();
@@ -84,6 +87,29 @@ class HistoryScreenState extends State<HistoryScreen> {
     _controller.clearSearch();
     _searchFocusNode.unfocus();
     FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  void _clearFilters() {
+    _resetFocus();
+    _controller.clearFilters();
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    if (_controller.hasCodes && _controller.hasActiveFilters) {
+      return AppEmptyState(
+        icon: MingCuteIcons.mgc_filter_fill,
+        message: l10n.history_screen_empty_filtered,
+        actionLabel: l10n.history_screen_clear_filters,
+        onAction: _clearFilters,
+      );
+    }
+    return AppEmptyState(
+      icon: MingCuteIcons.mgc_inbox_2_fill,
+      message: l10n.history_screen_empty_state,
+      actionLabel: l10n.history_screen_empty_action,
+      onAction: widget.onScanNow,
+    );
   }
 
   Widget _buildLoadingIndicator() {
@@ -367,11 +393,7 @@ class HistoryScreenState extends State<HistoryScreen> {
           children: [
             Expanded(
               child: filteredCodes.isEmpty && !isSelecting
-                  ? AppEmptyState(
-                      icon: MingCuteIcons.mgc_inbox_2_fill,
-                      message: AppLocalizations.of(context)!
-                          .history_screen_empty_state,
-                    )
+                  ? _buildEmptyState(context)
                   : _buildCodesListView(filteredCodes, isSelecting),
             ),
             if (isSelecting)

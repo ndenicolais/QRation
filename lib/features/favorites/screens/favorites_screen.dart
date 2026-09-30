@@ -20,9 +20,13 @@ import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/favorites/controllers/favorites_controller.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
 import 'package:qration/core/widgets/app_empty_state.dart';
+import 'package:qration/core/widgets/app_loader.dart';
 
 class FavoritesScreen extends StatefulWidget {
-  const FavoritesScreen({super.key});
+  const FavoritesScreen({super.key, this.onCreateCode});
+
+  /// Empty-state call to action (e.g. switch Home to the Create tab).
+  final VoidCallback? onCreateCode;
 
   @override
   FavoritesScreenState createState() => FavoritesScreenState();
@@ -123,7 +127,7 @@ class FavoritesScreenState extends State<FavoritesScreen>
   Widget _buildTabBarView(BuildContext context) {
     return Obx(() {
       if (_controller.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: AppLoader());
       }
 
       final error = _controller.error.value;
@@ -138,6 +142,9 @@ class FavoritesScreenState extends State<FavoritesScreen>
         return AppEmptyState(
           icon: MingCuteIcons.mgc_inbox_2_fill,
           message: AppLocalizations.of(context)!.favorites_screen_empty_state,
+          actionLabel:
+              AppLocalizations.of(context)!.favorites_screen_empty_action,
+          onAction: widget.onCreateCode,
         );
       }
 

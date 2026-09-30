@@ -47,6 +47,15 @@ class HistoryController extends GetxController {
   bool get allSelected =>
       filteredCodes.isNotEmpty && selectedIds.length == filteredCodes.length;
 
+  /// False when the user has no codes at all (as opposed to no matches).
+  bool get hasCodes => _allCodes.isNotEmpty;
+
+  bool get hasActiveFilters =>
+      searchKeyword.value.isNotEmpty ||
+      selectedStandardTypes.isNotEmpty ||
+      selectedSocialTypes.isNotEmpty ||
+      selectedSource.value != null;
+
   @override
   void onInit() {
     super.onInit();
@@ -140,6 +149,14 @@ class HistoryController extends GetxController {
   }
 
   void setSource(CodeSource? source) => selectedSource.value = source;
+
+  /// Resets search, type and source filters at once.
+  void clearFilters() {
+    clearSearch();
+    selectedStandardTypes.clear();
+    selectedSocialTypes.clear();
+    selectedSource.value = null;
+  }
 
   void startSelection() {
     selectedIds.clear();

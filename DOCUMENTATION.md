@@ -118,7 +118,7 @@ qration/
 │   └── sounds/                     # Suono beep per scanner
 ├── lib/
 │   ├── main.dart                   # Entry point: inizializza Firebase, Crashlytics, ThemeController, ScannerPreferencesController
-│   ├── app.dart                    # QrationApp: GetMaterialApp con routing e localizzazione
+│   ├── app.dart                    # QrationApp: GetMaterialApp con routing e localizzazione (locale iniziale da main)
 │   ├── core/
 │   │   ├── constants/
 │   │   │   └── app_constants.dart  # Costanti globali: URI, tipi barcode ordinati, social list
@@ -692,6 +692,8 @@ La modalità tema (`ThemeMode.system`/`light`/`dark`) è salvata in `SharedPrefe
 
 **Stati vuoti/errore:** `AppEmptyState` (`app_empty_state.dart`) e `AppErrorState` (`app_error_state.dart`), entrambi in `lib/core/widgets/`, forniscono la UI standard per liste vuote e stati di errore, da riusare al posto di implementazioni inline. `lib/core/widgets/` contiene un file per ogni widget condiviso (`app_button.dart`, `app_textfield.dart`, `app_toast.dart`, `app_loader.dart`, `app_empty_state.dart`, `app_error_state.dart`, `app_delete_dialog.dart`, `app_changelog_dialog.dart`), tutti con convenzione `App*`. La cartella `lib/widgets/` (ex contenitore di widget "globali" ma di fatto usati da una sola feature ciascuno) è stata rimossa: `custom_picker_field.dart`, `full_screen_map.dart` e `custom_loader.dart` sono ora in `lib/features/codes/widgets/code_create/` (usati solo dal flusso di creazione standard), `custom_expansiontile.dart` è in `lib/features/settings/widgets/` (usato solo da `support_screen.dart`).
 
+`AppEmptyState` accetta una call-to-action opzionale (`actionLabel` + `onAction`, mostrata come `FilledButton.tonal` solo se entrambi sono presenti). Preferiti e Cronologia ricevono da `HomeScreen` le callback `onCreateCode`/`onScanNow`, che cambiano tab (Crea / Scansiona) senza introdurre dipendenze tra le feature. Nei Preferiti senza codici il pulsante è "Crea il tuo primo codice"; in Cronologia `HistoryController.hasCodes` e `hasActiveFilters` distinguono il vuoto reale ("Nessun codice salvato" + "Scansiona ora") dal vuoto dovuto ai filtri ("Nessun risultato per i filtri attivi" + "Azzera i filtri", che chiama `clearFilters()` e svuota anche il campo di ricerca). Il caricamento dei Preferiti usa `AppLoader` come il resto dell'app.
+
 ---
 
 ## 9. Navigazione
@@ -750,7 +752,7 @@ Riepilogo di tutte le chiavi salvate in `SharedPreferences`:
 | Chiave | Tipo | Default | Descrizione |
 |---|---|---|---|
 | `theme_mode` | `String` | `system` | Tema: `system`, `light` o `dark` (sostituisce il vecchio `theme_preference` bool, migrato automaticamente) |
-| `language_code` | `String` | `''` (sistema) | Lingua: `en` / `it` |
+| `language_code` (`QrationApp.languageKey`) | `String` | `''` (sistema) | Lingua: `en` / `it`. Letta in `main()` con `QrationApp.loadSavedLocale()` prima di `runApp` e passata come `initialLocale` a `QrationApp`, così il primo frame usa già la lingua scelta; i cambi successivi dalle Impostazioni passano da `Get.updateLocale` |
 | `beepEnabled` | `bool` | `false` | Beep audio alla scansione |
 | `vibrateEnabled` | `bool` | `false` | Vibrazione alla scansione |
 | `remember_me` | `bool` | `false` | Mantieni sessione al riavvio |

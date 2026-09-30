@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -21,15 +21,18 @@ import 'package:qration/l10n/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QrationApp extends StatelessWidget {
-  const QrationApp({super.key});
+  const QrationApp({super.key, this.initialLocale});
 
-  Future<Locale?> _resolveLocale() async {
+  static const languageKey = 'language_code';
+
+  /// Language saved in Settings, read in `main()` before `runApp` so the
+  /// first frame already uses it; null follows the device locale.
+  final Locale? initialLocale;
+
+  static Future<Locale?> loadSavedLocale() async {
     final prefs = await SharedPreferences.getInstance();
-    final code = prefs.getString('language_code');
-    if (code != null && code.isNotEmpty) {
-      return Locale(code);
-    }
-    return null;
+    final code = prefs.getString(languageKey);
+    return code != null && code.isNotEmpty ? Locale(code) : null;
   }
 
   @override
@@ -44,31 +47,28 @@ class QrationApp extends StatelessWidget {
         ),
         splitScreenMode: true,
         minTextAdapt: true,
-        builder: (_, __) => FutureBuilder<Locale?>(
-          future: _resolveLocale(),
-          builder: (_, snap) => Obx(
-            () => GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'QRation',
-              theme: AppTheme.lightTheme(
-                primary: themeController.currentAccent.light,
-              ),
-              darkTheme: AppTheme.darkTheme(
-                primary: themeController.currentAccent.dark,
-              ),
-              themeMode: themeController.themeMode,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: snap.data,
-              supportedLocales: L10n.all,
-              getPages: AppPages.pages,
-              unknownRoute: AppPages.unknownRoute,
-              initialRoute: AppRoutes.splash,
+        builder: (_, __) => Obx(
+          () => GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'QRation',
+            theme: AppTheme.lightTheme(
+              primary: themeController.currentAccent.light,
             ),
+            darkTheme: AppTheme.darkTheme(
+              primary: themeController.currentAccent.dark,
+            ),
+            themeMode: themeController.themeMode,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: initialLocale,
+            supportedLocales: L10n.all,
+            getPages: AppPages.pages,
+            unknownRoute: AppPages.unknownRoute,
+            initialRoute: AppRoutes.splash,
           ),
         ),
       ),
