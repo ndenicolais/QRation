@@ -1,83 +1,41 @@
+﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// Licensed under a source-available, non-commercial license. See LICENSE.
+//
+// Commercial use, including publishing or monetizing on any app store,
+// requires explicit written permission from the copyright holder.
+//
+// Author: Nicola De Nicolais
+// Contact: ndn21dev@gmail.com
+// GitHub: https://github.com/ndenicolais
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
-import 'package:qration/l10n/l10n.dart';
-import 'package:qration/screens/intro_screen.dart';
-import 'package:qration/theme/theme_notifier.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:qration/app.dart';
+import 'package:qration/core/constants/app_version.dart';
+import 'package:qration/core/theme/theme_controller.dart';
+import 'package:qration/features/codes/services/codes_repository.dart';
+import 'package:qration/features/codes/services/codes_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeApp();
-}
-
-Future<void> initializeApp() async {
   await Firebase.initializeApp();
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final String? savedLocale = prefs.getString('language_code');
-  final ThemeNotifier themeNotifier =
-      await ThemeNotifier.loadThemeFromPreferences();
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => themeNotifier,
-      child: MyApp(savedLocale: savedLocale),
-    ),
-  );
-}
+  final packageInfo = await PackageInfo.fromPlatform();
+  AppVersion.current = packageInfo.version;
 
-class MyApp extends StatelessWidget {
-  final String? savedLocale;
-
-  const MyApp({super.key, this.savedLocale});
-
-  Locale? _determineLocale() {
-    if (savedLocale != null && savedLocale!.isNotEmpty) {
-      try {
-        return Locale(savedLocale!);
-      } catch (e) {
-        debugPrint('Invalid locale format: $savedLocale');
-      }
-    }
-    return Get.deviceLocale;
+  if (!kIsWeb) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return OrientationBuilder(
-          builder: (context, orientation) {
-            return ScreenUtilInit(
-              designSize: Size(constraints.maxWidth, constraints.maxHeight),
-              splitScreenMode: true,
-              minTextAdapt: true,
-              child: Consumer<ThemeNotifier>(
-                builder: (context, themeNotifier, child) {
-                  Locale? initialLocale = _determineLocale();
-                  return GetMaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    theme: themeNotifier.currentTheme,
-                    localizationsDelegates: const [
-                      AppLocalizations.delegate,
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                    ],
-                    locale: initialLocale,
-                    supportedLocales: L10n.all,
-                    home: const IntroScreen(),
-                  );
-                },
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+  Get.put(ThemeController());
+  Get.put<CodesRepository>(CodesService());
+  runApp(const QrationApp());
 }
