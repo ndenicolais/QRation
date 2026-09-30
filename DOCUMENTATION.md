@@ -151,6 +151,7 @@ qration/
 │   │   ├── favorites/
 │   │   │   └── screens/            # favorites_screen
 │   │   ├── history/
+│   │   │   ├── controllers/        # HistoryController (stream, ricerca con debounce, filtri, selezione)
 │   │   │   └── screens/            # history_screen
 │   │   ├── home/
 │   │   │   └── screens/            # home_screen (bottom nav container)
@@ -458,9 +459,17 @@ Lista dei codici marcati come preferiti, organizzata in due tab:
 
 ### 5.10 Cronologia
 
-**Percorso:** `lib/features/history/screens/history_screen.dart`
+**Percorso:** `lib/features/history/screens/history_screen.dart` (UI) + `lib/features/history/controllers/history_controller.dart` (stato e logica)
 
 Lista completa di tutti i codici dell'utente con funzionalità avanzate di ricerca e filtro.
+
+**Separazione UI / logica:** `HistoryScreen` contiene solo composizione di widget e stato puramente UI (`TextEditingController`/`FocusNode` della ricerca); tutto il resto vive in `HistoryController` (creato con `Get.put` in `initState` e rimosso con `Get.delete` in `dispose`, come le altre screen con controller):
+- si iscrive **una sola volta** a `CodesRepository.getCodesStream()` in `onInit` (in precedenza lo `StreamBuilder` chiamava `getCodesStream()` a ogni rebuild, riaprendo il listener Firestore a ogni tasto premuto nella ricerca) ed espone `isLoading`/`error`;
+- stato dei filtri osservabile: `searchInput` (testo digitato) → `searchKeyword` con **debounce di 300 ms**, `selectedStandardTypes`, `selectedSocialTypes`, `selectedSource`;
+- `filteredCodes` è **memoizzato**: viene ricalcolato (filtro + ordinamento per data decrescente) da un worker `everAll` solo quando cambia uno degli input, non a ogni rebuild. La logica pura è nel metodo statico `HistoryController.filterCodes` (filtri per tipo standard/social in OR tra loro, poi in AND con ricerca e sorgente), testato separatamente;
+- selezione multipla (`isSelecting`, `selectedIds`, `toggleSelected`, `toggleSelectAll`, `allSelected`) ed eliminazione (`deleteSelected`, con `isDeleting` azzerato in `finally` anche in caso di errore).
+
+Ogni card della lista è avvolta in un proprio `Obx`, così la selezione di un elemento ricostruisce solo quella card e la bottom bar di selezione. Nella bottom bar il contatore "N selezionati" è in un `Expanded` con ellissi, per evitare overflow con testi lunghi o scala del testo di sistema elevata.
 
 **Funzionalità:**
 - **Ricerca testuale** per contenuto del codice
@@ -470,7 +479,7 @@ Lista completa di tutti i codici dell'utente con funzionalità avanzate di ricer
 - **Modalità selezione multipla:** un unico pulsante Cestino nella barra di ricerca avvia la selezione (in precedenza era un'icona checkbox separata da quella di eliminazione, ridondante); una volta selezionati uno o più codici, il pulsante Cestino nella bottom bar di selezione li elimina in blocco
 - **Caricamento** da Firestore con indicatore di progresso animato
 
-L'eliminazione in blocco (`_showDeleteSelectedDialog`) esegue `Future.wait` sulle `deleteCode` selezionate (in parallelo invece che in sequenza, per ridurre il tempo sotto l'overlay di caricamento) prima di richiamare `setState`: se nel frattempo `HistoryScreenState` non è più montato, la chiamata a `setState` sollevava un'eccezione (`setState() called after dispose()`). Corretto anteponendo un controllo `context.mounted` al `setState` successivo all'`await`.
+L'eliminazione in blocco (`HistoryController.deleteSelected`) esegue `Future.wait` sulle `deleteCode` selezionate (in parallelo invece che in sequenza, per ridurre il tempo sotto l'overlay di caricamento). Nella screen il toast di conferma è preceduto da un controllo `context.mounted`, perché `HistoryScreenState` potrebbe non essere più montato al termine dell'`await`.
 
 In precedenza, dopo l'eliminazione lo schermo restava comunque nero: la causa reale era un doppio `Navigator.pop()`. `AppDeleteDialog` chiude già da sé il proprio dialogo prima di invocare `onConfirm`, ma il callback `onConfirm` di Cronologia eseguiva un ulteriore `Navigator.of(context).pop()` come prima istruzione; poiché `HistoryScreen` vive nell'`IndexedStack` di `HomeScreen` senza una route propria, quel secondo pop chiudeva la Home stessa (da cui il crash `setState()` dopo dispose, sintomo secondario). Corretto rimuovendo la chiamata `Navigator.pop()` ridondante. Lo stesso bug era presente anche in `delete_account_screen.dart` ed è stato corretto allo stesso modo.
 
@@ -553,6 +562,7 @@ L'app usa **GetX** come sistema di state management. I controller sono registrat
 | `ScannerPreferencesController` | Preferenze di feedback della scansione (`beepEnabled`, `vibrateEnabled`) osservabili e persistite in `SharedPreferences`; registrato in `main.dart` e letto da `ScannerScreen` al momento di ogni rilevamento, così una modifica nelle Impostazioni ha effetto subito anche se lo scanner resta vivo nell'`IndexedStack` di Home |
 | `AuthController` | Stato autenticazione, operazioni login/logout/signup, recupero dati utente |
 | `SettingsController` | Facade senza stato proprio per la schermata Impostazioni: espone e modifica `themeMode`/`accentIndex` delegando a `ThemeController` e `beepEnabled`/`vibrateEnabled` delegando a `ScannerPreferencesController` |
+| `HistoryController` | Stato e azioni della Cronologia: sottoscrizione unica allo stream dei codici, ricerca con debounce (300 ms), filtri tipo/social/sorgente con lista filtrata memoizzata, selezione multipla ed eliminazione in blocco |
 | `CodeDetailsController` | Stato e azioni della schermata Dettaglio codice (preferito, note, salvataggio/condivisione immagine, apertura URL/email/telefono/SMS/contatto/mappa/Wi-Fi/calendario, eliminazione) |
 | `CodeCreateStandardController` | Stato del form di creazione QR standard (`TextEditingController` per campo, colori/arrotondamento occhi e moduli, prefisso telefonico, cifratura Wi-Fi), generazione del contenuto per tipo e creazione del `CodeModel` |
 | `DatabaseController` | Statistiche codici (totali, creati, scansionati, distribuzione per tipo), generazione export PDF/Excel/CSV ed export/import JSON |

@@ -2845,6 +2845,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.'**
   String get changelog_v2_0_0_bullet_28;
+
+  /// No description provided for @changelog_v2_0_0_bullet_29.
+  ///
+  /// In en, this message translates to:
+  /// **'Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.'**
+  String get changelog_v2_0_0_bullet_29;
 }
 
 class _AppLocalizationsDelegate

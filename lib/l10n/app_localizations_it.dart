@@ -1500,4 +1500,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_28 =>
       'Risolto un problema per cui non era possibile scansionare di nuovo lo stesso codice senza riavviare l\'app: ora basta allontanare la fotocamera e inquadrarlo di nuovo.';
+
+  @override
+  String get changelog_v2_0_0_bullet_29 =>
+      'Ricerca più fluida nella Cronologia: la lista non si ricarica più a ogni tasto premuto e i filtri vengono applicati appena smetti di digitare.';
 }

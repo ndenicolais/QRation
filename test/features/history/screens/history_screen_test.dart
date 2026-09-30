@@ -1,0 +1,103 @@
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// Licensed under a source-available, non-commercial license. See LICENSE.
+//
+// Commercial use, including publishing or monetizing on any app store,
+// requires explicit written permission from the copyright holder.
+//
+// Author: Nicola De Nicolais
+// Contact: ndn21dev@gmail.com
+// GitHub: https://github.com/ndenicolais
+
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:qration/features/codes/models/code_model.dart';
+import 'package:qration/features/codes/services/codes_repository.dart';
+import 'package:qration/features/history/screens/history_screen.dart';
+import 'package:qration/l10n/app_localizations.dart';
+
+class MockCodesRepository extends Mock implements CodesRepository {}
+
+void main() {
+  late StreamController<List<CodeModel>> stream;
+
+  setUp(() {
+    Get.testMode = true;
+    stream = StreamController<List<CodeModel>>();
+    final repository = MockCodesRepository();
+    when(() => repository.getCodesStream()).thenAnswer((_) => stream.stream);
+    Get.put<CodesRepository>(repository);
+  });
+
+  tearDown(() async {
+    Get.reset();
+    await stream.close();
+  });
+
+  Future<void> pumpHistory(WidgetTester tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(390, 844),
+        builder: (_, __) => const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: HistoryScreen(),
+        ),
+      ),
+    );
+    await tester.pump();
+  }
+
+  CodeModel code(String id, String value) => CodeModel(
+        id: id,
+        barcode: Barcode(rawValue: value, type: BarcodeType.text),
+        date: DateTime(2026, 1, int.parse(id)),
+        source: CodeSource.scanned,
+      );
+
+  testWidgets('renders codes, selection mode and select all', (tester) async {
+    await pumpHistory(tester);
+
+    stream.add([code('1', 'first code'), code('2', 'second code')]);
+    await tester.pump();
+
+    expect(find.text('first code'), findsOneWidget);
+    expect(find.text('second code'), findsOneWidget);
+
+    final l10n =
+        AppLocalizations.of(tester.element(find.byType(HistoryScreen)))!;
+    await tester.tap(find.byTooltip(l10n.history_screen_tooltip_select_mode));
+    await tester.pump();
+    expect(find.byType(Checkbox), findsNWidgets(2));
+
+    await tester.tap(find.text(l10n.history_screen_select_all));
+    await tester.pump();
+    expect(
+        find.text('2 ${l10n.history_screen_selected_count}'), findsOneWidget);
+
+    await tester
+        .tap(find.byTooltip(l10n.history_screen_tooltip_close_selection));
+    await tester.pump();
+    expect(find.byType(Checkbox), findsNothing);
+  });
+
+  testWidgets('shows the empty state when there are no codes', (tester) async {
+    await pumpHistory(tester);
+
+    stream.add([]);
+    await tester.pump();
+
+    final l10n =
+        AppLocalizations.of(tester.element(find.byType(HistoryScreen)))!;
+    expect(find.text(l10n.history_screen_empty_state), findsOneWidget);
+  });
+}

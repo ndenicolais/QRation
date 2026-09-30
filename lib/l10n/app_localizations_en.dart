@@ -1474,4 +1474,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_28 =>
       'Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.';
+
+  @override
+  String get changelog_v2_0_0_bullet_29 =>
+      'Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.';
 }
