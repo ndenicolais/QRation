@@ -52,7 +52,7 @@ lib/
 │   ├── utils/                 # Utility (icone/testi per tipo codice, validator)
 │   └── widgets/               # Widget core riutilizzabili
 ├── features/
-│   ├── auth/                  # Login, Signup, Reset password
+│   ├── auth/                  # Login, Signup, Reset password, AuthController, SessionStore
 │   ├── codes/                 # Scanner, Creazione QR, Dettaglio, Modelli, CodesService
 │   ├── export/                # CSV, Excel, PDF services
 │   ├── favorites/             # Schermata preferiti
@@ -63,9 +63,7 @@ lib/
 │   ├── splash/                # Splash screen
 │   ├── user/                  # Profilo utente, Elimina account
 │   └── welcome/               # Schermata di benvenuto
-├── l10n/                      # File di localizzazione (EN + IT)
-├── services/                  # auth_service.dart
-└── widgets/                   # Widget globali riutilizzabili
+└── l10n/                      # File di localizzazione (EN + IT)
 ```
 
 ---
