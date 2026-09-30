@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/widgets/app_logo.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -93,7 +94,7 @@ class _AppHeader extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
-        Image.asset('assets/images/app_logo.png', width: 120.w, height: 120.w),
+        AppLogo(size: 120.w),
         SizedBox(height: 12.h),
         Text(
           'QRation',

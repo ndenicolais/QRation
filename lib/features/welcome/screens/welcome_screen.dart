@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:qration/core/widgets/app_logo.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/routes/app_routes.dart';
@@ -53,14 +54,13 @@ class WelcomeScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ).animate().fadeIn(delay: 200.ms, duration: 500.ms),
                 const Spacer(flex: 2),
-                Image.asset(
-                  'assets/images/app_logo.png',
-                  width: 200,
-                  height: 200,
-                ).animate().fadeIn(delay: 300.ms, duration: 600.ms).scale(
-                    begin: const Offset(0.7, 0.7),
-                    end: const Offset(1, 1),
-                    curve: Curves.elasticOut),
+                const AppLogo(size: 200)
+                    .animate()
+                    .fadeIn(delay: 300.ms, duration: 600.ms)
+                    .scale(
+                        begin: const Offset(0.7, 0.7),
+                        end: const Offset(1, 1),
+                        curve: Curves.elasticOut),
                 const Spacer(flex: 2),
                 AppButton(
                   label: l10n.welcome_login,

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:qration/core/widgets/app_logo.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/theme/app_colors.dart';
 import 'package:qration/features/auth/services/session_store.dart';
@@ -87,11 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              'assets/images/app_logo.png',
-              width: 120,
-              height: 120,
-            )
+            const AppLogo(size: 120)
                 .animate()
                 .fadeIn(duration: 300.ms)
                 .scale(begin: const Offset(0.7, 0.7), end: const Offset(1, 1)),

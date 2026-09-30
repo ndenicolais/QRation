@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:qration/core/widgets/app_logo.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -158,7 +159,7 @@ class _Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Image.asset('assets/images/app_logo.png', height: 80),
+      child: const AppLogo(size: 80),
     );
   }
 }

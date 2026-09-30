@@ -30,10 +30,10 @@ mixin SyncStatusMixin on GetxController {
 
   void startSyncStatus(CodesRepository repository) {
     _syncSubscription = repository.getSyncStatusStream().listen(
-      _onSyncStatus,
-      // A failing status stream must not break the list: just hide the banner.
-      onError: (Object _) => syncStatus.value = SyncStatus.synced,
-    );
+          _onSyncStatus,
+          // A failing status stream must not break the list: just hide the banner.
+          onError: (Object _) => syncStatus.value = SyncStatus.synced,
+        );
   }
 
   void _onSyncStatus(SyncStatus status) {

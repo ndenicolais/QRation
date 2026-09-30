@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/widgets/app_logo.dart';
 
 class CustomLoader extends StatefulWidget {
   final double width;
@@ -65,9 +66,12 @@ class CustomLoaderState extends State<CustomLoader>
         width: widget.width,
         height: widget.height,
         child: Image.asset(
-          'assets/images/app_logo.png',
+          AppLogo.assetPath,
           width: widget.width,
           height: widget.height,
+          // Tinted like AppLogo, so it stays visible on dark backgrounds.
+          color: Theme.of(context).colorScheme.primary,
+          colorBlendMode: BlendMode.srcIn,
         ),
       ),
     );
