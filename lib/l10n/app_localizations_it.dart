@@ -1640,4 +1640,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_43 =>
       'Selezione dei codici in Cronologia più comoda: tieni premuto un codice per iniziare a selezionare, la barra di ricerca diventa una barra di selezione animata e la conferma indica quanti codici sono stati eliminati.';
+
+  @override
+  String get changelog_v2_0_0_bullet_44 =>
+      'Aggiornate all\'ultima versione le librerie Firebase usate per accesso, sincronizzazione dei codici e segnalazione degli errori.';
 }

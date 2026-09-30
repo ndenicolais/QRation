@@ -64,10 +64,10 @@ L'app è completamente localizzata in italiano e inglese, con supporto a tema ch
 |---|---|
 | Framework | Flutter 3 / Dart `^3.5.2` |
 | State management | [get](https://pub.dev/packages/get) `^4.6.6` (GetX) |
-| Backend / Database | [cloud_firestore](https://pub.dev/packages/cloud_firestore) `^5.5.0` |
-| Autenticazione | [firebase_auth](https://pub.dev/packages/firebase_auth) `^5.3.4` + [google_sign_in](https://pub.dev/packages/google_sign_in) `^6.2.1` |
-| Core Firebase | [firebase_core](https://pub.dev/packages/firebase_core) `^3.9.0` |
-| Error reporting | [firebase_crashlytics](https://pub.dev/packages/firebase_crashlytics) `^4.1.5` (errori Flutter/Dart non gestiti, disabilitato su web) |
+| Backend / Database | [cloud_firestore](https://pub.dev/packages/cloud_firestore) `^6.10.0` |
+| Autenticazione | [firebase_auth](https://pub.dev/packages/firebase_auth) `^6.7.0` + [google_sign_in](https://pub.dev/packages/google_sign_in) `^6.2.1` |
+| Core Firebase | [firebase_core](https://pub.dev/packages/firebase_core) `^4.15.0` |
+| Error reporting | [firebase_crashlytics](https://pub.dev/packages/firebase_crashlytics) `^5.4.0` (errori Flutter/Dart non gestiti, disabilitato su web) |
 | UI responsiva | [flutter_screenutil](https://pub.dev/packages/flutter_screenutil) `^5.9.3` |
 | Font | Montserrat, asset locale (`assets/fonts/`), esposto via `AppFonts` (`app_fonts.dart`) |
 | Icone UI | [ming_cute_icons](https://pub.dev/packages/ming_cute_icons) `^0.0.7` + [line_awesome_flutter](https://pub.dev/packages/line_awesome_flutter) `^3.0.1` |
@@ -806,6 +806,8 @@ Riepilogo di tutte le chiavi salvate in `SharedPreferences`:
 
 ## 11. Dipendenze
 
+**Firebase (FlutterFire):** `firebase_core` 4, `firebase_auth` 6, `cloud_firestore` 6 e `firebase_crashlytics` 5 vanno aggiornati insieme (stesso rilascio FlutterFire, Firebase Android BoM 34.x); per i test seguono `fake_cloud_firestore` 4 e `firebase_auth_mocks` 0.15. Il passaggio dalle versioni 3/5/5/4 non ha richiesto modifiche al codice Dart (le API rimosse non erano usate). `android/app/build.gradle` non dichiara dipendenze native Firebase o Google: BoM, `firebase-auth` e `play-services-auth` arrivano dai plugin, e le versioni fissate a mano (in precedenza `firebase-auth:22.3.0`, BoM `33.1.1`, `play-services-auth:19.0.0`) sono state rimosse perché entravano in concorrenza con quelle dei plugin. `google_sign_in` è rimasto alla 6: la 7 cambia completamente l'API di login ed è un aggiornamento separato.
+
 ```yaml
 dependencies:
   get: ^4.6.6                          # State management e routing
@@ -816,10 +818,10 @@ dependencies:
   flutter_colorpicker: ^1.1.0          # Selezione colore QR
   toastification: ^2.3.0               # Toast/notifiche UI
   flutter_animate: ^4.5.0              # Animazioni
-  firebase_core: ^3.9.0                # Firebase core
-  firebase_auth: ^5.3.4                # Autenticazione Firebase
-  cloud_firestore: ^5.5.0              # Database cloud
-  firebase_crashlytics: ^4.1.5         # Error reporting in produzione
+  firebase_core: ^4.15.0               # Firebase core
+  firebase_auth: ^6.7.0                # Autenticazione Firebase
+  cloud_firestore: ^6.10.0             # Database cloud
+  firebase_crashlytics: ^5.4.0         # Error reporting in produzione
   google_sign_in: ^6.2.1               # Login con Google
   mobile_scanner: ^7.4.0               # Scanner QR/barcode
   pretty_qr_code: ^3.6.0               # Generazione QR code

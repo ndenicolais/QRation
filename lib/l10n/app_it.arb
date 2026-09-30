@@ -539,5 +539,6 @@
   "changelog_v2_0_0_bullet_40": "L'anteprima del QR durante la creazione ora si aggiorna in tempo reale per ogni tipo di codice, compresi quelli social.",
   "changelog_v2_0_0_bullet_41": "Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi.",
   "changelog_v2_0_0_bullet_42": "Trascina verso il basso Cronologia e Preferiti per aggiornarli; un piccolo avviso indica quando sei offline o quando ci sono modifiche ancora da sincronizzare.",
-  "changelog_v2_0_0_bullet_43": "Selezione dei codici in Cronologia più comoda: tieni premuto un codice per iniziare a selezionare, la barra di ricerca diventa una barra di selezione animata e la conferma indica quanti codici sono stati eliminati."
+  "changelog_v2_0_0_bullet_43": "Selezione dei codici in Cronologia più comoda: tieni premuto un codice per iniziare a selezionare, la barra di ricerca diventa una barra di selezione animata e la conferma indica quanti codici sono stati eliminati.",
+  "changelog_v2_0_0_bullet_44": "Aggiornate all'ultima versione le librerie Firebase usate per accesso, sincronizzazione dei codici e segnalazione degli errori."
 }

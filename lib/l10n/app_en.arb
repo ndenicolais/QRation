@@ -544,5 +544,6 @@
   "changelog_v2_0_0_bullet_40": "The QR preview while creating a code now updates live for every code type, including social codes.",
   "changelog_v2_0_0_bullet_41": "Settings now show the language actually in use, and switches that are off no longer look switched on.",
   "changelog_v2_0_0_bullet_42": "Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced.",
-  "changelog_v2_0_0_bullet_43": "Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted."
+  "changelog_v2_0_0_bullet_43": "Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted.",
+  "changelog_v2_0_0_bullet_44": "Updated the Firebase libraries used for sign-in, cloud sync and crash reporting to their latest versions."
 }

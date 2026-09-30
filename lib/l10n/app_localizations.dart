@@ -3073,6 +3073,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted.'**
   String get changelog_v2_0_0_bullet_43;
+
+  /// No description provided for @changelog_v2_0_0_bullet_44.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated the Firebase libraries used for sign-in, cloud sync and crash reporting to their latest versions.'**
+  String get changelog_v2_0_0_bullet_44;
 }
 
 class _AppLocalizationsDelegate
