@@ -1644,4 +1644,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_44 =>
       'Aggiornate all\'ultima versione le librerie Firebase usate per accesso, sincronizzazione dei codici e segnalazione degli errori.';
+
+  @override
+  String get changelog_v2_0_0_bullet_45 =>
+      'Nuovo logo e nuova icona dell\'app, con supporto alle icone a tema di Android 13+; dentro l\'app il logo segue il tema e il colore principale.';
 }

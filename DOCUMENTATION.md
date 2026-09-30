@@ -904,6 +904,17 @@ flutter build appbundle --release
 - Il file `android/local.properties` non va committato (contiene percorsi locali SDK)
 - La cartella `build/` non va committata (output di compilazione)
 
+### Icone e logo
+
+Tutte le icone derivano da un solo file, `assets/images/app_logo.png` (QR stilizzato monocromatico blu navy su sfondo trasparente), seguendo `ICON_GENERATION_GUIDE.md`:
+
+1. `powershell -ExecutionPolicy Bypass -File tool\icons\generate_icons.ps1` genera `assets/images/app_icon_legacy.png` (logo 84%) e `app_icon_foreground.png` (62%, trasparenti), più in `images/icons/` le icone `icon_512` (Play Store), `icon_192`, `oauth_logo_120` (schermata di consenso Google) e `favicon_32`, con sfondo bianco `#FFFFFF` per le icone piene.
+2. `dart run flutter_launcher_icons` (configurazione `flutter_launcher_icons` in `pubspec.yaml`) genera le icone Android: `mipmap-*/launcher_icon.png`, `drawable-*/ic_launcher_foreground.png` e `ic_launcher_monochrome.png`, `mipmap-anydpi-v26/launcher_icon.xml` (icona adattiva con sfondo `@color/ic_launcher_background` bianco e margine del 16%) e `values/colors.xml`. Essendo il logo monocromatico, il foreground trasparente fa anche da icona a tema di Android 13+.
+
+Il manifest usa `@mipmap/launcher_icon`; i vecchi `mipmap-*/ic_launcher.png` e `app_logo_icon.png` sono stati rimossi. Su Android 12+ lo splash di sistema usa automaticamente l'icona del launcher.
+
+Dentro l'app il logo si mostra con `AppLogo` (`lib/core/widgets/app_logo.dart`), che lo colora con il colore principale del tema (`BlendMode.srcIn`): blu navy nel tema chiaro, oro nel tema scuro, e segue l'accent scelto nelle Impostazioni. Senza questa colorazione il logo navy sparirebbe sugli sfondi scuri. Il PDF esportato usa il file originale (navy su pagina bianca).
+
 ---
 
 ## Licenza

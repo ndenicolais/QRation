@@ -3079,6 +3079,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Updated the Firebase libraries used for sign-in, cloud sync and crash reporting to their latest versions.'**
   String get changelog_v2_0_0_bullet_44;
+
+  /// No description provided for @changelog_v2_0_0_bullet_45.
+  ///
+  /// In en, this message translates to:
+  /// **'New app logo and icon, with support for Android 13+ themed icons; inside the app the logo follows the theme and accent colors.'**
+  String get changelog_v2_0_0_bullet_45;
 }
 
 class _AppLocalizationsDelegate
