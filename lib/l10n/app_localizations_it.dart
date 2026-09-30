@@ -1504,4 +1504,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_29 =>
       'Ricerca più fluida nella Cronologia: la lista non si ricarica più a ogni tasto premuto e i filtri vengono applicati appena smetti di digitare.';
+
+  @override
+  String get changelog_v2_0_0_bullet_30 =>
+      'Cronologia e Preferiti ora condividono lo stesso stile delle card e, nella Cronologia, un tocco in qualsiasi punto della card apre il dettaglio del codice.';
 }

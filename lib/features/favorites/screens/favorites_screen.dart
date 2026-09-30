@@ -13,10 +13,8 @@ import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/utils/code_type_icon.dart';
-import 'package:qration/core/utils/code_type_body.dart';
+import 'package:qration/core/widgets/code_list_tile.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/screens/code_details_screen.dart';
 import 'package:qration/features/favorites/controllers/favorites_controller.dart';
@@ -174,10 +172,10 @@ class FavoritesScreenState extends State<FavoritesScreen>
 
     return ListView.builder(
       itemCount: filteredCodes.length,
-      padding: EdgeInsets.fromLTRB(10.w, 8.h, 10.w, 16.h),
+      padding: CodeListTile.listPadding,
       itemBuilder: (context, index) {
         final code = filteredCodes[index];
-        return CodeCard(
+        return CodeListTile(
           code: code,
           onTap: () async {
             await Get.to(
@@ -188,74 +186,6 @@ class FavoritesScreenState extends State<FavoritesScreen>
           },
         );
       },
-    );
-  }
-}
-
-class CodeCard extends StatelessWidget {
-  final CodeModel code;
-  final VoidCallback onTap;
-
-  const CodeCard({super.key, required this.code, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final DateTime date = code.date;
-    final String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(date);
-    final contentIcon = CodeTypeIcon.fromBarcodeType(
-        code.barcode.type, code.barcode.rawValue ?? '');
-    final contentFormatter = getContentBody(code);
-    final displayContent = contentFormatter.formattedContent;
-
-    return Card(
-      color: Theme.of(context).cardTheme.color,
-      margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 6.h),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14.r),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.outline,
-          width: 1.w,
-        ),
-      ),
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
-        leading: Icon(
-          contentIcon.icon,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              displayContent,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 4.h),
-          ],
-        ),
-        subtitle: Text(
-          formattedDate,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontSize: 12.sp,
-          ),
-        ),
-        trailing: IconButton(
-          tooltip: AppLocalizations.of(context)!.history_screen_tooltip_details,
-          icon: Icon(
-            MingCuteIcons.mgc_right_fill,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-          onPressed: onTap,
-        ),
-        onTap: onTap,
-      ),
     );
   }
 }

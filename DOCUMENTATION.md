@@ -133,7 +133,7 @@ qration/
 │   │   ├── controllers/
 │   │   │   └── scanner_preferences_controller.dart # Preferenze beep/vibrazione condivise
 │   │   ├── utils/                  # Utility: icone/testi per tipo codice, validator, RescanGuard, ecc.
-│   │   └── widgets/                # Widget riutilizzabili core (toast, pulsanti, ecc.)
+│   │   └── widgets/                # Widget riutilizzabili core (toast, pulsanti, CodeListTile, ecc.)
 │   ├── features/
 │   │   ├── auth/
 │   │   │   ├── controllers/        # AuthController
@@ -454,7 +454,7 @@ Lista dei codici marcati come preferiti, organizzata in due tab. `FavoritesContr
 | Scansionati | Codici preferiti con `source = scanned` |
 | Creati | Codici preferiti con `source = created` |
 
-- Ogni elemento mostra icona tipo, contenuto e data
+- Ogni elemento è un `CodeListTile` (icona tipo, contenuto e data), la stessa card usata dalla Cronologia
 - Tap → naviga al Dettaglio codice
 
 ---
@@ -471,7 +471,9 @@ Lista completa di tutti i codici dell'utente con funzionalità avanzate di ricer
 - `filteredCodes` è **memoizzato**: viene ricalcolato (filtro + ordinamento per data decrescente) da un worker `everAll` solo quando cambia uno degli input, non a ogni rebuild. La logica pura è nel metodo statico `HistoryController.filterCodes` (filtri per tipo standard/social in OR tra loro, poi in AND con ricerca e sorgente), testato separatamente;
 - selezione multipla (`isSelecting`, `selectedIds`, `toggleSelected`, `toggleSelectAll`, `allSelected`) ed eliminazione (`deleteSelected`, con `isDeleting` azzerato in `finally` anche in caso di errore).
 
-Ogni card della lista è avvolta in un proprio `Obx`, così la selezione di un elemento ricostruisce solo quella card e la bottom bar di selezione. Nella bottom bar il contatore "N selezionati" è in un `Expanded` con ellissi, per evitare overflow con testi lunghi o scala del testo di sistema elevata.
+Le card sono `CodeListTile` (`showSource: true` per mostrare "Created"/"Scanned", `selectable` in modalità selezione): fuori dalla selezione un tocco su tutta la card, o sulla freccia, apre il dettaglio; in selezione il tocco seleziona/deseleziona. Ogni card della lista è avvolta in un proprio `Obx`, così la selezione di un elemento ricostruisce solo quella card e la bottom bar di selezione. Nella bottom bar il contatore "N selezionati" è in un `Expanded` con ellissi, per evitare overflow con testi lunghi o scala del testo di sistema elevata.
+
+**`CodeListTile`** (`lib/core/widgets/code_list_tile.dart`) è la card unica di tutte le liste di codici e sostituisce le due implementazioni precedenti (`CodeCard` nei Preferiti e `_buildCodeCard`/`_buildCardTitle`/`_buildCardTrailing` nella Cronologia), che avevano raggi e margini diversi (14 invece del 16 del `cardTheme`, margini 12/8 contro 2/6). Usa `AppRadius.large` (allineato al `cardTheme` globale) e un margine verticale di 6; le liste che la ospitano usano il padding comune `CodeListTile.listPadding`.
 
 **Funzionalità:**
 - **Ricerca testuale** per contenuto del codice

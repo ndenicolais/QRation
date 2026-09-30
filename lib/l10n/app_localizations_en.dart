@@ -1478,4 +1478,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_29 =>
       'Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.';
+
+  @override
+  String get changelog_v2_0_0_bullet_30 =>
+      'History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.';
 }

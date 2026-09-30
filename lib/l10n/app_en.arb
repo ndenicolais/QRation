@@ -502,5 +502,6 @@
   "changelog_v2_0_0_bullet_26": "Added a \"System\" theme option that automatically follows the device's light/dark setting.",
   "changelog_v2_0_0_bullet_27": "Fixed an issue where changing the scan beep or vibration in Settings only took effect after restarting the app.",
   "changelog_v2_0_0_bullet_28": "Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.",
-  "changelog_v2_0_0_bullet_29": "Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing."
+  "changelog_v2_0_0_bullet_29": "Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.",
+  "changelog_v2_0_0_bullet_30": "History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details."
 }

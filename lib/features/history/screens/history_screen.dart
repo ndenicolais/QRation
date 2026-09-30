@@ -13,15 +13,14 @@ import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
 import 'package:qration/features/codes/screens/code_details_screen.dart';
 import 'package:qration/features/history/controllers/history_controller.dart';
-import 'package:qration/core/utils/code_type_body.dart';
 import 'package:qration/core/utils/code_type_icon.dart';
+import 'package:qration/core/widgets/code_list_tile.dart';
 import 'package:qration/core/constants/app_constants.dart';
 import 'package:qration/core/widgets/app_loader.dart';
 import 'package:qration/core/widgets/app_delete_dialog.dart';
@@ -387,76 +386,23 @@ class HistoryScreenState extends State<HistoryScreen> {
   Widget _buildCodesListView(List<CodeModel> filteredCodes, bool isSelecting) {
     return ListView.builder(
       itemCount: filteredCodes.length,
+      padding: CodeListTile.listPadding,
       itemBuilder: (context, index) {
         final code = filteredCodes[index];
-        final String formattedDate =
-            DateFormat('dd/MM/yyyy HH:mm').format(code.date);
-        final contentIcon = CodeTypeIcon.fromBarcodeType(
-            code.barcode.type, code.barcode.rawValue ?? '');
-        final displayContent = getContentBody(code).formattedContent;
-
         // Own Obx so toggling a checkbox rebuilds only this card.
-        return Obx(() => _buildCodeCard(
-              context,
-              code,
-              formattedDate,
-              contentIcon,
-              displayContent,
-              isSelecting,
+        return Obx(() => CodeListTile(
+              code: code,
+              showSource: true,
+              selectable: isSelecting,
+              selected: _controller.selectedIds.contains(code.id),
+              onSelectedChanged: (_) => _controller.toggleSelected(code.id),
+              onTap: () => Get.to(
+                () => CodeDetailsScreen(code: code),
+                transition: Transition.fade,
+                duration: const Duration(milliseconds: 500),
+              ),
             ));
       },
-    );
-  }
-
-  Widget _buildCodeCard(
-    BuildContext context,
-    CodeModel code,
-    String formattedDate,
-    CodeTypeIcon contentIcon,
-    String displayContent,
-    bool isSelecting,
-  ) {
-    final isSelected = _controller.selectedIds.contains(code.id);
-    return Card(
-      color: isSelecting && isSelected
-          ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.10)
-          : Theme.of(context).cardTheme.color,
-      margin: EdgeInsets.symmetric(horizontal: 12.r, vertical: 8.r),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-        side: BorderSide(
-          color: isSelecting && isSelected
-              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.60)
-              : Theme.of(context).colorScheme.outline,
-          width: 1.w,
-        ),
-      ),
-      child: ListTile(
-        onTap: isSelecting ? () => _controller.toggleSelected(code.id) : null,
-        contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
-        leading: isSelecting
-            ? Checkbox(
-                value: isSelected,
-                onChanged: (_) => _controller.toggleSelected(code.id),
-                activeColor: Theme.of(context).colorScheme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              )
-            : Icon(
-                contentIcon.icon,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-        title: _buildCardTitle(context, code, displayContent),
-        subtitle: Text(
-          formattedDate,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontSize: 12.sp,
-          ),
-        ),
-        trailing: isSelecting ? null : _buildCardTrailing(context, code),
-      ),
     );
   }
 
@@ -516,53 +462,6 @@ class HistoryScreenState extends State<HistoryScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCardTitle(
-    BuildContext context,
-    CodeModel code,
-    String displayContent,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          code.source.toString().split('.').last.capitalize!,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          displayContent,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-          ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        SizedBox(height: 4.h),
-      ],
-    );
-  }
-
-  Widget _buildCardTrailing(BuildContext context, CodeModel code) {
-    return IconButton(
-      tooltip: AppLocalizations.of(context)!.history_screen_tooltip_details,
-      icon: Icon(MingCuteIcons.mgc_right_fill,
-          color: Theme.of(context).colorScheme.onSurfaceVariant),
-      onPressed: () {
-        Get.to(
-          () => CodeDetailsScreen(code: code),
-          transition: Transition.fade,
-          duration: const Duration(milliseconds: 500),
-        );
-      },
     );
   }
 }

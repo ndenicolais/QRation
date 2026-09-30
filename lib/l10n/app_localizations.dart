@@ -2851,6 +2851,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.'**
   String get changelog_v2_0_0_bullet_29;
+
+  /// No description provided for @changelog_v2_0_0_bullet_30.
+  ///
+  /// In en, this message translates to:
+  /// **'History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.'**
+  String get changelog_v2_0_0_bullet_30;
 }
 
 class _AppLocalizationsDelegate

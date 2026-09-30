@@ -502,5 +502,6 @@
   "changelog_v2_0_0_bullet_26": "Aggiunta l'opzione tema \"Sistema\", che segue automaticamente l'impostazione chiaro/scuro del dispositivo.",
   "changelog_v2_0_0_bullet_27": "Risolto un problema per cui la modifica di beep o vibrazione della scansione nelle Impostazioni aveva effetto solo dopo il riavvio dell'app.",
   "changelog_v2_0_0_bullet_28": "Risolto un problema per cui non era possibile scansionare di nuovo lo stesso codice senza riavviare l'app: ora basta allontanare la fotocamera e inquadrarlo di nuovo.",
-  "changelog_v2_0_0_bullet_29": "Ricerca più fluida nella Cronologia: la lista non si ricarica più a ogni tasto premuto e i filtri vengono applicati appena smetti di digitare."
+  "changelog_v2_0_0_bullet_29": "Ricerca più fluida nella Cronologia: la lista non si ricarica più a ogni tasto premuto e i filtri vengono applicati appena smetti di digitare.",
+  "changelog_v2_0_0_bullet_30": "Cronologia e Preferiti ora condividono lo stesso stile delle card e, nella Cronologia, un tocco in qualsiasi punto della card apre il dettaglio del codice."
 }
