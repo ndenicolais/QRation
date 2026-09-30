@@ -492,7 +492,7 @@ Lista completa di tutti i codici dell'utente con funzionalità avanzate di ricer
 - `filteredCodes` è **memoizzato**: viene ricalcolato (filtro + ordinamento per data decrescente) da un worker `everAll` solo quando cambia uno degli input, non a ogni rebuild. La logica pura è nel metodo statico `HistoryController.filterCodes` (filtri per tipo standard/social in OR tra loro, poi in AND con ricerca e sorgente), testato separatamente;
 - selezione multipla (`isSelecting`, `selectedIds`, `toggleSelected`, `toggleSelectAll`, `allSelected`) ed eliminazione (`deleteSelected`, con `isDeleting` azzerato in `finally` anche in caso di errore).
 
-Le card sono `CodeListTile` (`showSource: true` per mostrare "Created"/"Scanned", `selectable` in modalità selezione): fuori dalla selezione un tocco su tutta la card, o sulla freccia, apre il dettaglio; in selezione il tocco seleziona/deseleziona. Ogni card della lista è avvolta in un proprio `Obx`, così la selezione di un elemento ricostruisce solo quella card e la bottom bar di selezione. Nella bottom bar il contatore "N selezionati" è in un `Expanded` con ellissi, per evitare overflow con testi lunghi o scala del testo di sistema elevata.
+Le card sono `CodeListTile` (`showSource: true` per mostrare "Created"/"Scanned", `selectable` in modalità selezione): fuori dalla selezione un tocco su tutta la card, o sulla freccia, apre il dettaglio; in selezione il tocco seleziona/deseleziona. Ogni card della lista è avvolta in un proprio `Obx`, così la selezione di un elemento ricostruisce solo quella card. Nella barra di selezione il contatore "N selezionati" è in un `Expanded` con ellissi, per evitare overflow con testi lunghi o scala del testo di sistema elevata.
 
 **`CodeListTile`** (`lib/core/widgets/code_list_tile.dart`) è la card unica di tutte le liste di codici e sostituisce le due implementazioni precedenti (`CodeCard` nei Preferiti e `_buildCodeCard`/`_buildCardTitle`/`_buildCardTrailing` nella Cronologia), che avevano raggi e margini diversi (14 invece del 16 del `cardTheme`, margini 12/8 contro 2/6). Usa `AppRadius.large` (allineato al `cardTheme` globale) e un margine verticale di 6; le liste che la ospitano usano il padding comune `CodeListTile.listPadding`.
 
@@ -504,7 +504,7 @@ Le card sono `CodeListTile` (`showSource: true` per mostrare "Created"/"Scanned"
   - **Social:** `FilterChip` con icona e nome per ogni social network
   - I filtri si applicano in tempo reale (il sheet osserva `HistoryController` con `Obx`); in fondo "Azzera i filtri" (`clearSheetFilters()`, lascia intatta la ricerca) e "Mostra risultati" (chiude il sheet)
 - **Indicatore filtri attivi:** l'icona filtro nella barra di ricerca è avvolta in un `Badge` con `HistoryController.activeFilterCount` (tipi + social + origine; la ricerca è esclusa perché già visibile nel campo) e diventa del colore primario quando ci sono filtri attivi. Le due righe di chip sempre visibili sotto la ricerca sono state rimosse, recuperando spazio verticale per la lista
-- **Modalità selezione multipla:** un unico pulsante Cestino nella barra di ricerca avvia la selezione (in precedenza era un'icona checkbox separata da quella di eliminazione, ridondante); una volta selezionati uno o più codici, il pulsante Cestino nella bottom bar di selezione li elimina in blocco
+- **Modalità selezione multipla:** si entra con il pulsante Cestino della barra di ricerca oppure con una **pressione prolungata** su una card (`HistoryController.startSelectionWith`, che parte con quel codice già selezionato; feedback aptico `mediumImpact`). La riga di ricerca si trasforma, con un `AnimatedSwitcher` (dissolvenza + leggero scorrimento, 220 ms), in una **barra contestuale** con: chiudi, contatore "N selezionati", seleziona/deseleziona tutti (icona con tooltip) ed elimina. La vecchia bottom bar di selezione è stata rimossa. Ogni selezione/deselezione dà un feedback aptico `selectionClick`. Dopo l'eliminazione il toast indica quanti codici sono stati eliminati (`history_screen_deleted_count`, stringa ICU con plurale).
 - **Caricamento** da Firestore con indicatore di progresso animato
 
 L'eliminazione in blocco (`HistoryController.deleteSelected`) esegue `Future.wait` sulle `deleteCode` selezionate (in parallelo invece che in sequenza, per ridurre il tempo sotto l'overlay di caricamento). Nella screen il toast di conferma è preceduto da un controllo `context.mounted`, perché `HistoryScreenState` potrebbe non essere più montato al termine dell'`await`.
@@ -621,6 +621,8 @@ I binding di rotta usano `Get.lazyPut`: grazie alla smart management di GetX il 
 ### 7.1 Autenticazione (AuthController)
 
 **Percorso:** `lib/features/auth/controllers/auth_controller.dart` (+ `lib/features/auth/services/session_store.dart` per il flag "Ricordami")
+
+**Testabilità:** Firebase Auth, Firestore, Google Sign-In, `SessionStore` e la navigazione (`navigateTo`/`navigateBack`) sono iniettabili nel costruttore, con le istanze reali come default (`AppBinding` usa il costruttore vuoto). `login`/`signup`/`resetPassword` validano il `Form` e poi chiamano `submitLogin`/`submitSignup`/`submitResetPassword`, che contengono la logica e si possono testare senza widget. L'ultimo errore è esposto in `lastError`; il toast d'errore usa `Get.key.currentContext`, nullable, invece di `Get.context`, che fallisce se l'app non è ancora montata. I test (`test/features/auth/controllers/auth_controller_test.dart`) usano `firebase_auth_mocks`, `fake_cloud_firestore` e un `GoogleSignIn` finto con mocktail.
 
 Gestisce tutta la logica di autenticazione tramite Firebase Auth e Firestore. In precedenza esisteva anche un `auth_service.dart` con una copia divergente di queste operazioni, non usato da nessun file: è stato rimosso.
 
@@ -863,6 +865,17 @@ dependencies:
 | Servizi richiesti | Firebase project (Auth + Firestore) con `google-services.json` |
 
 ---
+
+## 12b. Test
+
+I test sono in `test/` e rispecchiano la struttura di `lib/` (`flutter test`; lint con `flutter analyze --fatal-infos --fatal-warnings`). Coprono:
+
+- **Modelli e utility** (`test/core/utils`, `test/features/codes/models`): parsing dei contenuti, validator, formattazione ISBN, decorazioni QR.
+- **Controller**: codici (dettaglio, creazione social, scanner), `HistoryController`, `FavoritesController`, `SyncStatusMixin`, `DatabaseController` (statistiche, export PDF/Excel/CSV, storico backup), `AuthController` (login, Google, registrazione, reset, logout, eliminazione account), `ThemeController`, `ScannerPreferencesController`, `SessionStore`, `BackupHistory`, `RescanGuard`.
+- **Binding** (`test/features/bindings_test.dart`): controller registrati da `HomeBinding` e dai binding con argomento di rotta, incluso il caso di argomento mancante.
+- **Widget**: `CodeListTile`, `AppEmptyState`, `SyncStatusBanner`, `BackupSection`, sezioni del Database e le screen Cronologia, Preferiti e Impostazioni.
+
+Note pratiche: il font dei test (Ahem) è più largo di Montserrat, quindi negli scroll orizzontali può servire `tester.ensureVisible` prima di un tap; i controller con timer (es. `SyncStatusMixin`) vanno creati dentro `testWidgets` perché `tester.pump` controlli il tempo; i controller che caricano `SharedPreferences` in `onInit` richiedono `SharedPreferences.setMockInitialValues` e un `pumpEventQueue()` prima di interagire.
 
 ## 13. Build e distribuzione
 

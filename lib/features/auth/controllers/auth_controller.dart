@@ -22,10 +22,28 @@ import 'package:qration/features/auth/services/session_store.dart';
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
 
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
-  final _googleSignIn = GoogleSignIn();
-  final _session = SessionStore();
+  AuthController({
+    FirebaseAuth? auth,
+    FirebaseFirestore? firestore,
+    GoogleSignIn? googleSignIn,
+    SessionStore? session,
+    void Function(String route)? navigateTo,
+    VoidCallback? navigateBack,
+  })  : _auth = auth ?? FirebaseAuth.instance,
+        _firestore = firestore ?? FirebaseFirestore.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn(),
+        _session = session ?? SessionStore(),
+        _navigateTo = navigateTo ?? ((route) => Get.offAllNamed(route)),
+        _navigateBack = navigateBack ?? (() => Get.back());
+
+  final FirebaseAuth _auth;
+  final FirebaseFirestore _firestore;
+  final GoogleSignIn _googleSignIn;
+  final SessionStore _session;
+
+  /// Replaces the navigation stack with a route (injectable for tests).
+  final void Function(String route) _navigateTo;
+  final VoidCallback _navigateBack;
   final _logger = Logger();
 
   // Form controllers
@@ -39,6 +57,9 @@ class AuthController extends GetxController {
   final passwordVisible = false.obs;
   final confirmPasswordVisible = false.obs;
   final rememberMe = false.obs;
+
+  /// Last error raised by an auth operation (also shown as a toast).
+  Object? lastError;
 
   User? get currentUser => _auth.currentUser;
 
@@ -72,6 +93,11 @@ class AuthController extends GetxController {
 
   Future<void> login(GlobalKey<FormState> formKey) async {
     if (!formKey.currentState!.validate()) return;
+    await submitLogin();
+  }
+
+  /// Login with the form values, already validated by [login].
+  Future<void> submitLogin() async {
     isLoading.value = true;
     try {
       final snapshot = await _firestore
@@ -88,7 +114,7 @@ class AuthController extends GetxController {
 
       if (rememberMe.value) await _saveSession();
       clearForm();
-      Get.offAllNamed(AppRoutes.home);
+      _navigateTo(AppRoutes.home);
     } catch (e) {
       _handleAuthError(e);
     } finally {
@@ -129,7 +155,7 @@ class AuthController extends GetxController {
       rememberMe.value = true;
       await _saveSession(uid: user?.uid);
       clearForm();
-      Get.offAllNamed(AppRoutes.home);
+      _navigateTo(AppRoutes.home);
     } catch (e) {
       _handleAuthError(e);
     } finally {
@@ -141,6 +167,11 @@ class AuthController extends GetxController {
 
   Future<void> signup(GlobalKey<FormState> formKey) async {
     if (!formKey.currentState!.validate()) return;
+    await submitSignup();
+  }
+
+  /// Signup with the form values, already validated by [signup].
+  Future<void> submitSignup() async {
     isLoading.value = true;
     try {
       final emailCheck = await _firestore
@@ -165,7 +196,7 @@ class AuthController extends GetxController {
         await _saveSession(uid: result.user!.uid);
         _logger.i('User registered');
         clearForm();
-        Get.offAllNamed(AppRoutes.home);
+        _navigateTo(AppRoutes.home);
       }
     } catch (e) {
       _handleAuthError(e);
@@ -178,6 +209,11 @@ class AuthController extends GetxController {
 
   Future<void> resetPassword(GlobalKey<FormState> formKey) async {
     if (!formKey.currentState!.validate()) return;
+    await submitResetPassword();
+  }
+
+  /// Password reset for the form email, already validated.
+  Future<void> submitResetPassword() async {
     isLoading.value = true;
     try {
       final snapshot = await _firestore
@@ -189,7 +225,7 @@ class AuthController extends GetxController {
 
       await _auth.sendPasswordResetEmail(email: emailController.text.trim());
       clearForm();
-      Get.back();
+      _navigateBack();
     } catch (e) {
       _handleAuthError(e);
     } finally {
@@ -205,7 +241,7 @@ class AuthController extends GetxController {
       await _googleSignIn.signOut();
       await _session.clear();
       clearForm();
-      Get.offAllNamed(AppRoutes.welcome);
+      _navigateTo(AppRoutes.welcome);
     } catch (e) {
       _logger.e('Logout error: $e');
     }
@@ -241,11 +277,13 @@ class AuthController extends GetxController {
     if (id != null) await _session.save(id);
   }
 
-  void _handleAuthError(dynamic e) {
+  void _handleAuthError(Object e) {
+    lastError = e;
     final msg = e.toString();
     _logger.e('Auth error: $msg');
     // Surface raw exception key so the UI can map it to a localized string
-    final context = Get.context;
+    // Nullable, unlike Get.context, which asserts that the app is mounted.
+    final context = Get.key.currentContext;
     if (context != null) {
       showErrorToast(context, msg);
     }
