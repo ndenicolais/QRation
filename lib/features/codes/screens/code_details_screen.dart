@@ -1,0 +1,275 @@
+// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// Licensed under a source-available, non-commercial license. See LICENSE.
+//
+// Commercial use, including publishing or monetizing on any app store,
+// requires explicit written permission from the copyright holder.
+//
+// Author: Nicola De Nicolais
+// Contact: ndn21dev@gmail.com
+// GitHub: https://github.com/ndenicolais
+
+import 'package:flutter/material.dart';
+import 'package:qration/l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:qration/core/theme/app_fonts.dart';
+import 'package:qration/core/theme/app_font_sizes.dart';
+import 'package:qration/core/theme/app_radius.dart';
+import 'package:qration/core/utils/code_type_text.dart';
+import 'package:qration/core/widgets/app_delete_dialog.dart';
+import 'package:qration/core/widgets/app_toast.dart';
+import 'package:qration/features/codes/controllers/code_details_controller.dart';
+import 'package:qration/features/codes/models/code_model.dart';
+import 'package:qration/features/codes/widgets/code_details/code_action_buttons.dart';
+import 'package:qration/features/codes/widgets/code_details/code_content_card.dart';
+import 'package:qration/features/codes/widgets/code_details/code_details_app_bar.dart';
+import 'package:qration/features/codes/widgets/code_details/code_qr_card.dart';
+
+class CodeDetailsScreen extends StatefulWidget {
+  final CodeModel code;
+
+  const CodeDetailsScreen({
+    super.key,
+    required this.code,
+  });
+
+  @override
+  CodeDetailsScreenState createState() => CodeDetailsScreenState();
+}
+
+class CodeDetailsScreenState extends State<CodeDetailsScreen> {
+  late final CodeDetailsController _controller;
+  late CodeTypeText _contentType;
+  String get _tag => widget.code.id;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = Get.put(
+      CodeDetailsController(widget.code),
+      tag: _tag,
+    );
+  }
+
+  @override
+  void dispose() {
+    Get.delete<CodeDetailsController>(tag: _tag);
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _contentType = CodeTypeText.fromBarcodeType(
+      widget.code.barcode.type,
+      widget.code.barcode.rawValue ?? '',
+      AppLocalizations.of(context)!,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: CodeDetailsAppBar(
+        onEditNotes: _showNotesBottomSheet,
+        onDelete: _confirmDeleteCode,
+      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Padding(
+            padding: EdgeInsets.all(16.r),
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  spacing: 12.h,
+                  children: [
+                    CodeInfoRow(
+                      dateLabel: l10n.code_details_screen_date_title,
+                      date: widget.code.date.toString(),
+                      typeLabel: l10n.code_details_screen_type_title,
+                      typeIcon: _controller.contentIcon.icon,
+                      typeContent: _contentType.type,
+                    ),
+                    CodeQrSection(
+                      title: l10n.code_details_screen_title_title,
+                      code: widget.code,
+                      screenshotController: _controller.screenshotController,
+                    ),
+                    CodeContentCard(
+                      title: l10n.code_details_screen_content_title,
+                      code: widget.code,
+                      controller: _controller,
+                    ),
+                    SizedBox(height: 12.h),
+                    CodeActionButtons(
+                      controller: _controller,
+                      onCopy: () => _copyToClipboard(
+                          context, widget.code.barcode.rawValue ?? ''),
+                      onSave: _saveQRCode,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _copyToClipboard(BuildContext context, String content) {
+    _controller.copyToClipboard(content);
+    if (mounted) {
+      showSuccessToast(
+        context,
+        AppLocalizations.of(context)!.code_details_screen_result_copy,
+      );
+    }
+  }
+
+  Future<void> _saveQRCode() async {
+    final result = await _controller.saveQRCode();
+    if (!mounted) return;
+
+    switch (result) {
+      case SaveQrResult.success:
+        showSuccessToast(
+          context,
+          AppLocalizations.of(context)!.code_details_screen_toast_success,
+        );
+        break;
+      case SaveQrResult.emptyImage:
+      case SaveQrResult.error:
+        showErrorToast(
+          context,
+          AppLocalizations.of(context)!.code_details_screen_toast_error,
+        );
+        break;
+    }
+  }
+
+  void _showNotesBottomSheet() {
+    final notesController = TextEditingController(text: widget.code.notes);
+    final primary = Theme.of(context).colorScheme.primary;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppRadius.dialog),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(
+            20.r,
+            20.r,
+            20.r,
+            MediaQuery.of(context).viewInsets.bottom + 20.r,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.code_details_screen_notes_title,
+                style: AppFonts.montserrat(
+                  color: primary,
+                  fontSize: AppFontSizes.medium,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              TextField(
+                controller: notesController,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!
+                      .code_details_screen_notes_hint,
+                  hintStyle: AppFonts.montserrat(
+                    color: primary.withValues(alpha: 0.5),
+                    fontSize: AppFontSizes.small,
+                  ),
+                ),
+                style: AppFonts.montserrat(
+                  color: primary,
+                  fontSize: AppFontSizes.small,
+                ),
+                maxLines: 5,
+                maxLength: 160,
+              ),
+              SizedBox(height: 8.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: Text(
+                      AppLocalizations.of(context)!
+                          .code_details_screen_notes_cancel,
+                      style: AppFonts.montserrat(
+                        color: primary,
+                        fontSize: AppFontSizes.small,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await _controller.updateNotes(notesController.text);
+                      if (context.mounted) Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primary,
+                      foregroundColor: Theme.of(context).colorScheme.tertiary,
+                      // Overrides the app theme's minimumSize(double.infinity, 52):
+                      // inside a Row the child gets unbounded width constraints,
+                      // and an infinite minimumSize width crashes layout.
+                      minimumSize: Size(88.w, 44.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.medium),
+                      ),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!
+                          .code_details_screen_notes_save,
+                      style: AppFonts.montserrat(
+                        fontSize: AppFontSizes.small,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    ).then((_) => notesController.dispose());
+  }
+
+  void _confirmDeleteCode() {
+    AppDeleteDialog.show(
+      context: context,
+      title: AppLocalizations.of(context)!.code_details_screen_delete_title,
+      message:
+          AppLocalizations.of(context)!.code_details_screen_delete_description,
+      onConfirm: () async {
+        await _controller.deleteCode();
+        if (mounted) {
+          showSuccessToast(
+            context,
+            AppLocalizations.of(context)!
+                .code_details_screen_delete_toast_success,
+          );
+        }
+        Get.back();
+      },
+    );
+  }
+}
