@@ -74,7 +74,7 @@ lib/
 
 - Flutter SDK `^3.5.2`
 - Dart SDK `^3.5.2`
-- Android 5.0+ (API 21+)
+- Android 7.0+ (API 24+)
 - Progetto Firebase configurato con `google-services.json` (Auth + Firestore)
 
 ---

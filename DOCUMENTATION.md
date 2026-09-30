@@ -824,7 +824,7 @@ dependencies:
 |---|---|
 | Flutter SDK | `^3.5.2` |
 | Dart SDK | `^3.5.2` |
-| Android minimo | API 21 (Android 5.0) |
+| Android minimo | API 24 (Android 7.0), imposto da Flutter tramite `minSdkVersion flutter.minSdkVersion` in `android/app/build.gradle` |
 | Android consigliato | API 29+ (Android 10) per accesso storage senza permessi |
 | Piattaforma principale | Android |
 | Piattaforma secondaria | Web (funzionalità fotocamera, Wi-Fi e contatti non disponibili) |
