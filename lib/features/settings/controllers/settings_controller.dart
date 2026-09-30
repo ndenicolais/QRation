@@ -10,49 +10,26 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qration/core/controllers/scanner_preferences_controller.dart';
 import 'package:qration/core/theme/theme_controller.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+/// Facade over the app-wide preference controllers: state lives in
+/// [ThemeController] and [ScannerPreferencesController], so every screen
+/// observing them reacts to changes made here.
 class SettingsController extends GetxController {
-  final _beepEnabled = false.obs;
-  final _vibrateEnabled = false.obs;
-  final _accentIndex = 0.obs;
+  final _theme = Get.find<ThemeController>();
+  final _scanner = Get.find<ScannerPreferencesController>();
 
-  ThemeMode get themeMode => Get.find<ThemeController>().themeMode;
-  bool get beepEnabled => _beepEnabled.value;
-  bool get vibrateEnabled => _vibrateEnabled.value;
-  int get accentIndex => _accentIndex.value;
+  ThemeMode get themeMode => _theme.themeMode;
+  int get accentIndex => _theme.accentIndex;
+  bool get beepEnabled => _scanner.beepEnabled;
+  bool get vibrateEnabled => _scanner.vibrateEnabled;
 
-  @override
-  void onInit() {
-    super.onInit();
-    _loadPreferences();
-  }
+  Future<void> setThemeMode(ThemeMode mode) => _theme.setThemeMode(mode);
 
-  Future<void> _loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    _beepEnabled.value = prefs.getBool('beepEnabled') ?? false;
-    _vibrateEnabled.value = prefs.getBool('vibrateEnabled') ?? false;
-    _accentIndex.value = Get.find<ThemeController>().accentIndex;
-  }
+  Future<void> setAccent(int index) => _theme.setAccent(index);
 
-  Future<void> setThemeMode(ThemeMode mode) =>
-      Get.find<ThemeController>().setThemeMode(mode);
+  Future<void> toggleBeep(bool value) => _scanner.setBeep(value);
 
-  Future<void> setAccent(int index) async {
-    _accentIndex.value = index;
-    await Get.find<ThemeController>().setAccent(index);
-  }
-
-  Future<void> toggleBeep(bool value) async {
-    _beepEnabled.value = value;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('beepEnabled', value);
-  }
-
-  Future<void> toggleVibrate(bool value) async {
-    _vibrateEnabled.value = value;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('vibrateEnabled', value);
-  }
+  Future<void> toggleVibrate(bool value) => _scanner.setVibrate(value);
 }

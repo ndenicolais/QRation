@@ -117,7 +117,7 @@ qration/
 │   ├── images/                     # Logo e immagini app
 │   └── sounds/                     # Suono beep per scanner
 ├── lib/
-│   ├── main.dart                   # Entry point: inizializza Firebase, Crashlytics, ThemeController
+│   ├── main.dart                   # Entry point: inizializza Firebase, Crashlytics, ThemeController, ScannerPreferencesController
 │   ├── app.dart                    # QrationApp: GetMaterialApp con routing e localizzazione
 │   ├── core/
 │   │   ├── constants/
@@ -130,7 +130,9 @@ qration/
 │   │   │   ├── app_text_styles.dart # Stili testo
 │   │   │   ├── app_theme.dart      # Temi chiaro e scuro
 │   │   │   └── theme_controller.dart # Controller GetX per gestione tema
-│   │   ├── utils/                  # Utility: icone/testi per tipo codice, validator, ecc.
+│   │   ├── controllers/
+│   │   │   └── scanner_preferences_controller.dart # Preferenze beep/vibrazione condivise
+│   │   ├── utils/                  # Utility: icone/testi per tipo codice, validator, RescanGuard, ecc.
 │   │   └── widgets/                # Widget riutilizzabili core (toast, pulsanti, ecc.)
 │   ├── features/
 │   │   ├── auth/
@@ -331,6 +333,10 @@ Schermata contenitore con **bottom navigation bar** a 5 voci. Gestisce la naviga
 Lo scanner (`ScannerScreen`) è il primo tab (indice 0) invece che uno schermo raggiungibile solo tramite tap, così l'utente può scansionare un codice subito dopo aver aperto l'app, senza passaggi intermedi. Vivendo dentro l'`IndexedStack` di Home, riceve un flag `isActive` che ne avvia/ferma la fotocamera (`MobileScannerController.start()`/`stop()`) quando l'utente entra o esce dal tab, per non tenerla accesa in background mentre si naviga in altre sezioni.
 
 In `_onDetect`, il flag `_isProcessing` evita di elaborare più scansioni in parallelo mentre una è già in corso. Beep e vibrazione di conferma sono racchiusi in blocchi try/catch dedicati (un fallimento del plugin audio/vibrazione, es. su device senza vibratore o output audio, non deve bloccare il riconoscimento del codice) e il reset di `_isProcessing` avviene in un `finally` attorno a `_processBarcode`, così anche un errore nell'elaborazione del barcode non lascia lo scanner bloccato sul primo scan.
+
+Beep e vibrazione vengono letti da `ScannerPreferencesController` (`lib/core/controllers/`) a ogni rilevamento, non copiati in `initState`: poiché `ScannerScreen` vive nell'`IndexedStack` di Home e non viene mai ricreata, una copia locale renderebbe le modifiche fatte nelle Impostazioni invisibili fino al riavvio dell'app.
+
+Le rilevazioni ripetute dello stesso codice sono filtrate da `RescanGuard` (`lib/core/utils/rescan_guard.dart`): la fotocamera segnala continuamente il codice inquadrato, quindi lo stesso valore viene ignorato finché resta in vista e viene accettato di nuovo solo dopo essere rimasto fuori inquadratura per almeno 2 secondi. Al ritorno dai dettagli il `finally` di `_onDetect` chiama `touch()`, così il cooldown parte da quel momento: il codice ancora inquadrato non riapre subito i dettagli, ma è possibile riscansionarlo spostando la fotocamera e tornando a inquadrarlo (in precedenza `_lastScanned` non veniva mai azzerato e lo stesso codice non era più scansionabile finché lo scanner restava vivo). Un codice diverso viene invece accettato immediatamente.
 
 Dopo aver salvato il codice, `_processBarcode` naviga ai dettagli con `Get.toNamed` (non `Get.offNamed`): essendo `ScannerScreen` un tab dentro l'`IndexedStack` di Home e non più una route indipendente, la route corrente al momento dello scan è l'intera Home. `Get.toNamed` apre `CodeDetailsScreen` **sopra** la Home, preservando il tab-shell sottostante (tornando indietro l'utente rimane sullo stesso tab); `Get.offNamed` sostituirebbe invece l'intera Home, comportamento sbagliato per questa architettura.
 
@@ -544,8 +550,9 @@ L'app usa **GetX** come sistema di state management. I controller sono registrat
 | Controller | Responsabilità |
 |---|---|
 | `ThemeController` | Modalità tema (`ThemeMode` system/light/dark, `isDark` = luminosità effettiva) e colore principale selezionato (`AccentPreset`, indice persistito in `SharedPreferences`), applicati a `AppTheme.lightTheme`/`darkTheme` tramite il parametro `primary`, aggiornamento `SystemChrome` |
+| `ScannerPreferencesController` | Preferenze di feedback della scansione (`beepEnabled`, `vibrateEnabled`) osservabili e persistite in `SharedPreferences`; registrato in `main.dart` e letto da `ScannerScreen` al momento di ogni rilevamento, così una modifica nelle Impostazioni ha effetto subito anche se lo scanner resta vivo nell'`IndexedStack` di Home |
 | `AuthController` | Stato autenticazione, operazioni login/logout/signup, recupero dati utente |
-| `SettingsController` | Stato impostazioni reattive (themeMode delegato a `ThemeController`, accentIndex, beepEnabled, vibrateEnabled), sincronizzazione con `SharedPreferences` e `ThemeController` |
+| `SettingsController` | Facade senza stato proprio per la schermata Impostazioni: espone e modifica `themeMode`/`accentIndex` delegando a `ThemeController` e `beepEnabled`/`vibrateEnabled` delegando a `ScannerPreferencesController` |
 | `CodeDetailsController` | Stato e azioni della schermata Dettaglio codice (preferito, note, salvataggio/condivisione immagine, apertura URL/email/telefono/SMS/contatto/mappa/Wi-Fi/calendario, eliminazione) |
 | `CodeCreateStandardController` | Stato del form di creazione QR standard (`TextEditingController` per campo, colori/arrotondamento occhi e moduli, prefisso telefonico, cifratura Wi-Fi), generazione del contenuto per tipo e creazione del `CodeModel` |
 | `DatabaseController` | Statistiche codici (totali, creati, scansionati, distribuzione per tipo), generazione export PDF/Excel/CSV ed export/import JSON |

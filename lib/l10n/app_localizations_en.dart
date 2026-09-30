@@ -1466,4 +1466,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_26 =>
       'Added a \"System\" theme option that automatically follows the device\'s light/dark setting.';
+
+  @override
+  String get changelog_v2_0_0_bullet_27 =>
+      'Fixed an issue where changing the scan beep or vibration in Settings only took effect after restarting the app.';
+
+  @override
+  String get changelog_v2_0_0_bullet_28 =>
+      'Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.';
 }

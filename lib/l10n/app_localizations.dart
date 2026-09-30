@@ -2833,6 +2833,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Added a \"System\" theme option that automatically follows the device\'s light/dark setting.'**
   String get changelog_v2_0_0_bullet_26;
+
+  /// No description provided for @changelog_v2_0_0_bullet_27.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where changing the scan beep or vibration in Settings only took effect after restarting the app.'**
+  String get changelog_v2_0_0_bullet_27;
+
+  /// No description provided for @changelog_v2_0_0_bullet_28.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.'**
+  String get changelog_v2_0_0_bullet_28;
 }
 
 class _AppLocalizationsDelegate

@@ -1492,4 +1492,12 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_26 =>
       'Aggiunta l\'opzione tema \"Sistema\", che segue automaticamente l\'impostazione chiaro/scuro del dispositivo.';
+
+  @override
+  String get changelog_v2_0_0_bullet_27 =>
+      'Risolto un problema per cui la modifica di beep o vibrazione della scansione nelle Impostazioni aveva effetto solo dopo il riavvio dell\'app.';
+
+  @override
+  String get changelog_v2_0_0_bullet_28 =>
+      'Risolto un problema per cui non era possibile scansionare di nuovo lo stesso codice senza riavviare l\'app: ora basta allontanare la fotocamera e inquadrarlo di nuovo.';
 }

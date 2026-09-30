@@ -18,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qration/core/controllers/scanner_preferences_controller.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/theme/app_colors.dart';
 import 'package:qration/core/widgets/app_toast.dart';
@@ -26,9 +27,9 @@ import 'package:qration/core/widgets/app_loader.dart';
 import 'package:qration/core/utils/code_social_template.dart';
 import 'package:qration/core/utils/code_type_conversion.dart';
 import 'package:qration/core/utils/permission_helper.dart';
+import 'package:qration/core/utils/rescan_guard.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 
 class ScannerScreen extends StatefulWidget {
@@ -47,12 +48,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
   final _picker = ImagePicker();
   final _audio = AudioPlayer();
 
-  String? _lastScanned;
+  final _scanPrefs = Get.find<ScannerPreferencesController>();
+  final _rescanGuard = RescanGuard();
+
   double _zoomLevel = 0;
   bool _permissionGranted = false;
   bool _permissionError = false;
-  bool _beepEnabled = false;
-  bool _vibrateEnabled = false;
   bool _isProcessing = false;
 
   @override
@@ -67,13 +68,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
       if (mounted) setState(() => _permissionGranted = true);
     } catch (_) {
       if (mounted) setState(() => _permissionError = true);
-      return;
     }
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _beepEnabled = prefs.getBool('beepEnabled') ?? false;
-      _vibrateEnabled = prefs.getBool('vibrateEnabled') ?? false;
-    });
   }
 
   @override
@@ -97,20 +92,22 @@ class _ScannerScreenState extends State<ScannerScreen> {
   Future<void> _onDetect(BarcodeCapture capture) async {
     if (_isProcessing) return;
     final barcode = capture.barcodes.firstOrNull;
-    if (barcode == null || barcode.rawValue == _lastScanned) return;
+    final value = barcode?.rawValue;
+    if (barcode == null || value == null || !_rescanGuard.accept(value)) {
+      return;
+    }
 
-    _lastScanned = barcode.rawValue;
     if (mounted) setState(() => _isProcessing = true);
 
     try {
-      if (_beepEnabled) {
+      if (_scanPrefs.beepEnabled) {
         await _audio.play(AssetSource('sounds/beep.mp3'));
       }
     } catch (e) {
       _logger.e('Error playing beep sound: $e');
     }
     try {
-      if (_vibrateEnabled && await Vibration.hasVibrator()) {
+      if (_scanPrefs.vibrateEnabled && await Vibration.hasVibrator()) {
         await Vibration.vibrate();
       }
     } catch (e) {
@@ -118,8 +115,11 @@ class _ScannerScreenState extends State<ScannerScreen> {
     }
 
     try {
-      await _processBarcode(barcode.rawValue!, barcode.type);
+      await _processBarcode(value, barcode.type);
     } finally {
+      // Start the rescan cooldown from the return to the scanner, not from
+      // the original detection.
+      _rescanGuard.touch();
       _isProcessing = false;
       if (mounted) setState(() {});
     }

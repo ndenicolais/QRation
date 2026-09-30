@@ -499,5 +499,7 @@
   "changelog_v2_0_0_bullet_23": "Fixed an issue where a QR code, especially with an embedded logo, could fail to be recognized when scanned from a saved image.",
   "changelog_v2_0_0_bullet_24": "Refreshed the theme, language, and accent color selectors in Settings with a new segmented-button layout.",
   "changelog_v2_0_0_bullet_25": "Sped up the transition from the splash screen to scanning and lightened bold text weight throughout the app.",
-  "changelog_v2_0_0_bullet_26": "Added a \"System\" theme option that automatically follows the device's light/dark setting."
+  "changelog_v2_0_0_bullet_26": "Added a \"System\" theme option that automatically follows the device's light/dark setting.",
+  "changelog_v2_0_0_bullet_27": "Fixed an issue where changing the scan beep or vibration in Settings only took effect after restarting the app.",
+  "changelog_v2_0_0_bullet_28": "Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back."
 }

@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qration/app.dart';
 import 'package:qration/core/constants/app_version.dart';
+import 'package:qration/core/controllers/scanner_preferences_controller.dart';
 import 'package:qration/core/theme/theme_controller.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 import 'package:qration/features/codes/services/codes_service.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
   }
 
   Get.put(ThemeController());
+  Get.put(ScannerPreferencesController());
   Get.put<CodesRepository>(CodesService());
   runApp(const QrationApp());
 }
