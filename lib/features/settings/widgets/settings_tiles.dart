@@ -109,21 +109,26 @@ class SettingsSwitchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return ListTile(
-      leading: Icon(icon, color: colorScheme.primary),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _TileTitle(title),
-          if (subtitle != null)
-            Padding(
-              padding: EdgeInsets.only(top: 4),
-              child: _TileSubtitle(subtitle!),
-            ),
-        ],
+    // Merged so screen readers announce the switch with its title, and the
+    // whole row toggles it, not just the small switch.
+    return MergeSemantics(
+      child: ListTile(
+        leading: Icon(icon, color: colorScheme.primary),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _TileTitle(title),
+            if (subtitle != null)
+              Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: _TileSubtitle(subtitle!),
+              ),
+          ],
+        ),
+        // Colors come from the theme switchTheme (neutral track when off).
+        trailing: Switch(value: value, onChanged: onChanged),
+        onTap: () => onChanged(!value),
       ),
-      // Colors come from the theme switchTheme (neutral track when off).
-      trailing: Switch(value: value, onChanged: onChanged),
     );
   }
 }

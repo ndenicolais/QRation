@@ -35,34 +35,38 @@ class SectionLinkRow extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadius.small),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppFonts.montserrat(
-                    color: colorScheme.onSurface,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+      child: ConstrainedBox(
+        // Minimum touch target height (Material / Android guideline).
+        constraints: const BoxConstraints(minHeight: 48),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: AppFonts.montserrat(
+                      color: colorScheme.onSurface,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: AppFonts.montserrat(
-                    color: colorScheme.onSurfaceVariant,
-                    fontSize: 13,
+                  SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: AppFonts.montserrat(
+                      color: colorScheme.onSurfaceVariant,
+                      fontSize: 13,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(width: 8),
-          Icon(trailingIcon, color: colorScheme.onSurfaceVariant),
-        ],
+            SizedBox(width: 8),
+            Icon(trailingIcon, color: colorScheme.onSurfaceVariant),
+          ],
+        ),
       ),
     );
   }

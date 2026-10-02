@@ -46,30 +46,34 @@ class QrPreview extends StatelessWidget {
       child: Center(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(AppRadius.medium),
-          child: SizedBox(
-            width: 200,
-            height: 200,
-            child: AnimatedBuilder(
-              animation: contentListenable,
-              builder: (context, _) => Obx(() {
-                final content = data();
-                final logoPath = style.logoPath.value;
-                return PrettyQrView.data(
-                  // A blank space still renders a valid placeholder code.
-                  data: content.isEmpty ? ' ' : content,
-                  errorCorrectLevel: logoPath != null
-                      ? QrErrorCorrectLevel.H
-                      : QrErrorCorrectLevel.M,
-                  decoration: buildQrDecoration(
-                    eyeColor: style.eyeColor.value,
-                    eyeRounded: style.eyeRounded.value,
-                    moduleColor: style.moduleColor.value,
-                    moduleRounded: style.moduleRounded.value,
-                    logoImage:
-                        logoPath != null ? FileImage(File(logoPath)) : null,
-                  ),
-                );
-              }),
+          child: Semantics(
+            image: true,
+            label: AppLocalizations.of(context)!.qr_preview_semantics,
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: AnimatedBuilder(
+                animation: contentListenable,
+                builder: (context, _) => Obx(() {
+                  final content = data();
+                  final logoPath = style.logoPath.value;
+                  return PrettyQrView.data(
+                    // A blank space still renders a valid placeholder code.
+                    data: content.isEmpty ? ' ' : content,
+                    errorCorrectLevel: logoPath != null
+                        ? QrErrorCorrectLevel.H
+                        : QrErrorCorrectLevel.M,
+                    decoration: buildQrDecoration(
+                      eyeColor: style.eyeColor.value,
+                      eyeRounded: style.eyeRounded.value,
+                      moduleColor: style.moduleColor.value,
+                      moduleRounded: style.moduleRounded.value,
+                      logoImage:
+                          logoPath != null ? FileImage(File(logoPath)) : null,
+                    ),
+                  );
+                }),
+              ),
             ),
           ),
         ),

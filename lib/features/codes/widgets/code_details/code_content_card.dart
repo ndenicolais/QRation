@@ -386,6 +386,9 @@ class CodeContentCard extends StatelessWidget {
         content,
         if ((code.barcode.rawValue?.length ?? 0) > 200)
           Obx(() => IconButton(
+                tooltip: controller.isExpanded.value
+                    ? MaterialLocalizations.of(context).expandedIconTapHint
+                    : MaterialLocalizations.of(context).collapsedIconTapHint,
                 onPressed: controller.toggleExpanded,
                 icon: Icon(
                   controller.isExpanded.value

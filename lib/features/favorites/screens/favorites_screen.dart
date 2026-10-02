@@ -121,7 +121,7 @@ class FavoritesScreenState extends State<FavoritesScreen>
         children: [
           Icon(icon, size: 20),
           SizedBox(width: 8),
-          Text(text),
+          Flexible(child: Text(text, overflow: TextOverflow.ellipsis)),
         ],
       ),
     );

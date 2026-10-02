@@ -34,7 +34,8 @@ class AppColors {
 
   // Text colors
   static const Color textPrimaryLight = Color(0xFF274060);
-  static const Color textSecondaryLight = Color(0xFF5A7A9E);
+  // At least 5:1 on surface, card and surfaceVariant (WCAG AA needs 4.5:1).
+  static const Color textSecondaryLight = Color(0xFF4C6A8D);
   static const Color textHintLight = Color(0xFF9BAFC4);
   static const Color textPrimaryDark = Color(0xFFFFFFFF);
   static const Color textSecondaryDark = Color(0xFFCCA775);

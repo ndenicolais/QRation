@@ -11,6 +11,19 @@
   "onboarding_third_description": "Save your favorite QR codes for future access. Create an account to organize and store your codes securely and use them whenever you need.",
   "onboarding_skip": "Skip",
   "onboarding_next": "Next",
+  "password_show": "Show password",
+  "password_hide": "Hide password",
+  "onboarding_page_indicator": "Page {current} of {total}",
+  "@onboarding_page_indicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "onboarding_finish": "Get started",
   "onboarding_get_started": "Get started",
 
@@ -185,10 +198,12 @@
   "code_create_standard_screen_module_color": "Color",
   "code_create_standard_screen_module_rounded": "Rounded",
   "code_create_standard_screen_logo_title": "Logo",
+  "qr_style_pick_logo": "Choose a logo",
   "code_create_standard_screen_dialog_color_text": "Choose a color",
   "code_create_standard_screen_dialog_color_select": "Select",
   "code_create_standard_screen_create_button": "Create",
   "code_create_preview_title": "Preview",
+  "qr_preview_semantics": "QR code preview",
   "code_create_style_title": "Style",
   "code_create_standard_screen_toast_success": "QR code successfully added!",
   "code_create_standard_screen_toast_error": "Error saving QR code:",
@@ -596,5 +611,6 @@
   "changelog_v2_0_0_bullet_46": "Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.",
   "changelog_v2_0_0_bullet_47": "Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab.",
   "changelog_v2_0_0_bullet_48": "The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.",
-  "changelog_v2_0_0_bullet_49": "Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses)."
+  "changelog_v2_0_0_bullet_49": "Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).",
+  "changelog_v2_0_0_bullet_50": "Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated."
 }

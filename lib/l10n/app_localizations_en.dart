@@ -39,6 +39,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboarding_next => 'Next';
 
   @override
+  String get password_show => 'Show password';
+
+  @override
+  String get password_hide => 'Hide password';
+
+  @override
+  String onboarding_page_indicator(int current, int total) {
+    return 'Page $current of $total';
+  }
+
+  @override
   String get onboarding_finish => 'Get started';
 
   @override
@@ -516,6 +527,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get code_create_standard_screen_logo_title => 'Logo';
 
   @override
+  String get qr_style_pick_logo => 'Choose a logo';
+
+  @override
   String get code_create_standard_screen_dialog_color_text => 'Choose a color';
 
   @override
@@ -526,6 +540,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get code_create_preview_title => 'Preview';
+
+  @override
+  String get qr_preview_semantics => 'QR code preview';
 
   @override
   String get code_create_style_title => 'Style';
@@ -1740,4 +1757,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_49 =>
       'Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).';
+
+  @override
+  String get changelog_v2_0_0_bullet_50 =>
+      'Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated.';
 }

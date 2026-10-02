@@ -118,36 +118,57 @@ class _StyleRow extends StatelessWidget {
         ),
         Tooltip(
           message: colorLabel,
-          child: InkWell(
-            onTap: onPickColor,
-            customBorder: const CircleBorder(),
-            child: Obx(
-              () => Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: color.value,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: colorScheme.outline, width: 2),
+          child: Semantics(
+            button: true,
+            child: InkWell(
+              onTap: onPickColor,
+              customBorder: const CircleBorder(),
+              // 48 dp touch target around the 36 dp swatch.
+              child: SizedBox.square(
+                dimension: 48,
+                child: Center(
+                  child: Obx(
+                    () => Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: color.value,
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: colorScheme.outline, width: 2),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        SizedBox(width: 16),
-        Text(
-          roundedLabel,
-          style: AppFonts.montserrat(
-            color: colorScheme.onSurfaceVariant,
-            fontSize: 12,
-          ),
-        ),
-        SizedBox(width: 4),
-        // Colors come from the theme switchTheme (neutral track when off).
-        Obx(
-          () => Switch(
-            value: rounded.value == 1,
-            onChanged: (value) => rounded.value = value ? 1 : 0,
+        SizedBox(width: 10),
+        // Merged with its label; the row title is spoken too, since every
+        // row has its own "Rounded" switch.
+        MergeSemantics(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                roundedLabel,
+                semanticsLabel: '$title, $roundedLabel',
+                style: AppFonts.montserrat(
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 12,
+                ),
+              ),
+              SizedBox(width: 4),
+              // Colors come from the theme switchTheme (neutral track when
+              // off).
+              Obx(
+                () => Switch(
+                  value: rounded.value == 1,
+                  onChanged: (value) => rounded.value = value ? 1 : 0,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -191,28 +212,35 @@ class _LogoRow extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-              InkWell(
-                onTap: style.pickLogo,
-                borderRadius: BorderRadius.circular(AppRadius.medium),
-                child: Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
+              Tooltip(
+                message: AppLocalizations.of(context)!.qr_style_pick_logo,
+                child: Semantics(
+                  button: true,
+                  child: InkWell(
+                    onTap: style.pickLogo,
                     borderRadius: BorderRadius.circular(AppRadius.medium),
-                    border: Border.all(color: colorScheme.outline, width: 2),
-                    image: logoPath != null
-                        ? DecorationImage(
-                            image: FileImage(File(logoPath)),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
+                    child: Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppRadius.medium),
+                        border:
+                            Border.all(color: colorScheme.outline, width: 2),
+                        image: logoPath != null
+                            ? DecorationImage(
+                                image: FileImage(File(logoPath)),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                      ),
+                      child: logoPath == null
+                          ? Icon(
+                              MingCuteIcons.mgc_pic_line,
+                              color: colorScheme.primary,
+                            )
+                          : null,
+                    ),
                   ),
-                  child: logoPath == null
-                      ? Icon(
-                          MingCuteIcons.mgc_pic_line,
-                          color: colorScheme.primary,
-                        )
-                      : null,
                 ),
               ),
             ],

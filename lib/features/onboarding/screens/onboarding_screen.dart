@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -180,44 +180,58 @@ class _NavRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
           onPressed: onSkip,
-          child: Text('Skip',
+          child: Text(l10n.onboarding_skip,
               style: TextStyle(
                 color: items[currentPage].descriptionColor,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w500,
               )),
         ),
-        AnimatedSmoothIndicator(
-          activeIndex: currentPage,
-          count: items.length,
-          effect: ExpandingDotsEffect(
-            dotWidth: 8,
-            dotHeight: 8,
-            activeDotColor: _indicatorColor,
-            dotColor: _indicatorColor.withValues(alpha: 0.3),
+        // The dots are 8 dp tall, too small to tap: screen readers get the
+        // page position as text and swipe or use the buttons to move.
+        Semantics(
+          label: l10n.onboarding_page_indicator(currentPage + 1, items.length),
+          child: ExcludeSemantics(
+            child: AnimatedSmoothIndicator(
+              activeIndex: currentPage,
+              count: items.length,
+              effect: ExpandingDotsEffect(
+                dotWidth: 8,
+                dotHeight: 8,
+                activeDotColor: _indicatorColor,
+                dotColor: _indicatorColor.withValues(alpha: 0.3),
+              ),
+            ),
           ),
         ),
-        GestureDetector(
-          onTap: () => controller.nextPage(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeInOut,
-          ),
-          child: Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: _indicatorColor,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              MingCuteIcons.mgc_arrow_right_fill,
-              color: items[currentPage].backgroundColor,
-              size: 22,
+        Tooltip(
+          message: l10n.onboarding_next,
+          child: Semantics(
+            button: true,
+            child: GestureDetector(
+              onTap: () => controller.nextPage(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+              ),
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: _indicatorColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  MingCuteIcons.mgc_arrow_right_fill,
+                  color: items[currentPage].backgroundColor,
+                  size: 22,
+                ),
+              ),
             ),
           ),
         ),
@@ -234,21 +248,24 @@ class _FinishButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-          decoration: BoxDecoration(
-            color: item.iconColor,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Text(
-            AppLocalizations.of(context)!.onboarding_get_started,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-              color: item.backgroundColor,
+      child: Semantics(
+        button: true,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+            decoration: BoxDecoration(
+              color: item.iconColor,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              AppLocalizations.of(context)!.onboarding_get_started,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: item.backgroundColor,
+              ),
             ),
           ),
         ),

@@ -39,6 +39,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get onboarding_next => 'Avanti';
 
   @override
+  String get password_show => 'Mostra password';
+
+  @override
+  String get password_hide => 'Nascondi password';
+
+  @override
+  String onboarding_page_indicator(int current, int total) {
+    return 'Pagina $current di $total';
+  }
+
+  @override
   String get onboarding_finish => 'Inizia';
 
   @override
@@ -525,6 +536,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get code_create_standard_screen_logo_title => 'Logo';
 
   @override
+  String get qr_style_pick_logo => 'Scegli un logo';
+
+  @override
   String get code_create_standard_screen_dialog_color_text =>
       'Scegli un colore';
 
@@ -536,6 +550,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get code_create_preview_title => 'Anteprima';
+
+  @override
+  String get qr_preview_semantics => 'Anteprima del codice QR';
 
   @override
   String get code_create_style_title => 'Stile';
@@ -1767,4 +1784,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_49 =>
       'Schermata Info ridisegnata: cosa fa QRation in breve, le funzionalità principali e i link utili (codice sorgente, sito web, contatti, privacy policy e licenze open source).';
+
+  @override
+  String get changelog_v2_0_0_bullet_50 =>
+      'Accessibilità migliorata: testi secondari più contrastati nel tema chiaro, aree tattili di almeno 48 dp, schermate che si adattano al testo di sistema ingrandito (accesso, eliminazione account, tipi di codice, preferiti) ed etichette per gli screen reader su interruttori, pulsanti e codici QR. Il pulsante \"Salta\" dell\'onboarding ora è tradotto.';
 }

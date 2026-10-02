@@ -90,6 +90,9 @@ class SignupScreen extends StatelessWidget {
                       textInputAction: TextInputAction.next,
                       prefixIcon: const Icon(MingCuteIcons.mgc_lock_line),
                       suffixIcon: IconButton(
+                        tooltip: controller.passwordVisible.value
+                            ? l10n.password_hide
+                            : l10n.password_show,
                         icon: Icon(
                           controller.passwordVisible.value
                               ? MingCuteIcons.mgc_eye_line
@@ -109,6 +112,9 @@ class SignupScreen extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       prefixIcon: const Icon(MingCuteIcons.mgc_lock_line),
                       suffixIcon: IconButton(
+                        tooltip: controller.confirmPasswordVisible.value
+                            ? l10n.password_hide
+                            : l10n.password_show,
                         icon: Icon(
                           controller.confirmPasswordVisible.value
                               ? MingCuteIcons.mgc_eye_line

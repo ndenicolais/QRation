@@ -11,6 +11,9 @@
   "onboarding_third_description": "Salva i tuoi codici QR preferiti per un accesso futuro. Crea un account per organizzare e conservare i tuoi codici in modo sicuro e utilizzarli ogni volta che ne hai bisogno.",
   "onboarding_skip": "Salta",
   "onboarding_next": "Avanti",
+  "password_show": "Mostra password",
+  "password_hide": "Nascondi password",
+  "onboarding_page_indicator": "Pagina {current} di {total}",
   "onboarding_finish": "Inizia",
   "onboarding_get_started": "Inizia",
 
@@ -185,10 +188,12 @@
   "code_create_standard_screen_module_color": "Colore",
   "code_create_standard_screen_module_rounded": "Arrotondati",
   "code_create_standard_screen_logo_title": "Logo",
+  "qr_style_pick_logo": "Scegli un logo",
   "code_create_standard_screen_dialog_color_text": "Scegli un colore",
   "code_create_standard_screen_dialog_color_select": "Seleziona",
   "code_create_standard_screen_create_button": "Crea",
   "code_create_preview_title": "Anteprima",
+  "qr_preview_semantics": "Anteprima del codice QR",
   "code_create_style_title": "Stile",
   "code_create_standard_screen_toast_success": "Codice QR aggiunto con successo!",
   "code_create_standard_screen_toast_error": "Errore nel salvataggio del codice QR:",
@@ -573,5 +578,6 @@
   "changelog_v2_0_0_bullet_46": "Informativa privacy riscritta, ora leggibile direttamente nell'app (anche offline) da Impostazioni > Info, con lo stesso testo pubblicato online.",
   "changelog_v2_0_0_bullet_47": "Database, Supporto ed Elimina account ora hanno lo stesso stile delle altre schermate; le FAQ del Supporto hanno risposte corrette e in Preferiti la scheda selezionata è evidenziata per intero.",
   "changelog_v2_0_0_bullet_48": "La mappa per scegliere una posizione non chiede più il permesso di posizione e non si chiude più se lo neghi: basta toccare il punto che vuoi.",
-  "changelog_v2_0_0_bullet_49": "Schermata Info ridisegnata: cosa fa QRation in breve, le funzionalità principali e i link utili (codice sorgente, sito web, contatti, privacy policy e licenze open source)."
+  "changelog_v2_0_0_bullet_49": "Schermata Info ridisegnata: cosa fa QRation in breve, le funzionalità principali e i link utili (codice sorgente, sito web, contatti, privacy policy e licenze open source).",
+  "changelog_v2_0_0_bullet_50": "Accessibilità migliorata: testi secondari più contrastati nel tema chiaro, aree tattili di almeno 48 dp, schermate che si adattano al testo di sistema ingrandito (accesso, eliminazione account, tipi di codice, preferiti) ed etichette per gli screen reader su interruttori, pulsanti e codici QR. Il pulsante \"Salta\" dell'onboarding ora è tradotto."
 }

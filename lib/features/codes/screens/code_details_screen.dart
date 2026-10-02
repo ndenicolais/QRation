@@ -68,6 +68,8 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: GestureDetector(
+          // Only dismisses the keyboard: not an action for screen readers.
+          excludeFromSemantics: true,
           onTap: () {
             FocusScope.of(context).unfocus();
           },

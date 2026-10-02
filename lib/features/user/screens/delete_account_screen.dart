@@ -40,7 +40,9 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
-          Padding(
+          // Scrollable so the text and button stay reachable with a large
+          // system text size.
+          SingleChildScrollView(
             padding: EdgeInsets.all(30),
             child: Center(
               child: Column(
@@ -122,8 +124,8 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
           size: 100,
         ),
         SizedBox(height: 40),
-        SizedBox(
-          width: 420,
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 420),
           child: Text(
             AppLocalizations.of(context)!.delete_description,
             textAlign: TextAlign.center,
@@ -138,9 +140,9 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
   }
 
   Widget _buildDeleteButton(BuildContext context) {
-    return SizedBox(
-      width: 180,
-      height: 80,
+    // Minimum size, not a fixed one: the label can grow with the text size.
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: 180, minHeight: 80),
       child: ElevatedButton.icon(
         onPressed: _deleteAccount,
         style: ElevatedButton.styleFrom(

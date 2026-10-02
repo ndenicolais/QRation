@@ -77,6 +77,9 @@ class LoginScreen extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       prefixIcon: const Icon(MingCuteIcons.mgc_lock_line),
                       suffixIcon: IconButton(
+                        tooltip: controller.passwordVisible.value
+                            ? l10n.password_hide
+                            : l10n.password_show,
                         icon: Icon(
                           controller.passwordVisible.value
                               ? MingCuteIcons.mgc_eye_line
@@ -89,20 +92,27 @@ class LoginScreen extends StatelessWidget {
                           : null,
                     )),
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // Wrap, not Row: with a large system text size the two
+                // controls go on separate lines instead of overflowing.
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Obx(() => Row(
-                          children: [
-                            Checkbox(
-                              value: controller.rememberMe.value,
-                              onChanged: (v) =>
-                                  controller.rememberMe.value = v ?? false,
-                            ),
-                            Text(l10n.login_remember_me,
-                                style: theme.textTheme.bodySmall),
-                          ],
-                        )),
+                    // Checkbox and its label read as a single control.
+                    MergeSemantics(
+                      child: Obx(() => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Checkbox(
+                                value: controller.rememberMe.value,
+                                onChanged: (v) =>
+                                    controller.rememberMe.value = v ?? false,
+                              ),
+                              Text(l10n.login_remember_me,
+                                  style: theme.textTheme.bodySmall),
+                            ],
+                          )),
+                    ),
                     TextButton(
                       onPressed: () => Get.toNamed(AppRoutes.resetPassword),
                       child: Text(l10n.login_forgot_password),

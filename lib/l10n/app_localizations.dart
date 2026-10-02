@@ -152,6 +152,24 @@ abstract class AppLocalizations {
   /// **'Next'**
   String get onboarding_next;
 
+  /// No description provided for @password_show.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get password_show;
+
+  /// No description provided for @password_hide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get password_hide;
+
+  /// No description provided for @onboarding_page_indicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {current} of {total}'**
+  String onboarding_page_indicator(int current, int total);
+
   /// No description provided for @onboarding_finish.
   ///
   /// In en, this message translates to:
@@ -1064,6 +1082,12 @@ abstract class AppLocalizations {
   /// **'Logo'**
   String get code_create_standard_screen_logo_title;
 
+  /// No description provided for @qr_style_pick_logo.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a logo'**
+  String get qr_style_pick_logo;
+
   /// No description provided for @code_create_standard_screen_dialog_color_text.
   ///
   /// In en, this message translates to:
@@ -1087,6 +1111,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preview'**
   String get code_create_preview_title;
+
+  /// No description provided for @qr_preview_semantics.
+  ///
+  /// In en, this message translates to:
+  /// **'QR code preview'**
+  String get qr_preview_semantics;
 
   /// No description provided for @code_create_style_title.
   ///
@@ -3277,6 +3307,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).'**
   String get changelog_v2_0_0_bullet_49;
+
+  /// No description provided for @changelog_v2_0_0_bullet_50.
+  ///
+  /// In en, this message translates to:
+  /// **'Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated.'**
+  String get changelog_v2_0_0_bullet_50;
 }
 
 class _AppLocalizationsDelegate

@@ -10,6 +10,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:qration/l10n/app_localizations.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -170,22 +171,27 @@ class CodeQrSection extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 220,
-                    height: 220,
-                    child: PrettyQrView.data(
-                      data: code.barcode.rawValue ?? '',
-                      errorCorrectLevel: code.logoPath != null
-                          ? QrErrorCorrectLevel.H
-                          : QrErrorCorrectLevel.M,
-                      decoration: buildQrDecoration(
-                        eyeColor: code.eyeColor,
-                        eyeRounded: code.eyeRounded,
-                        moduleColor: code.moduleColor,
-                        moduleRounded: code.moduleRounded,
-                        logoImage: code.logoPath != null
-                            ? FileImage(File(code.logoPath!))
-                            : null,
+                  Semantics(
+                    image: true,
+                    label: AppLocalizations.of(context)!
+                        .code_details_screen_title_title,
+                    child: SizedBox(
+                      width: 220,
+                      height: 220,
+                      child: PrettyQrView.data(
+                        data: code.barcode.rawValue ?? '',
+                        errorCorrectLevel: code.logoPath != null
+                            ? QrErrorCorrectLevel.H
+                            : QrErrorCorrectLevel.M,
+                        decoration: buildQrDecoration(
+                          eyeColor: code.eyeColor,
+                          eyeRounded: code.eyeRounded,
+                          moduleColor: code.moduleColor,
+                          moduleRounded: code.moduleRounded,
+                          logoImage: code.logoPath != null
+                              ? FileImage(File(code.logoPath!))
+                              : null,
+                        ),
                       ),
                     ),
                   ),

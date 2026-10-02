@@ -28,6 +28,27 @@ class CodeCreateTypesScreen extends StatelessWidget {
       AppConstants.customOrderedBarcodeTypes;
   final List<CodeSocial> _socialTypes = AppConstants.socialCodesList;
 
+  /// Square tiles; with a larger system text size they grow taller so the
+  /// icon and a two-line label still fit.
+  SliverGridDelegate _gridDelegate(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final columns = width > 600 ? 5 : 4;
+    final textScaler = MediaQuery.textScalerOf(context);
+    double? extent;
+    if (textScaler.scale(1) > 1) {
+      final tileWidth = (width - 40 - 10 * (columns - 1)) / columns;
+      // Icon box + gap + two lines of labelSmall + breathing room.
+      final content = 38 + 8 + textScaler.scale(16) * 2 + 8;
+      extent = content > tileWidth ? content : tileWidth;
+    }
+    return SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: columns,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+      mainAxisExtent: extent,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -71,12 +92,7 @@ class CodeCreateTypesScreen extends StatelessWidget {
                       begin: const Offset(0.85, 0.85), end: const Offset(1, 1)),
                   childCount: _standardTypes.length,
                 ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:
-                      MediaQuery.of(context).size.width > 600 ? 5 : 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                ),
+                gridDelegate: _gridDelegate(context),
               ),
             ),
             SliverPadding(
@@ -102,12 +118,7 @@ class CodeCreateTypesScreen extends StatelessWidget {
                       begin: const Offset(0.85, 0.85), end: const Offset(1, 1)),
                   childCount: _socialTypes.length,
                 ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:
-                      MediaQuery.of(context).size.width > 600 ? 5 : 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                ),
+                gridDelegate: _gridDelegate(context),
               ),
             ),
           ],
