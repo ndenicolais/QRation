@@ -15,6 +15,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
+import 'package:qration/core/constants/app_constants.dart';
+import 'package:qration/core/constants/app_version.dart';
 import 'package:qration/core/theme/app_colors.dart';
 
 /// Map to pick the coordinates of a geo code by tapping a point. It needs no
@@ -30,6 +32,17 @@ class FullScreenMap extends StatefulWidget {
 
 class FullScreenMapState extends State<FullScreenMap> {
   LatLng selectedLocation = const LatLng(41.9099533, 12.371192);
+
+  /// The OSM tile usage policy blocks generic library User-Agents (including
+  /// flutter_map's default `flutter_map (<package>)`): it requires one that
+  /// names the app and gives a contact.
+  final _tileProvider = NetworkTileProvider(
+    headers: {
+      'User-Agent': 'QRation/${AppVersion.current} '
+          '(+${AppConstants.uriGithubDocumentation}; '
+          'contact: ${AppConstants.developerEmail})',
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +88,7 @@ class FullScreenMapState extends State<FullScreenMap> {
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          // Required by the OSM tile usage policy to identify the app.
-          userAgentPackageName: 'com.ndn21.qration',
+          tileProvider: _tileProvider,
         ),
         MarkerLayer(
           markers: [

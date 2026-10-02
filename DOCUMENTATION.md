@@ -411,7 +411,7 @@ Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in b
 | Telefono | Prefisso paese + numero |
 | SMS | Numero, testo messaggio |
 | Contatto | Nome, cognome, telefono, email |
-| Geo | Latitudine, longitudine (con mappa interattiva `flutter_map`, `FullScreenMap`: punto scelto toccando la mappa, nessun permesso di posizione richiesto; i tasselli arrivano da `tile.openstreetmap.org` con `userAgentPackageName` impostato come chiede la policy OSM, più l'attribuzione "OpenStreetMap contributors") |
+| Geo | Latitudine, longitudine (con mappa interattiva `flutter_map`, `FullScreenMap`: punto scelto toccando la mappa, nessun permesso di posizione richiesto; i tasselli arrivano da `tile.openstreetmap.org` con uno User-Agent `QRation/<versione> (+<repo>; contact: <email>)` impostato via `NetworkTileProvider`, come chiede la policy OSM (il formato predefinito `flutter_map (<package>)` viene bloccato con 403), più l'attribuzione "OpenStreetMap contributors") |
 | Wi-Fi | SSID, password, tipo cifratura, rete nascosta |
 | Evento calendario | Titolo, luogo, data inizio/fine |
 | Prodotto / ISBN | Codice numerico |
