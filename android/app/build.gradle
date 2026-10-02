@@ -6,6 +6,15 @@ plugins {
     id "com.google.firebase.crashlytics"
 }
 
+// Release signing: android/key.properties (git-ignored) points to the
+// release keystore, kept outside the repo. Without it, release builds fall
+// back to the debug key and print a warning.
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+
 android {
     namespace = "com.ndn21.qration"
     compileSdk = 36
@@ -28,9 +37,25 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                keyAlias = keystoreProperties["keyAlias"]
+                keyPassword = keystoreProperties["keyPassword"]
+                storeFile = file(keystoreProperties["storeFile"])
+                storePassword = keystoreProperties["storePassword"]
+            }
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.release
+            } else {
+                logger.warn("WARNING: android/key.properties not found, signing the release build with the debug key.")
+                signingConfig = signingConfigs.debug
+            }
         }
     }
 }

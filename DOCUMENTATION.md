@@ -945,7 +945,8 @@ flutter build appbundle --release
 
 **Prerequisiti per il build release:**
 - File `android/app/google-services.json` configurato con il progetto Firebase di produzione
-- Keystore di firma configurato in `android/app/build.gradle`
+- Keystore di firma release fuori dal repo e file `android/key.properties` (ignorato da git) con `storeFile`, `storePassword`, `keyAlias`, `keyPassword`: `android/app/build.gradle` lo legge in `signingConfigs.release`. Se il file manca, la build release viene firmata con la chiave di debug e Gradle stampa un warning
+- Impronte SHA-1/SHA-256 della chiave release registrate nella console Firebase (necessarie per l'accesso con Google)
 - Il file `android/local.properties` non va committato (contiene percorsi locali SDK)
 - La cartella `build/` non va committata (output di compilazione)
 
