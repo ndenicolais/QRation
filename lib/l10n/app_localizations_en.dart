@@ -9,9 +9,6 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get intro_title => 'QRation';
-
-  @override
   String get onboarding_first_title => 'Create';
 
   @override
@@ -50,13 +47,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get onboarding_finish => 'Get started';
-
-  @override
   String get onboarding_get_started => 'Get started';
-
-  @override
-  String get welcome_text => 'Hello';
 
   @override
   String get welcome_subtitle => 'Your QR code companion';
@@ -69,28 +60,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcome_signup => 'Sign Up';
-
-  @override
-  String get signup_screen_title => 'Registration';
-
-  @override
-  String get signup_screen_text => 'Sign Up';
-
-  @override
-  String get signup_screen_account => 'Already have an account? ';
-
-  @override
-  String get signup_screen_login => 'Log In';
-
-  @override
-  String get signup_toast_success => 'Successfully registered!';
-
-  @override
-  String get signup_toast_error_email_already_register =>
-      'The email entered has already been registered';
-
-  @override
-  String get signup_toast_error_generic => 'Error during registration:';
 
   @override
   String get login_title => 'Welcome back';
@@ -178,151 +147,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validator_confirm_password => 'Passwords do not match';
 
   @override
-  String get login_screen_title => 'Login';
-
-  @override
-  String get login_screen_text => 'Log in';
-
-  @override
-  String get login_screen_remember => 'Remember me';
-
-  @override
-  String get login_screen_password => 'Forgot password?';
-
-  @override
-  String get login_screen_account => 'Don\'t have an account? ';
-
-  @override
-  String get login_screen_signup => 'Sign up';
-
-  @override
-  String get login_toast_success => 'Login successful!';
-
-  @override
-  String get login_toast_error_email_not_found =>
-      'The email entered does not match any account';
-
-  @override
-  String get login_toast_error_invalid_password =>
-      'The password entered does not match any account';
-
-  @override
-  String get login_toast_error_generic => 'Error during login:';
-
-  @override
-  String get logout_toast_success => 'See you soon!';
-
-  @override
-  String get logout_toast_error_generic => 'Error during logout';
-
-  @override
-  String get reset_password_screen_title => 'Reset Password';
-
-  @override
-  String get reset_password_screen_description =>
-      'Enter your email to receive the link with the procedure to reset your password';
-
-  @override
-  String get reset_password_screen_text => 'Reset Password';
-
-  @override
-  String get reset_password_form_email => 'Email';
-
-  @override
-  String get reset_password_form_email_field => 'Enter your email';
-
-  @override
-  String get reset_password_toast_success => 'Password reset email sent to: ';
-
-  @override
-  String get reset_password_toast_error_email_not_found =>
-      'The email entered is not registered';
-
-  @override
-  String get reset_password_toast_error_password =>
-      'Error during password reset';
-
-  @override
-  String get toast_signup_welcome => 'Hello, ';
-
-  @override
-  String get toast_signup_exist_email =>
-      'The email address is already in use by another account.';
-
-  @override
-  String get toast_signup_invalid_email => 'The email address is not valid.';
-
-  @override
-  String get toast_signup_operation =>
-      'Email/password accounts are not enabled.';
-
-  @override
-  String get toast_signup_password => 'The password is too weak.';
-
-  @override
-  String get toast_signup_generic_error =>
-      'An error occurred. Please try again.';
-
-  @override
-  String get toast_login_welcome => 'Hello, ';
-
-  @override
-  String get toast_login_user => 'No user found for that email.';
-
-  @override
-  String get toast_login_wrong_password => 'Wrong password provided.';
-
-  @override
-  String get toast_login_invalid_email =>
-      'The email address is badly formatted.';
-
-  @override
-  String get toast_login_invalid_credential =>
-      'The supplied auth credential is incorrect, malformed or has expired.';
-
-  @override
-  String get toast_login_generic_error =>
-      'An error occurred. Please try again.';
-
-  @override
   String get toast_delete_success => 'Account deleted successfully';
 
   @override
-  String get toast_delete_google => 'Re-authentication with Google failed.';
-
-  @override
-  String get toast_delete_user_data => 'Error deleting user data: ';
-
-  @override
-  String get toast_delete_user_storage => 'Error deleting user storage: ';
-
-  @override
-  String get toast_delete_user_history => 'Error deleting user history: ';
-
-  @override
-  String get toast_delete_generic_error =>
-      'An unexpected error occurred. Please try again.';
-
-  @override
   String get validator_name_empty => 'Name cannot be empty';
-
-  @override
-  String get validator_name_hint => 'Enter your name';
-
-  @override
-  String get validator_name_required => 'Name is required';
-
-  @override
-  String get validator_name_error => 'Invalid name: ';
 
   @override
   String get validator_email_missing_special => 'Missing @ symbol';
 
   @override
   String get validator_email_missing_dot => 'Missing . symbol';
-
-  @override
-  String get validator_email_hint => 'Enter your email';
 
   @override
   String get validator_email_required => 'Email is required';
@@ -347,15 +181,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Password should be at least 8 characters long';
 
   @override
-  String get validator_password_hint => 'Enter your password';
-
-  @override
-  String get validator_password_required => 'Password is required';
-
-  @override
-  String get validator_password_error => 'Invalid password: ';
-
-  @override
   String get permission_camera_denied => 'Camera permission denied';
 
   @override
@@ -367,13 +192,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get permission_contacts_toast =>
       'Grant contacts permission from settings';
-
-  @override
-  String get permission_storage_denied => 'Storage permission denied';
-
-  @override
-  String get permission_storage_toast =>
-      'Grant storage permission from settings';
 
   @override
   String get bottom_nav_item_scan => 'Scan';
@@ -389,9 +207,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bottom_nav_item_settings => 'Settings';
-
-  @override
-  String get home_recent_qr_codes => 'Recent QR codes';
 
   @override
   String get tab_created => 'Created';
@@ -483,10 +298,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get code_create_standard_screen_isbn_label => 'ISBN';
-
-  @override
-  String get code_create_standard_screen_error_url_www =>
-      'The content must start with \'www\' or \'http\'.';
 
   @override
   String get code_create_standard_screen_error_url_length =>
@@ -603,33 +414,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please enter a valid URL';
 
   @override
-  String get code_create_social_screen_eye_title => 'Eye';
-
-  @override
-  String get code_create_social_screen_eye_color => 'Color';
-
-  @override
-  String get code_create_social_screen_eye_rounded => 'Rounded';
-
-  @override
-  String get code_create_social_screen_module_title => 'Module';
-
-  @override
-  String get code_create_social_screen_module_color => 'Color';
-
-  @override
-  String get code_create_social_screen_module_rounded => 'Rounded';
-
-  @override
-  String get code_create_social_screen_logo_title => 'Logo';
-
-  @override
-  String get code_create_social_screen_dialog_color_text => 'Choose a color';
-
-  @override
-  String get code_create_social_screen_dialog_color_select => 'Select';
-
-  @override
   String get code_create_social_screen_create_button => 'Create';
 
   @override
@@ -658,23 +442,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get code_scanner_screen_tooltip_switch_camera => 'Switch camera';
 
   @override
-  String get code_scanner_screen_image_scan_toast_error =>
-      'Failed to scan QR code:';
-
-  @override
-  String get code_scanner_screen_image_empty_toast_error => 'No image selected';
-
-  @override
   String get code_scanner_screen_scan_qr_empty_toast_error =>
       'No QR code found in the image';
 
   @override
   String get code_scanner_screen_scan_qr_read_toast_error =>
       'Failed to read QR code:';
-
-  @override
-  String get code_scanner_screen_scan_qr_decode_toast_error =>
-      'Failed to decode image';
 
   @override
   String get code_details_screen_title => 'QR Code Details';
@@ -892,10 +665,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to delete the selected codes?';
 
   @override
-  String get history_screen_delete_selected_toast_success =>
-      'Selected codes have been successfully deleted!';
-
-  @override
   String history_screen_deleted_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -995,9 +764,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_title_account => 'Account';
 
   @override
-  String get settings_tile_account => 'Account';
-
-  @override
   String get settings_tile_profile => 'Profile';
 
   @override
@@ -1052,13 +818,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_screen_codes_field_created_title => 'Created codes';
 
   @override
-  String get database_screen_codes_field_created_totals => 'Totals';
-
-  @override
   String get database_screen_codes_field_scanned_title => 'Scanned codes';
-
-  @override
-  String get database_screen_codes_field_scanned_totals => 'Totals';
 
   @override
   String get database_screen_codes_field_standard_title => 'Standard codes';
@@ -1155,16 +915,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_service_codes_field_id => 'ID';
 
   @override
-  String get database_service_codes_field_date => 'Data';
+  String get database_service_codes_field_date => 'Date';
 
   @override
   String get database_service_codes_field_source => 'Source';
 
   @override
   String get database_service_codes_field_type => 'Type';
-
-  @override
-  String get database_service_codes_field_code => 'QR code';
 
   @override
   String get database_service_codes_field_content => 'Content';
@@ -1221,12 +978,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_pdf_field_code_scanned => 'Scanned Codes';
 
   @override
-  String get database_pdf_field_code_scanned_standard => 'Standard';
-
-  @override
-  String get database_pdf_field_code_scanned_social => 'Social';
-
-  @override
   String get pdf_report_subtitle => 'My code collection';
 
   @override
@@ -1271,15 +1022,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get user_screen_title => 'Profile';
-
-  @override
-  String get user_screen_name_label => 'Name';
-
-  @override
-  String get user_screen_email_label => 'Email';
-
-  @override
-  String get user_screen_date_label => 'Joined';
 
   @override
   String get user_screen_logout_button => 'Log Out';

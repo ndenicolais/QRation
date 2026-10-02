@@ -98,12 +98,6 @@ abstract class AppLocalizations {
     Locale('it')
   ];
 
-  /// No description provided for @intro_title.
-  ///
-  /// In en, this message translates to:
-  /// **'QRation'**
-  String get intro_title;
-
   /// No description provided for @onboarding_first_title.
   ///
   /// In en, this message translates to:
@@ -170,23 +164,11 @@ abstract class AppLocalizations {
   /// **'Page {current} of {total}'**
   String onboarding_page_indicator(int current, int total);
 
-  /// No description provided for @onboarding_finish.
-  ///
-  /// In en, this message translates to:
-  /// **'Get started'**
-  String get onboarding_finish;
-
   /// No description provided for @onboarding_get_started.
   ///
   /// In en, this message translates to:
   /// **'Get started'**
   String get onboarding_get_started;
-
-  /// No description provided for @welcome_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Hello'**
-  String get welcome_text;
 
   /// No description provided for @welcome_subtitle.
   ///
@@ -211,48 +193,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign Up'**
   String get welcome_signup;
-
-  /// No description provided for @signup_screen_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Registration'**
-  String get signup_screen_title;
-
-  /// No description provided for @signup_screen_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign Up'**
-  String get signup_screen_text;
-
-  /// No description provided for @signup_screen_account.
-  ///
-  /// In en, this message translates to:
-  /// **'Already have an account? '**
-  String get signup_screen_account;
-
-  /// No description provided for @signup_screen_login.
-  ///
-  /// In en, this message translates to:
-  /// **'Log In'**
-  String get signup_screen_login;
-
-  /// No description provided for @signup_toast_success.
-  ///
-  /// In en, this message translates to:
-  /// **'Successfully registered!'**
-  String get signup_toast_success;
-
-  /// No description provided for @signup_toast_error_email_already_register.
-  ///
-  /// In en, this message translates to:
-  /// **'The email entered has already been registered'**
-  String get signup_toast_error_email_already_register;
-
-  /// No description provided for @signup_toast_error_generic.
-  ///
-  /// In en, this message translates to:
-  /// **'Error during registration:'**
-  String get signup_toast_error_generic;
 
   /// No description provided for @login_title.
   ///
@@ -422,257 +362,17 @@ abstract class AppLocalizations {
   /// **'Passwords do not match'**
   String get validator_confirm_password;
 
-  /// No description provided for @login_screen_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
-  String get login_screen_title;
-
-  /// No description provided for @login_screen_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Log in'**
-  String get login_screen_text;
-
-  /// No description provided for @login_screen_remember.
-  ///
-  /// In en, this message translates to:
-  /// **'Remember me'**
-  String get login_screen_remember;
-
-  /// No description provided for @login_screen_password.
-  ///
-  /// In en, this message translates to:
-  /// **'Forgot password?'**
-  String get login_screen_password;
-
-  /// No description provided for @login_screen_account.
-  ///
-  /// In en, this message translates to:
-  /// **'Don\'t have an account? '**
-  String get login_screen_account;
-
-  /// No description provided for @login_screen_signup.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign up'**
-  String get login_screen_signup;
-
-  /// No description provided for @login_toast_success.
-  ///
-  /// In en, this message translates to:
-  /// **'Login successful!'**
-  String get login_toast_success;
-
-  /// No description provided for @login_toast_error_email_not_found.
-  ///
-  /// In en, this message translates to:
-  /// **'The email entered does not match any account'**
-  String get login_toast_error_email_not_found;
-
-  /// No description provided for @login_toast_error_invalid_password.
-  ///
-  /// In en, this message translates to:
-  /// **'The password entered does not match any account'**
-  String get login_toast_error_invalid_password;
-
-  /// No description provided for @login_toast_error_generic.
-  ///
-  /// In en, this message translates to:
-  /// **'Error during login:'**
-  String get login_toast_error_generic;
-
-  /// No description provided for @logout_toast_success.
-  ///
-  /// In en, this message translates to:
-  /// **'See you soon!'**
-  String get logout_toast_success;
-
-  /// No description provided for @logout_toast_error_generic.
-  ///
-  /// In en, this message translates to:
-  /// **'Error during logout'**
-  String get logout_toast_error_generic;
-
-  /// No description provided for @reset_password_screen_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset Password'**
-  String get reset_password_screen_title;
-
-  /// No description provided for @reset_password_screen_description.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email to receive the link with the procedure to reset your password'**
-  String get reset_password_screen_description;
-
-  /// No description provided for @reset_password_screen_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset Password'**
-  String get reset_password_screen_text;
-
-  /// No description provided for @reset_password_form_email.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get reset_password_form_email;
-
-  /// No description provided for @reset_password_form_email_field.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email'**
-  String get reset_password_form_email_field;
-
-  /// No description provided for @reset_password_toast_success.
-  ///
-  /// In en, this message translates to:
-  /// **'Password reset email sent to: '**
-  String get reset_password_toast_success;
-
-  /// No description provided for @reset_password_toast_error_email_not_found.
-  ///
-  /// In en, this message translates to:
-  /// **'The email entered is not registered'**
-  String get reset_password_toast_error_email_not_found;
-
-  /// No description provided for @reset_password_toast_error_password.
-  ///
-  /// In en, this message translates to:
-  /// **'Error during password reset'**
-  String get reset_password_toast_error_password;
-
-  /// No description provided for @toast_signup_welcome.
-  ///
-  /// In en, this message translates to:
-  /// **'Hello, '**
-  String get toast_signup_welcome;
-
-  /// No description provided for @toast_signup_exist_email.
-  ///
-  /// In en, this message translates to:
-  /// **'The email address is already in use by another account.'**
-  String get toast_signup_exist_email;
-
-  /// No description provided for @toast_signup_invalid_email.
-  ///
-  /// In en, this message translates to:
-  /// **'The email address is not valid.'**
-  String get toast_signup_invalid_email;
-
-  /// No description provided for @toast_signup_operation.
-  ///
-  /// In en, this message translates to:
-  /// **'Email/password accounts are not enabled.'**
-  String get toast_signup_operation;
-
-  /// No description provided for @toast_signup_password.
-  ///
-  /// In en, this message translates to:
-  /// **'The password is too weak.'**
-  String get toast_signup_password;
-
-  /// No description provided for @toast_signup_generic_error.
-  ///
-  /// In en, this message translates to:
-  /// **'An error occurred. Please try again.'**
-  String get toast_signup_generic_error;
-
-  /// No description provided for @toast_login_welcome.
-  ///
-  /// In en, this message translates to:
-  /// **'Hello, '**
-  String get toast_login_welcome;
-
-  /// No description provided for @toast_login_user.
-  ///
-  /// In en, this message translates to:
-  /// **'No user found for that email.'**
-  String get toast_login_user;
-
-  /// No description provided for @toast_login_wrong_password.
-  ///
-  /// In en, this message translates to:
-  /// **'Wrong password provided.'**
-  String get toast_login_wrong_password;
-
-  /// No description provided for @toast_login_invalid_email.
-  ///
-  /// In en, this message translates to:
-  /// **'The email address is badly formatted.'**
-  String get toast_login_invalid_email;
-
-  /// No description provided for @toast_login_invalid_credential.
-  ///
-  /// In en, this message translates to:
-  /// **'The supplied auth credential is incorrect, malformed or has expired.'**
-  String get toast_login_invalid_credential;
-
-  /// No description provided for @toast_login_generic_error.
-  ///
-  /// In en, this message translates to:
-  /// **'An error occurred. Please try again.'**
-  String get toast_login_generic_error;
-
   /// No description provided for @toast_delete_success.
   ///
   /// In en, this message translates to:
   /// **'Account deleted successfully'**
   String get toast_delete_success;
 
-  /// No description provided for @toast_delete_google.
-  ///
-  /// In en, this message translates to:
-  /// **'Re-authentication with Google failed.'**
-  String get toast_delete_google;
-
-  /// No description provided for @toast_delete_user_data.
-  ///
-  /// In en, this message translates to:
-  /// **'Error deleting user data: '**
-  String get toast_delete_user_data;
-
-  /// No description provided for @toast_delete_user_storage.
-  ///
-  /// In en, this message translates to:
-  /// **'Error deleting user storage: '**
-  String get toast_delete_user_storage;
-
-  /// No description provided for @toast_delete_user_history.
-  ///
-  /// In en, this message translates to:
-  /// **'Error deleting user history: '**
-  String get toast_delete_user_history;
-
-  /// No description provided for @toast_delete_generic_error.
-  ///
-  /// In en, this message translates to:
-  /// **'An unexpected error occurred. Please try again.'**
-  String get toast_delete_generic_error;
-
   /// No description provided for @validator_name_empty.
   ///
   /// In en, this message translates to:
   /// **'Name cannot be empty'**
   String get validator_name_empty;
-
-  /// No description provided for @validator_name_hint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your name'**
-  String get validator_name_hint;
-
-  /// No description provided for @validator_name_required.
-  ///
-  /// In en, this message translates to:
-  /// **'Name is required'**
-  String get validator_name_required;
-
-  /// No description provided for @validator_name_error.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid name: '**
-  String get validator_name_error;
 
   /// No description provided for @validator_email_missing_special.
   ///
@@ -685,12 +385,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Missing . symbol'**
   String get validator_email_missing_dot;
-
-  /// No description provided for @validator_email_hint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email'**
-  String get validator_email_hint;
 
   /// No description provided for @validator_email_required.
   ///
@@ -734,24 +428,6 @@ abstract class AppLocalizations {
   /// **'Password should be at least 8 characters long'**
   String get validator_password_missing_lenght;
 
-  /// No description provided for @validator_password_hint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your password'**
-  String get validator_password_hint;
-
-  /// No description provided for @validator_password_required.
-  ///
-  /// In en, this message translates to:
-  /// **'Password is required'**
-  String get validator_password_required;
-
-  /// No description provided for @validator_password_error.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid password: '**
-  String get validator_password_error;
-
   /// No description provided for @permission_camera_denied.
   ///
   /// In en, this message translates to:
@@ -775,18 +451,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Grant contacts permission from settings'**
   String get permission_contacts_toast;
-
-  /// No description provided for @permission_storage_denied.
-  ///
-  /// In en, this message translates to:
-  /// **'Storage permission denied'**
-  String get permission_storage_denied;
-
-  /// No description provided for @permission_storage_toast.
-  ///
-  /// In en, this message translates to:
-  /// **'Grant storage permission from settings'**
-  String get permission_storage_toast;
 
   /// No description provided for @bottom_nav_item_scan.
   ///
@@ -817,12 +481,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get bottom_nav_item_settings;
-
-  /// No description provided for @home_recent_qr_codes.
-  ///
-  /// In en, this message translates to:
-  /// **'Recent QR codes'**
-  String get home_recent_qr_codes;
 
   /// No description provided for @tab_created.
   ///
@@ -1003,12 +661,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ISBN'**
   String get code_create_standard_screen_isbn_label;
-
-  /// No description provided for @code_create_standard_screen_error_url_www.
-  ///
-  /// In en, this message translates to:
-  /// **'The content must start with \'www\' or \'http\'.'**
-  String get code_create_standard_screen_error_url_www;
 
   /// No description provided for @code_create_standard_screen_error_url_length.
   ///
@@ -1214,60 +866,6 @@ abstract class AppLocalizations {
   /// **'Please enter a valid URL'**
   String get code_create_social_screen_validator_url;
 
-  /// No description provided for @code_create_social_screen_eye_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Eye'**
-  String get code_create_social_screen_eye_title;
-
-  /// No description provided for @code_create_social_screen_eye_color.
-  ///
-  /// In en, this message translates to:
-  /// **'Color'**
-  String get code_create_social_screen_eye_color;
-
-  /// No description provided for @code_create_social_screen_eye_rounded.
-  ///
-  /// In en, this message translates to:
-  /// **'Rounded'**
-  String get code_create_social_screen_eye_rounded;
-
-  /// No description provided for @code_create_social_screen_module_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Module'**
-  String get code_create_social_screen_module_title;
-
-  /// No description provided for @code_create_social_screen_module_color.
-  ///
-  /// In en, this message translates to:
-  /// **'Color'**
-  String get code_create_social_screen_module_color;
-
-  /// No description provided for @code_create_social_screen_module_rounded.
-  ///
-  /// In en, this message translates to:
-  /// **'Rounded'**
-  String get code_create_social_screen_module_rounded;
-
-  /// No description provided for @code_create_social_screen_logo_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Logo'**
-  String get code_create_social_screen_logo_title;
-
-  /// No description provided for @code_create_social_screen_dialog_color_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose a color'**
-  String get code_create_social_screen_dialog_color_text;
-
-  /// No description provided for @code_create_social_screen_dialog_color_select.
-  ///
-  /// In en, this message translates to:
-  /// **'Select'**
-  String get code_create_social_screen_dialog_color_select;
-
   /// No description provided for @code_create_social_screen_create_button.
   ///
   /// In en, this message translates to:
@@ -1322,18 +920,6 @@ abstract class AppLocalizations {
   /// **'Switch camera'**
   String get code_scanner_screen_tooltip_switch_camera;
 
-  /// No description provided for @code_scanner_screen_image_scan_toast_error.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to scan QR code:'**
-  String get code_scanner_screen_image_scan_toast_error;
-
-  /// No description provided for @code_scanner_screen_image_empty_toast_error.
-  ///
-  /// In en, this message translates to:
-  /// **'No image selected'**
-  String get code_scanner_screen_image_empty_toast_error;
-
   /// No description provided for @code_scanner_screen_scan_qr_empty_toast_error.
   ///
   /// In en, this message translates to:
@@ -1345,12 +931,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to read QR code:'**
   String get code_scanner_screen_scan_qr_read_toast_error;
-
-  /// No description provided for @code_scanner_screen_scan_qr_decode_toast_error.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to decode image'**
-  String get code_scanner_screen_scan_qr_decode_toast_error;
 
   /// No description provided for @code_details_screen_title.
   ///
@@ -1772,12 +1352,6 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to delete the selected codes?'**
   String get history_screen_delete_selected_description;
 
-  /// No description provided for @history_screen_delete_selected_toast_success.
-  ///
-  /// In en, this message translates to:
-  /// **'Selected codes have been successfully deleted!'**
-  String get history_screen_delete_selected_toast_success;
-
   /// No description provided for @history_screen_deleted_count.
   ///
   /// In en, this message translates to:
@@ -1958,12 +1532,6 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get settings_title_account;
 
-  /// No description provided for @settings_tile_account.
-  ///
-  /// In en, this message translates to:
-  /// **'Account'**
-  String get settings_tile_account;
-
   /// No description provided for @settings_tile_profile.
   ///
   /// In en, this message translates to:
@@ -2072,23 +1640,11 @@ abstract class AppLocalizations {
   /// **'Created codes'**
   String get database_screen_codes_field_created_title;
 
-  /// No description provided for @database_screen_codes_field_created_totals.
-  ///
-  /// In en, this message translates to:
-  /// **'Totals'**
-  String get database_screen_codes_field_created_totals;
-
   /// No description provided for @database_screen_codes_field_scanned_title.
   ///
   /// In en, this message translates to:
   /// **'Scanned codes'**
   String get database_screen_codes_field_scanned_title;
-
-  /// No description provided for @database_screen_codes_field_scanned_totals.
-  ///
-  /// In en, this message translates to:
-  /// **'Totals'**
-  String get database_screen_codes_field_scanned_totals;
 
   /// No description provided for @database_screen_codes_field_standard_title.
   ///
@@ -2273,7 +1829,7 @@ abstract class AppLocalizations {
   /// No description provided for @database_service_codes_field_date.
   ///
   /// In en, this message translates to:
-  /// **'Data'**
+  /// **'Date'**
   String get database_service_codes_field_date;
 
   /// No description provided for @database_service_codes_field_source.
@@ -2287,12 +1843,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Type'**
   String get database_service_codes_field_type;
-
-  /// No description provided for @database_service_codes_field_code.
-  ///
-  /// In en, this message translates to:
-  /// **'QR code'**
-  String get database_service_codes_field_code;
 
   /// No description provided for @database_service_codes_field_content.
   ///
@@ -2402,18 +1952,6 @@ abstract class AppLocalizations {
   /// **'Scanned Codes'**
   String get database_pdf_field_code_scanned;
 
-  /// No description provided for @database_pdf_field_code_scanned_standard.
-  ///
-  /// In en, this message translates to:
-  /// **'Standard'**
-  String get database_pdf_field_code_scanned_standard;
-
-  /// No description provided for @database_pdf_field_code_scanned_social.
-  ///
-  /// In en, this message translates to:
-  /// **'Social'**
-  String get database_pdf_field_code_scanned_social;
-
   /// No description provided for @pdf_report_subtitle.
   ///
   /// In en, this message translates to:
@@ -2485,24 +2023,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get user_screen_title;
-
-  /// No description provided for @user_screen_name_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Name'**
-  String get user_screen_name_label;
-
-  /// No description provided for @user_screen_email_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get user_screen_email_label;
-
-  /// No description provided for @user_screen_date_label.
-  ///
-  /// In en, this message translates to:
-  /// **'Joined'**
-  String get user_screen_date_label;
 
   /// No description provided for @user_screen_logout_button.
   ///

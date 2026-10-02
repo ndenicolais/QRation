@@ -9,9 +9,6 @@ class AppLocalizationsIt extends AppLocalizations {
   AppLocalizationsIt([String locale = 'it']) : super(locale);
 
   @override
-  String get intro_title => 'QRation';
-
-  @override
   String get onboarding_first_title => 'Crea';
 
   @override
@@ -50,13 +47,7 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get onboarding_finish => 'Inizia';
-
-  @override
   String get onboarding_get_started => 'Inizia';
-
-  @override
-  String get welcome_text => 'Ciao';
 
   @override
   String get welcome_subtitle => 'Il tuo compagno per i QR code';
@@ -69,28 +60,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get welcome_signup => 'Registrati';
-
-  @override
-  String get signup_screen_title => 'Registrazione';
-
-  @override
-  String get signup_screen_text => 'Registrati';
-
-  @override
-  String get signup_screen_account => 'Hai un account? ';
-
-  @override
-  String get signup_screen_login => 'Accedi';
-
-  @override
-  String get signup_toast_success => 'Registrazione effettuata con successo!';
-
-  @override
-  String get signup_toast_error_email_already_register =>
-      'L\'email inserita è già stata registrata come email personale';
-
-  @override
-  String get signup_toast_error_generic => 'Errore durante la registrazione:';
 
   @override
   String get login_title => 'Bentornato';
@@ -178,155 +147,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get validator_confirm_password => 'Le password non coincidono';
 
   @override
-  String get login_screen_title => 'Accesso';
-
-  @override
-  String get login_screen_text => 'Accedi';
-
-  @override
-  String get login_screen_remember => 'Ricordami';
-
-  @override
-  String get login_screen_password => 'Password dimenticata?';
-
-  @override
-  String get login_screen_account => 'Non hai un account? ';
-
-  @override
-  String get login_screen_signup => 'Registrati';
-
-  @override
-  String get login_toast_success => 'Accesso effettuato con successo!';
-
-  @override
-  String get login_toast_error_email_not_found =>
-      'L\'email inserita non corrisponde ad alcun account';
-
-  @override
-  String get login_toast_error_invalid_password =>
-      'La password inserita non corrisponde ad alcun account';
-
-  @override
-  String get login_toast_error_generic => 'Errore durante il login:';
-
-  @override
-  String get logout_toast_success => 'A presto!';
-
-  @override
-  String get logout_toast_error_generic => 'Errore durante il logout';
-
-  @override
-  String get reset_password_screen_title => 'Reset Password';
-
-  @override
-  String get reset_password_screen_description =>
-      'Inserisci la tua email per ricevere il link con la procedura per il reset della password';
-
-  @override
-  String get reset_password_screen_text => 'Reset Password';
-
-  @override
-  String get reset_password_form_email => 'Email';
-
-  @override
-  String get reset_password_form_email_field => 'Inserisci l\'email';
-
-  @override
-  String get reset_password_toast_success =>
-      'Email per il reset della password inviata a: ';
-
-  @override
-  String get reset_password_toast_error_email_not_found =>
-      'L\'email inserita non è registrata';
-
-  @override
-  String get reset_password_toast_error_password =>
-      'Errore durante il reset della password';
-
-  @override
-  String get toast_signup_welcome => 'Ciao, ';
-
-  @override
-  String get toast_signup_exist_email =>
-      'L\'indirizzo email è già in uso da un altro account.';
-
-  @override
-  String get toast_signup_invalid_email => 'L\'indirizzo email non è valido.';
-
-  @override
-  String get toast_signup_operation =>
-      'Gli account email/password non sono abilitati.';
-
-  @override
-  String get toast_signup_password => 'La password è troppo debole.';
-
-  @override
-  String get toast_signup_generic_error =>
-      'Si è verificato un errore. Per favore riprova.';
-
-  @override
-  String get toast_login_welcome => 'Ciao, ';
-
-  @override
-  String get toast_login_user => 'Nessun utente trovato per quell\'email.';
-
-  @override
-  String get toast_login_wrong_password => 'Password errata fornita.';
-
-  @override
-  String get toast_login_invalid_email =>
-      'L\'indirizzo email è formattato in modo errato.';
-
-  @override
-  String get toast_login_invalid_credential =>
-      'Le credenziali di autenticazione fornite sono errate, malformate o scadute.';
-
-  @override
-  String get toast_login_generic_error =>
-      'Si è verificato un errore. Per favore riprova.';
-
-  @override
   String get toast_delete_success => 'Account eliminato con successo';
 
   @override
-  String get toast_delete_google => 'Ri-autenticazione con Google fallita.';
-
-  @override
-  String get toast_delete_user_data =>
-      'Errore nell\'eliminazione dei dati dell\'utente: ';
-
-  @override
-  String get toast_delete_user_storage =>
-      'Errore nell\'eliminazione dello storage dell\'utente: ';
-
-  @override
-  String get toast_delete_user_history =>
-      'Errore nell\'eliminazione dello storico dell\'utente: ';
-
-  @override
-  String get toast_delete_generic_error =>
-      'Si è verificato un errore imprevisto. Per favore riprova.';
-
-  @override
   String get validator_name_empty => 'Il nome non può essere vuoto';
-
-  @override
-  String get validator_name_hint => 'Inserisci il tuo nome';
-
-  @override
-  String get validator_name_required => 'Nome è richiesto';
-
-  @override
-  String get validator_name_error => 'Nome non valido: ';
 
   @override
   String get validator_email_missing_special => 'Simbolo @ mancante';
 
   @override
   String get validator_email_missing_dot => 'Simbolo . mancante';
-
-  @override
-  String get validator_email_hint => 'Inserisci la tua email';
 
   @override
   String get validator_email_required => 'Email è richiesta';
@@ -352,15 +182,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'La password deve avere una lunghezza di almeno 8 caratteri';
 
   @override
-  String get validator_password_hint => 'Inserisci la tua password';
-
-  @override
-  String get validator_password_required => 'Password è richiesta';
-
-  @override
-  String get validator_password_error => 'Password non valida: ';
-
-  @override
   String get permission_camera_denied => 'Permesso fotocamera negato';
 
   @override
@@ -373,13 +194,6 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get permission_contacts_toast =>
       'Concedi il permesso dei contatti dalle impostazioni';
-
-  @override
-  String get permission_storage_denied => 'Permesso di archiviazione negato';
-
-  @override
-  String get permission_storage_toast =>
-      'Concedi il permesso di archiviazione dalle impostazioni';
 
   @override
   String get bottom_nav_item_scan => 'Scansiona';
@@ -395,9 +209,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get bottom_nav_item_settings => 'Impostazioni';
-
-  @override
-  String get home_recent_qr_codes => 'Codici QR recenti';
 
   @override
   String get tab_created => 'Creato';
@@ -490,10 +301,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get code_create_standard_screen_isbn_label => 'ISBN';
-
-  @override
-  String get code_create_standard_screen_error_url_www =>
-      'Il contenuto deve iniziare con \'www\' o \'http\'.';
 
   @override
   String get code_create_standard_screen_error_url_length =>
@@ -617,33 +424,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Per favore inserisci un URL valido';
 
   @override
-  String get code_create_social_screen_eye_title => 'Occhi';
-
-  @override
-  String get code_create_social_screen_eye_color => 'Colore';
-
-  @override
-  String get code_create_social_screen_eye_rounded => 'Arrotondati';
-
-  @override
-  String get code_create_social_screen_module_title => 'Moduli';
-
-  @override
-  String get code_create_social_screen_module_color => 'Colore';
-
-  @override
-  String get code_create_social_screen_module_rounded => 'Arrotondati';
-
-  @override
-  String get code_create_social_screen_logo_title => 'Logo';
-
-  @override
-  String get code_create_social_screen_dialog_color_text => 'Scegli un colore';
-
-  @override
-  String get code_create_social_screen_dialog_color_select => 'Seleziona';
-
-  @override
   String get code_create_social_screen_create_button => 'Crea';
 
   @override
@@ -673,24 +453,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get code_scanner_screen_tooltip_switch_camera => 'Cambia fotocamera';
 
   @override
-  String get code_scanner_screen_image_scan_toast_error =>
-      'Scansione del codice QR non riuscita:';
-
-  @override
-  String get code_scanner_screen_image_empty_toast_error =>
-      'Nessuna immagine selezionata';
-
-  @override
   String get code_scanner_screen_scan_qr_empty_toast_error =>
       'Nessun codice QR trovato nell\'immagine';
 
   @override
   String get code_scanner_screen_scan_qr_read_toast_error =>
       'Impossibile leggere il codice QR:';
-
-  @override
-  String get code_scanner_screen_scan_qr_decode_toast_error =>
-      'Impossibile decodificare l\'immagine';
 
   @override
   String get code_details_screen_title => 'Dettagli Codice QR';
@@ -913,10 +681,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Sei sicuro di voler eliminare i codici selezionati?';
 
   @override
-  String get history_screen_delete_selected_toast_success =>
-      'I codici selezionati sono stati eliminati con successo!';
-
-  @override
   String history_screen_deleted_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1017,9 +781,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings_title_account => 'Account';
 
   @override
-  String get settings_tile_account => 'Account';
-
-  @override
   String get settings_tile_profile => 'Profilo';
 
   @override
@@ -1074,13 +835,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get database_screen_codes_field_created_title => 'Codici creati';
 
   @override
-  String get database_screen_codes_field_created_totals => 'Totale';
-
-  @override
   String get database_screen_codes_field_scanned_title => 'Codici scansionati';
-
-  @override
-  String get database_screen_codes_field_scanned_totals => 'Totale';
 
   @override
   String get database_screen_codes_field_standard_title => 'Codici standard';
@@ -1188,9 +943,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get database_service_codes_field_type => 'Tipo';
 
   @override
-  String get database_service_codes_field_code => 'QR Code';
-
-  @override
   String get database_service_codes_field_content => 'Contenuto';
 
   @override
@@ -1246,12 +998,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get database_pdf_field_code_scanned => 'Codici Scansionati';
 
   @override
-  String get database_pdf_field_code_scanned_standard => 'Standard';
-
-  @override
-  String get database_pdf_field_code_scanned_social => 'Social';
-
-  @override
   String get pdf_report_subtitle => 'La mia collezione di codici';
 
   @override
@@ -1296,15 +1042,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get user_screen_title => 'Profilo';
-
-  @override
-  String get user_screen_name_label => 'Nome';
-
-  @override
-  String get user_screen_email_label => 'Email';
-
-  @override
-  String get user_screen_date_label => 'Registrato il';
 
   @override
   String get user_screen_logout_button => 'Esci';
