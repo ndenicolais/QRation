@@ -9,7 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 //
 // Multi-layer test: wires a real `DatabaseController` to a mocked
-// `CodesRepository` and pumps the real `StatisticsSection`/`ExportSection`
+// `CodesRepository` and pumps the real `StatisticsSection`/`ExportImportSection`
 // widgets on top of it, verifying controller state flows through to what
 // is actually rendered on screen — closer to an end-to-end flow than a
 // single-widget/single-unit test, without requiring a device or emulator.
@@ -21,7 +21,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 import 'package:qration/features/settings/controllers/database_controller.dart';
-import 'package:qration/features/settings/widgets/export_section.dart';
+import 'package:qration/features/settings/widgets/export_import_section.dart';
 import 'package:qration/features/settings/widgets/statistics_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,13 +103,21 @@ void main() {
                 socialCodesByScanned: controller.socialCodesByScanned.value,
               ),
             ),
-            ExportSection(onPdf: () {}, onExcel: () {}, onCsv: () {}),
+            ExportImportSection(
+              onPdf: () {},
+              onExcel: () {},
+              onCsv: () {},
+              onBackup: () {},
+              onRestore: () {},
+              lastBackupAt: null,
+              lastRestoreAt: null,
+            ),
           ],
         ),
       );
 
       expect(find.byType(StatisticsSection), findsOneWidget);
-      expect(find.byType(ExportSection), findsOneWidget);
+      expect(find.byType(ExportImportSection), findsOneWidget);
     },
   );
 }

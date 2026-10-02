@@ -1079,7 +1079,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_screen_codes_dialog_close => 'Close';
 
   @override
-  String get database_screen_export_title => 'Export option';
+  String get database_screen_transfer_title => 'Export and import';
+
+  @override
+  String get database_screen_documents_title => 'Documents';
+
+  @override
+  String get database_screen_documents_description =>
+      'Create a file listing your codes, to read, print or share.';
+
+  @override
+  String get database_screen_backup_description =>
+      'Save all your codes to a JSON file in the Download folder, to restore them later, even on another phone. Restoring a backup adds its codes to the ones you already have.';
+
+  @override
+  String get database_screen_backup_create => 'Create backup';
+
+  @override
+  String get database_screen_backup_restore => 'Restore';
 
   @override
   String get database_screen_pdf_download => 'PDF';
@@ -1110,35 +1127,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_screen_csv_error => 'Unable to generate CSV';
 
   @override
-  String get database_screen_export_menu => 'Export JSON';
+  String get database_screen_backup_title => 'Backup';
 
   @override
-  String get database_screen_import_menu => 'Import JSON';
+  String get database_screen_backup_last_export => 'Last backup';
 
   @override
-  String get database_screen_backup_title => 'JSON backup';
-
-  @override
-  String get database_screen_backup_last_export => 'Last export';
-
-  @override
-  String get database_screen_backup_last_import => 'Last import';
+  String get database_screen_backup_last_import => 'Last restore';
 
   @override
   String get database_screen_backup_never => 'Never';
 
   @override
   String get database_screen_export_success =>
-      'JSON exported in the Download folder';
+      'Backup saved to the Download folder';
 
   @override
-  String get database_screen_export_error => 'Error during export';
+  String get database_screen_export_error => 'Error while creating the backup';
 
   @override
-  String get database_screen_import_success => 'JSON successfully imported!';
+  String get database_screen_import_success => 'Backup restored';
 
   @override
-  String get database_screen_import_error => 'Error during import';
+  String get database_screen_import_error => 'Error while restoring the backup';
 
   @override
   String get database_service_codes_field_id => 'ID';
@@ -1620,7 +1631,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changelog_v2_0_0_bullet_5 =>
-      'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. The exported PDF has a new look: a cover, an account and statistics summary and the codes as compact cards, about 5 per page instead of one. Fixed the permission error when exporting and an overflow in the statistics.';
+      'Database and export: new page with clearer statistics and every export and the backup gathered in a single section, with explained buttons. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. The exported PDF has a new look: a cover, an account and statistics summary and the codes as compact cards, about 5 per page instead of one. Fixed the permission error when exporting and an overflow in the statistics.';
 
   @override
   String get changelog_v2_0_0_bullet_6 =>
@@ -1628,7 +1639,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changelog_v2_0_0_bullet_7 =>
-      'Settings: pick the main color among 8 palettes and a light, dark or system theme, with new segmented buttons. The chosen language applies from launch, scan sound and vibration take effect immediately and the Changelog shows what\'s new after every update.';
+      'Settings: pick the main color among 8 palettes and a light, dark or system theme, with new segmented buttons. The chosen language applies from launch, scan sound and vibration take effect immediately, the Changelog shows what\'s new after every update and Share sends the link to the project on GitHub.';
 
   @override
   String get changelog_v2_0_0_bullet_8 =>

@@ -20,8 +20,7 @@ import 'package:qration/features/export/services/csv_service.dart';
 import 'package:qration/features/export/services/excel_service.dart';
 import 'package:qration/features/export/services/pdf_service.dart';
 import 'package:qration/features/settings/controllers/database_controller.dart';
-import 'package:qration/features/settings/widgets/backup_section.dart';
-import 'package:qration/features/settings/widgets/export_section.dart';
+import 'package:qration/features/settings/widgets/export_import_section.dart';
 import 'package:qration/features/settings/widgets/loading_overlays.dart';
 import 'package:qration/features/settings/widgets/statistics_section.dart';
 import 'package:share_plus/share_plus.dart';
@@ -159,15 +158,14 @@ class DatabaseScreenState extends State<DatabaseScreen> {
                                     _controller.socialCodesByScanned.value,
                               ),
                               SizedBox(height: 28),
-                              BackupSection(
-                                lastExportAt: _controller.lastExportAt.value,
-                                lastImportAt: _controller.lastImportAt.value,
-                              ),
-                              SizedBox(height: 28),
-                              ExportSection(
+                              ExportImportSection(
                                 onPdf: _generatePdf,
                                 onExcel: _generateExcel,
                                 onCsv: _generateCSV,
+                                onBackup: _exportCodes,
+                                onRestore: _importCodes,
+                                lastBackupAt: _controller.lastExportAt.value,
+                                lastRestoreAt: _controller.lastImportAt.value,
                               ),
                             ],
                           ),
@@ -196,19 +194,6 @@ class DatabaseScreenState extends State<DatabaseScreen> {
         onPressed: Get.back,
       ),
       title: Text(AppLocalizations.of(context)!.database_screen_title),
-      actions: [
-        IconButton(
-          tooltip: AppLocalizations.of(context)!.database_screen_import_menu,
-          icon: const Icon(MingCuteIcons.mgc_file_import_line),
-          onPressed: _importCodes,
-        ),
-        IconButton(
-          tooltip: AppLocalizations.of(context)!.database_screen_export_menu,
-          icon: const Icon(MingCuteIcons.mgc_file_export_line),
-          onPressed: _exportCodes,
-        ),
-        SizedBox(width: 4),
-      ],
     );
   }
 }

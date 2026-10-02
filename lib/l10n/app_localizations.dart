@@ -2126,11 +2126,41 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get database_screen_codes_dialog_close;
 
-  /// No description provided for @database_screen_export_title.
+  /// No description provided for @database_screen_transfer_title.
   ///
   /// In en, this message translates to:
-  /// **'Export option'**
-  String get database_screen_export_title;
+  /// **'Export and import'**
+  String get database_screen_transfer_title;
+
+  /// No description provided for @database_screen_documents_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get database_screen_documents_title;
+
+  /// No description provided for @database_screen_documents_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a file listing your codes, to read, print or share.'**
+  String get database_screen_documents_description;
+
+  /// No description provided for @database_screen_backup_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Save all your codes to a JSON file in the Download folder, to restore them later, even on another phone. Restoring a backup adds its codes to the ones you already have.'**
+  String get database_screen_backup_description;
+
+  /// No description provided for @database_screen_backup_create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create backup'**
+  String get database_screen_backup_create;
+
+  /// No description provided for @database_screen_backup_restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get database_screen_backup_restore;
 
   /// No description provided for @database_screen_pdf_download.
   ///
@@ -2186,34 +2216,22 @@ abstract class AppLocalizations {
   /// **'Unable to generate CSV'**
   String get database_screen_csv_error;
 
-  /// No description provided for @database_screen_export_menu.
-  ///
-  /// In en, this message translates to:
-  /// **'Export JSON'**
-  String get database_screen_export_menu;
-
-  /// No description provided for @database_screen_import_menu.
-  ///
-  /// In en, this message translates to:
-  /// **'Import JSON'**
-  String get database_screen_import_menu;
-
   /// No description provided for @database_screen_backup_title.
   ///
   /// In en, this message translates to:
-  /// **'JSON backup'**
+  /// **'Backup'**
   String get database_screen_backup_title;
 
   /// No description provided for @database_screen_backup_last_export.
   ///
   /// In en, this message translates to:
-  /// **'Last export'**
+  /// **'Last backup'**
   String get database_screen_backup_last_export;
 
   /// No description provided for @database_screen_backup_last_import.
   ///
   /// In en, this message translates to:
-  /// **'Last import'**
+  /// **'Last restore'**
   String get database_screen_backup_last_import;
 
   /// No description provided for @database_screen_backup_never.
@@ -2225,25 +2243,25 @@ abstract class AppLocalizations {
   /// No description provided for @database_screen_export_success.
   ///
   /// In en, this message translates to:
-  /// **'JSON exported in the Download folder'**
+  /// **'Backup saved to the Download folder'**
   String get database_screen_export_success;
 
   /// No description provided for @database_screen_export_error.
   ///
   /// In en, this message translates to:
-  /// **'Error during export'**
+  /// **'Error while creating the backup'**
   String get database_screen_export_error;
 
   /// No description provided for @database_screen_import_success.
   ///
   /// In en, this message translates to:
-  /// **'JSON successfully imported!'**
+  /// **'Backup restored'**
   String get database_screen_import_success;
 
   /// No description provided for @database_screen_import_error.
   ///
   /// In en, this message translates to:
-  /// **'Error during import'**
+  /// **'Error while restoring the backup'**
   String get database_screen_import_error;
 
   /// No description provided for @database_service_codes_field_id.
@@ -3101,7 +3119,7 @@ abstract class AppLocalizations {
   /// No description provided for @changelog_v2_0_0_bullet_5.
   ///
   /// In en, this message translates to:
-  /// **'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. The exported PDF has a new look: a cover, an account and statistics summary and the codes as compact cards, about 5 per page instead of one. Fixed the permission error when exporting and an overflow in the statistics.'**
+  /// **'Database and export: new page with clearer statistics and every export and the backup gathered in a single section, with explained buttons. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. The exported PDF has a new look: a cover, an account and statistics summary and the codes as compact cards, about 5 per page instead of one. Fixed the permission error when exporting and an overflow in the statistics.'**
   String get changelog_v2_0_0_bullet_5;
 
   /// No description provided for @changelog_v2_0_0_bullet_6.
@@ -3113,7 +3131,7 @@ abstract class AppLocalizations {
   /// No description provided for @changelog_v2_0_0_bullet_7.
   ///
   /// In en, this message translates to:
-  /// **'Settings: pick the main color among 8 palettes and a light, dark or system theme, with new segmented buttons. The chosen language applies from launch, scan sound and vibration take effect immediately and the Changelog shows what\'s new after every update.'**
+  /// **'Settings: pick the main color among 8 palettes and a light, dark or system theme, with new segmented buttons. The chosen language applies from launch, scan sound and vibration take effect immediately, the Changelog shows what\'s new after every update and Share sends the link to the project on GitHub.'**
   String get changelog_v2_0_0_bullet_7;
 
   /// No description provided for @changelog_v2_0_0_bullet_8.

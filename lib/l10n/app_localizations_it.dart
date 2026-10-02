@@ -1101,7 +1101,24 @@ class AppLocalizationsIt extends AppLocalizations {
   String get database_screen_codes_dialog_close => 'Chiudi';
 
   @override
-  String get database_screen_export_title => 'Esporta come';
+  String get database_screen_transfer_title => 'Esporta e importa';
+
+  @override
+  String get database_screen_documents_title => 'Documenti';
+
+  @override
+  String get database_screen_documents_description =>
+      'Crea un file con l\'elenco dei tuoi codici, da leggere, stampare o condividere.';
+
+  @override
+  String get database_screen_backup_description =>
+      'Salva tutti i tuoi codici in un file JSON nella cartella Download, per ripristinarli in seguito anche su un altro telefono. Ripristinando un backup, i suoi codici si aggiungono a quelli già presenti.';
+
+  @override
+  String get database_screen_backup_create => 'Crea backup';
+
+  @override
+  String get database_screen_backup_restore => 'Ripristina';
 
   @override
   String get database_screen_pdf_download => 'PDF';
@@ -1134,35 +1151,29 @@ class AppLocalizationsIt extends AppLocalizations {
   String get database_screen_csv_error => 'Impossibile generare il CSV';
 
   @override
-  String get database_screen_export_menu => 'Esporta JSON';
+  String get database_screen_backup_title => 'Backup';
 
   @override
-  String get database_screen_import_menu => 'Importa JSON';
+  String get database_screen_backup_last_export => 'Ultimo backup';
 
   @override
-  String get database_screen_backup_title => 'Backup JSON';
-
-  @override
-  String get database_screen_backup_last_export => 'Ultima esportazione';
-
-  @override
-  String get database_screen_backup_last_import => 'Ultima importazione';
+  String get database_screen_backup_last_import => 'Ultimo ripristino';
 
   @override
   String get database_screen_backup_never => 'Mai';
 
   @override
   String get database_screen_export_success =>
-      'JSON esportato nella cartella Download';
+      'Backup salvato nella cartella Download';
 
   @override
-  String get database_screen_export_error => 'Errore durante l\'esportazione';
+  String get database_screen_export_error => 'Errore durante il backup';
 
   @override
-  String get database_screen_import_success => 'JSON importato con successo!';
+  String get database_screen_import_success => 'Backup ripristinato';
 
   @override
-  String get database_screen_import_error => 'Errore durante l\'importazione';
+  String get database_screen_import_error => 'Errore durante il ripristino';
 
   @override
   String get database_service_codes_field_id => 'ID';
@@ -1647,7 +1658,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get changelog_v2_0_0_bullet_5 =>
-      'Database ed esportazione: nuova pagina con azioni nella barra superiore e statistiche più leggibili. PDF, Excel, CSV e backup JSON vengono salvati anche nella cartella Download, ed è indicata la data dell\'ultimo backup. Il PDF esportato ha una nuova grafica: copertina, riepilogo di account e statistiche e i codici in schede compatte, circa 5 per pagina invece di uno. Corretti l\'errore di permesso in esportazione e un overflow nelle statistiche.';
+      'Database ed esportazione: nuova pagina con statistiche più leggibili e tutte le esportazioni e il backup riuniti in un\'unica sezione, con i pulsanti spiegati. PDF, Excel, CSV e backup JSON vengono salvati anche nella cartella Download, ed è indicata la data dell\'ultimo backup. Il PDF esportato ha una nuova grafica: copertina, riepilogo di account e statistiche e i codici in schede compatte, circa 5 per pagina invece di uno. Corretti l\'errore di permesso in esportazione e un overflow nelle statistiche.';
 
   @override
   String get changelog_v2_0_0_bullet_6 =>
@@ -1655,7 +1666,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get changelog_v2_0_0_bullet_7 =>
-      'Impostazioni: scegli il colore principale tra 8 palette e il tema chiaro, scuro o di sistema, con nuovi pulsanti segmentati. La lingua scelta vale fin dall\'avvio, suono e vibrazione della scansione si applicano subito e il Changelog mostra le novità dopo ogni aggiornamento.';
+      'Impostazioni: scegli il colore principale tra 8 palette e il tema chiaro, scuro o di sistema, con nuovi pulsanti segmentati. La lingua scelta vale fin dall\'avvio, suono e vibrazione della scansione si applicano subito, il Changelog mostra le novità dopo ogni aggiornamento e Condividi invia il link al progetto su GitHub.';
 
   @override
   String get changelog_v2_0_0_bullet_8 =>

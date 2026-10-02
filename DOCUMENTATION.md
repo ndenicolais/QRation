@@ -550,7 +550,7 @@ La screen contiene solo il contenuto delle sezioni; i mattoni visivi sono in `li
 | **App** | Informazioni | Info sull'app: funzionalità, link utili, Privacy Policy e licenze |
 | **App** | Changelog | Apre `AppChangelogDialog.showAll`, con l'intero storico di `changelogEntries` (non solo le voci dall'ultimo aggiornamento) |
 | **App** | Supporto | Contatta l'autore |
-| **App** | Condividi | Condivide il link dell'app tramite sistema operativo |
+| **App** | Condividi | Condivide il link del repository GitHub (`AppConstants.uriGithubRepository`, https://github.com/ndenicolais/QRation) tramite il foglio di condivisione del sistema |
 
 **Privacy Policy** (`PrivacyPolicyScreen` in `lib/features/settings/screens/privacy_policy_screen.dart`, route `AppRoutes.privacyPolicy`): informativa nativa e localizzata, che sostituisce la vecchia WebView su freeprivacypolicy.com (rimosso `webview_flutter`). L'unico punto d'ingresso è la riga "Privacy Policy" nella card "Link utili" della schermata Info. Mostra la data di aggiornamento (`AppConstants.privacyPolicyUpdatedAt`, formattata con `DateFormat.yMMMMd` nella lingua corrente), l'intro, 10 sezioni in `SectionCard` (chiavi ARB `policy_section_*_title`/`_text`; il titolare usa i placeholder `{name}`/`{email}` valorizzati da `AppConstants.developerName`/`developerEmail`) e il link "Versione online" ad `AppConstants.uriPrivacyPolicy` (`https://ndenicolais.github.io/qration/privacy/`). Lo stesso testo, in italiano e inglese, è in `PRIVACY.md` nella radice del repo: quando cambia vanno aggiornati insieme `PRIVACY.md`, le chiavi ARB, `privacyPolicyUpdatedAt` e la pagina sul portfolio. Se si aggiungono servizi, permessi o dati trattati (analytics, pubblicità, nuovi plugin con accesso alla rete), la policy va aggiornata prima della release.
 
@@ -562,7 +562,7 @@ La screen contiene solo il contenuto delle sezioni; i mattoni visivi sono in `li
 - **Intestazione** (`_AppHeader`): logo, nome, tagline (`info_screen_tagline`) e pill con `AppVersion.current`.
 - **Cos'è QRation**: `SectionCard` con la descrizione (`info_screen_about_text`) e, in secondo piano, l'origine del nome (`info_screen_origin_description`).
 - **Funzionalità** (`_FeatureGrid`): `SectionHeader` + griglia 2×2 di `_FeatureCard` (Card del tema, icona in un riquadro tinto col colore principale, titolo e testo) per Scansiona, Crea, Organizza ed Esporta; ogni riga è in `IntrinsicHeight` così le due card hanno la stessa altezza.
-- **Link utili** (`_LinksCard`): Card con `SettingsNavTile` separati da divisori — Codice sorgente (`AppConstants.uriGithubDocumentation`), Sito web (`uriGithubLink`), Contattami (`uriMail`), Privacy Policy (route interna) e Licenze open source (`showLicensePage` con logo e versione). Le righe che escono dall'app usano `trailingIcon: mgc_external_link_line` (nuovo parametro opzionale di `SettingsNavTile`, default chevron).
+- **Link utili** (`_LinksCard`): Card con `SettingsNavTile` separati da divisori — Codice sorgente (`AppConstants.uriGithubRepository`), Sito web (`uriGithubLink`), Contattami (`uriMail`), Privacy Policy (route interna) e Licenze open source (`showLicensePage` con logo e versione). Le righe che escono dall'app usano `trailingIcon: mgc_external_link_line` (nuovo parametro opzionale di `SettingsNavTile`, default chevron).
 - **Footer**: `info_screen_made_by` con `AppConstants.developerName`, che sostituisce la vecchia card Crediti (Ideazione/Sviluppo/Design). Rimosse le chiavi `info_screen_origin_text`, `info_screen_description_*`, `info_screen_credits_*` e `info_screen_privacy_*`.
 
 ---
@@ -580,16 +580,18 @@ Schermata avanzata di gestione dati accessibile dalle impostazioni.
 - `_DistributionBar` con il rapporto creati/scansionati
 - `_SourceTile` (Creati/Scansionati) con la sola label e l'eventuale breakdown per tipo (standard/social) al tap — il badge numerico duplicato è stato rimosso dall'header di ogni tile poiché il conteggio è già mostrato nella riga di `_StatCard` sovrastante
 
-**Export:**
+**Sezione "Esporta e importa"** (`ExportImportSection`, `lib/features/settings/widgets/export_import_section.dart`): un'unica `SectionCard` con tutte le opzioni di esportazione e importazione, divisa in due gruppi con titolo e spiegazione. Prima le azioni del backup JSON erano due icone senza testo nella barra in alto e le date stavano in una card "Backup JSON" separata da quella dei formati.
+
+**Documenti** (riquadri PDF, Excel, CSV): file da leggere, stampare o condividere; dopo la generazione si apre il foglio di condivisione.
 - **CSV** — Esporta tutti i codici in formato CSV
 - **Excel** — Esporta tutti i codici in formato XLSX
 - **PDF** — Genera un PDF con copertina, riepilogo di account e statistiche e una card per ogni codice (con immagine QR), circa 5 codici per pagina
 
-**Import/Export JSON:**
-- Importa un file JSON precedentemente esportato per ripristinare i dati
-- Esporta tutti i codici in formato JSON
+**Backup** (pulsanti "Crea backup" e "Ripristina", con il testo dentro il pulsante; vanno a capo con il testo di sistema ingrandito):
+- "Crea backup" esporta tutti i codici in formato JSON (`DatabaseController.exportCodes`)
+- "Ripristina" importa un file JSON scelto con il selettore file (`DatabaseController.importCodes`). I codici del file vengono **aggiunti** a quelli presenti (`addCode` assegna un nuovo ID a ciascuno): ripristinare due volte lo stesso backup li duplica, e la spiegazione nella sezione lo dice
 - L'export scrive il file nella directory restituita da `getDownloadsDirectory()` (su Android è privata dell'app e viene cancellata alla disinstallazione) e ne salva una copia anche nella cartella Download pubblica con `saveBytesToPublicDownloads` (`application/json`), come già avveniva per PDF/Excel/CSV
-- **Sezione "Backup JSON"** (`BackupSection`, `lib/features/settings/widgets/backup_section.dart`): mostra data e ora dell'ultima esportazione e dell'ultima importazione riuscite, oppure "Mai". I timestamp sono salvati sul dispositivo da `BackupHistory` (`lib/features/settings/services/backup_history.dart`) in `SharedPreferences`, con chiavi per utente (`backup_last_export_<uid>`, `backup_last_import_<uid>`), ed esposti da `DatabaseController` come `lastExportAt`/`lastImportAt`
+- Sotto i pulsanti, "Ultimo backup" e "Ultimo ripristino" mostrano data e ora dell'ultima esportazione e dell'ultima importazione riuscite, oppure "Mai". I timestamp sono salvati sul dispositivo da `BackupHistory` (`lib/features/settings/services/backup_history.dart`) in `SharedPreferences`, con chiavi per utente (`backup_last_export_<uid>`, `backup_last_import_<uid>`), ed esposti da `DatabaseController` come `lastExportAt`/`lastImportAt`
 
 Tutte le operazioni mostrano una barra di avanzamento animata.
 
@@ -918,7 +920,7 @@ I test sono in `test/` e rispecchiano la struttura di `lib/` (`flutter test`; li
 - **Modelli e utility** (`test/core/utils`, `test/features/codes/models`): parsing dei contenuti, validator, formattazione ISBN, decorazioni QR.
 - **Controller**: codici (dettaglio, creazione social, scanner), `HistoryController`, `FavoritesController`, `SyncStatusMixin`, `DatabaseController` (statistiche, export PDF/Excel/CSV, storico backup), `AuthController` (login, Google, registrazione, reset, logout, eliminazione account), `ThemeController`, `ScannerPreferencesController`, `SessionStore`, `BackupHistory`, `RescanGuard`.
 - **Binding** (`test/features/bindings_test.dart`): controller registrati da `HomeBinding` e dai binding con argomento di rotta, incluso il caso di argomento mancante.
-- **Widget**: `CodeListTile`, `AppEmptyState`, `SyncStatusBanner`, `BackupSection`, sezioni del Database e le screen Cronologia, Preferiti, Impostazioni e Privacy Policy (sezioni e data localizzate in IT/EN).
+- **Widget**: `CodeListTile`, `AppEmptyState`, `SyncStatusBanner`, `ExportImportSection`, sezioni del Database e le screen Cronologia, Preferiti, Impostazioni e Privacy Policy (sezioni e data localizzate in IT/EN).
 
 Note pratiche: il font dei test (Ahem) è più largo di Montserrat, quindi negli scroll orizzontali può servire `tester.ensureVisible` prima di un tap; i controller con timer (es. `SyncStatusMixin`) vanno creati dentro `testWidgets` perché `tester.pump` controlli il tempo; i controller che caricano `SharedPreferences` in `onInit` richiedono `SharedPreferences.setMockInitialValues` e un `pumpEventQueue()` prima di interagire.
 
