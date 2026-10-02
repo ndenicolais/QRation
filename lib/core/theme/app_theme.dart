@@ -43,7 +43,7 @@ class AppTheme {
         elevation: 0,
         color: AppColors.cardLight,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppRadius.large),
           side: const BorderSide(color: AppColors.dividerLight, width: 1),
         ),
         margin: EdgeInsets.zero,
@@ -143,7 +143,7 @@ class AppTheme {
           elevation: 0,
           minimumSize: const Size(double.infinity, 52),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(AppRadius.large),
           ),
           textStyle: AppFonts.montserrat(
             fontSize: 15,
@@ -157,7 +157,7 @@ class AppTheme {
           side: BorderSide(color: primary),
           minimumSize: const Size(double.infinity, 52),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(AppRadius.large),
           ),
           textStyle: AppFonts.montserrat(
             fontSize: 15,
@@ -183,7 +183,8 @@ class AppTheme {
         }),
         checkColor: WidgetStateProperty.all(AppColors.qrWhite),
         side: const BorderSide(color: AppColors.qrGold, width: 1.5),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.extraSmall)),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -228,7 +229,8 @@ class AppTheme {
         selectedColor: primary.withValues(alpha: 0.15),
         labelStyle: AppFonts.montserrat(fontSize: 13),
         side: const BorderSide(color: AppColors.dividerLight),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.small)),
       ),
       listTileTheme: ListTileThemeData(
         iconColor: primary,
@@ -273,7 +275,7 @@ class AppTheme {
         elevation: 0,
         color: AppColors.cardDark,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppRadius.large),
           side: const BorderSide(color: AppColors.dividerDark, width: 1),
         ),
         margin: EdgeInsets.zero,
@@ -373,7 +375,7 @@ class AppTheme {
           elevation: 0,
           minimumSize: const Size(double.infinity, 52),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(AppRadius.large),
           ),
           textStyle: AppFonts.montserrat(
             fontSize: 15,
@@ -387,7 +389,7 @@ class AppTheme {
           side: BorderSide(color: primary),
           minimumSize: const Size(double.infinity, 52),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(AppRadius.large),
           ),
           textStyle: AppFonts.montserrat(
             fontSize: 15,
@@ -411,7 +413,8 @@ class AppTheme {
         }),
         checkColor: WidgetStateProperty.all(AppColors.qrBlueDark),
         side: const BorderSide(color: AppColors.qrGold, width: 1.5),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.extraSmall)),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -459,7 +462,8 @@ class AppTheme {
         labelStyle:
             AppFonts.montserrat(fontSize: 13, color: AppColors.textPrimaryDark),
         side: const BorderSide(color: AppColors.dividerDark),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.small)),
       ),
       listTileTheme: ListTileThemeData(
         iconColor: primary,
@@ -481,30 +485,38 @@ class AppTheme {
         isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight;
     final Color secondary =
         isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight;
+    // The app's type scale: screens use these roles through
+    // `Theme.of(context).textTheme` instead of inline font sizes. Sizes not
+    // set here (display/headline large and medium) keep the Material 3
+    // defaults.
+    TextStyle style(double size, Color color, [FontWeight? weight]) =>
+        AppFonts.montserrat(fontSize: size, color: color, fontWeight: weight);
+    const w500 = FontWeight.w500;
     return TextTheme(
       displayLarge: AppFonts.montserrat(color: primary),
       displayMedium: AppFonts.montserrat(color: primary),
-      displaySmall: AppFonts.montserrat(color: primary),
-      headlineLarge:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      headlineMedium:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      headlineSmall:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      titleLarge:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      titleMedium:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      titleSmall:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      bodyLarge: AppFonts.montserrat(color: primary),
-      bodyMedium: AppFonts.montserrat(color: primary),
-      bodySmall: AppFonts.montserrat(color: secondary),
-      labelLarge:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      labelMedium:
-          AppFonts.montserrat(color: primary, fontWeight: FontWeight.w500),
-      labelSmall: AppFonts.montserrat(color: secondary),
+      displaySmall: style(36, primary),
+      headlineLarge: AppFonts.montserrat(color: primary, fontWeight: w500),
+      headlineMedium: AppFonts.montserrat(color: primary, fontWeight: w500),
+      // App name in Info, big numbers in Statistics.
+      headlineSmall: style(24, primary, w500),
+      // Dialog titles, prominent messages.
+      titleLarge: style(20, primary, w500),
+      // Group titles, empty/error state titles.
+      titleMedium: style(18, primary, w500),
+      // Section headers and card titles.
+      titleSmall: style(15, primary, w500),
+      bodyLarge: style(16, primary),
+      // Default body text.
+      bodyMedium: style(14, primary),
+      // Secondary text: subtitles, captions, hints.
+      bodySmall: style(12, secondary),
+      // Row and tile titles, emphasized body text.
+      labelLarge: style(14, primary, w500),
+      // Small emphasized text: chips, badges, field labels.
+      labelMedium: style(12, primary, w500),
+      // Smallest text: tile labels, legends.
+      labelSmall: style(11, secondary, w500),
     );
   }
 }

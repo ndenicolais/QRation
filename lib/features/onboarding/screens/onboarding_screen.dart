@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
@@ -132,12 +133,10 @@ class _OnboardingPage extends StatelessWidget {
           const SizedBox(height: 40),
           Text(
             item.title,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              color: item.titleColor,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: item.titleColor,
+                ),
             textAlign: TextAlign.center,
           )
               .animate()
@@ -146,13 +145,10 @@ class _OnboardingPage extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             item.description,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: item.descriptionColor,
-              height: 1.6,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: item.descriptionColor,
+                  height: 1.6,
+                ),
             textAlign: TextAlign.center,
           ).animate().fadeIn(delay: 300.ms, duration: 400.ms),
         ],
@@ -187,11 +183,9 @@ class _NavRow extends StatelessWidget {
         TextButton(
           onPressed: onSkip,
           child: Text(l10n.onboarding_skip,
-              style: TextStyle(
-                color: items[currentPage].descriptionColor,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w500,
-              )),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: items[currentPage].descriptionColor,
+                  )),
         ),
         // The dots are 8 dp tall, too small to tap: screen readers get the
         // page position as text and swipe or use the buttons to move.
@@ -256,16 +250,14 @@ class _FinishButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
             decoration: BoxDecoration(
               color: item.iconColor,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppRadius.large),
             ),
             child: Text(
               AppLocalizations.of(context)!.onboarding_get_started,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: item.backgroundColor,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: item.backgroundColor,
+                  ),
             ),
           ),
         ),

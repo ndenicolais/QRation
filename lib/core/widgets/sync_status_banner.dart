@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/features/codes/services/codes_repository.dart';
 import 'package:qration/l10n/app_localizations.dart';
@@ -68,11 +67,7 @@ class _Banner extends StatelessWidget {
               Expanded(
                 child: Text(
                   offline ? l10n.sync_status_offline : l10n.sync_status_pending,
-                  style: AppFonts.montserrat(
-                    color: colorScheme.onSurface,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
             ],

@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class AppButton extends StatelessWidget {
@@ -126,13 +127,13 @@ class AppIconButton extends StatelessWidget {
         message: tooltip ?? '',
         child: InkWell(
           onTap: onPressed,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.medium),
           child: Container(
             width: 44,
             height: 44,
             decoration: BoxDecoration(
               color: iconColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppRadius.medium),
             ),
             child: Icon(icon, color: iconColor, size: 22),
           ),

@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/widgets/section_card.dart';
 import 'package:qration/l10n/app_localizations.dart';
 
@@ -77,19 +76,14 @@ class _BackupRow extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: AppFonts.montserrat(
-              color: colorScheme.onSurface,
-              fontSize: 14,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         Text(
           value,
-          style: AppFonts.montserrat(
-            color: colorScheme.onSurfaceVariant,
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
         ),
       ],
     );

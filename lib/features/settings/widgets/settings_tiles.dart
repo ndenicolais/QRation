@@ -9,8 +9,8 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 
 /// Titled card grouping the tiles of one Settings section.
 class SettingsGroup extends StatelessWidget {
@@ -31,16 +31,14 @@ class SettingsGroup extends StatelessWidget {
       children: [
         Text(
           title,
-          style: AppFonts.montserrat(
-            fontSize: 18,
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.primary,
+              ),
         ),
         Card(
           color: theme.cardTheme.color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(AppRadius.extraLarge),
             side: BorderSide(
               color: theme.colorScheme.outline,
               width: 1,
@@ -199,11 +197,7 @@ class _TileTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.onSurface,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
+      style: Theme.of(context).textTheme.labelLarge,
     );
   }
 }
@@ -217,11 +211,9 @@ class _TileSubtitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-      ),
+      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
     );
   }
 }

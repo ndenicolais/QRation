@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/constants/app_constants.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/utils/code_type_icon.dart';
 import 'package:qration/core/utils/code_type_text.dart';
 import 'package:qration/features/codes/models/code_model.dart';
@@ -42,7 +41,6 @@ class HistoryFilterSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -58,11 +56,7 @@ class HistoryFilterSheet extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 l10n.history_filter_sheet_title,
-                style: AppFonts.montserrat(
-                  color: theme.colorScheme.onSurface,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             Flexible(
@@ -179,11 +173,9 @@ class _SectionTitle extends StatelessWidget {
       padding: EdgeInsets.only(top: 16, bottom: 8),
       child: Text(
         text,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-        ),
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
       ),
     );
   }

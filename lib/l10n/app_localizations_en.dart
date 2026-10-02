@@ -1761,4 +1761,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_50 =>
       'Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated.';
+
+  @override
+  String get changelog_v2_0_0_bullet_51 =>
+      'More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields.';
 }

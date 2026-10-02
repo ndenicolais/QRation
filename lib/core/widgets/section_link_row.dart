@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_radius.dart';
 
 /// Tappable title + subtitle row used inside a [SectionCard] to open
@@ -46,19 +45,12 @@ class SectionLinkRow extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: AppFonts.montserrat(
-                      color: colorScheme.onSurface,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                   SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: AppFonts.montserrat(
-                      color: colorScheme.onSurfaceVariant,
-                      fontSize: 13,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),

@@ -11,10 +11,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:qration/core/theme/app_font_sizes.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/utils/qr_decoration.dart';
 import 'package:qration/features/codes/models/code_model.dart';
@@ -103,11 +101,9 @@ class _InfoChip extends StatelessWidget {
         children: [
           Text(
             label,
-            style: AppFonts.montserrat(
-              color: colorScheme.onSurfaceVariant,
-              fontSize: AppFontSizes.extraSmall,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
           SizedBox(height: 4),
           Row(
@@ -125,11 +121,7 @@ class _InfoChip extends StatelessWidget {
               Expanded(
                 child: Text(
                   value,
-                  style: AppFonts.montserrat(
-                    color: colorScheme.onSurface,
-                    fontSize: AppFontSizes.small,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.labelLarge,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

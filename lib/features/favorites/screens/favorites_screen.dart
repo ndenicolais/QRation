@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -9,9 +9,9 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/widgets/code_list_tile.dart';
 import 'package:qration/features/codes/models/code_model.dart';
@@ -74,13 +74,13 @@ class FavoritesScreenState extends State<FavoritesScreen>
       controller: _tabController,
       indicator: BoxDecoration(
         color: theme.colorScheme.primary.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.large),
       ),
       // Sized on the whole tab: with the default `label` size the horizontal
       // padding shrank the pill to the middle of the icon + text pair.
       indicatorSize: TabBarIndicatorSize.tab,
       indicatorPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      splashBorderRadius: BorderRadius.circular(14),
+      splashBorderRadius: BorderRadius.circular(AppRadius.large),
       overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
         if (states.contains(WidgetState.pressed)) {
           return theme.colorScheme.primary.withValues(alpha: 0.12);
@@ -91,15 +91,9 @@ class FavoritesScreenState extends State<FavoritesScreen>
         return Colors.transparent;
       }),
       labelColor: theme.colorScheme.primary,
-      labelStyle: AppFonts.montserrat(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
+      labelStyle: theme.textTheme.labelLarge,
       unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
-      unselectedLabelStyle: AppFonts.montserrat(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
+      unselectedLabelStyle: theme.textTheme.labelLarge,
       dividerColor: Colors.transparent,
       tabs: [
         _buildTab(

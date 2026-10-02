@@ -1,4 +1,4 @@
-﻿// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 
 class CodeDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -103,11 +102,9 @@ class _PopupMenu extends StatelessWidget {
           SizedBox(width: 10),
           Text(
             text,
-            style: AppFonts.montserrat(
-              color: itemColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: itemColor,
+                ),
           ),
         ],
       ),

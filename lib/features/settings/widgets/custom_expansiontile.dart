@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 
 class CustomExpansionTile extends StatefulWidget {
@@ -45,11 +44,7 @@ class CustomExpansionTileState extends State<CustomExpansionTile> {
       expandedAlignment: Alignment.centerLeft,
       title: Text(
         widget.title,
-        style: AppFonts.montserrat(
-          color: colorScheme.onSurface,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
+        style: Theme.of(context).textTheme.labelLarge,
       ),
       trailing: Icon(
         isExpanded ? widget.iconOpened : widget.iconClosed,
@@ -64,11 +59,10 @@ class CustomExpansionTileState extends State<CustomExpansionTile> {
       children: [
         Text(
           widget.answer,
-          style: AppFonts.montserrat(
-            color: colorScheme.onSurfaceVariant,
-            fontSize: 14,
-            height: 1.5,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                height: 1.5,
+              ),
         ),
       ],
     );

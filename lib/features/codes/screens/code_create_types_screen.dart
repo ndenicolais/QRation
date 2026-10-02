@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:qration/l10n/app_localizations.dart';
@@ -142,7 +143,7 @@ class _SectionLabel extends StatelessWidget {
           height: 8,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(AppRadius.medium),
           ),
         ),
         const SizedBox(width: 8),
@@ -172,7 +173,7 @@ class _IntroCard extends StatelessWidget {
       decoration: BoxDecoration(
         color:
             theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.large),
         border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Row(
@@ -216,11 +217,11 @@ class _TypeTile extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(AppRadius.large),
       child: Container(
         decoration: BoxDecoration(
           color: theme.cardTheme.color,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(AppRadius.large),
           border: Border.all(color: theme.colorScheme.outline),
           boxShadow: [
             BoxShadow(
@@ -238,7 +239,7 @@ class _TypeTile extends StatelessWidget {
               height: 38,
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(AppRadius.medium),
               ),
               child: Icon(icon, size: 22, color: theme.colorScheme.primary),
             ),

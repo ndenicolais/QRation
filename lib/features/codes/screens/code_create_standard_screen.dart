@@ -14,7 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/core/utils/code_type_text.dart';
@@ -321,9 +320,9 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
                   Text(
                     AppLocalizations.of(context)!
                         .code_create_standard_screen_wifi_type_label,
-                    style: AppFonts.montserrat(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                   Obx(
                     () => DropdownButton<String>(
@@ -334,9 +333,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
                           value: encryption,
                           child: Text(
                             encryption,
-                            style: AppFonts.montserrat(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         );
                       }).toList(),
@@ -353,9 +350,9 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
                   Text(
                     AppLocalizations.of(context)!
                         .code_create_standard_screen_wifi_hidden_label,
-                    style: AppFonts.montserrat(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                   Obx(
                     () => Checkbox(
@@ -462,9 +459,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
       textInputAction: textInputAction,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(labelText: label),
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.onSurface,
-      ),
+      style: Theme.of(context).textTheme.bodyLarge,
       inputFormatters: isbnFormatters,
       onChanged: isISBNField ? (value) => setState(() {}) : null,
     );
@@ -488,10 +483,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
           initialSelection: 'IT',
           showCountryOnly: false,
           showOnlyCountryWhenClosed: false,
-          textStyle: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.w500,
-          ),
+          textStyle: Theme.of(context).textTheme.labelLarge,
         ),
         Expanded(
           child: TextFormField(
@@ -501,9 +493,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
             onTapOutside: (event) =>
                 FocusManager.instance.primaryFocus?.unfocus(),
             decoration: InputDecoration(labelText: label),
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge,
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return AppLocalizations.of(context)!

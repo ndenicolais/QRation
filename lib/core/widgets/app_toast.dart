@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:toastification/toastification.dart';
 
 void showAppToast(
@@ -23,7 +24,7 @@ void showAppToast(
     title: Text(message),
     autoCloseDuration: const Duration(seconds: 3),
     animationDuration: const Duration(milliseconds: 300),
-    borderRadius: BorderRadius.circular(12),
+    borderRadius: BorderRadius.circular(AppRadius.medium),
     closeButtonShowType: CloseButtonShowType.onHover,
     showProgressBar: false,
     dragToClose: true,

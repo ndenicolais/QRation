@@ -9,10 +9,10 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/features/codes/models/code_model.dart';
 import 'package:qration/core/routes/app_routes.dart';
@@ -162,10 +162,7 @@ class HistoryScreenState extends State<HistoryScreen> {
             focusNode: _searchFocusNode,
             onTapOutside: (event) =>
                 FocusManager.instance.primaryFocus?.unfocus(),
-            style: AppFonts.montserrat(
-              color: theme.colorScheme.onSurface,
-              fontSize: 14,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
             cursorColor: theme.colorScheme.primary,
             onChanged: _controller.onSearchChanged,
             decoration: InputDecoration(
@@ -190,20 +187,17 @@ class HistoryScreenState extends State<HistoryScreen> {
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               labelText: l10n.history_screen_search_label,
-              labelStyle: AppFonts.montserrat(
-                color: theme.colorScheme.onSurfaceVariant,
-                fontSize: 13,
-              ),
+              labelStyle: Theme.of(context).textTheme.bodySmall,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(AppRadius.large),
                 borderSide: BorderSide(color: theme.colorScheme.outline),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(AppRadius.large),
                 borderSide: BorderSide(color: theme.colorScheme.outline),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(AppRadius.large),
                 borderSide: BorderSide(
                   color: theme.colorScheme.primary,
                   width: 1.4,
@@ -253,7 +247,7 @@ class HistoryScreenState extends State<HistoryScreen> {
       padding: EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.large),
       ),
       child: Row(
         children: [
@@ -270,11 +264,7 @@ class HistoryScreenState extends State<HistoryScreen> {
               '$selectedCount ${l10n.history_screen_selected_count}',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.onSurface,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
           IconButton(

@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
@@ -211,7 +212,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                               horizontal: 14, vertical: 9),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.45),
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(AppRadius.pill),
                             border: Border.all(
                               color: Colors.white.withValues(alpha: 0.18),
                             ),
@@ -227,12 +228,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
                               const SizedBox(width: 8),
                               Text(
                                 l10n.code_scanner_screen_camera_hint,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(color: Colors.white),
                               ),
                             ],
                           ),
@@ -248,7 +247,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.42),
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(AppRadius.pill),
                           border: Border.all(
                             color: Colors.white.withValues(alpha: 0.16),
                           ),
@@ -275,7 +274,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.45),
-                            borderRadius: BorderRadius.circular(28),
+                            borderRadius: BorderRadius.circular(AppRadius.pill),
                             border: Border.all(
                               color: Colors.white.withValues(alpha: 0.16),
                             ),

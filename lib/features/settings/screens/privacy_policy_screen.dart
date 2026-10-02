@@ -13,7 +13,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/constants/app_constants.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/widgets/section_card.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +25,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
     final locale = Localizations.localeOf(context).languageCode;
     final updated =
         DateFormat.yMMMMd(locale).format(AppConstants.privacyPolicyUpdatedAt);
@@ -104,10 +102,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             Text(
               l10n.policy_screen_updated(updated),
-              style: AppFonts.montserrat(
-                color: colorScheme.onSurfaceVariant,
-                fontSize: 12,
-              ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(height: 8),
             _Paragraph(l10n.policy_screen_intro),
@@ -129,7 +124,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 icon: const Icon(MingCuteIcons.mgc_external_link_line),
                 label: Text(
                   l10n.policy_screen_online,
-                  style: AppFonts.montserrat(fontSize: 14),
                 ),
               ),
             ),
@@ -149,11 +143,9 @@ class _Paragraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.onSurface,
-        fontSize: 14,
-        height: 1.5,
-      ),
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            height: 1.5,
+          ),
     );
   }
 }

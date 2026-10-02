@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:qration/core/widgets/app_logo.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/constants/app_constants.dart';
 import 'package:qration/core/constants/app_version.dart';
@@ -29,7 +28,6 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       // Colors and title style come from the theme appBarTheme.
       appBar: AppBar(
@@ -58,19 +56,15 @@ class InfoScreen extends StatelessWidget {
                   children: [
                     Text(
                       l10n.info_screen_about_text,
-                      style: AppFonts.montserrat(
-                        color: colorScheme.onSurface,
-                        fontSize: 14,
-                        height: 1.5,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            height: 1.5,
+                          ),
                     ),
                     Text(
                       l10n.info_screen_origin_description,
-                      style: AppFonts.montserrat(
-                        color: colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                        height: 1.5,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            height: 1.5,
+                          ),
                     ),
                   ],
                 ),
@@ -98,10 +92,7 @@ class InfoScreen extends StatelessWidget {
               Text(
                 l10n.info_screen_made_by(AppConstants.developerName),
                 textAlign: TextAlign.center,
-                style: AppFonts.montserrat(
-                  color: colorScheme.onSurfaceVariant,
-                  fontSize: 12,
-                ),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),
@@ -125,20 +116,17 @@ class _AppHeader extends StatelessWidget {
         SizedBox(height: 12),
         Text(
           'QRation',
-          style: AppFonts.montserrat(
-            color: colorScheme.primary,
-            fontSize: 24,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: colorScheme.primary,
+              ),
         ),
         SizedBox(height: 4),
         Text(
           l10n.info_screen_tagline,
           textAlign: TextAlign.center,
-          style: AppFonts.montserrat(
-            color: colorScheme.onSurfaceVariant,
-            fontSize: 14,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
         ),
         SizedBox(height: 10),
         Container(
@@ -149,11 +137,9 @@ class _AppHeader extends StatelessWidget {
           ),
           child: Text(
             '${l10n.info_screen_version_text} ${AppVersion.current}',
-            style: AppFonts.montserrat(
-              color: colorScheme.primary,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: colorScheme.primary,
+                ),
           ),
         ),
       ],
@@ -237,20 +223,14 @@ class _FeatureCard extends StatelessWidget {
             SizedBox(height: 10),
             Text(
               title,
-              style: AppFonts.montserrat(
-                color: colorScheme.onSurface,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.labelLarge,
             ),
             SizedBox(height: 4),
             Text(
               text,
-              style: AppFonts.montserrat(
-                color: colorScheme.onSurfaceVariant,
-                fontSize: 12,
-                height: 1.4,
-              ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    height: 1.4,
+                  ),
             ),
           ],
         ),

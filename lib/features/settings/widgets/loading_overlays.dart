@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/widgets/app_loader.dart';
 
 class LoadingIndicator extends StatelessWidget {
@@ -47,11 +46,9 @@ class FileLoadingIndicator extends StatelessWidget {
             ),
             Text(
               '${(downloadProgress * 100).toStringAsFixed(0)}%',
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
           ],
         ),

@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 
 class CustomPickerField extends StatelessWidget {
   final String label;
@@ -31,13 +30,8 @@ class CustomPickerField extends StatelessWidget {
       readOnly: true,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.tertiary,
-        ),
       ),
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.secondary,
-      ),
+      style: Theme.of(context).textTheme.bodyLarge,
       onTap: () async {
         if (isDatePicker) {
           DateTime? pickedDate = await showDatePicker(

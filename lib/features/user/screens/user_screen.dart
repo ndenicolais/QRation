@@ -12,7 +12,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/widgets/app_button.dart';
@@ -117,11 +116,10 @@ class _ProfileHeader extends StatelessWidget {
     final fallback = Center(
       child: Text(
         initial,
-        style: AppFonts.montserrat(
-          color: colorScheme.primary,
-          fontSize: 40,
-          fontWeight: FontWeight.w500,
-        ),
+        style: Theme.of(context).textTheme.displaySmall?.copyWith(
+              color: colorScheme.primary,
+              fontWeight: FontWeight.w500,
+            ),
       ),
     );
 
@@ -155,11 +153,7 @@ class _ProfileHeader extends StatelessWidget {
           Text(
             name,
             textAlign: TextAlign.center,
-            style: AppFonts.montserrat(
-              color: colorScheme.onSurface,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ],
         if (email.isNotEmpty) ...[
@@ -167,10 +161,7 @@ class _ProfileHeader extends StatelessWidget {
           Text(
             email,
             textAlign: TextAlign.center,
-            style: AppFonts.montserrat(
-              color: colorScheme.onSurfaceVariant,
-              fontSize: 13,
-            ),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ],

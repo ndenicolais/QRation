@@ -14,7 +14,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/widgets/section_card.dart';
 import 'package:qration/features/codes/controllers/qr_style_mixin.dart';
@@ -109,11 +108,7 @@ class _StyleRow extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: AppFonts.montserrat(
-              color: colorScheme.onSurface,
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
         Tooltip(
@@ -154,10 +149,7 @@ class _StyleRow extends StatelessWidget {
               Text(
                 roundedLabel,
                 semanticsLabel: '$title, $roundedLabel',
-                style: AppFonts.montserrat(
-                  color: colorScheme.onSurfaceVariant,
-                  fontSize: 12,
-                ),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               SizedBox(width: 4),
               // Colors come from the theme switchTheme (neutral track when
@@ -190,11 +182,7 @@ class _LogoRow extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: AppFonts.montserrat(
-              color: colorScheme.onSurface,
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
         Obx(() {

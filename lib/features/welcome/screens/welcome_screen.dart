@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:qration/core/widgets/app_logo.dart';
 import 'package:qration/l10n/app_localizations.dart';
@@ -86,7 +87,8 @@ class WelcomeScreen extends StatelessWidget {
                       height: 6,
                       decoration: BoxDecoration(
                         color: AppColors.qrGold,
-                        borderRadius: BorderRadius.circular(3),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.extraSmall),
                       ),
                     ),
                     const SizedBox(width: 6),
@@ -100,7 +102,8 @@ class WelcomeScreen extends StatelessWidget {
                       height: 6,
                       decoration: BoxDecoration(
                         color: AppColors.qrGold,
-                        borderRadius: BorderRadius.circular(3),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.extraSmall),
                       ),
                     ),
                   ],

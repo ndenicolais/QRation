@@ -12,7 +12,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/features/codes/controllers/code_create_social_controller.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
 import 'package:qration/core/routes/app_routes.dart';
@@ -227,9 +226,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       textInputAction: textInputAction,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: decoration,
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.onSurface,
-      ),
+      style: Theme.of(context).textTheme.bodyLarge,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return AppLocalizations.of(context)!
@@ -270,9 +267,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
       textInputAction: textInputAction,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: decoration,
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.onSurface,
-      ),
+      style: Theme.of(context).textTheme.bodyLarge,
       validator: (value) {
         if (validator != null) {
           return validator(value);
@@ -295,10 +290,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
               initialSelection: 'IT',
               showCountryOnly: false,
               showOnlyCountryWhenClosed: false,
-              textStyle: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.w500,
-              ),
+              textStyle: Theme.of(context).textTheme.labelLarge,
             ),
             Expanded(
               child: TextFormField(

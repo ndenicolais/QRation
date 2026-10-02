@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/utils/code_type_body.dart';
 import 'package:qration/core/utils/code_type_icon.dart';
@@ -88,7 +87,7 @@ class CodeListTile extends StatelessWidget {
                 onChanged: (value) => onSelectedChanged?.call(value ?? false),
                 activeColor: colorScheme.primary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(AppRadius.extraSmall),
                 ),
               )
             : Hero(
@@ -101,21 +100,15 @@ class CodeListTile extends StatelessWidget {
             if (showSource) ...[
               Text(
                 code.source.name.capitalize!,
-                style: AppFonts.montserrat(
-                  color: colorScheme.primary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: colorScheme.primary,
+                    ),
               ),
               SizedBox(height: 4),
             ],
             Text(
               getContentBody(code).formattedContent,
-              style: AppFonts.montserrat(
-                color: colorScheme.onSurface,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.labelLarge,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -124,10 +117,7 @@ class CodeListTile extends StatelessWidget {
         ),
         subtitle: Text(
           _dateFormat.format(code.date),
-          style: AppFonts.montserrat(
-            color: colorScheme.onSurfaceVariant,
-            fontSize: 12,
-          ),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         trailing: selectable
             ? null

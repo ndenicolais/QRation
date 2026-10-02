@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/features/codes/controllers/code_details_controller.dart';
 import 'package:share_plus/share_plus.dart';
@@ -124,11 +123,7 @@ class _ActionTile extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppFonts.montserrat(
-                  color: colorScheme.onSurface,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.labelMedium,
               ),
             ],
           ),

@@ -11,8 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
-import 'package:qration/core/theme/app_font_sizes.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/utils/code_type_text.dart';
 import 'package:qration/core/widgets/app_delete_dialog.dart';
@@ -173,11 +171,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
             children: [
               Text(
                 AppLocalizations.of(context)!.code_details_screen_notes_title,
-                style: AppFonts.montserrat(
-                  color: colorScheme.onSurface,
-                  fontSize: AppFontSizes.medium,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               SizedBox(height: 12),
               TextField(
@@ -185,15 +179,11 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!
                       .code_details_screen_notes_hint,
-                  hintStyle: AppFonts.montserrat(
-                    color: colorScheme.onSurfaceVariant,
-                    fontSize: AppFontSizes.small,
-                  ),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                 ),
-                style: AppFonts.montserrat(
-                  color: colorScheme.onSurface,
-                  fontSize: AppFontSizes.small,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
                 maxLines: 5,
                 maxLength: 160,
               ),
@@ -206,10 +196,9 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                     child: Text(
                       AppLocalizations.of(context)!
                           .code_details_screen_notes_cancel,
-                      style: AppFonts.montserrat(
-                        color: colorScheme.primary,
-                        fontSize: AppFontSizes.small,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.primary,
+                          ),
                     ),
                   ),
                   SizedBox(width: 8),
@@ -232,9 +221,6 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                     child: Text(
                       AppLocalizations.of(context)!
                           .code_details_screen_notes_save,
-                      style: AppFonts.montserrat(
-                        fontSize: AppFontSizes.small,
-                      ),
                     ),
                   ),
                 ],

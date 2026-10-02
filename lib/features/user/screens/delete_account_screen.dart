@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -10,9 +10,9 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/features/auth/controllers/auth_controller.dart';
@@ -129,10 +129,9 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
           child: Text(
             AppLocalizations.of(context)!.delete_description,
             textAlign: TextAlign.center,
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: 20,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w400,
+                ),
           ),
         ),
       ],
@@ -148,7 +147,7 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
         style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.error,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15))),
+                borderRadius: BorderRadius.circular(AppRadius.large))),
         icon: Icon(
           MingCuteIcons.mgc_delete_2_fill,
           size: 32,
@@ -156,10 +155,10 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
         ),
         label: Text(
           AppLocalizations.of(context)!.delete_d_title,
-          style: AppFonts.montserrat(
-            color: AppColors.qrWhite,
-            fontSize: 20,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AppColors.qrWhite,
+                fontWeight: FontWeight.w400,
+              ),
         ),
       ),
     );

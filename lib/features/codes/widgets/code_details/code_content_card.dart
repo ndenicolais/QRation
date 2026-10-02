@@ -11,10 +11,8 @@
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
-import 'package:qration/core/theme/app_font_sizes.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 import 'package:qration/features/codes/controllers/code_details_controller.dart';
 import 'package:qration/features/codes/models/code_model.dart';
@@ -52,10 +50,7 @@ class CodeContentCard extends StatelessWidget {
               context: context,
               content: Text(
                 barcode.rawValue ?? '',
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
                 maxLines: controller.isExpanded.value ? null : 3,
                 overflow: controller.isExpanded.value
@@ -73,10 +68,7 @@ class CodeContentCard extends StatelessWidget {
               context: context,
               content: Text(
                 CodeUrl.fromRawValue(barcode.rawValue ?? '').displayValue,
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
                 maxLines: controller.isExpanded.value ? null : 3,
                 overflow: controller.isExpanded.value
@@ -97,26 +89,17 @@ class CodeContentCard extends StatelessWidget {
                 children: [
                   Text(
                     email.address,
-                    style: AppFonts.montserrat(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: AppFontSizes.normal,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   if (email.subject != null && email.subject!.isNotEmpty)
                     Text(
                       email.subject!,
-                      style: AppFonts.montserrat(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: AppFontSizes.normal,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   if (email.body != null && email.body!.isNotEmpty)
                     Text(
                       email.body!,
-                      style: AppFonts.montserrat(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: AppFontSizes.normal,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.center,
                       maxLines: controller.isExpanded.value ? null : 3,
                       overflow: controller.isExpanded.value
@@ -138,10 +121,7 @@ class CodeContentCard extends StatelessWidget {
           context: context,
           content: Text(
             phoneNumber.number,
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: AppFontSizes.normal,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           buttonText: l10n.code_details_screen_action_phone,
           buttonIcon: MingCuteIcons.mgc_phone_call_line,
@@ -156,17 +136,11 @@ class CodeContentCard extends StatelessWidget {
                 children: [
                   Text(
                     sms.phoneNumber,
-                    style: AppFonts.montserrat(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: AppFontSizes.normal,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Text(
                     sms.message,
-                    style: AppFonts.montserrat(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: AppFontSizes.normal,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                     maxLines: controller.isExpanded.value ? null : 3,
                     overflow: controller.isExpanded.value
@@ -189,26 +163,17 @@ class CodeContentCard extends StatelessWidget {
             children: [
               Text(
                 '${contact.name} ${contact.surname}',
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               if (contact.phoneNumber.isNotEmpty)
                 Text(
                   contact.phoneNumber,
-                  style: AppFonts.montserrat(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: AppFontSizes.normal,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               if (contact.email.isNotEmpty)
                 Text(
                   contact.email,
-                  style: AppFonts.montserrat(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: AppFontSizes.normal,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
             ],
           ),
@@ -226,17 +191,11 @@ class CodeContentCard extends StatelessWidget {
             children: [
               Text(
                 geoInfo.latitude.toString(),
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
                 geoInfo.longitude.toString(),
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),
@@ -254,31 +213,19 @@ class CodeContentCard extends StatelessWidget {
             children: [
               Text(
                 wifiInfo.ssid,
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
                 wifiInfo.password,
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
                 wifiInfo.authenticationType,
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
                 wifiInfo.hidden.toString(),
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),
@@ -294,10 +241,7 @@ class CodeContentCard extends StatelessWidget {
           context: context,
           content: Text(
             eventInfo.toString(),
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontSize: AppFontSizes.normal,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           buttonText: l10n.code_details_screen_action_calendar,
           buttonIcon: MingCuteIcons.mgc_calendar_add_line,
@@ -314,18 +258,13 @@ class CodeContentCard extends StatelessWidget {
             children: [
               Text(
                 l10n.code_details_screen_product,
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Text(
                 productInfo.toString(),
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),
@@ -343,18 +282,13 @@ class CodeContentCard extends StatelessWidget {
             children: [
               Text(
                 l10n.code_details_screen_isbn,
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Text(
                 isbnInfo.toString(),
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: AppFontSizes.normal,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),
@@ -366,10 +300,9 @@ class CodeContentCard extends StatelessWidget {
       default:
         return SelectableText(
           barcode.rawValue ?? '',
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontSize: AppFontSizes.regular,
-          ),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+              ),
         );
     }
   }
@@ -515,10 +448,7 @@ class CodeContentCard extends StatelessWidget {
       ),
       title: Text(
         option.label,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontSize: 14,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
       onTap: () async {
         await controller.openSearchOption(option.url);

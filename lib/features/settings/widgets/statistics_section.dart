@@ -9,9 +9,9 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_colors.dart';
 import 'package:qration/core/widgets/section_card.dart';
@@ -133,7 +133,7 @@ class _StatCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 6),
       decoration: BoxDecoration(
         color: background,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.large),
       ),
       child: Column(
         children: [
@@ -141,12 +141,11 @@ class _StatCard extends StatelessWidget {
           SizedBox(height: 6),
           Text(
             '$value',
-            style: AppFonts.montserrat(
-              color: color,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              height: 1,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                  height: 1,
+                ),
           ),
           SizedBox(height: 4),
           Text(
@@ -154,11 +153,7 @@ class _StatCard extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.labelSmall,
           ),
         ],
       ),
@@ -196,41 +191,31 @@ class _DistributionBar extends StatelessWidget {
               child: Text(
                 l10n.database_screen_codes_field_created_title,
                 overflow: TextOverflow.ellipsis,
-                style: AppFonts.montserrat(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
             SizedBox(width: 4),
             Text(
               total > 0 ? '${(createdRatio * 100).toStringAsFixed(0)}%' : '0%',
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.primary,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             const Spacer(),
             Text(
               total > 0 ? '${(scannedRatio * 100).toStringAsFixed(0)}%' : '0%',
-              style: AppFonts.montserrat(
-                color: AppColors.qrGold,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.qrGold,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             SizedBox(width: 4),
             Flexible(
               child: Text(
                 l10n.database_screen_codes_field_scanned_title,
                 overflow: TextOverflow.ellipsis,
-                style: AppFonts.montserrat(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
             SizedBox(width: 4),
@@ -239,7 +224,7 @@ class _DistributionBar extends StatelessWidget {
         ),
         SizedBox(height: 8),
         ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppRadius.small),
           child: SizedBox(
             height: 10,
             child: total > 0
@@ -306,7 +291,7 @@ class _SourceTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.large),
         border: Border.all(
           color: theme.colorScheme.outlineVariant,
           width: 1,
@@ -322,7 +307,7 @@ class _SourceTile extends StatelessWidget {
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(AppRadius.medium),
                   ),
                   child: Icon(icon, size: 20, color: color),
                 ),
@@ -330,11 +315,7 @@ class _SourceTile extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: AppFonts.montserrat(
-                      color: theme.colorScheme.onSurface,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
               ],
@@ -380,10 +361,7 @@ class _SourceTile extends StatelessWidget {
                   SizedBox(width: 8),
                   Text(
                     l10n.database_screen_codes_field_empty,
-                    style: AppFonts.montserrat(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      fontSize: 12,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
@@ -415,8 +393,8 @@ class _BreakdownTile extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(14),
-        bottomRight: Radius.circular(14),
+        bottomLeft: Radius.circular(AppRadius.large),
+        bottomRight: Radius.circular(AppRadius.large),
       ),
       onTap: isEmpty || counts == null
           ? null
@@ -430,11 +408,7 @@ class _BreakdownTile extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: AppFonts.montserrat(
-                  color: theme.colorScheme.onSurface,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
             if (!isEmpty) _TypeBadges(counts: counts!),
@@ -474,15 +448,13 @@ class _TypeBadges extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(AppRadius.extraSmall),
             ),
             child: Text(
               '${e.key}: ${e.value}',
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.primary,
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
             ),
           ),
         ),
@@ -491,15 +463,11 @@ class _TypeBadges extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               color: theme.colorScheme.outline.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(AppRadius.extraSmall),
             ),
             child: Text(
               '+$remaining',
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.onSurfaceVariant,
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.labelSmall,
             ),
           ),
       ],
@@ -520,7 +488,7 @@ void showCodesBreakdownDialog(
       return AlertDialog(
         backgroundColor: theme.cardTheme.color ?? theme.colorScheme.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppRadius.extraLarge),
           side: BorderSide(color: theme.colorScheme.outline),
         ),
         title: Row(
@@ -530,11 +498,9 @@ void showCodesBreakdownDialog(
             SizedBox(width: 8),
             Text(
               title,
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.onSurface,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           ],
         ),
@@ -546,7 +512,7 @@ void showCodesBreakdownDialog(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withValues(alpha: 0.10),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(AppRadius.medium),
                 border: Border.all(
                   color: theme.colorScheme.primary.withValues(alpha: 0.25),
                 ),
@@ -556,26 +522,21 @@ void showCodesBreakdownDialog(
                 children: [
                   Text(
                     entry.key,
-                    style: AppFonts.montserrat(
-                      color: theme.colorScheme.onSurface,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                   SizedBox(width: 6),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary,
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(AppRadius.extraSmall),
                     ),
                     child: Text(
                       '${entry.value}',
-                      style: AppFonts.montserrat(
-                        color: theme.colorScheme.onPrimary,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                   ),
                 ],
@@ -590,16 +551,14 @@ void showCodesBreakdownDialog(
               backgroundColor:
                   theme.colorScheme.primary.withValues(alpha: 0.10),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(AppRadius.medium),
               ),
             ),
             child: Text(
               l10n.database_screen_codes_dialog_close,
-              style: AppFonts.montserrat(
-                color: theme.colorScheme.primary,
-                fontWeight: FontWeight.w500,
-                fontSize: 13,
-              ),
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
             ),
           ),
         ],

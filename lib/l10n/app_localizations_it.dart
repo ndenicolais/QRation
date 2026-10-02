@@ -1788,4 +1788,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_50 =>
       'Accessibilità migliorata: testi secondari più contrastati nel tema chiaro, aree tattili di almeno 48 dp, schermate che si adattano al testo di sistema ingrandito (accesso, eliminazione account, tipi di codice, preferiti) ed etichette per gli screen reader su interruttori, pulsanti e codici QR. Il pulsante \"Salta\" dell\'onboarding ora è tradotto.';
+
+  @override
+  String get changelog_v2_0_0_bullet_51 =>
+      'Aspetto più uniforme: dimensioni dei testi e arrotondamento degli angoli seguono una sola scala in tutta l\'app, e i campi data e ora sono uguali agli altri campi.';
 }

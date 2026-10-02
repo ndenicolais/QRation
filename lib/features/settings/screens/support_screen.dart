@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/constants/app_constants.dart';
 import 'package:qration/core/widgets/section_card.dart';
@@ -70,10 +69,7 @@ class SupportScreen extends StatelessWidget {
                   children: [
                     Text(
                       l10n.support_screen_faq_decription,
-                      style: AppFonts.montserrat(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     for (final (question, answer) in faqs)
                       CustomExpansionTile(title: question, answer: answer),

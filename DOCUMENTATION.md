@@ -125,8 +125,9 @@ qration/
 │   │   │   └── app_pages.dart      # Mappa route → widget (GetPage)
 │   │   ├── theme/
 │   │   │   ├── app_colors.dart     # Palette colori app
-│   │   │   ├── app_text_styles.dart # Stili testo
-│   │   │   ├── app_theme.dart      # Temi chiaro e scuro
+│   │   │   ├── app_fonts.dart      # Montserrat locale (AppFonts)
+│   │   │   ├── app_radius.dart     # Token dei raggi (AppRadius)
+│   │   │   ├── app_theme.dart      # Temi chiaro e scuro, scala tipografica (textTheme)
 │   │   │   └── theme_controller.dart # Controller GetX per gestione tema
 │   │   ├── controllers/
 │   │   │   └── scanner_preferences_controller.dart # Preferenze beep/vibrazione condivise
@@ -741,7 +742,26 @@ La modalità tema (`ThemeMode.system`/`light`/`dark`) è salvata in `SharedPrefe
 - **Testo ingrandito:** nessuna schermata va in overflow con scala del testo di sistema 1.5 e 2.0. La riga "Ricordami / Password dimenticata?" del login è un `Wrap`, l'etichetta di `AppButton` va a capo, le tab dei Preferiti troncano con "…", Elimina account è scorrevole e il pulsante ha una dimensione minima invece che fissa, e le tessere dei tipi di codice crescono in altezza solo quando il testo è ingrandito.
 - **Test:** `a11y_harness.dart` registra le dipendenze finte e l'elenco delle schermate (`a11yScreens`). `a11y_guidelines_test.dart` controlla, in tema chiaro e scuro, `androidTapTargetGuideline`, `labeledTapTargetGuideline` e `textContrastGuideline`, con il font di test perché il controllo di contrasto legge i colori da uno screenshot e con i bordi sfumati di un font reale sottostima il contrasto. `text_scale_test.dart` carica il vero Montserrat e verifica l'assenza di overflow a scala 1.5 e 2.0, indicando file e riga del widget. Restano fuori Scanner (fotocamera), Home e Profilo (utente autenticato). Una nuova schermata va aggiunta ad `a11yScreens`.
 
-**Token condivisi:** `AppFontSizes` (`app_font_sizes.dart`) e `AppRadius` (`app_radius.dart`) centralizzano i valori di font size e border radius ricorrenti, da preferire ai valori inline quando coincidono con un token esistente.
+**Design system:**
+- **Tipografia:** le schermate usano i ruoli di `Theme.of(context).textTheme`, con `copyWith` solo per colore, peso o interlinea; niente dimensioni scritte a mano. La scala è definita in `_buildTextTheme` (`app_theme.dart`), con le dimensioni già usate dall'app:
+
+  | Ruolo | Dimensione | Uso |
+  |---|---|---|
+  | `displaySmall` | 36 | Titolo di benvenuto, iniziale dell'avatar |
+  | `headlineMedium` | 28 w500 | Titoli di login, registrazione e onboarding |
+  | `headlineSmall` | 24 w500 | Nome dell'app in Info, numeri delle statistiche |
+  | `titleLarge` | 20 w500 | Titoli dei dialoghi, messaggi in evidenza |
+  | `titleMedium` | 18 w500 | Titoli dei gruppi, stati vuoti e di errore |
+  | `titleSmall` | 15 w500 | Intestazioni di sezione (`SectionHeader`), titoli delle card |
+  | `bodyLarge` | 16 | Testo dei campi, testi lunghi |
+  | `bodyMedium` | 14 | Testo normale |
+  | `bodySmall` | 12, secondario | Sottotitoli, didascalie |
+  | `labelLarge` | 14 w500 | Titoli di righe e tile |
+  | `labelMedium` | 12 w500 | Chip, badge, etichette |
+  | `labelSmall` | 11 w500, secondario | Etichette delle tessere, legende |
+
+  `bodySmall` e `labelSmall` hanno già il colore secondario (`onSurfaceVariant`), gli altri ruoli il colore primario del testo (`onSurface`). Le dimensioni fuori scala sono state arrotondate al ruolo più vicino (13 → 12, 10 → 11). `AppFonts.montserrat` resta solo per definire il tema; `AppFonts.monospace` serve per l'ID account. Rimossi `AppTextStyles` (`app_text_styles.dart`, mai usato) e `AppFontSizes` (`app_font_sizes.dart`).
+- **Raggi:** solo token `AppRadius`: `extraSmall` 4 (indicatori, barre), `small` 8 (chip), `medium` 12 (pulsanti, icone in riquadro), `large` 16 (card, tessere, campi), `extraLarge` 20 (`SectionCard`, gruppi delle Impostazioni), `dialog` 28, `pill` (forme a pillola, che restano tali a qualunque altezza). I valori fuori scala sono stati normalizzati: 3/6 → 4, 10 → 12, 14/15 → 16, 24/25/28/30 → `dialog` o `pill`, 25 → 20 per i gruppi delle Impostazioni.
 
 **Linea guida visiva delle schermate:** le app bar non impostano colori propri (valgono `appBarTheme`: sfondo superficie, titolo e icone nel colore principale), gli `Switch` usano `switchTheme` (traccia neutra da spento, colore principale da acceso), i testi usano `onSurface`/`onSurfaceVariant` e i contenuti sono raggruppati in `SectionCard` (`lib/core/widgets/section_card.dart`: titolo con icona + card con bordo; l'intestazione è anche esposta da sola come `SectionHeader` per contenuti che non stanno in una singola card; spostata da `settings/widgets` perché usata anche da Dettaglio, Crea, Info e Database). Il colore principale si usa solo per accenti, icone e azione principale. Le righe cliccabili dentro una card (titolo + sottotitolo + freccia o link esterno) usano `SectionLinkRow` (`lib/core/widgets/section_link_row.dart`, usata da Supporto); le FAQ del Supporto usano `CustomExpansionTile` senza bordi né padding laterale propri. Dettaglio codice, Crea codice, Info, Profilo, Database, Supporto ed Elimina account sono stati riallineati a questa linea: in precedenza usavano il colore principale come sfondo pieno di app bar e card e il colore secondario per i testi, con contrasti insufficienti (ad esempio testo blu su blu in Info e nel form di creazione). Le intestazioni di Info ora sono con iniziale maiuscola come nel resto dell'app.
 

@@ -9,7 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:qration/core/theme/app_fonts.dart';
+import 'package:qration/core/theme/app_radius.dart';
 
 class SectionCard extends StatelessWidget {
   const SectionCard({
@@ -35,7 +35,7 @@ class SectionCard extends StatelessWidget {
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: theme.cardTheme.color ?? theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppRadius.extraLarge),
             border: Border.all(
               color: theme.colorScheme.outline,
               width: 1,
@@ -68,12 +68,10 @@ class SectionHeader extends StatelessWidget {
           Flexible(
             child: Text(
               title,
-              style: AppFonts.montserrat(
-                color: colorScheme.primary,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.2,
-              ),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: colorScheme.primary,
+                    letterSpacing: 0.2,
+                  ),
             ),
           ),
         ],

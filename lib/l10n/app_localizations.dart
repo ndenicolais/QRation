@@ -3313,6 +3313,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated.'**
   String get changelog_v2_0_0_bullet_50;
+
+  /// No description provided for @changelog_v2_0_0_bullet_51.
+  ///
+  /// In en, this message translates to:
+  /// **'More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields.'**
+  String get changelog_v2_0_0_bullet_51;
 }
 
 class _AppLocalizationsDelegate
