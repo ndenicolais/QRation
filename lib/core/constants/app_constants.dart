@@ -13,15 +13,23 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/features/codes/models/code_social_model.dart';
 
 class AppConstants {
+  // Developer
+  static const String developerName = 'Nicola De Nicolais';
+  static const String developerEmail = 'ndn21dev@gmail.com';
+
+  /// Date shown as "last updated" in the privacy policy (in-app and
+  /// PRIVACY.md must stay in sync).
+  static final DateTime privacyPolicyUpdatedAt = DateTime(2026, 10, 2);
+
   // URI
-  static final Uri uriMail = Uri(scheme: 'mailto', path: 'ndn21dev@gmail.com');
+  static final Uri uriMail = Uri(scheme: 'mailto', path: developerEmail);
   static final Uri uriGithubProfile =
       Uri.parse('https://github.com/ndenicolais');
   static final Uri uriGithubLink = Uri.parse('https://ndenicolais.github.io/');
   static final Uri uriGithubDocumentation =
       Uri.parse('https://github.com/ndenicolais/QRation');
-  static final Uri uriPrivacyPolicy = Uri.parse(
-      'https://www.freeprivacypolicy.com/live/d6f5528e-752e-4aba-9977-9a26b912f41f');
+  static final Uri uriPrivacyPolicy =
+      Uri.parse('https://ndenicolais.github.io/qration/privacy/');
 
   // BarcodeTypes - ordered as shown in UI
   static final List<BarcodeType> customOrderedBarcodeTypes = [

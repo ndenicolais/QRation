@@ -25,6 +25,6 @@ abstract class AppRoutes {
   static const settings = '/settings';
   static const settingsDatabase = '/settings-database';
   static const settingsInfo = '/settings-info';
-  static const settingsPolicy = '/settings-policy';
+  static const privacyPolicy = '/privacy-policy';
   static const settingsSupport = '/settings-support';
 }

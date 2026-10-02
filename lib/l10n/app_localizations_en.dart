@@ -1009,9 +1009,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_tile_changelog => 'What\'s new';
 
   @override
-  String get settings_tile_privacy_policy => 'Privacy Policy';
-
-  @override
   String get settings_tile_support => 'Support';
 
   @override
@@ -1268,7 +1265,97 @@ class AppLocalizationsEn extends AppLocalizations {
   String get info_screen_version_text => 'Version';
 
   @override
+  String get info_screen_privacy_text => 'Privacy';
+
+  @override
+  String get info_screen_privacy_description =>
+      'Which data QRation processes and how you can manage it';
+
+  @override
   String get policy_screen_title => 'Privacy Policy';
+
+  @override
+  String get policy_screen_intro =>
+      'This policy explains which data QRation processes, why, and how you can manage it. QRation shows no ads, uses no analytics tools and does not sell or share your data.';
+
+  @override
+  String policy_screen_updated(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String get policy_screen_online => 'Online version';
+
+  @override
+  String get policy_section_controller_title => 'Data controller';
+
+  @override
+  String policy_section_controller_text(String name, String email) {
+    return 'The controller is the app developer, $name. For any privacy request you can write to $email.';
+  }
+
+  @override
+  String get policy_section_data_title => 'Data we collect';
+
+  @override
+  String get policy_section_data_text =>
+      '• Account: email, name and registration date. With Google sign-in we receive the name, email and profile photo of your Google account. Your password is handled by Firebase Authentication and is never visible to the developer.\n• Codes: for each scanned or created code we save its content (which may include personal data such as contacts, locations, events or Wi-Fi passwords), type, date, source (scanned or created), favorite flag, notes, graphic style and linked social network. The logo chosen for a code stays on your device: only the file path is saved to your account.\n• Crash reports: if the app closes because of an error, Firebase Crashlytics receives a technical report with the error details, device model, system and app version and a random installation identifier.\n• On your device: preferences such as language, theme and accent color, scanner sound and vibration, “remember me”, the screens and release notes you have already seen and the date of your last backup.';
+
+  @override
+  String get policy_section_use_title => 'How we use data';
+
+  @override
+  String get policy_section_use_text =>
+      'Data is used only to make the app work: sign you in, save and sync your codes, show them in History and Favorites and generate the files you export. Crash reports are used only to fix problems in the app. We do not use data for profiling or advertising.';
+
+  @override
+  String get policy_section_storage_title => 'Where it is stored';
+
+  @override
+  String get policy_section_storage_text =>
+      'Account and codes are stored on Google Firebase (Authentication and Cloud Firestore), crash reports on Firebase Crashlytics: services by Google LLC that may process data outside the European Union with the safeguards set out in their terms. Your data is tied to your account and is not visible to other users. To allow offline use, a copy of your codes is also kept on your device. The map used to pick a location loads its images from OpenStreetMap, which receives your device\'s IP address but no account data.';
+
+  @override
+  String get policy_section_device_title => 'On-device processing';
+
+  @override
+  String get policy_section_device_text =>
+      'Code reading, from the camera or from a gallery image, runs entirely on your phone: images are not sent to external services. Generated QR codes and the PDF, Excel, CSV and JSON files you export are also created on your device and shared only if you choose to. Code actions (adding a contact or a calendar event, joining a Wi-Fi network, opening a link or a map) start only when you tap them; links and maps open in external apps, which follow their own privacy policies.';
+
+  @override
+  String get policy_section_permissions_title => 'Permissions';
+
+  @override
+  String get policy_section_permissions_text =>
+      '• Camera: to scan codes.\n• Photos and storage: to pick an image to scan or a code logo, and to save QR codes to the gallery and exported files to the Downloads folder.\n• Contacts: to save the contact read from a code to your address book; your address book is never read or sent.\n• Location: requested when opening the map to pick a point; your location is never saved or sent.\n• Wi-Fi and network: to join the network of a Wi-Fi code and check the connection status.\n• Internet: to sync your account and codes.';
+
+  @override
+  String get policy_section_retention_title => 'Retention and deletion';
+
+  @override
+  String get policy_section_retention_text =>
+      'We keep your account and codes as long as your account exists; you can delete single codes at any time from History. From Settings > Profile > Delete account you can delete the account and all codes; you can export a copy first from Settings > Database. Crash reports are deleted automatically after 90 days. Preferences and logos on your device are removed when you uninstall the app.';
+
+  @override
+  String get policy_section_rights_title => 'Your rights';
+
+  @override
+  String get policy_section_rights_text =>
+      'You can access and export your data (PDF, Excel, CSV and JSON), erase it by deleting single codes or your whole account, and ask for corrections or any information by writing to the controller. You can also lodge a complaint with the data protection authority of your country.';
+
+  @override
+  String get policy_section_children_title => 'Children';
+
+  @override
+  String get policy_section_children_text =>
+      'QRation is not intended for children under 14 and does not knowingly collect their data.';
+
+  @override
+  String get policy_section_changes_title => 'Changes';
+
+  @override
+  String get policy_section_changes_text =>
+      'If this policy changes, the new version will be available in the app and online, with its update date.';
 
   @override
   String get support_screen_title => 'Support';
@@ -1621,4 +1708,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_45 =>
       'New app logo and icon, with support for Android 13+ themed icons; inside the app the logo follows the theme and accent colors.';
+
+  @override
+  String get changelog_v2_0_0_bullet_46 =>
+      'Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.';
 }

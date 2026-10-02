@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/constants/app_version.dart';
+import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/widgets/section_card.dart';
 
@@ -76,9 +77,69 @@ class InfoScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              SectionCard(
+                title: l10n.info_screen_privacy_text,
+                icon: MingCuteIcons.mgc_safe_lock_fill,
+                child: _LinkRow(
+                  title: l10n.policy_screen_title,
+                  subtitle: l10n.info_screen_privacy_description,
+                  onTap: () => Get.toNamed(AppRoutes.privacyPolicy),
+                ),
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Tappable row that opens another screen from a [SectionCard].
+class _LinkRow extends StatelessWidget {
+  const _LinkRow({
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppRadius.small),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppFonts.montserrat(
+                    color: colorScheme.onSurface,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  subtitle,
+                  style: AppFonts.montserrat(
+                    color: colorScheme.onSurfaceVariant,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(MingCuteIcons.mgc_right_fill,
+              color: colorScheme.onSurfaceVariant),
+        ],
       ),
     );
   }

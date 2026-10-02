@@ -1031,9 +1031,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings_tile_changelog => 'Novità';
 
   @override
-  String get settings_tile_privacy_policy => 'Privacy Policy';
-
-  @override
   String get settings_tile_support => 'Supporto';
 
   @override
@@ -1293,7 +1290,97 @@ class AppLocalizationsIt extends AppLocalizations {
   String get info_screen_version_text => 'Versione';
 
   @override
+  String get info_screen_privacy_text => 'Privacy';
+
+  @override
+  String get info_screen_privacy_description =>
+      'Quali dati tratta QRation e come puoi gestirli';
+
+  @override
   String get policy_screen_title => 'Privacy Policy';
+
+  @override
+  String get policy_screen_intro =>
+      'Questa informativa spiega quali dati tratta QRation, perché e come puoi gestirli. QRation non mostra pubblicità, non usa strumenti di analisi e non vende né cede i tuoi dati.';
+
+  @override
+  String policy_screen_updated(String date) {
+    return 'Ultimo aggiornamento: $date';
+  }
+
+  @override
+  String get policy_screen_online => 'Versione online';
+
+  @override
+  String get policy_section_controller_title => 'Titolare del trattamento';
+
+  @override
+  String policy_section_controller_text(String name, String email) {
+    return 'Il titolare è lo sviluppatore dell\'app, $name. Per qualsiasi richiesta sulla privacy puoi scrivere a $email.';
+  }
+
+  @override
+  String get policy_section_data_title => 'Dati che raccogliamo';
+
+  @override
+  String get policy_section_data_text =>
+      '• Account: email, nome e data di registrazione. Con l\'accesso Google riceviamo nome, email e foto del profilo del tuo account Google. La password è gestita da Firebase Authentication e non è mai visibile allo sviluppatore.\n• Codici: per ogni codice scansionato o creato salviamo il contenuto (che può includere dati personali come contatti, posizioni, eventi o password Wi-Fi), il tipo, la data, l\'origine (scansionato o creato), il preferito, le note, lo stile grafico e il social associato. Il logo scelto per un codice resta sul dispositivo: nell\'account viene salvato solo il percorso del file.\n• Segnalazioni di errore: se l\'app si chiude per un errore, Firebase Crashlytics riceve un rapporto tecnico con il dettaglio dell\'errore, il modello del dispositivo, la versione del sistema e dell\'app e un identificativo casuale dell\'installazione.\n• Sul dispositivo: preferenze come lingua, tema e colore principale, suono e vibrazione dello scanner, «ricordami», le schermate e le novità già viste e la data dell\'ultimo backup.';
+
+  @override
+  String get policy_section_use_title => 'Come usiamo i dati';
+
+  @override
+  String get policy_section_use_text =>
+      'I dati servono solo a far funzionare l\'app: accedere al tuo account, salvare e sincronizzare i tuoi codici, mostrarli in Cronologia e Preferiti e generare i file che esporti. Le segnalazioni di errore servono solo a correggere i problemi dell\'app. Non usiamo i dati per profilazione o pubblicità.';
+
+  @override
+  String get policy_section_storage_title => 'Dove sono conservati';
+
+  @override
+  String get policy_section_storage_text =>
+      'Account e codici sono conservati su Google Firebase (Authentication e Cloud Firestore), le segnalazioni di errore su Firebase Crashlytics: servizi di Google LLC che possono trattare i dati anche fuori dall\'Unione Europea con le garanzie previste dalle loro condizioni. I dati sono collegati al tuo account e non sono visibili ad altri utenti. Per consentire l\'uso offline, una copia dei codici resta anche sul dispositivo. La mappa per scegliere una posizione carica le immagini da OpenStreetMap, che riceve l\'indirizzo IP del dispositivo ma nessun dato del tuo account.';
+
+  @override
+  String get policy_section_device_title => 'Elaborazione sul dispositivo';
+
+  @override
+  String get policy_section_device_text =>
+      'La lettura dei codici, dalla fotocamera o da un\'immagine della galleria, avviene interamente sul telefono: le immagini non vengono inviate a servizi esterni. Anche i QR generati e i file PDF, Excel, CSV e JSON che esporti vengono creati sul dispositivo e condivisi solo se lo scegli tu. Le azioni dei codici (aggiungere un contatto o un evento al calendario, connettersi a una rete Wi-Fi, aprire un link o una mappa) partono solo quando le tocchi; link e mappe si aprono in app esterne, che seguono le proprie informative.';
+
+  @override
+  String get policy_section_permissions_title => 'Permessi';
+
+  @override
+  String get policy_section_permissions_text =>
+      '• Fotocamera: per scansionare i codici.\n• Foto e memoria: per scegliere un\'immagine da scansionare o il logo di un codice, e per salvare i QR in galleria e i file esportati nella cartella Download.\n• Contatti: per salvare in rubrica il contatto letto da un codice; la rubrica non viene letta né inviata.\n• Posizione: richiesta all\'apertura della mappa per scegliere un punto; la tua posizione non viene salvata né inviata.\n• Wi-Fi e rete: per connetterti alla rete di un codice Wi-Fi e verificare lo stato della connessione.\n• Internet: per sincronizzare account e codici.';
+
+  @override
+  String get policy_section_retention_title => 'Conservazione e cancellazione';
+
+  @override
+  String get policy_section_retention_text =>
+      'Conserviamo account e codici finché il tuo account esiste; puoi eliminare singoli codici in qualsiasi momento dalla Cronologia. Da Impostazioni > Profilo > Elimina account puoi cancellare l\'account e tutti i codici; prima puoi esportarne una copia da Impostazioni > Database. Le segnalazioni di errore vengono cancellate automaticamente dopo 90 giorni. Le preferenze e i loghi sul dispositivo vengono rimossi disinstallando l\'app.';
+
+  @override
+  String get policy_section_rights_title => 'I tuoi diritti';
+
+  @override
+  String get policy_section_rights_text =>
+      'Puoi accedere ai tuoi dati ed esportarli (PDF, Excel, CSV e JSON), cancellarli eliminando singoli codici o l\'intero account, e chiedere la rettifica o qualsiasi informazione scrivendo al titolare. Puoi anche presentare reclamo all\'autorità per la protezione dei dati del tuo paese.';
+
+  @override
+  String get policy_section_children_title => 'Minori';
+
+  @override
+  String get policy_section_children_text =>
+      'QRation non è rivolta a minori di 14 anni e non raccoglie consapevolmente i loro dati.';
+
+  @override
+  String get policy_section_changes_title => 'Modifiche';
+
+  @override
+  String get policy_section_changes_text =>
+      'Se questa informativa cambia, la nuova versione sarà disponibile nell\'app e online, con la data di aggiornamento.';
 
   @override
   String get support_screen_title => 'Supporto';
@@ -1648,4 +1735,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_45 =>
       'Nuovo logo e nuova icona dell\'app, con supporto alle icone a tema di Android 13+; dentro l\'app il logo segue il tema e il colore principale.';
+
+  @override
+  String get changelog_v2_0_0_bullet_46 =>
+      'Informativa privacy riscritta, ora leggibile direttamente nell\'app (anche offline) da Impostazioni > Info, con lo stesso testo pubblicato online.';
 }

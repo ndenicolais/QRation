@@ -65,7 +65,6 @@ dependencies:
   # Network
   wifi_iot: ^0.3.19+2
   free_map: ^2.0.2
-  webview_flutter: ^4.8.0
 
   # Export
   pdf: ^3.11.1

@@ -93,7 +93,6 @@ L'app è completamente localizzata in italiano e inglese, con supporto a tema ch
 | Calendario | [add_2_calendar](https://pub.dev/packages/add_2_calendar) `^3.0.1` |
 | Wi-Fi | [wifi_iot](https://pub.dev/packages/wifi_iot) `^0.3.19+2` |
 | Mappe | [free_map](https://pub.dev/packages/free_map) `^2.0.2` |
-| WebView | [webview_flutter](https://pub.dev/packages/webview_flutter) `^4.8.0` |
 | Export PDF | [pdf](https://pub.dev/packages/pdf) `^3.11.1` |
 | Export Excel | [excel](https://pub.dev/packages/excel) `^4.0.6` |
 | Export CSV | [csv](https://pub.dev/packages/csv) `^6.0.0` |
@@ -163,7 +162,7 @@ qration/
 │   │   │   └── screens/            # onboarding_screen
 │   │   ├── settings/
 │   │   │   ├── controllers/        # SettingsController, DatabaseController
-│   │   │   ├── screens/            # settings, database, info, policy, support
+│   │   │   ├── screens/            # settings, database, info, privacy_policy, support
 │   │   │   └── widgets/            # Sotto-widget della schermata Database + custom_expansiontile
 │   │   ├── splash/
 │   │   │   └── screens/            # splash_screen
@@ -548,11 +547,12 @@ La screen contiene solo il contenuto delle sezioni; i mattoni visivi sono in `li
 | **Account** | Database | Accede alla schermata Database (statistiche + export) |
 | **Account** | Logout | Disconnette l'utente corrente |
 | **Account** | Elimina account | Naviga alla schermata di eliminazione account |
-| **App** | Informazioni | Info sull'app |
+| **App** | Informazioni | Info sull'app, con il link alla Privacy Policy |
 | **App** | Novità | Apre `AppChangelogDialog.showAll`, con l'intero storico di `changelogEntries` (non solo le novità dall'ultimo aggiornamento) |
-| **App** | Privacy Policy | Visualizza la privacy policy in WebView |
 | **App** | Supporto | Contatta l'autore |
 | **App** | Condividi | Condivide il link dell'app tramite sistema operativo |
+
+**Privacy Policy** (`PrivacyPolicyScreen` in `lib/features/settings/screens/privacy_policy_screen.dart`, route `AppRoutes.privacyPolicy`): informativa nativa e localizzata, che sostituisce la vecchia WebView su freeprivacypolicy.com (rimosso `webview_flutter`). L'unico punto d'ingresso è la card "Privacy" della schermata Info. Mostra la data di aggiornamento (`AppConstants.privacyPolicyUpdatedAt`, formattata con `DateFormat.yMMMMd` nella lingua corrente), l'intro, 10 sezioni in `SectionCard` (chiavi ARB `policy_section_*_title`/`_text`; il titolare usa i placeholder `{name}`/`{email}` valorizzati da `AppConstants.developerName`/`developerEmail`) e il link "Versione online" ad `AppConstants.uriPrivacyPolicy` (`https://ndenicolais.github.io/qration/privacy/`). Lo stesso testo, in italiano e inglese, è in `PRIVACY.md` nella radice del repo: quando cambia vanno aggiornati insieme `PRIVACY.md`, le chiavi ARB, `privacyPolicyUpdatedAt` e la pagina sul portfolio. Se si aggiungono servizi, permessi o dati trattati (analytics, pubblicità, nuovi plugin con accesso alla rete), la policy va aggiornata prima della release.
 
 **Changelog dialog** (`AppChangelogDialog` in `lib/core/widgets/app_changelog_dialog.dart`): le voci sono definite in `lib/core/constants/changelog.dart` (`changelogEntries`, una lista di `ChangelogEntry` versione + bullet localizzati, ordinata dalla più recente). Va aggiornata ad ogni cambiamento user-facing, mantenendo `version` allineata a `version:` in `pubspec.yaml` — vedi CLAUDE.md. La versione mostrata nel dialog e nella schermata Info (`InfoScreen`) è `AppVersion.current` (`lib/core/constants/app_version.dart`), letta a runtime dal build della piattaforma tramite `package_info_plus` in `main()` — non è più una costante da aggiornare manualmente né una chiave di traduzione duplicata negli arb.
 
@@ -756,8 +756,7 @@ Splash
                           └── Impostazioni
                                 ├── Profilo utente
                                 ├── Database
-                                ├── Info
-                                ├── Privacy Policy
+                                ├── Info → Privacy Policy
                                 ├── Supporto
                                 └── Elimina account
 ```
@@ -782,7 +781,7 @@ Splash
 | `settings` | `/settings` | SettingsScreen |
 | `settingsDatabase` | `/settings-database` | DatabaseScreen |
 | `settingsInfo` | `/settings-info` | InfoScreen |
-| `settingsPolicy` | `/settings-policy` | PolicyScreen |
+| `privacyPolicy` | `/privacy-policy` | PrivacyPolicyScreen |
 | `settingsSupport` | `/settings-support` | SupportScreen |
 
 ---
@@ -841,7 +840,6 @@ dependencies:
   add_2_calendar: ^3.0.1               # Aggiunta eventi calendario
   wifi_iot: ^0.3.19+2                  # Connessione Wi-Fi
   free_map: ^2.0.2                     # Mappa per coordinate geo
-  webview_flutter: ^4.8.0              # WebView per privacy policy
   pdf: ^3.11.1                         # Generazione PDF
   excel: ^4.0.6                        # Export Excel
   csv: ^6.0.0                          # Export CSV
@@ -875,7 +873,7 @@ I test sono in `test/` e rispecchiano la struttura di `lib/` (`flutter test`; li
 - **Modelli e utility** (`test/core/utils`, `test/features/codes/models`): parsing dei contenuti, validator, formattazione ISBN, decorazioni QR.
 - **Controller**: codici (dettaglio, creazione social, scanner), `HistoryController`, `FavoritesController`, `SyncStatusMixin`, `DatabaseController` (statistiche, export PDF/Excel/CSV, storico backup), `AuthController` (login, Google, registrazione, reset, logout, eliminazione account), `ThemeController`, `ScannerPreferencesController`, `SessionStore`, `BackupHistory`, `RescanGuard`.
 - **Binding** (`test/features/bindings_test.dart`): controller registrati da `HomeBinding` e dai binding con argomento di rotta, incluso il caso di argomento mancante.
-- **Widget**: `CodeListTile`, `AppEmptyState`, `SyncStatusBanner`, `BackupSection`, sezioni del Database e le screen Cronologia, Preferiti e Impostazioni.
+- **Widget**: `CodeListTile`, `AppEmptyState`, `SyncStatusBanner`, `BackupSection`, sezioni del Database e le screen Cronologia, Preferiti, Impostazioni e Privacy Policy (sezioni e data localizzate in IT/EN).
 
 Note pratiche: il font dei test (Ahem) è più largo di Montserrat, quindi negli scroll orizzontali può servire `tester.ensureVisible` prima di un tap; i controller con timer (es. `SyncStatusMixin`) vanno creati dentro `testWidgets` perché `tester.pump` controlli il tempo; i controller che caricano `SharedPreferences` in `onInit` richiedono `SharedPreferences.setMockInitialValues` e un `pumpEventQueue()` prima di interagire.
 

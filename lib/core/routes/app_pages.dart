@@ -28,7 +28,7 @@ import 'package:qration/features/home/screens/home_screen.dart';
 import 'package:qration/features/onboarding/screens/onboarding_screen.dart';
 import 'package:qration/features/settings/screens/database_screen.dart';
 import 'package:qration/features/settings/screens/info_screen.dart';
-import 'package:qration/features/settings/screens/policy_screen.dart';
+import 'package:qration/features/settings/screens/privacy_policy_screen.dart';
 import 'package:qration/features/settings/screens/settings_screen.dart';
 import 'package:qration/features/settings/screens/support_screen.dart';
 import 'package:qration/features/splash/screens/splash_screen.dart';
@@ -124,8 +124,8 @@ class AppPages {
       page: () => const InfoScreen(),
     ),
     GetPage(
-      name: AppRoutes.settingsPolicy,
-      page: () => PolicyScreen(),
+      name: AppRoutes.privacyPolicy,
+      page: () => const PrivacyPolicyScreen(),
     ),
     GetPage(
       name: AppRoutes.settingsSupport,

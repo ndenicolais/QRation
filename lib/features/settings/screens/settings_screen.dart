@@ -230,11 +230,6 @@ class SettingsScreenState extends State<SettingsScreen> {
           onTap: () => AppChangelogDialog.showAll(context),
         ),
         SettingsNavTile(
-          icon: MingCuteIcons.mgc_safe_lock_fill,
-          title: l10n.settings_tile_privacy_policy,
-          onTap: () => Get.toNamed(AppRoutes.settingsPolicy),
-        ),
-        SettingsNavTile(
           icon: MingCuteIcons.mgc_lifebuoy_fill,
           title: l10n.settings_tile_support,
           onTap: () => Get.toNamed(AppRoutes.settingsSupport),

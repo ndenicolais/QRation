@@ -59,7 +59,7 @@ lib/
 │   ├── history/               # Cronologia codici
 │   ├── home/                  # Home + bottom navigation
 │   ├── onboarding/            # Onboarding al primo avvio
-│   ├── settings/              # Impostazioni, Database, Info, Policy, Support
+│   ├── settings/              # Impostazioni, Database, Info, Privacy Policy, Support
 │   ├── splash/                # Splash screen
 │   ├── user/                  # Profilo utente, Elimina account
 │   └── welcome/               # Schermata di benvenuto
@@ -96,6 +96,12 @@ flutter run
 ## Documentazione completa
 
 Per una documentazione dettagliata di tutte le funzionalità, modelli dati, schermate e scelte tecniche consulta il file [DOCUMENTATION.md](DOCUMENTATION.md).
+
+---
+
+## Privacy
+
+L'informativa privacy (italiano e inglese) è in [PRIVACY.md](PRIVACY.md), leggibile anche nell'app da *Impostazioni > Info > Privacy Policy* e online su [ndenicolais.github.io/qration/privacy](https://ndenicolais.github.io/qration/privacy/).
 
 ---
 
