@@ -30,7 +30,7 @@
    - [Codici (codes_service)](#72-codici-codes_service)
    - [Export CSV (csv_service)](#73-export-csv-csv_service)
    - [Export Excel (excel_service)](#74-export-excel-excel_service)
-   - [Export PDF (pdf_service)](#75-export-pdf-pdf_service)
+   - [Export PDF (pdf_service, pdf_report)](#75-export-pdf-pdf_service-pdf_report)
 8. [Tema e stile](#8-tema-e-stile)
 9. [Navigazione](#9-navigazione)
 10. [Impostazioni disponibili](#10-impostazioni-disponibili)
@@ -147,7 +147,7 @@ qration/
 │   │   │   └── widgets/            # Sotto-widget di dettaglio/creazione codice, incl. code_create/
 │   │   │                           # (custom_picker_field, full_screen_map)
 │   │   ├── export/
-│   │   │   └── services/           # csv_service, excel_service, pdf_service
+│   │   │   └── services/           # csv_service, excel_service, pdf_service, pdf_report
 │   │   ├── favorites/
 │   │   │   ├── controllers/        # FavoritesController
 │   │   │   └── screens/            # favorites_screen
@@ -583,7 +583,7 @@ Schermata avanzata di gestione dati accessibile dalle impostazioni.
 **Export:**
 - **CSV** — Esporta tutti i codici in formato CSV
 - **Excel** — Esporta tutti i codici in formato XLSX
-- **PDF** — Genera un PDF con pagina di copertina, pagina statistiche e una pagina per ogni codice (con immagine QR)
+- **PDF** — Genera un PDF con copertina, riepilogo di account e statistiche e una card per ogni codice (con immagine QR), circa 5 codici per pagina
 
 **Import/Export JSON:**
 - Importa un file JSON precedentemente esportato per ripristinare i dati
@@ -693,21 +693,28 @@ Esporta tutti i codici in formato XLSX nativo.
 
 ---
 
-### 7.5 Export PDF (pdf_service)
+### 7.5 Export PDF (pdf_service, pdf_report)
 
-**Percorso:** `lib/features/export/services/pdf_service.dart`
+**Percorsi:** `lib/features/export/services/pdf_service.dart` (dati) e `lib/features/export/services/pdf_report.dart` (impaginazione)
 
-Genera un documento PDF professionale con una pagina per ogni codice.
+Il lavoro è diviso in due parti:
+- **`PdfService.generateCodesPdf`** legge i codici (dal più recente), traduce il tipo (`readableCodeType`), genera ogni QR con i suoi colori, forme e logo (300 px, `buildQrDecoration`; il logo viene ignorato se il file non esiste più) e calcola i conteggi per tipo (`countByType`). Con questi dati compone un `PdfReportData` e lo salva.
+- **`buildPdfReport`** costruisce il documento a partire da `PdfReportData`, `PdfReportAssets` (Montserrat regular e bold, logo) e `AppLocalizations`, senza dipendenze da Firebase o dai widget Flutter, così è testabile.
 
-**Struttura del documento:**
-- **Pagina di copertina:** logo dell'app, titolo, data di generazione
-- **Pagina statistiche:** riepilogo totale codici, suddivisione creati/scansionati, distribuzione per tipo
-- **Pagina per ogni codice:** immagine QR code, ID, data, tipo, contenuto, sorgente, preferito
+**Struttura del documento (A4):**
+- **Copertina:** logo, "QRation", sottotitolo "La mia collezione di codici" (`pdf_report_subtitle`), linea oro, nome ed email dell'account e chip con il numero di codici.
+- **Pagine successive** (`pw.MultiPage`): intestazione con logo e "QRation"; piè di pagina "Pagina X di Y" (`pdf_report_page`).
+- **Informazioni utente:** tabella etichetta → valore (nome, email, data di creazione dell'account, ID).
+- **Statistiche:** tre riquadri (salvati, creati, scansionati) e due card con il dettaglio per tipo, divise in Standard e Social. I codici social sono contati per social e non anche come URL; il valore `Link` assegnato ai normali URL non è un social e non viene mostrato.
+- **Codici:** una card per codice che non si spezza tra due pagine (circa 5 per pagina invece di una). Contiene il QR, le chip Tipo, Fonte (Creato/Scansionato), social e Preferito, il contenuto, data e ora, le eventuali note e, solo per i codici creati, lo stile (colore e forma di occhi e moduli).
+- **Pagina finale:** logo, "QRation", "Ideata e sviluppata da" (`info_screen_made_by`) con `AppConstants.developerName`, email dello sviluppatore, sito (`AppConstants.uriGithubLink`) e "© <anno dell'esportazione> Nicola De Nicolais. Tutti i diritti riservati." (`pdf_report_rights`). Non ha intestazione né piè di pagina.
+
+Le date usano la lingua dell'app (`DateFormat.yMMMMd(l10n.localeName)`), quelle dei codici il formato `dd/MM/yyyy HH:mm` delle liste. Colori: blu `qrBlue` per il testo, oro `qrGold` per gli accenti, `cardLight`/`dividerLight` per le card.
+
+**Anteprima senza dispositivo:** `test/features/export/pdf_report_test.dart` costruisce un report di esempio (34 codici), verifica che occupi meno di 15 pagine e, se la variabile d'ambiente `QRATION_PDF_PREVIEW` contiene un percorso, lo salva lì: `QRATION_PDF_PREVIEW=anteprima.pdf flutter test test/features/export/pdf_report_test.dart`.
 
 **Caratteristiche tecniche:**
-- Font Montserrat (regular + bold) caricato da assets
-- Logo app incluso dalla cartella assets
-- Progresso esportazione restituito tramite callback `Function(double)`
+- Progresso esportazione restituito tramite callback `Function(double)`; la parte lenta è il rendering dei QR.
 - Salvataggio tramite `path_provider` (`getDownloadsDirectory()`, storage app-scoped: nessun permesso runtime richiesto)
 - Copia automaticamente il file nella cartella pubblica Download tramite `downloads_saver.dart` (MethodChannel nativo `com.ndn21.qration/downloads`): su Android 10+ (API 29+) via `MediaStore`, senza permessi; su Android 9 e precedenti richiede il permesso `WRITE_EXTERNAL_STORAGE` prima di scrivere
 

@@ -1216,7 +1216,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_pdf_field_code_scanned_social => 'Social';
 
   @override
-  String get database_pdf_page => 'Page';
+  String get pdf_report_subtitle => 'My code collection';
+
+  @override
+  String get pdf_report_rights => 'All rights reserved.';
+
+  @override
+  String pdf_report_codes_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count codes',
+      one: '1 code',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pdf_report_page(int current, int total) {
+    return 'Page $current of $total';
+  }
+
+  @override
+  String get pdf_report_codes => 'Codes';
+
+  @override
+  String get pdf_report_none => 'None';
+
+  @override
+  String get pdf_report_notes => 'Notes';
+
+  @override
+  String get pdf_report_eyes => 'Eyes';
+
+  @override
+  String get pdf_report_modules => 'Modules';
+
+  @override
+  String get pdf_report_rounded => 'rounded';
+
+  @override
+  String get pdf_report_square => 'square';
 
   @override
   String get user_screen_title => 'Profile';
@@ -1580,7 +1620,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changelog_v2_0_0_bullet_5 =>
-      'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. Fixed the permission error when exporting and an overflow in the statistics.';
+      'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. The exported PDF has a new look: a cover, an account and statistics summary and the codes as compact cards, about 5 per page instead of one. Fixed the permission error when exporting and an overflow in the statistics.';
 
   @override
   String get changelog_v2_0_0_bullet_6 =>

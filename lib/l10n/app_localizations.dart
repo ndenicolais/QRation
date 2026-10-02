@@ -2396,11 +2396,71 @@ abstract class AppLocalizations {
   /// **'Social'**
   String get database_pdf_field_code_scanned_social;
 
-  /// No description provided for @database_pdf_page.
+  /// No description provided for @pdf_report_subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Page'**
-  String get database_pdf_page;
+  /// **'My code collection'**
+  String get pdf_report_subtitle;
+
+  /// No description provided for @pdf_report_rights.
+  ///
+  /// In en, this message translates to:
+  /// **'All rights reserved.'**
+  String get pdf_report_rights;
+
+  /// No description provided for @pdf_report_codes_count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 code} other{{count} codes}}'**
+  String pdf_report_codes_count(int count);
+
+  /// No description provided for @pdf_report_page.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {current} of {total}'**
+  String pdf_report_page(int current, int total);
+
+  /// No description provided for @pdf_report_codes.
+  ///
+  /// In en, this message translates to:
+  /// **'Codes'**
+  String get pdf_report_codes;
+
+  /// No description provided for @pdf_report_none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get pdf_report_none;
+
+  /// No description provided for @pdf_report_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get pdf_report_notes;
+
+  /// No description provided for @pdf_report_eyes.
+  ///
+  /// In en, this message translates to:
+  /// **'Eyes'**
+  String get pdf_report_eyes;
+
+  /// No description provided for @pdf_report_modules.
+  ///
+  /// In en, this message translates to:
+  /// **'Modules'**
+  String get pdf_report_modules;
+
+  /// No description provided for @pdf_report_rounded.
+  ///
+  /// In en, this message translates to:
+  /// **'rounded'**
+  String get pdf_report_rounded;
+
+  /// No description provided for @pdf_report_square.
+  ///
+  /// In en, this message translates to:
+  /// **'square'**
+  String get pdf_report_square;
 
   /// No description provided for @user_screen_title.
   ///
@@ -3041,7 +3101,7 @@ abstract class AppLocalizations {
   /// No description provided for @changelog_v2_0_0_bullet_5.
   ///
   /// In en, this message translates to:
-  /// **'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. Fixed the permission error when exporting and an overflow in the statistics.'**
+  /// **'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. The exported PDF has a new look: a cover, an account and statistics summary and the codes as compact cards, about 5 per page instead of one. Fixed the permission error when exporting and an overflow in the statistics.'**
   String get changelog_v2_0_0_bullet_5;
 
   /// No description provided for @changelog_v2_0_0_bullet_6.

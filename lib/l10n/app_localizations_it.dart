@@ -1241,7 +1241,47 @@ class AppLocalizationsIt extends AppLocalizations {
   String get database_pdf_field_code_scanned_social => 'Social';
 
   @override
-  String get database_pdf_page => 'Pagina';
+  String get pdf_report_subtitle => 'La mia collezione di codici';
+
+  @override
+  String get pdf_report_rights => 'Tutti i diritti riservati.';
+
+  @override
+  String pdf_report_codes_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count codici',
+      one: '1 codice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pdf_report_page(int current, int total) {
+    return 'Pagina $current di $total';
+  }
+
+  @override
+  String get pdf_report_codes => 'Codici';
+
+  @override
+  String get pdf_report_none => 'Nessuno';
+
+  @override
+  String get pdf_report_notes => 'Note';
+
+  @override
+  String get pdf_report_eyes => 'Occhi';
+
+  @override
+  String get pdf_report_modules => 'Moduli';
+
+  @override
+  String get pdf_report_rounded => 'arrotondati';
+
+  @override
+  String get pdf_report_square => 'squadrati';
 
   @override
   String get user_screen_title => 'Profilo';
@@ -1607,7 +1647,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get changelog_v2_0_0_bullet_5 =>
-      'Database ed esportazione: nuova pagina con azioni nella barra superiore e statistiche più leggibili. PDF, Excel, CSV e backup JSON vengono salvati anche nella cartella Download, ed è indicata la data dell\'ultimo backup. Corretti l\'errore di permesso in esportazione e un overflow nelle statistiche.';
+      'Database ed esportazione: nuova pagina con azioni nella barra superiore e statistiche più leggibili. PDF, Excel, CSV e backup JSON vengono salvati anche nella cartella Download, ed è indicata la data dell\'ultimo backup. Il PDF esportato ha una nuova grafica: copertina, riepilogo di account e statistiche e i codici in schede compatte, circa 5 per pagina invece di uno. Corretti l\'errore di permesso in esportazione e un overflow nelle statistiche.';
 
   @override
   String get changelog_v2_0_0_bullet_6 =>
