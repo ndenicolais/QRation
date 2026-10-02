@@ -1245,49 +1245,72 @@ class AppLocalizationsIt extends AppLocalizations {
   String get info_screen_title => 'Info';
 
   @override
-  String get info_screen_origin_text => 'Origine';
-
-  @override
-  String get info_screen_origin_description =>
-      'Il nome dell\'app è una fusione tra \'QR\' e \'Creation\', proprio per specificare le due funzionalità principali dell\'applicazione e, cioè, la scansione e la creazione di QR Codes.';
-
-  @override
-  String get info_screen_description_text => 'Descrizione';
-
-  @override
-  String get info_screen_description_description =>
-      'Questa applicazione consente di scansionare e generare codici QR, che possono essere salvati nel tuo account personale per una gestione facile e sicura. È possibile accedere a tutti i codici QR salvati in qualsiasi momento. Inoltre ogni codice permette di eseguire una funzione diversa in base alla sua tipologia.';
-
-  @override
-  String get info_screen_credits_text => 'Crediti';
-
-  @override
-  String get info_screen_credits_a_text => 'Ideazione';
-
-  @override
-  String get info_screen_credits_a_value => 'Nicola De Nicolais';
-
-  @override
-  String get info_screen_credits_b_text => 'Sviluppo';
-
-  @override
-  String get info_screen_credits_b_value => 'Nicola De Nicolais';
-
-  @override
-  String get info_screen_credits_c_text => 'Design';
-
-  @override
-  String get info_screen_credits_c_value => 'Nicola De Nicolais';
+  String get info_screen_tagline => 'Scansiona, crea e conserva i tuoi codici';
 
   @override
   String get info_screen_version_text => 'Versione';
 
   @override
-  String get info_screen_privacy_text => 'Privacy';
+  String get info_screen_about_title => 'Cos\'è QRation';
 
   @override
-  String get info_screen_privacy_description =>
-      'Quali dati tratta QRation e come puoi gestirli';
+  String get info_screen_about_text =>
+      'QRation ti permette di scansionare e creare codici QR e codici a barre e li conserva nel tuo account personale, sempre a portata di mano. Ogni codice offre l\'azione adatta al suo tipo: aprire un link, aggiungere un contatto o un evento, connettersi a una rete Wi-Fi e molto altro.';
+
+  @override
+  String get info_screen_origin_description =>
+      'Il nome unisce \'QR\' e \'Creation\', le due cose che l\'app fa: scansionare e creare codici QR.';
+
+  @override
+  String get info_screen_features_title => 'Funzionalità';
+
+  @override
+  String get info_screen_feature_scan_title => 'Scansiona';
+
+  @override
+  String get info_screen_feature_scan_text =>
+      'Codici QR e a barre dalla fotocamera o da un\'immagine della galleria.';
+
+  @override
+  String get info_screen_feature_create_title => 'Crea';
+
+  @override
+  String get info_screen_feature_create_text =>
+      'Codici per link, Wi-Fi, contatti, eventi e social, con colori e forme a tua scelta.';
+
+  @override
+  String get info_screen_feature_library_title => 'Organizza';
+
+  @override
+  String get info_screen_feature_library_text =>
+      'Cronologia e preferiti sincronizzati con il tuo account, con ricerca e filtri.';
+
+  @override
+  String get info_screen_feature_export_title => 'Esporta';
+
+  @override
+  String get info_screen_feature_export_text =>
+      'I tuoi codici in PDF, Excel o CSV, più backup e ripristino in JSON.';
+
+  @override
+  String get info_screen_links_title => 'Link utili';
+
+  @override
+  String get info_screen_link_source => 'Codice sorgente';
+
+  @override
+  String get info_screen_link_website => 'Sito web';
+
+  @override
+  String get info_screen_link_contact => 'Contattami';
+
+  @override
+  String get info_screen_link_licenses => 'Licenze open source';
+
+  @override
+  String info_screen_made_by(String name) {
+    return 'Ideata e sviluppata da $name';
+  }
 
   @override
   String get policy_screen_title => 'Privacy Policy';
@@ -1740,4 +1763,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_48 =>
       'La mappa per scegliere una posizione non chiede più il permesso di posizione e non si chiude più se lo neghi: basta toccare il punto che vuoi.';
+
+  @override
+  String get changelog_v2_0_0_bullet_49 =>
+      'Schermata Info ridisegnata: cosa fa QRation in breve, le funzionalità principali e i link utili (codice sorgente, sito web, contatti, privacy policy e licenze open source).';
 }

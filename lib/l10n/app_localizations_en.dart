@@ -1220,49 +1220,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String get info_screen_title => 'Info';
 
   @override
-  String get info_screen_origin_text => 'Origin';
-
-  @override
-  String get info_screen_origin_description =>
-      'The name of the app is a fusion between \'QR\' and \'Creation\', just to specify the two main features of the application and, that is, scanning and creating QR Codes.';
-
-  @override
-  String get info_screen_description_text => 'Description';
-
-  @override
-  String get info_screen_description_description =>
-      'This app allows you to scan and generate QR codes, which can be saved in your personal account for easy and safe management. You can access all saved QR codes at any time. In addition, each code allows a different function to be performed according to its type.';
-
-  @override
-  String get info_screen_credits_text => 'Credits';
-
-  @override
-  String get info_screen_credits_a_text => 'Idea';
-
-  @override
-  String get info_screen_credits_a_value => 'Nicola De Nicolais';
-
-  @override
-  String get info_screen_credits_b_text => 'Development';
-
-  @override
-  String get info_screen_credits_b_value => 'Nicola De Nicolais';
-
-  @override
-  String get info_screen_credits_c_text => 'Design';
-
-  @override
-  String get info_screen_credits_c_value => 'Nicola De Nicolais';
+  String get info_screen_tagline => 'Scan, create and keep your codes';
 
   @override
   String get info_screen_version_text => 'Version';
 
   @override
-  String get info_screen_privacy_text => 'Privacy';
+  String get info_screen_about_title => 'What is QRation';
 
   @override
-  String get info_screen_privacy_description =>
-      'Which data QRation processes and how you can manage it';
+  String get info_screen_about_text =>
+      'QRation lets you scan and create QR codes and barcodes and keeps them in your personal account, always at hand. Every code comes with the action that fits its type: open a link, add a contact or an event, connect to a Wi-Fi network and much more.';
+
+  @override
+  String get info_screen_origin_description =>
+      'The name blends \'QR\' and \'Creation\', the two things the app does: scanning and creating QR codes.';
+
+  @override
+  String get info_screen_features_title => 'Features';
+
+  @override
+  String get info_screen_feature_scan_title => 'Scan';
+
+  @override
+  String get info_screen_feature_scan_text =>
+      'QR codes and barcodes from the camera or from an image in your gallery.';
+
+  @override
+  String get info_screen_feature_create_title => 'Create';
+
+  @override
+  String get info_screen_feature_create_text =>
+      'Codes for links, Wi-Fi, contacts, events and socials, with your own colors and shapes.';
+
+  @override
+  String get info_screen_feature_library_title => 'Organize';
+
+  @override
+  String get info_screen_feature_library_text =>
+      'History and favorites synced with your account, with search and filters.';
+
+  @override
+  String get info_screen_feature_export_title => 'Export';
+
+  @override
+  String get info_screen_feature_export_text =>
+      'Your codes as PDF, Excel or CSV, plus JSON backup and restore.';
+
+  @override
+  String get info_screen_links_title => 'Useful links';
+
+  @override
+  String get info_screen_link_source => 'Source code';
+
+  @override
+  String get info_screen_link_website => 'Website';
+
+  @override
+  String get info_screen_link_contact => 'Contact me';
+
+  @override
+  String get info_screen_link_licenses => 'Open source licenses';
+
+  @override
+  String info_screen_made_by(String name) {
+    return 'Designed and developed by $name';
+  }
 
   @override
   String get policy_screen_title => 'Privacy Policy';
@@ -1713,4 +1736,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_48 =>
       'The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.';
+
+  @override
+  String get changelog_v2_0_0_bullet_49 =>
+      'Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).';
 }

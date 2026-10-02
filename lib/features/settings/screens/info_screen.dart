@@ -15,18 +15,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
+import 'package:qration/core/constants/app_constants.dart';
 import 'package:qration/core/constants/app_version.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/theme/app_radius.dart';
 import 'package:qration/core/widgets/section_card.dart';
-import 'package:qration/core/widgets/section_link_row.dart';
+import 'package:qration/features/settings/widgets/settings_tiles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+/// About the app: identity, what it does, useful links and credits.
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       // Colors and title style come from the theme appBarTheme.
       appBar: AppBar(
@@ -47,44 +51,57 @@ class InfoScreen extends StatelessWidget {
             children: [
               const _AppHeader(),
               SectionCard(
-                title: l10n.info_screen_origin_text,
-                icon: MingCuteIcons.mgc_bulb_fill,
-                child: _Paragraph(l10n.info_screen_origin_description),
-              ),
-              SectionCard(
-                title: l10n.info_screen_description_text,
+                title: l10n.info_screen_about_title,
                 icon: MingCuteIcons.mgc_information_fill,
-                child: _Paragraph(l10n.info_screen_description_description),
-              ),
-              SectionCard(
-                title: l10n.info_screen_credits_text,
-                icon: MingCuteIcons.mgc_user_3_fill,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 10.h,
                   children: [
-                    _CreditRow(
-                      label: l10n.info_screen_credits_a_text,
-                      value: l10n.info_screen_credits_a_value,
+                    Text(
+                      l10n.info_screen_about_text,
+                      style: AppFonts.montserrat(
+                        color: colorScheme.onSurface,
+                        fontSize: 14.sp,
+                        height: 1.5,
+                      ),
                     ),
-                    Divider(height: 20.h),
-                    _CreditRow(
-                      label: l10n.info_screen_credits_b_text,
-                      value: l10n.info_screen_credits_b_value,
-                    ),
-                    Divider(height: 20.h),
-                    _CreditRow(
-                      label: l10n.info_screen_credits_c_text,
-                      value: l10n.info_screen_credits_c_value,
+                    Text(
+                      l10n.info_screen_origin_description,
+                      style: AppFonts.montserrat(
+                        color: colorScheme.onSurfaceVariant,
+                        fontSize: 13.sp,
+                        height: 1.5,
+                      ),
                     ),
                   ],
                 ),
               ),
-              SectionCard(
-                title: l10n.info_screen_privacy_text,
-                icon: MingCuteIcons.mgc_safe_lock_fill,
-                child: SectionLinkRow(
-                  title: l10n.policy_screen_title,
-                  subtitle: l10n.info_screen_privacy_description,
-                  onTap: () => Get.toNamed(AppRoutes.privacyPolicy),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SectionHeader(
+                    title: l10n.info_screen_features_title,
+                    icon: MingCuteIcons.mgc_sparkles_fill,
+                  ),
+                  const _FeatureGrid(),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SectionHeader(
+                    title: l10n.info_screen_links_title,
+                    icon: MingCuteIcons.mgc_link_fill,
+                  ),
+                  const _LinksCard(),
+                ],
+              ),
+              Text(
+                l10n.info_screen_made_by(AppConstants.developerName),
+                textAlign: TextAlign.center,
+                style: AppFonts.montserrat(
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 12.sp,
                 ),
               ),
             ],
@@ -95,7 +112,7 @@ class InfoScreen extends StatelessWidget {
   }
 }
 
-/// Logo, app name and version pill.
+/// Logo, app name, tagline and version pill.
 class _AppHeader extends StatelessWidget {
   const _AppHeader();
 
@@ -115,7 +132,16 @@ class _AppHeader extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 4.h),
+        Text(
+          l10n.info_screen_tagline,
+          textAlign: TextAlign.center,
+          style: AppFonts.montserrat(
+            color: colorScheme.onSurfaceVariant,
+            fontSize: 14.sp,
+          ),
+        ),
+        SizedBox(height: 10.h),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
           decoration: BoxDecoration(
@@ -136,53 +162,163 @@ class _AppHeader extends StatelessWidget {
   }
 }
 
-class _Paragraph extends StatelessWidget {
-  const _Paragraph(this.text);
-
-  final String text;
+/// Two-by-two grid of the main features.
+class _FeatureGrid extends StatelessWidget {
+  const _FeatureGrid();
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: AppFonts.montserrat(
-        color: Theme.of(context).colorScheme.onSurface,
-        fontSize: 14.sp,
-        height: 1.5,
+    final l10n = AppLocalizations.of(context)!;
+    final features = [
+      (
+        MingCuteIcons.mgc_scan_fill,
+        l10n.info_screen_feature_scan_title,
+        l10n.info_screen_feature_scan_text,
+      ),
+      (
+        MingCuteIcons.mgc_qrcode_2_fill,
+        l10n.info_screen_feature_create_title,
+        l10n.info_screen_feature_create_text,
+      ),
+      (
+        MingCuteIcons.mgc_star_fill,
+        l10n.info_screen_feature_library_title,
+        l10n.info_screen_feature_library_text,
+      ),
+      (
+        MingCuteIcons.mgc_file_export_fill,
+        l10n.info_screen_feature_export_title,
+        l10n.info_screen_feature_export_text,
+      ),
+    ];
+
+    return Column(
+      spacing: 12.h,
+      children: [
+        for (var i = 0; i < features.length; i += 2)
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 12.w,
+              children: [
+                Expanded(child: _FeatureCard(feature: features[i])),
+                Expanded(child: _FeatureCard(feature: features[i + 1])),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _FeatureCard extends StatelessWidget {
+  const _FeatureCard({required this.feature});
+
+  final (IconData, String, String) feature;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final (icon, title, text) = feature;
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(14.r),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 36.r,
+              height: 36.r,
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withValues(alpha: 0.14),
+                borderRadius: BorderRadius.circular(AppRadius.medium),
+              ),
+              child: Icon(icon, size: 20.r, color: colorScheme.primary),
+            ),
+            SizedBox(height: 10.h),
+            Text(
+              title,
+              style: AppFonts.montserrat(
+                color: colorScheme.onSurface,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              text,
+              style: AppFonts.montserrat(
+                color: colorScheme.onSurfaceVariant,
+                fontSize: 12.sp,
+                height: 1.4,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _CreditRow extends StatelessWidget {
-  const _CreditRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
+/// Source code, website, contact, privacy policy and open source licenses.
+class _LinksCard extends StatelessWidget {
+  const _LinksCard();
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: AppFonts.montserrat(
-              color: colorScheme.onSurfaceVariant,
-              fontSize: 13.sp,
-            ),
+    final l10n = AppLocalizations.of(context)!;
+    final rows = [
+      SettingsNavTile(
+        icon: MingCuteIcons.mgc_github_fill,
+        title: l10n.info_screen_link_source,
+        trailingIcon: MingCuteIcons.mgc_external_link_line,
+        onTap: () => _open(AppConstants.uriGithubDocumentation),
+      ),
+      SettingsNavTile(
+        icon: MingCuteIcons.mgc_world_2_fill,
+        title: l10n.info_screen_link_website,
+        trailingIcon: MingCuteIcons.mgc_external_link_line,
+        onTap: () => _open(AppConstants.uriGithubLink),
+      ),
+      SettingsNavTile(
+        icon: MingCuteIcons.mgc_mail_fill,
+        title: l10n.info_screen_link_contact,
+        trailingIcon: MingCuteIcons.mgc_external_link_line,
+        onTap: () => launchUrl(AppConstants.uriMail),
+      ),
+      SettingsNavTile(
+        icon: MingCuteIcons.mgc_safe_lock_fill,
+        title: l10n.policy_screen_title,
+        onTap: () => Get.toNamed(AppRoutes.privacyPolicy),
+      ),
+      SettingsNavTile(
+        icon: MingCuteIcons.mgc_document_2_fill,
+        title: l10n.info_screen_link_licenses,
+        onTap: () => showLicensePage(
+          context: context,
+          applicationName: 'QRation',
+          applicationVersion: AppVersion.current,
+          applicationIcon: Padding(
+            padding: EdgeInsets.all(8.r),
+            child: AppLogo(size: 64.r),
           ),
         ),
-        Text(
-          value,
-          style: AppFonts.montserrat(
-            color: colorScheme.onSurface,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
+      ),
+    ];
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          for (var i = 0; i < rows.length; i++) ...[
+            if (i > 0) Divider(height: 1, indent: 56.w),
+            rows[i],
+          ],
+        ],
+      ),
     );
   }
+
+  Future<void> _open(Uri uri) =>
+      launchUrl(uri, mode: LaunchMode.externalApplication);
 }

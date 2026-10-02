@@ -2408,71 +2408,11 @@ abstract class AppLocalizations {
   /// **'Info'**
   String get info_screen_title;
 
-  /// No description provided for @info_screen_origin_text.
+  /// No description provided for @info_screen_tagline.
   ///
   /// In en, this message translates to:
-  /// **'Origin'**
-  String get info_screen_origin_text;
-
-  /// No description provided for @info_screen_origin_description.
-  ///
-  /// In en, this message translates to:
-  /// **'The name of the app is a fusion between \'QR\' and \'Creation\', just to specify the two main features of the application and, that is, scanning and creating QR Codes.'**
-  String get info_screen_origin_description;
-
-  /// No description provided for @info_screen_description_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Description'**
-  String get info_screen_description_text;
-
-  /// No description provided for @info_screen_description_description.
-  ///
-  /// In en, this message translates to:
-  /// **'This app allows you to scan and generate QR codes, which can be saved in your personal account for easy and safe management. You can access all saved QR codes at any time. In addition, each code allows a different function to be performed according to its type.'**
-  String get info_screen_description_description;
-
-  /// No description provided for @info_screen_credits_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Credits'**
-  String get info_screen_credits_text;
-
-  /// No description provided for @info_screen_credits_a_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Idea'**
-  String get info_screen_credits_a_text;
-
-  /// No description provided for @info_screen_credits_a_value.
-  ///
-  /// In en, this message translates to:
-  /// **'Nicola De Nicolais'**
-  String get info_screen_credits_a_value;
-
-  /// No description provided for @info_screen_credits_b_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Development'**
-  String get info_screen_credits_b_text;
-
-  /// No description provided for @info_screen_credits_b_value.
-  ///
-  /// In en, this message translates to:
-  /// **'Nicola De Nicolais'**
-  String get info_screen_credits_b_value;
-
-  /// No description provided for @info_screen_credits_c_text.
-  ///
-  /// In en, this message translates to:
-  /// **'Design'**
-  String get info_screen_credits_c_text;
-
-  /// No description provided for @info_screen_credits_c_value.
-  ///
-  /// In en, this message translates to:
-  /// **'Nicola De Nicolais'**
-  String get info_screen_credits_c_value;
+  /// **'Scan, create and keep your codes'**
+  String get info_screen_tagline;
 
   /// No description provided for @info_screen_version_text.
   ///
@@ -2480,17 +2420,113 @@ abstract class AppLocalizations {
   /// **'Version'**
   String get info_screen_version_text;
 
-  /// No description provided for @info_screen_privacy_text.
+  /// No description provided for @info_screen_about_title.
   ///
   /// In en, this message translates to:
-  /// **'Privacy'**
-  String get info_screen_privacy_text;
+  /// **'What is QRation'**
+  String get info_screen_about_title;
 
-  /// No description provided for @info_screen_privacy_description.
+  /// No description provided for @info_screen_about_text.
   ///
   /// In en, this message translates to:
-  /// **'Which data QRation processes and how you can manage it'**
-  String get info_screen_privacy_description;
+  /// **'QRation lets you scan and create QR codes and barcodes and keeps them in your personal account, always at hand. Every code comes with the action that fits its type: open a link, add a contact or an event, connect to a Wi-Fi network and much more.'**
+  String get info_screen_about_text;
+
+  /// No description provided for @info_screen_origin_description.
+  ///
+  /// In en, this message translates to:
+  /// **'The name blends \'QR\' and \'Creation\', the two things the app does: scanning and creating QR codes.'**
+  String get info_screen_origin_description;
+
+  /// No description provided for @info_screen_features_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get info_screen_features_title;
+
+  /// No description provided for @info_screen_feature_scan_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get info_screen_feature_scan_title;
+
+  /// No description provided for @info_screen_feature_scan_text.
+  ///
+  /// In en, this message translates to:
+  /// **'QR codes and barcodes from the camera or from an image in your gallery.'**
+  String get info_screen_feature_scan_text;
+
+  /// No description provided for @info_screen_feature_create_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get info_screen_feature_create_title;
+
+  /// No description provided for @info_screen_feature_create_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Codes for links, Wi-Fi, contacts, events and socials, with your own colors and shapes.'**
+  String get info_screen_feature_create_text;
+
+  /// No description provided for @info_screen_feature_library_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize'**
+  String get info_screen_feature_library_title;
+
+  /// No description provided for @info_screen_feature_library_text.
+  ///
+  /// In en, this message translates to:
+  /// **'History and favorites synced with your account, with search and filters.'**
+  String get info_screen_feature_library_text;
+
+  /// No description provided for @info_screen_feature_export_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get info_screen_feature_export_title;
+
+  /// No description provided for @info_screen_feature_export_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Your codes as PDF, Excel or CSV, plus JSON backup and restore.'**
+  String get info_screen_feature_export_text;
+
+  /// No description provided for @info_screen_links_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Useful links'**
+  String get info_screen_links_title;
+
+  /// No description provided for @info_screen_link_source.
+  ///
+  /// In en, this message translates to:
+  /// **'Source code'**
+  String get info_screen_link_source;
+
+  /// No description provided for @info_screen_link_website.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get info_screen_link_website;
+
+  /// No description provided for @info_screen_link_contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact me'**
+  String get info_screen_link_contact;
+
+  /// No description provided for @info_screen_link_licenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open source licenses'**
+  String get info_screen_link_licenses;
+
+  /// No description provided for @info_screen_made_by.
+  ///
+  /// In en, this message translates to:
+  /// **'Designed and developed by {name}'**
+  String info_screen_made_by(String name);
 
   /// No description provided for @policy_screen_title.
   ///
@@ -3235,6 +3271,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.'**
   String get changelog_v2_0_0_bullet_48;
+
+  /// No description provided for @changelog_v2_0_0_bullet_49.
+  ///
+  /// In en, this message translates to:
+  /// **'Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).'**
+  String get changelog_v2_0_0_bullet_49;
 }
 
 class _AppLocalizationsDelegate

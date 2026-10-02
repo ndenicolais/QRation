@@ -425,20 +425,33 @@
   "user_screen_logout_button": "Log Out",
 
   "info_screen_title": "Info",
-  "info_screen_origin_text": "Origin",
-  "info_screen_origin_description": "The name of the app is a fusion between 'QR' and 'Creation', just to specify the two main features of the application and, that is, scanning and creating QR Codes.",
-  "info_screen_description_text": "Description",
-  "info_screen_description_description": "This app allows you to scan and generate QR codes, which can be saved in your personal account for easy and safe management. You can access all saved QR codes at any time. In addition, each code allows a different function to be performed according to its type.",
-  "info_screen_credits_text": "Credits",
-  "info_screen_credits_a_text": "Idea",
-  "info_screen_credits_a_value": "Nicola De Nicolais",
-  "info_screen_credits_b_text": "Development",
-  "info_screen_credits_b_value": "Nicola De Nicolais",
-  "info_screen_credits_c_text": "Design",
-  "info_screen_credits_c_value": "Nicola De Nicolais",
+  "info_screen_tagline": "Scan, create and keep your codes",
   "info_screen_version_text": "Version",
-  "info_screen_privacy_text": "Privacy",
-  "info_screen_privacy_description": "Which data QRation processes and how you can manage it",
+  "info_screen_about_title": "What is QRation",
+  "info_screen_about_text": "QRation lets you scan and create QR codes and barcodes and keeps them in your personal account, always at hand. Every code comes with the action that fits its type: open a link, add a contact or an event, connect to a Wi-Fi network and much more.",
+  "info_screen_origin_description": "The name blends 'QR' and 'Creation', the two things the app does: scanning and creating QR codes.",
+  "info_screen_features_title": "Features",
+  "info_screen_feature_scan_title": "Scan",
+  "info_screen_feature_scan_text": "QR codes and barcodes from the camera or from an image in your gallery.",
+  "info_screen_feature_create_title": "Create",
+  "info_screen_feature_create_text": "Codes for links, Wi-Fi, contacts, events and socials, with your own colors and shapes.",
+  "info_screen_feature_library_title": "Organize",
+  "info_screen_feature_library_text": "History and favorites synced with your account, with search and filters.",
+  "info_screen_feature_export_title": "Export",
+  "info_screen_feature_export_text": "Your codes as PDF, Excel or CSV, plus JSON backup and restore.",
+  "info_screen_links_title": "Useful links",
+  "info_screen_link_source": "Source code",
+  "info_screen_link_website": "Website",
+  "info_screen_link_contact": "Contact me",
+  "info_screen_link_licenses": "Open source licenses",
+  "info_screen_made_by": "Designed and developed by {name}",
+  "@info_screen_made_by": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
 
   "policy_screen_title": "Privacy Policy",
   "policy_screen_intro": "This policy explains which data QRation processes, why, and how you can manage it. QRation shows no ads, uses no analytics tools and does not sell or share your data.",
@@ -582,5 +595,6 @@
   "changelog_v2_0_0_bullet_45": "New app logo and icon, with support for Android 13+ themed icons; inside the app the logo follows the theme and accent colors.",
   "changelog_v2_0_0_bullet_46": "Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.",
   "changelog_v2_0_0_bullet_47": "Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab.",
-  "changelog_v2_0_0_bullet_48": "The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want."
+  "changelog_v2_0_0_bullet_48": "The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.",
+  "changelog_v2_0_0_bullet_49": "Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses)."
 }
