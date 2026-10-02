@@ -13,12 +13,11 @@ import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:free_map/free_map.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_colors.dart';
-import 'package:qration/core/utils/permission_helper.dart';
-import 'package:qration/features/codes/widgets/code_create/custom_loader.dart';
 
+/// Map to pick the coordinates of a geo code by tapping a point. It needs no
+/// location permission: the user's position is never read.
 class FullScreenMap extends StatefulWidget {
   final Function(LatLng) onLocationPicked;
 
@@ -29,48 +28,33 @@ class FullScreenMap extends StatefulWidget {
 }
 
 class FullScreenMapState extends State<FullScreenMap> {
-  bool _isLocationPermissionGranted = false;
   LatLng selectedLocation = const LatLng(41.9099533, 12.371192);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _buildAppBar(),
+      // Colors and title style come from the theme appBarTheme.
+      appBar: AppBar(
+        leading: IconButton(
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          icon: const Icon(MingCuteIcons.mgc_large_arrow_left_fill),
+          onPressed: Get.back,
+        ),
+        title: Text(AppLocalizations.of(context)!.full_screen_map_title),
+      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: _buildMap(),
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        body: _isLocationPermissionGranted
-            ? Center(child: _buildLoadingIndicator())
-            : _buildMap(),
-        floatingActionButton: FloatingActionButton(
-          foregroundColor: Theme.of(context).colorScheme.primary,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          elevation: 0,
-          onPressed: () {
-            widget.onLocationPicked(selectedLocation);
-            Get.back();
-          },
-          child: const Icon(
-            MingCuteIcons.mgc_check_fill,
-          ),
-        ));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _checkLocationPermission();
-  }
-
-  Future<void> _checkLocationPermission() async {
-    try {
-      await requestLocationPermission(context);
-      setState(() {
-        _isLocationPermissionGranted = false;
-      });
-    } catch (e) {
-      if (mounted) {
-        Get.back();
-      }
-    }
+        elevation: 0,
+        onPressed: () {
+          widget.onLocationPicked(selectedLocation);
+          Get.back();
+        },
+        child: const Icon(MingCuteIcons.mgc_check_fill),
+      ),
+    );
   }
 
   Widget _buildMap() {
@@ -99,39 +83,6 @@ class FullScreenMapState extends State<FullScreenMap> {
           ),
         ),
       ],
-    );
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      leading: IconButton(
-        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        icon: Icon(
-          MingCuteIcons.mgc_large_arrow_left_fill,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        onPressed: () {
-          Get.back();
-        },
-      ),
-      title: Text(
-        AppLocalizations.of(context)!.full_screen_map_title,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      centerTitle: true,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.secondary,
-    );
-  }
-
-  Widget _buildLoadingIndicator() {
-    return Center(
-      child: CustomLoader(
-        width: 50.w,
-        height: 50.h,
-      ),
     );
   }
 }

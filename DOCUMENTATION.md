@@ -145,7 +145,7 @@ qration/
 │   │   │   ├── screens/            # scanner, create_types, create_standard, create_social, details
 │   │   │   ├── services/           # CodesRepository (interfaccia) + CodesService (Firestore CRUD)
 │   │   │   └── widgets/            # Sotto-widget di dettaglio/creazione codice, incl. code_create/
-│   │   │                           # (custom_picker_field, full_screen_map, custom_loader)
+│   │   │                           # (custom_picker_field, full_screen_map)
 │   │   ├── export/
 │   │   │   └── services/           # csv_service, excel_service, pdf_service
 │   │   ├── favorites/
@@ -411,7 +411,7 @@ Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in b
 | Telefono | Prefisso paese + numero |
 | SMS | Numero, testo messaggio |
 | Contatto | Nome, cognome, telefono, email |
-| Geo | Latitudine, longitudine (con mappa interattiva `free_map`) |
+| Geo | Latitudine, longitudine (con mappa interattiva `free_map`, `FullScreenMap`: punto scelto toccando la mappa, nessun permesso di posizione richiesto) |
 | Wi-Fi | SSID, password, tipo cifratura, rete nascosta |
 | Evento calendario | Titolo, luogo, data inizio/fine |
 | Prodotto / ISBN | Codice numerico |
@@ -732,7 +732,7 @@ La modalità tema (`ThemeMode.system`/`light`/`dark`) è salvata in `SharedPrefe
 
 **Linea guida visiva delle schermate:** le app bar non impostano colori propri (valgono `appBarTheme`: sfondo superficie, titolo e icone nel colore principale), gli `Switch` usano `switchTheme` (traccia neutra da spento, colore principale da acceso), i testi usano `onSurface`/`onSurfaceVariant` e i contenuti sono raggruppati in `SectionCard` (`lib/core/widgets/section_card.dart`: titolo con icona + card con bordo; spostata da `settings/widgets` perché usata anche da Dettaglio, Crea, Info e Database). Il colore principale si usa solo per accenti, icone e azione principale. Le righe cliccabili dentro una card (titolo + sottotitolo + freccia o link esterno) usano `SectionLinkRow` (`lib/core/widgets/section_link_row.dart`, usata da Info e Supporto); le FAQ del Supporto usano `CustomExpansionTile` senza bordi né padding laterale propri. Dettaglio codice, Crea codice, Info, Profilo, Database, Supporto ed Elimina account sono stati riallineati a questa linea: in precedenza usavano il colore principale come sfondo pieno di app bar e card e il colore secondario per i testi, con contrasti insufficienti (ad esempio testo blu su blu in Info e nel form di creazione). Le intestazioni di Info ora sono con iniziale maiuscola come nel resto dell'app.
 
-**Stati vuoti/errore:** `AppEmptyState` (`app_empty_state.dart`) e `AppErrorState` (`app_error_state.dart`), entrambi in `lib/core/widgets/`, forniscono la UI standard per liste vuote e stati di errore, da riusare al posto di implementazioni inline. `lib/core/widgets/` contiene un file per ogni widget condiviso (`app_button.dart`, `app_textfield.dart`, `app_toast.dart`, `app_loader.dart`, `app_empty_state.dart`, `app_error_state.dart`, `app_delete_dialog.dart`, `app_changelog_dialog.dart`), tutti con convenzione `App*`. La cartella `lib/widgets/` (ex contenitore di widget "globali" ma di fatto usati da una sola feature ciascuno) è stata rimossa: `custom_picker_field.dart`, `full_screen_map.dart` e `custom_loader.dart` sono ora in `lib/features/codes/widgets/code_create/` (usati solo dal flusso di creazione standard), `custom_expansiontile.dart` è in `lib/features/settings/widgets/` (usato solo da `support_screen.dart`).
+**Stati vuoti/errore:** `AppEmptyState` (`app_empty_state.dart`) e `AppErrorState` (`app_error_state.dart`), entrambi in `lib/core/widgets/`, forniscono la UI standard per liste vuote e stati di errore, da riusare al posto di implementazioni inline. `lib/core/widgets/` contiene un file per ogni widget condiviso (`app_button.dart`, `app_textfield.dart`, `app_toast.dart`, `app_loader.dart`, `app_empty_state.dart`, `app_error_state.dart`, `app_delete_dialog.dart`, `app_changelog_dialog.dart`), tutti con convenzione `App*`. La cartella `lib/widgets/` (ex contenitore di widget "globali" ma di fatto usati da una sola feature ciascuno) è stata rimossa: `custom_picker_field.dart` e `full_screen_map.dart` sono ora in `lib/features/codes/widgets/code_create/` (usati solo dal flusso di creazione standard), `custom_expansiontile.dart` è in `lib/features/settings/widgets/` (usato solo da `support_screen.dart`).
 
 `AppEmptyState` accetta una call-to-action opzionale (`actionLabel` + `onAction`, mostrata come `FilledButton.tonal` solo se entrambi sono presenti). Preferiti e Cronologia ricevono da `HomeScreen` le callback `onCreateCode`/`onScanNow`, che cambiano tab (Crea / Scansiona) senza introdurre dipendenze tra le feature. Nei Preferiti senza codici il pulsante è "Crea il tuo primo codice"; in Cronologia `HistoryController.hasCodes` e `hasActiveFilters` distinguono il vuoto reale ("Nessun codice salvato" + "Scansiona ora") dal vuoto dovuto ai filtri ("Nessun risultato per i filtri attivi" + "Azzera i filtri", che chiama `clearFilters()` e svuota anche il campo di ricerca). Il caricamento dei Preferiti usa `AppLoader` come il resto dell'app.
 

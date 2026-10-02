@@ -32,7 +32,7 @@ La lettura dei codici, dalla fotocamera o da un'immagine della galleria, avviene
 - **Fotocamera:** per scansionare i codici.
 - **Foto e memoria:** per scegliere un'immagine da scansionare o il logo di un codice, e per salvare i QR in galleria e i file esportati nella cartella Download.
 - **Contatti:** per salvare in rubrica il contatto letto da un codice; la rubrica non viene letta né inviata.
-- **Posizione:** richiesta all'apertura della mappa per scegliere un punto; la tua posizione non viene salvata né inviata.
+- **Posizione:** dichiarata dalla libreria Wi-Fi, che su alcune versioni di Android ne ha bisogno per connettersi alla rete di un codice Wi-Fi. L'app non legge, non salva e non invia la tua posizione: il punto di un codice posizione lo scegli tu toccando la mappa.
 - **Wi-Fi e rete:** per connetterti alla rete di un codice Wi-Fi e verificare lo stato della connessione.
 - **Internet:** per sincronizzare account e codici.
 
@@ -78,7 +78,7 @@ Code reading, from the camera or from a gallery image, runs entirely on your pho
 - **Camera:** to scan codes.
 - **Photos and storage:** to pick an image to scan or a code logo, and to save QR codes to the gallery and exported files to the Downloads folder.
 - **Contacts:** to save the contact read from a code to your address book; your address book is never read or sent.
-- **Location:** requested when opening the map to pick a point; your location is never saved or sent.
+- **Location:** declared by the Wi-Fi library, which needs it on some Android versions to join the network of a Wi-Fi code. The app never reads, saves or sends your location: you pick the point of a location code by tapping the map.
 - **Wi-Fi and network:** to join the network of a Wi-Fi code and check the connection status.
 - **Internet:** to sync your account and codes.
 

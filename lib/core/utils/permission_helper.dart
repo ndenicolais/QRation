@@ -68,31 +68,3 @@ Future<void> requestContactsPermission(BuildContext context) async {
     throw Exception('Contacts permission permanently denied');
   }
 }
-
-Future<void> requestLocationPermission(BuildContext context) async {
-  PermissionStatus locationPermission = await Permission.location.status;
-
-  if (!locationPermission.isGranted) {
-    locationPermission = await Permission.location.request();
-  }
-
-  if (locationPermission.isDenied) {
-    if (context.mounted) {
-      showErrorToast(
-        context,
-        AppLocalizations.of(context)!.permission_location_denied,
-      );
-    }
-    throw Exception('Location permission denied');
-  } else if (locationPermission.isPermanentlyDenied) {
-    if (context.mounted) {
-      showErrorToast(
-        context,
-        AppLocalizations.of(context)!.permission_location_toast,
-      );
-    }
-    await Future.delayed(Duration(milliseconds: 1200));
-    openAppSettings();
-    throw Exception('Location permission permanently denied');
-  }
-}

@@ -364,13 +364,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Concedi il permesso dei contatti dalle impostazioni';
 
   @override
-  String get permission_location_denied => 'Permesso posizione negato';
-
-  @override
-  String get permission_location_toast =>
-      'Concedi il permesso della posizione dalle impostazioni';
-
-  @override
   String get permission_storage_denied => 'Permesso di archiviazione negato';
 
   @override
@@ -1352,7 +1345,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get policy_section_permissions_text =>
-      '• Fotocamera: per scansionare i codici.\n• Foto e memoria: per scegliere un\'immagine da scansionare o il logo di un codice, e per salvare i QR in galleria e i file esportati nella cartella Download.\n• Contatti: per salvare in rubrica il contatto letto da un codice; la rubrica non viene letta né inviata.\n• Posizione: richiesta all\'apertura della mappa per scegliere un punto; la tua posizione non viene salvata né inviata.\n• Wi-Fi e rete: per connetterti alla rete di un codice Wi-Fi e verificare lo stato della connessione.\n• Internet: per sincronizzare account e codici.';
+      '• Fotocamera: per scansionare i codici.\n• Foto e memoria: per scegliere un\'immagine da scansionare o il logo di un codice, e per salvare i QR in galleria e i file esportati nella cartella Download.\n• Contatti: per salvare in rubrica il contatto letto da un codice; la rubrica non viene letta né inviata.\n• Posizione: dichiarata dalla libreria Wi-Fi, che su alcune versioni di Android ne ha bisogno per connettersi alla rete di un codice Wi-Fi. L\'app non legge, non salva e non invia la tua posizione: il punto di un codice posizione lo scegli tu toccando la mappa.\n• Wi-Fi e rete: per connetterti alla rete di un codice Wi-Fi e verificare lo stato della connessione.\n• Internet: per sincronizzare account e codici.';
 
   @override
   String get policy_section_retention_title => 'Conservazione e cancellazione';
@@ -1743,4 +1736,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_47 =>
       'Database, Supporto ed Elimina account ora hanno lo stesso stile delle altre schermate; le FAQ del Supporto hanno risposte corrette e in Preferiti la scheda selezionata è evidenziata per intero.';
+
+  @override
+  String get changelog_v2_0_0_bullet_48 =>
+      'La mappa per scegliere una posizione non chiede più il permesso di posizione e non si chiude più se lo neghi: basta toccare il punto che vuoi.';
 }

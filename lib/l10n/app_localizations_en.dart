@@ -358,13 +358,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Grant contacts permission from settings';
 
   @override
-  String get permission_location_denied => 'Location permission denied';
-
-  @override
-  String get permission_location_toast =>
-      'Grant location permission from settings';
-
-  @override
   String get permission_storage_denied => 'Storage permission denied';
 
   @override
@@ -1327,7 +1320,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get policy_section_permissions_text =>
-      '• Camera: to scan codes.\n• Photos and storage: to pick an image to scan or a code logo, and to save QR codes to the gallery and exported files to the Downloads folder.\n• Contacts: to save the contact read from a code to your address book; your address book is never read or sent.\n• Location: requested when opening the map to pick a point; your location is never saved or sent.\n• Wi-Fi and network: to join the network of a Wi-Fi code and check the connection status.\n• Internet: to sync your account and codes.';
+      '• Camera: to scan codes.\n• Photos and storage: to pick an image to scan or a code logo, and to save QR codes to the gallery and exported files to the Downloads folder.\n• Contacts: to save the contact read from a code to your address book; your address book is never read or sent.\n• Location: declared by the Wi-Fi library, which needs it on some Android versions to join the network of a Wi-Fi code. The app never reads, saves or sends your location: you pick the point of a location code by tapping the map.\n• Wi-Fi and network: to join the network of a Wi-Fi code and check the connection status.\n• Internet: to sync your account and codes.';
 
   @override
   String get policy_section_retention_title => 'Retention and deletion';
@@ -1716,4 +1709,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_47 =>
       'Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab.';
+
+  @override
+  String get changelog_v2_0_0_bullet_48 =>
+      'The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.';
 }

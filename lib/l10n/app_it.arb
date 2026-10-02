@@ -129,8 +129,6 @@
   "permission_camera_toast": "Concedi il permesso della fotocamera dalle impostazioni",
   "permission_contacts_denied": "Permesso contatti negato",
   "permission_contacts_toast": "Concedi il permesso dei contatti dalle impostazioni",
-  "permission_location_denied": "Permesso posizione negato",
-  "permission_location_toast": "Concedi il permesso della posizione dalle impostazioni",
   "permission_storage_denied": "Permesso di archiviazione negato",
   "permission_storage_toast": "Concedi il permesso di archiviazione dalle impostazioni",
 
@@ -452,7 +450,7 @@
   "policy_section_device_title": "Elaborazione sul dispositivo",
   "policy_section_device_text": "La lettura dei codici, dalla fotocamera o da un'immagine della galleria, avviene interamente sul telefono: le immagini non vengono inviate a servizi esterni. Anche i QR generati e i file PDF, Excel, CSV e JSON che esporti vengono creati sul dispositivo e condivisi solo se lo scegli tu. Le azioni dei codici (aggiungere un contatto o un evento al calendario, connettersi a una rete Wi-Fi, aprire un link o una mappa) partono solo quando le tocchi; link e mappe si aprono in app esterne, che seguono le proprie informative.",
   "policy_section_permissions_title": "Permessi",
-  "policy_section_permissions_text": "• Fotocamera: per scansionare i codici.\n• Foto e memoria: per scegliere un'immagine da scansionare o il logo di un codice, e per salvare i QR in galleria e i file esportati nella cartella Download.\n• Contatti: per salvare in rubrica il contatto letto da un codice; la rubrica non viene letta né inviata.\n• Posizione: richiesta all'apertura della mappa per scegliere un punto; la tua posizione non viene salvata né inviata.\n• Wi-Fi e rete: per connetterti alla rete di un codice Wi-Fi e verificare lo stato della connessione.\n• Internet: per sincronizzare account e codici.",
+  "policy_section_permissions_text": "• Fotocamera: per scansionare i codici.\n• Foto e memoria: per scegliere un'immagine da scansionare o il logo di un codice, e per salvare i QR in galleria e i file esportati nella cartella Download.\n• Contatti: per salvare in rubrica il contatto letto da un codice; la rubrica non viene letta né inviata.\n• Posizione: dichiarata dalla libreria Wi-Fi, che su alcune versioni di Android ne ha bisogno per connettersi alla rete di un codice Wi-Fi. L'app non legge, non salva e non invia la tua posizione: il punto di un codice posizione lo scegli tu toccando la mappa.\n• Wi-Fi e rete: per connetterti alla rete di un codice Wi-Fi e verificare lo stato della connessione.\n• Internet: per sincronizzare account e codici.",
   "policy_section_retention_title": "Conservazione e cancellazione",
   "policy_section_retention_text": "Conserviamo account e codici finché il tuo account esiste; puoi eliminare singoli codici in qualsiasi momento dalla Cronologia. Da Impostazioni > Profilo > Elimina account puoi cancellare l'account e tutti i codici; prima puoi esportarne una copia da Impostazioni > Database. Le segnalazioni di errore vengono cancellate automaticamente dopo 90 giorni. Le preferenze e i loghi sul dispositivo vengono rimossi disinstallando l'app.",
   "policy_section_rights_title": "I tuoi diritti",
@@ -567,5 +565,6 @@
   "changelog_v2_0_0_bullet_44": "Aggiornate all'ultima versione le librerie Firebase usate per accesso, sincronizzazione dei codici e segnalazione degli errori.",
   "changelog_v2_0_0_bullet_45": "Nuovo logo e nuova icona dell'app, con supporto alle icone a tema di Android 13+; dentro l'app il logo segue il tema e il colore principale.",
   "changelog_v2_0_0_bullet_46": "Informativa privacy riscritta, ora leggibile direttamente nell'app (anche offline) da Impostazioni > Info, con lo stesso testo pubblicato online.",
-  "changelog_v2_0_0_bullet_47": "Database, Supporto ed Elimina account ora hanno lo stesso stile delle altre schermate; le FAQ del Supporto hanno risposte corrette e in Preferiti la scheda selezionata è evidenziata per intero."
+  "changelog_v2_0_0_bullet_47": "Database, Supporto ed Elimina account ora hanno lo stesso stile delle altre schermate; le FAQ del Supporto hanno risposte corrette e in Preferiti la scheda selezionata è evidenziata per intero.",
+  "changelog_v2_0_0_bullet_48": "La mappa per scegliere una posizione non chiede più il permesso di posizione e non si chiude più se lo neghi: basta toccare il punto che vuoi."
 }
