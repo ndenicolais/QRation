@@ -55,7 +55,7 @@ keep everything synced in the cloud, export to PDF, Excel or CSV — in Italian 
 
 ## Download
 
-<a href="https://github.com/ndenicolais/QRation/releases/latest"><img src="https://img.shields.io/badge/Download-QRation%20APK-274060?style=for-the-badge&logo=android&logoColor=white" alt="Download the QRation APK"></a>
+<a href="https://github.com/ndenicolais/QRation/releases/download/v2.0.0/QRation_v2.0.0.apk"><img src="https://img.shields.io/badge/Download-QRation%20v2.0.0%20APK-274060?style=for-the-badge&logo=android&logoColor=white" alt="Download QRation v2.0.0 APK"></a>
 
 QRation is distributed as an APK on [GitHub Releases](https://github.com/ndenicolais/QRation/releases), not on the Play Store. It needs Android 7.0+ on a 64-bit (arm64) device with Google Play services.
 
@@ -65,6 +65,9 @@ QRation is distributed as an APK on [GitHub Releases](https://github.com/ndenico
 
 > [!NOTE]
 > **"App blocked to protect your device" (Google Play Protect).** Play Protect shows this warning for apps that are not distributed through the Play Store and whose developer it does not know yet. Tap **More details → Install anyway** to continue. The source code of every release is available in this repository.
+
+> [!IMPORTANT]
+> **Updating from QRation 1.x:** releases are now signed with a new key, so Android cannot update the old app in place. Uninstall the previous version first, then install the new APK. Your collection is stored in the cloud and comes back as soon as you sign in.
 
 ---
 
