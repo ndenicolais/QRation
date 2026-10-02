@@ -1407,21 +1407,21 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get support_screen_faq_a1 =>
-      'Per scansionare un codice QR, vai nella Home e clicca sul pulsante \'Crea\'. Scegli il tipo di codice da creare e inserisci tutti i dettagli necessari prima di generare.';
+      'Tocca \'Scansiona\' nella barra inferiore e inquadra il codice con la fotocamera, oppure scegli un\'immagine dalla galleria: il codice viene letto e salvato automaticamente nella Cronologia.';
 
   @override
   String get support_screen_faq_q2 => 'Come creare un codice QR?';
 
   @override
   String get support_screen_faq_a2 =>
-      'Per scansionare un codice QR, vai nella Home e clicca sul pulsante \'Scansiona\'. Una volta aperto inquadra con la fotocamera il codice da scansionare e questo verrà salvato.';
+      'Tocca \'Crea\' nella barra inferiore, scegli il tipo di codice, inserisci i dati richiesti e personalizzane lo stile se vuoi, poi genera il codice.';
 
   @override
   String get support_screen_faq_q3 => 'Come eliminare un codice QR?';
 
   @override
   String get support_screen_faq_a3 =>
-      'Per eliminare un codice QR clicca sull\'icona \'Cronologia\' della barra inferiore e clicca in alto sull\'icona del cestino. In seguito spunta il codice da eliminare e clicca nuovamente sull\'icona del cestino per eliminarlo.';
+      'In Cronologia tieni premuto un codice (oppure tocca l\'icona del cestino in alto) per iniziare la selezione, scegli i codici e tocca il cestino nella barra di selezione. Puoi eliminare un singolo codice anche dalla sua schermata di dettaglio.';
 
   @override
   String get support_screen_faq_q4 =>
@@ -1437,7 +1437,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get support_screen_faq_a5 =>
-      'Sì, puoi esportare un file contenente tutti i codici salvati in tre formati diversi (CSV, Excel, PDF). Clicca sull\'icona \'Impostazioni\' della barra inferiore e vai nella sezione \'Database\' e scegli il formato in cui esportare il file.';
+      'Sì, da Impostazioni > Database puoi esportare tutti i codici in PDF, Excel, CSV o JSON. Il backup JSON può essere reimportato in seguito.';
 
   @override
   String get support_screen_faq_q7 =>
@@ -1739,4 +1739,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_46 =>
       'Informativa privacy riscritta, ora leggibile direttamente nell\'app (anche offline) da Impostazioni > Info, con lo stesso testo pubblicato online.';
+
+  @override
+  String get changelog_v2_0_0_bullet_47 =>
+      'Database, Supporto ed Elimina account ora hanno lo stesso stile delle altre schermate; le FAQ del Supporto hanno risposte corrette e in Preferiti la scheda selezionata è evidenziata per intero.';
 }

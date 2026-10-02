@@ -1382,21 +1382,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get support_screen_faq_a1 =>
-      'To scan a QR code, go to Home and click the \'Create\' button. Choose the type of code to create and enter all the necessary details before generating.';
+      'Tap \'Scan\' in the bottom bar and point the camera at the code, or pick an image from the gallery: the code is read and saved to History automatically.';
 
   @override
   String get support_screen_faq_q2 => 'How to create a QR code?';
 
   @override
   String get support_screen_faq_a2 =>
-      'To scan a QR code, go to Home and click the \'Scan\' button. Once opened, point the camera at the code to be scanned and it will be saved.';
+      'Tap \'Create\' in the bottom bar, choose the code type, fill in the required data and customize its style if you like, then generate the code.';
 
   @override
   String get support_screen_faq_q3 => 'How to delete a QR code?';
 
   @override
   String get support_screen_faq_a3 =>
-      'To delete a QR code, click on the \'History\' icon on the bottom bar and click on the trash can icon at the top. Then check the code to delete and click the trash can icon again to delete it.';
+      'In History, long-press a code (or tap the trash icon at the top) to start selecting, choose the codes and tap the trash icon in the selection bar. You can also delete a single code from its detail screen.';
 
   @override
   String get support_screen_faq_q4 => 'Can I save codes in a favorites list?';
@@ -1411,7 +1411,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get support_screen_faq_a5 =>
-      'Yes, you can export a file containing all saved codes in three different formats (CSV, Excel, PDF). Click on the \'Settings\' icon on the bottom bar, go to the \'Database\' section, and choose the format to export the file.';
+      'Yes, from Settings > Database you can export all your codes as PDF, Excel, CSV or JSON. A JSON backup can be imported again later.';
 
   @override
   String get support_screen_faq_q7 =>
@@ -1712,4 +1712,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_46 =>
       'Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.';
+
+  @override
+  String get changelog_v2_0_0_bullet_47 =>
+      'Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab.';
 }

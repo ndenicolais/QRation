@@ -485,15 +485,15 @@
   "support_screen_faq_text": "FAq",
   "support_screen_faq_decription": "Find answers to the most frequently asked questions.",
   "support_screen_faq_q1": "How to scan a QR code?",
-  "support_screen_faq_a1": "To scan a QR code, go to Home and click the 'Create' button. Choose the type of code to create and enter all the necessary details before generating.",
+  "support_screen_faq_a1": "Tap 'Scan' in the bottom bar and point the camera at the code, or pick an image from the gallery: the code is read and saved to History automatically.",
   "support_screen_faq_q2": "How to create a QR code?",
-  "support_screen_faq_a2": "To scan a QR code, go to Home and click the 'Scan' button. Once opened, point the camera at the code to be scanned and it will be saved.",
+  "support_screen_faq_a2": "Tap 'Create' in the bottom bar, choose the code type, fill in the required data and customize its style if you like, then generate the code.",
   "support_screen_faq_q3": "How to delete a QR code?",
-  "support_screen_faq_a3": "To delete a QR code, click on the 'History' icon on the bottom bar and click on the trash can icon at the top. Then check the code to delete and click the trash can icon again to delete it.",
+  "support_screen_faq_a3": "In History, long-press a code (or tap the trash icon at the top) to start selecting, choose the codes and tap the trash icon in the selection bar. You can also delete a single code from its detail screen.",
   "support_screen_faq_q4": "Can I save codes in a favorites list?",
   "support_screen_faq_a4": "Yes, you can add codes to your favorites by clicking on the heart-shaped icon on the code detail screen.",
   "support_screen_faq_q5": "Can I download a file containing all saved codes?",
-  "support_screen_faq_a5": "Yes, you can export a file containing all saved codes in three different formats (CSV, Excel, PDF). Click on the 'Settings' icon on the bottom bar, go to the 'Database' section, and choose the format to export the file.",
+  "support_screen_faq_a5": "Yes, from Settings > Database you can export all your codes as PDF, Excel, CSV or JSON. A JSON backup can be imported again later.",
   "support_screen_faq_q7": "What can I do if the app doesn't work properly?",
   "support_screen_faq_a7": "If you encounter problems, try restarting the app. If the problem persists, contact technical support through the 'Contact Us' section.",
   "support_screen_documentation_text": "Documentation",
@@ -582,5 +582,6 @@
   "changelog_v2_0_0_bullet_43": "Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted.",
   "changelog_v2_0_0_bullet_44": "Updated the Firebase libraries used for sign-in, cloud sync and crash reporting to their latest versions.",
   "changelog_v2_0_0_bullet_45": "New app logo and icon, with support for Android 13+ themed icons; inside the app the logo follows the theme and accent colors.",
-  "changelog_v2_0_0_bullet_46": "Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online."
+  "changelog_v2_0_0_bullet_46": "Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.",
+  "changelog_v2_0_0_bullet_47": "Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab."
 }

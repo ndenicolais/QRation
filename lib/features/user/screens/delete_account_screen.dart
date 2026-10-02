@@ -101,27 +101,15 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
     );
   }
 
+  // Colors and title style come from the theme appBarTheme.
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       leading: IconButton(
         tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        icon: Icon(
-          MingCuteIcons.mgc_large_arrow_left_fill,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        onPressed: () {
-          Get.back();
-        },
+        icon: const Icon(MingCuteIcons.mgc_large_arrow_left_fill),
+        onPressed: Get.back,
       ),
-      title: Text(
-        AppLocalizations.of(context)!.delete_title,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      centerTitle: true,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.secondary,
+      title: Text(AppLocalizations.of(context)!.delete_title),
     );
   }
 
@@ -141,7 +129,7 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
             AppLocalizations.of(context)!.delete_description,
             textAlign: TextAlign.center,
             style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 20.sp,
             ),
           ),

@@ -1,4 +1,4 @@
-﻿// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -15,212 +15,89 @@ import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/constants/app_constants.dart';
+import 'package:qration/core/widgets/section_card.dart';
+import 'package:qration/core/widgets/section_link_row.dart';
 import 'package:qration/features/settings/widgets/custom_expansiontile.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportScreen extends StatelessWidget {
   const SupportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final faqs = [
+      (l10n.support_screen_faq_q1, l10n.support_screen_faq_a1),
+      (l10n.support_screen_faq_q2, l10n.support_screen_faq_a2),
+      (l10n.support_screen_faq_q3, l10n.support_screen_faq_a3),
+      (l10n.support_screen_faq_q4, l10n.support_screen_faq_a4),
+      (l10n.support_screen_faq_q5, l10n.support_screen_faq_a5),
+      (l10n.support_screen_faq_q7, l10n.support_screen_faq_a7),
+    ];
+
     return Scaffold(
-      appBar: _buildAppBar(context),
+      // Colors and title style come from the theme appBarTheme.
+      appBar: AppBar(
+        leading: IconButton(
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          icon: const Icon(MingCuteIcons.mgc_large_arrow_left_fill),
+          onPressed: Get.back,
+        ),
+        title: Text(l10n.support_screen_title),
+      ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(30.r),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 20.h,
-              children: [
-                _buildContactSection(
-                  context,
-                  title: AppLocalizations.of(context)!
-                      .support_screen_contacts_text,
-                  description: AppLocalizations.of(context)!
-                      .support_screen_contacts_decription,
-                  contactInfo: AppLocalizations.of(context)!
-                      .support_screen_contacts_info,
-                  icon: MingCuteIcons.mgc_mail_send_line,
-                  onTap: () => _launchEmail(),
-                ),
-                Divider(color: Theme.of(context).colorScheme.tertiary),
-                _buildFaqSection(context),
-                Divider(color: Theme.of(context).colorScheme.tertiary),
-                _buildContactSection(
-                  context,
-                  title: AppLocalizations.of(context)!
-                      .support_screen_documentation_text,
-                  description: AppLocalizations.of(context)!
-                      .support_screen_documentation_decription,
-                  contactInfo: AppLocalizations.of(context)!
-                      .support_screen_documentation_info,
-                  icon: MingCuteIcons.mgc_book_6_line,
-                  onTap: () => _launchDocumentation(),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      leading: IconButton(
-        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        icon: Icon(
-          MingCuteIcons.mgc_large_arrow_left_fill,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        onPressed: () {
-          Get.back();
-        },
-      ),
-      title: Text(
-        AppLocalizations.of(context)!.support_screen_title,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      centerTitle: true,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.secondary,
-    );
-  }
-
-  Widget _buildContactSection(
-    BuildContext context, {
-    required String title,
-    required String description,
-    required String contactInfo,
-    required IconData icon,
-    required Function onTap,
-  }) {
-    return InkWell(
-      onTap: () => onTap(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: 20.h,
             children: [
-              Icon(
-                icon,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 30.sp,
+              SectionCard(
+                title: l10n.support_screen_contacts_text,
+                icon: MingCuteIcons.mgc_mail_send_fill,
+                child: SectionLinkRow(
+                  title: l10n.support_screen_contacts_info,
+                  subtitle: l10n.support_screen_contacts_decription,
+                  trailingIcon: MingCuteIcons.mgc_external_link_line,
+                  onTap: () => launchUrl(AppConstants.uriMail),
+                ),
               ),
-              SizedBox(width: 10.w),
-              Text(
-                title,
-                style: AppFonts.montserrat(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
+              SectionCard(
+                title: l10n.support_screen_faq_text,
+                icon: MingCuteIcons.mgc_question_fill,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.support_screen_faq_decription,
+                      style: AppFonts.montserrat(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 13.sp,
+                      ),
+                    ),
+                    for (final (question, answer) in faqs)
+                      CustomExpansionTile(title: question, answer: answer),
+                  ],
+                ),
+              ),
+              SectionCard(
+                title: l10n.support_screen_documentation_text,
+                icon: MingCuteIcons.mgc_book_6_fill,
+                child: SectionLinkRow(
+                  title: l10n.support_screen_documentation_info,
+                  subtitle: l10n.support_screen_documentation_decription,
+                  trailingIcon: MingCuteIcons.mgc_external_link_line,
+                  onTap: () => launchUrl(
+                    AppConstants.uriGithubDocumentation,
+                    mode: LaunchMode.externalApplication,
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 10.h),
-          Text(
-            description,
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.tertiary,
-              fontSize: 14.sp,
-            ),
-          ),
-          SizedBox(height: 5.h),
-          Text(
-            contactInfo,
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
+        ),
       ),
     );
-  }
-
-  Widget _buildFaqSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(
-              MingCuteIcons.mgc_question_line,
-              color: Theme.of(context).colorScheme.secondary,
-              size: 30.sp,
-            ),
-            SizedBox(width: 10.w),
-            Text(
-              AppLocalizations.of(context)!.support_screen_faq_text,
-              style: AppFonts.montserrat(
-                color: Theme.of(context).colorScheme.secondary,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 10.h),
-        Text(
-          AppLocalizations.of(context)!.support_screen_faq_decription,
-          style: AppFonts.montserrat(
-            color: Theme.of(context).colorScheme.tertiary,
-            fontSize: 14.sp,
-          ),
-        ),
-        SizedBox(height: 10.h),
-        CustomExpansionTile(
-          title: AppLocalizations.of(context)!.support_screen_faq_q1,
-          answer: AppLocalizations.of(context)!.support_screen_faq_a1,
-        ),
-        CustomExpansionTile(
-          title: AppLocalizations.of(context)!.support_screen_faq_q1,
-          answer: AppLocalizations.of(context)!.support_screen_faq_a1,
-        ),
-        CustomExpansionTile(
-          title: AppLocalizations.of(context)!.support_screen_faq_q2,
-          answer: AppLocalizations.of(context)!.support_screen_faq_a2,
-        ),
-        CustomExpansionTile(
-          title: AppLocalizations.of(context)!.support_screen_faq_q3,
-          answer: AppLocalizations.of(context)!.support_screen_faq_a3,
-        ),
-        CustomExpansionTile(
-          title: AppLocalizations.of(context)!.support_screen_faq_q4,
-          answer: AppLocalizations.of(context)!.support_screen_faq_a4,
-        ),
-        CustomExpansionTile(
-          title: AppLocalizations.of(context)!.support_screen_faq_q5,
-          answer: AppLocalizations.of(context)!.support_screen_faq_a5,
-        ),
-        CustomExpansionTile(
-          title: AppLocalizations.of(context)!.support_screen_faq_q7,
-          answer: AppLocalizations.of(context)!.support_screen_faq_a7,
-        ),
-      ],
-    );
-  }
-
-  Future<void> _launchEmail() async {
-    if (await canLaunchUrlString(AppConstants.uriMail.toString())) {
-      await launchUrlString(AppConstants.uriMail.toString());
-    } else {
-      throw 'Impossible to open email client';
-    }
-  }
-
-  Future<void> _launchDocumentation() async {
-    if (await canLaunchUrlString(
-        AppConstants.uriGithubDocumentation.toString())) {
-      await launchUrlString(AppConstants.uriGithubDocumentation.toString());
-    } else {
-      throw 'Impossible to open documentation.';
-    }
   }
 }

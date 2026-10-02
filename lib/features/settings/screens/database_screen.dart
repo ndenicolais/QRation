@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/widgets/app_toast.dart';
 import 'package:qration/core/widgets/app_error_state.dart';
@@ -189,43 +188,24 @@ class DatabaseScreenState extends State<DatabaseScreen> {
     );
   }
 
+  // Colors and title style come from the theme appBarTheme.
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       leading: IconButton(
         tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        icon: Icon(
-          MingCuteIcons.mgc_large_arrow_left_fill,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        onPressed: () {
-          Get.back();
-        },
+        icon: const Icon(MingCuteIcons.mgc_large_arrow_left_fill),
+        onPressed: Get.back,
       ),
-      title: Text(
-        AppLocalizations.of(context)!.database_screen_title,
-        style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      centerTitle: true,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.secondary,
+      title: Text(AppLocalizations.of(context)!.database_screen_title),
       actions: [
         IconButton(
           tooltip: AppLocalizations.of(context)!.database_screen_import_menu,
-          icon: Icon(
-            MingCuteIcons.mgc_file_import_line,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+          icon: const Icon(MingCuteIcons.mgc_file_import_line),
           onPressed: _importCodes,
         ),
         IconButton(
           tooltip: AppLocalizations.of(context)!.database_screen_export_menu,
-          icon: Icon(
-            MingCuteIcons.mgc_file_export_line,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+          icon: const Icon(MingCuteIcons.mgc_file_export_line),
           onPressed: _exportCodes,
         ),
         SizedBox(width: 4.w),

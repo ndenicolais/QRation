@@ -77,7 +77,10 @@ class FavoritesScreenState extends State<FavoritesScreen>
         color: theme.colorScheme.primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(14),
       ),
-      indicatorPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+      // Sized on the whole tab: with the default `label` size the horizontal
+      // padding shrank the pill to the middle of the icon + text pair.
+      indicatorSize: TabBarIndicatorSize.tab,
+      indicatorPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
       splashBorderRadius: BorderRadius.circular(14),
       overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
         if (states.contains(WidgetState.pressed)) {

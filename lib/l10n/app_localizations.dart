@@ -2693,7 +2693,7 @@ abstract class AppLocalizations {
   /// No description provided for @support_screen_faq_a1.
   ///
   /// In en, this message translates to:
-  /// **'To scan a QR code, go to Home and click the \'Create\' button. Choose the type of code to create and enter all the necessary details before generating.'**
+  /// **'Tap \'Scan\' in the bottom bar and point the camera at the code, or pick an image from the gallery: the code is read and saved to History automatically.'**
   String get support_screen_faq_a1;
 
   /// No description provided for @support_screen_faq_q2.
@@ -2705,7 +2705,7 @@ abstract class AppLocalizations {
   /// No description provided for @support_screen_faq_a2.
   ///
   /// In en, this message translates to:
-  /// **'To scan a QR code, go to Home and click the \'Scan\' button. Once opened, point the camera at the code to be scanned and it will be saved.'**
+  /// **'Tap \'Create\' in the bottom bar, choose the code type, fill in the required data and customize its style if you like, then generate the code.'**
   String get support_screen_faq_a2;
 
   /// No description provided for @support_screen_faq_q3.
@@ -2717,7 +2717,7 @@ abstract class AppLocalizations {
   /// No description provided for @support_screen_faq_a3.
   ///
   /// In en, this message translates to:
-  /// **'To delete a QR code, click on the \'History\' icon on the bottom bar and click on the trash can icon at the top. Then check the code to delete and click the trash can icon again to delete it.'**
+  /// **'In History, long-press a code (or tap the trash icon at the top) to start selecting, choose the codes and tap the trash icon in the selection bar. You can also delete a single code from its detail screen.'**
   String get support_screen_faq_a3;
 
   /// No description provided for @support_screen_faq_q4.
@@ -2741,7 +2741,7 @@ abstract class AppLocalizations {
   /// No description provided for @support_screen_faq_a5.
   ///
   /// In en, this message translates to:
-  /// **'Yes, you can export a file containing all saved codes in three different formats (CSV, Excel, PDF). Click on the \'Settings\' icon on the bottom bar, go to the \'Database\' section, and choose the format to export the file.'**
+  /// **'Yes, from Settings > Database you can export all your codes as PDF, Excel, CSV or JSON. A JSON backup can be imported again later.'**
   String get support_screen_faq_a5;
 
   /// No description provided for @support_screen_faq_q7.
@@ -3235,6 +3235,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.'**
   String get changelog_v2_0_0_bullet_46;
+
+  /// No description provided for @changelog_v2_0_0_bullet_47.
+  ///
+  /// In en, this message translates to:
+  /// **'Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab.'**
+  String get changelog_v2_0_0_bullet_47;
 }
 
 class _AppLocalizationsDelegate

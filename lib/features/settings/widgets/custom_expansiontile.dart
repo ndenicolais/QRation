@@ -36,19 +36,25 @@ class CustomExpansionTileState extends State<CustomExpansionTile> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ExpansionTile(
+      // Sits inside a SectionCard: no own borders or side padding.
+      shape: const Border(),
+      collapsedShape: const Border(),
+      tilePadding: EdgeInsets.zero,
+      childrenPadding: EdgeInsets.only(bottom: 12.h),
+      expandedAlignment: Alignment.centerLeft,
       title: Text(
         widget.title,
         style: AppFonts.montserrat(
-          color: Theme.of(context).colorScheme.tertiary,
-          fontSize: 16.sp,
+          color: colorScheme.onSurface,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
         ),
       ),
       trailing: Icon(
         isExpanded ? widget.iconOpened : widget.iconClosed,
-        color: isExpanded
-            ? Theme.of(context).colorScheme.secondary
-            : Theme.of(context).colorScheme.tertiary,
+        color: isExpanded ? colorScheme.primary : colorScheme.onSurfaceVariant,
         size: 24.sp,
       ),
       onExpansionChanged: (bool expanded) {
@@ -57,14 +63,12 @@ class CustomExpansionTileState extends State<CustomExpansionTile> {
         });
       },
       children: [
-        Padding(
-          padding: EdgeInsets.all(12.r),
-          child: Text(
-            widget.answer,
-            style: AppFonts.montserrat(
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 14.sp,
-            ),
+        Text(
+          widget.answer,
+          style: AppFonts.montserrat(
+            color: colorScheme.onSurfaceVariant,
+            fontSize: 14.sp,
+            height: 1.5,
           ),
         ),
       ],
