@@ -1,113 +1,161 @@
+<div align="center">
+
+<img src="assets/images/app_logo.png" width="120" alt="QRation logo">
+
 # QRation
 
-> App per la scansione e la creazione di QR code, sviluppata con Flutter.
+**A QR code and barcode scanner and creator for Android, built with Flutter.**
 
-**QRation** è un'app completa per la gestione di QR code e codici a barre. Permette di scansionare codici tramite fotocamera o galleria, creare QR code personalizzati per più di 12 tipologie standard e 10 social network, gestire una cronologia sincronizzata su cloud e molto altro — il tutto con un'interfaccia disponibile in italiano e inglese e pieno supporto al tema scuro.
+Scan codes with the camera or from an image, create custom QR codes for 12 standard types and 10 social networks,<br>
+keep everything synced in the cloud, export to PDF, Excel or CSV — in Italian and English, with light and dark themes.
 
----
+[![Release](https://img.shields.io/github/v/release/ndenicolais/QRation?style=flat-square&color=CCA775&label=release)](https://github.com/ndenicolais/QRation/releases/latest)
+[![Platform](https://img.shields.io/badge/platform-Android%207.0%2B-274060?style=flat-square&logo=android&logoColor=white)](#requirements)
+[![Flutter](https://img.shields.io/badge/Flutter-3.24%2B-02569B?style=flat-square&logo=flutter&logoColor=white)](https://flutter.dev)
+[![License](https://img.shields.io/badge/license-source--available%2C%20non--commercial-3A5A82?style=flat-square)](LICENSE)
 
-## Funzionalità principali
+[**📥 Download the APK**](#download) · [Features](#features) · [Documentation](DOCUMENTATION.md) · [Privacy](PRIVACY.md)
 
-- **Scanner** — Scansiona QR code e codici a barre con la fotocamera o importando un'immagine dalla galleria
-- **Creazione QR** — Crea QR code personalizzati per testo, URL, email, telefono, SMS, contatto, geo, Wi-Fi, evento calendario, prodotto, ISBN, patente
-- **Social QR** — Genera QR code per profili social: YouTube, Facebook, Instagram, TikTok, Telegram, LinkedIn, X, Pinterest, Spotify, WhatsApp
-- **Personalizzazione** — Scegli colori e arrotondamento per occhi e moduli del QR code con anteprima live
-- **Cloud sync** — Tutti i codici sono salvati su Firebase Firestore e sincronizzati tra sessioni
-- **Cronologia** — Lista completa dei codici con ricerca testuale e filtri per tipo, social e sorgente
-- **Preferiti** — Marca i codici preferiti e consultali rapidamente per tab (scansionati / creati)
-- **Dettaglio codice** — Visualizza, copia, condividi, salva in galleria, apri o elimina ogni codice
-- **Export dati** — Esporta i codici in CSV, Excel o PDF con statistiche; backup e ripristino JSON
-- **Autenticazione** — Login con email/password o Google Sign-In; gestione profilo e eliminazione account
-- **Tema** — Tema chiaro, scuro o automatico (segue il sistema)
-- **Lingua** — Interfaccia in italiano e inglese
+<br>
+
+<img src="images/qration_preview.png" title="QRation 2.0.0" alt="QRation preview">
+
+</div>
 
 ---
 
-## Architettura
+## Screenshots
 
-| Livello | Tecnologia |
+| Create | QR editor | Code details | Settings | Database |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="images/screenshots/home.png" width="160" alt="QR code types"> | <img src="images/screenshots/create.png" width="160" alt="QR editor"> | <img src="images/screenshots/details.png" width="160" alt="Code details"> | <img src="images/screenshots/settings.png" width="160" alt="Settings"> | <img src="images/screenshots/database.png" width="160" alt="Database"> |
+
+---
+
+## Features
+
+| | |
+|---|---|
+| 📷 **Scanner** | Scan QR codes and barcodes with the camera or from an image in the gallery, with optional beep and vibration |
+| ✏️ **QR creation** | Text, URL, email, phone, SMS, contact, location, Wi-Fi, calendar event, product, ISBN and driving licence |
+| 💬 **Social QR** | YouTube, Facebook, Instagram, TikTok, Telegram, LinkedIn, X, Pinterest, Spotify and WhatsApp |
+| 🎨 **Customization** | Colors and rounded corners for eyes and modules, plus a custom logo, with a live preview |
+| 🔎 **Code details** | Copy, share, save to the gallery, open or delete every code |
+| 🕑 **History** | Every code in one list, with text search and filters by type, social network and source |
+| ❤️ **Favorites** | Mark your favorite codes and find them by tab (scanned / created) |
+| 📊 **Database** | Statistics on created and scanned codes, by type |
+| 📄 **Export** | Export your codes to PDF, Excel or CSV |
+| 💾 **JSON backup** | Save all your codes to a JSON file and restore them, even on another phone |
+| 🔐 **Authentication** | Sign in with a Google account or email and password, manage your profile or delete your account |
+| ☁️ **Sync** | All codes are stored on Cloud Firestore and synced across sessions |
+| 🌍 **Multilingual** | Italian and English |
+| 🌗 **Theme** | System / Light / Dark theme and a choice of accent colors |
+
+---
+
+## Download
+
+<a href="https://github.com/ndenicolais/QRation/releases/latest"><img src="https://img.shields.io/badge/Download-QRation%20APK-274060?style=for-the-badge&logo=android&logoColor=white" alt="Download the QRation APK"></a>
+
+QRation is distributed as an APK on [GitHub Releases](https://github.com/ndenicolais/QRation/releases), not on the Play Store. It needs Android 7.0+ on a 64-bit (arm64) device with Google Play services.
+
+1. Download the APK on your phone and open it.
+2. If asked, allow your browser or file manager to **install unknown apps**.
+3. Confirm the installation.
+
+> [!NOTE]
+> **"App blocked to protect your device" (Google Play Protect).** Play Protect shows this warning for apps that are not distributed through the Play Store and whose developer it does not know yet. Tap **More details → Install anyway** to continue. The source code of every release is available in this repository.
+
+---
+
+## Architecture
+
+| Layer | Technology |
 |---|---|
 | Framework | Flutter 3 / Dart |
 | State management | GetX |
-| Backend / Database | Firebase Firestore |
-| Autenticazione | Firebase Auth + Google Sign-In |
-| Scanner QR | mobile_scanner |
-| Generazione QR | qr_flutter |
-| Font | Montserrat (Google Fonts) |
-| Export | pdf, excel, csv |
+| Cloud database | Cloud Firestore |
+| Authentication | Firebase Auth + Google Sign In |
+| Crash reporting | Firebase Crashlytics |
+| Local persistence | SharedPreferences |
+| QR scanning | mobile_scanner |
+| QR generation | pretty_qr_code |
+| Fonts | Montserrat (bundled) |
+| Icons | MingCute Icons, Line Awesome |
+| Maps | flutter_map |
+| Export | pdf, excel, csv, share_plus, image_gallery_saver_plus |
 
----
-
-## Struttura del progetto
+<details>
+<summary><b>Project structure</b></summary>
 
 ```
 lib/
 ├── main.dart                  # Entry point
-├── app.dart                   # QrationApp (GetMaterialApp + routing + localizzazione)
+├── app.dart                   # QrationApp (GetMaterialApp, routing, localization)
 ├── core/
-│   ├── constants/             # Costanti globali (tipi barcode, social list, URI)
+│   ├── constants/             # Global constants (barcode types, social list, URIs)
 │   ├── routes/                # Named routes (app_routes, app_pages)
-│   ├── theme/                 # Tema, colori, ThemeController
-│   ├── utils/                 # Utility (icone/testi per tipo codice, validator)
-│   └── widgets/               # Widget core riutilizzabili
+│   ├── theme/                 # Theme, colors, ThemeController
+│   ├── utils/                 # Utilities (icons/labels per code type, validators)
+│   └── widgets/               # Shared widgets
 ├── features/
-│   ├── auth/                  # Login, Signup, Reset password, AuthController, SessionStore
-│   ├── codes/                 # Scanner, Creazione QR, Dettaglio, Modelli, CodesService
-│   ├── export/                # CSV, Excel, PDF services
-│   ├── favorites/             # Schermata preferiti
-│   ├── history/               # Cronologia codici
-│   ├── home/                  # Home + bottom navigation
-│   ├── onboarding/            # Onboarding al primo avvio
-│   ├── settings/              # Impostazioni, Database, Info, Privacy Policy, Support
+│   ├── auth/                  # Login, signup, reset password, AuthController, SessionStore
+│   ├── codes/                 # Scanner, QR creation, details, models, CodesService
+│   ├── export/                # CSV, Excel and PDF services
+│   ├── favorites/             # Favorites screen
+│   ├── history/               # Code history
+│   ├── home/                  # Home and bottom navigation
+│   ├── onboarding/            # First-launch onboarding
+│   ├── settings/              # Settings, database, info, privacy policy, support
 │   ├── splash/                # Splash screen
-│   ├── user/                  # Profilo utente, Elimina account
-│   └── welcome/               # Schermata di benvenuto
-└── l10n/                      # File di localizzazione (EN + IT)
+│   ├── user/                  # User profile, account deletion
+│   └── welcome/               # Welcome screen
+└── l10n/                      # ARB localization files (en, it)
 ```
 
----
-
-## Requisiti
-
-- Flutter SDK `^3.5.2`
-- Dart SDK `^3.5.2`
-- Android 7.0+ (API 24+)
-- Progetto Firebase configurato con `google-services.json` (Auth + Firestore)
+</details>
 
 ---
 
-## Installazione e avvio
+## Build from source
+
+### Requirements
+
+- Flutter SDK 3.24 or later (Dart SDK 3.5.2 or later)
+- Android 7.0+ (API 24+), 64-bit (arm64), with Google Play services
+- Internet connection (for authentication and Firestore sync)
+- A configured `android/app/google-services.json` file (Firebase Auth + Firestore)
+
+### Run
 
 ```bash
-# Clona il repository
-git clone https://github.com/ndenicolais/qration.git
-cd qration
+# Clone the repository
+git clone https://github.com/ndenicolais/QRation.git
+cd QRation
 
-# Installa le dipendenze
+# Install dependencies
 flutter pub get
 
-# Avvia l'app
+# Run the app
 flutter run
 ```
 
 ---
 
-## Documentazione completa
+## Documentation
 
-Per una documentazione dettagliata di tutte le funzionalità, modelli dati, schermate e scelte tecniche consulta il file [DOCUMENTATION.md](DOCUMENTATION.md).
-
----
-
-## Privacy
-
-L'informativa privacy (italiano e inglese) è in [PRIVACY.md](PRIVACY.md), leggibile anche nell'app da *Impostazioni > Info > Privacy Policy* e online su [ndenicolais.github.io/qration/privacy](https://ndenicolais.github.io/qration/privacy/).
+For detailed documentation of every feature, data model, screen and technical choice, see [DOCUMENTATION.md](DOCUMENTATION.md). How personal data is handled is described in the [privacy policy](PRIVACY.md), also available in the app under *Settings > Info > Privacy Policy* and [online](https://ndenicolais.github.io/qration/privacy/).
 
 ---
 
-## Licenza
+## License
 
-Copyright © 2026 Nicola De Nicolais — Tutti i diritti riservati.  
-Licenza: source-available, non-commerciale (vedi [LICENSE](LICENSE)).  
-L'uso commerciale (inclusa la pubblicazione su app store) richiede il consenso scritto dell'autore.
+Copyright © 2026 Nicola De Nicolais — All rights reserved.
+Released under a **source-available, non-commercial** license — see [LICENSE](LICENSE) for details.
+Commercial use, including publishing on any app store, requires the author's written permission.
 
-**Autore:** Nicola De Nicolais — [ndn21dev@gmail.com](mailto:ndn21dev@gmail.com) — [GitHub](https://github.com/ndenicolais)
+<div align="center">
+
+Made by **Nicola De Nicolais** · [ndn21dev@gmail.com](mailto:ndn21dev@gmail.com) · [GitHub](https://github.com/ndenicolais)
+
+</div>

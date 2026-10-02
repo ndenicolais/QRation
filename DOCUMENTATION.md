@@ -960,6 +960,10 @@ Il manifest usa `@mipmap/launcher_icon`; i vecchi `mipmap-*/ic_launcher.png` e `
 
 Dentro l'app il logo si mostra con `AppLogo` (`lib/core/widgets/app_logo.dart`), che lo colora con il colore principale del tema (`BlendMode.srcIn`): blu navy nel tema chiaro, oro nel tema scuro, e segue l'accent scelto nelle Impostazioni. Senza questa colorazione il logo navy sparirebbe sugli sfondi scuri. Il PDF esportato usa il file originale (navy su pagina bianca).
 
+### Anteprime del README
+
+Seguendo `APP_PREVIEW_GUIDE.md`, `flutter test tool/preview/generate_preview_test.dart` genera da `images/screenshots/<nome>_raw.png` (screenshot del telefono, esclusi da git e tenuti in locale) il banner `images/qration_preview.png` (2400×1350, cinque telefoni inclinati su sfondo `AppColors.surfaceVariantLight`) e le schermate della galleria `images/screenshots/<nome>.png` senza barra di stato e di navigazione (larghe 540 px). Schermate, in ordine di banner: `create` (form Testo), `details`, `home` (griglia dei tipi QR, al centro), `settings`, `database`. Le barre di sistema (`_statusBarHeight` 108 px, `_navBarHeight` 70 px) sono misurate su screenshot 1080×2392 e vanno ricontrollate se cambia telefono. Lo script sta fuori da `test/`, quindi `flutter test` non lo esegue.
+
 ---
 
 ## Licenza
