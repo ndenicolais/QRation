@@ -613,5 +613,6 @@
   "changelog_v2_0_0_bullet_48": "The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.",
   "changelog_v2_0_0_bullet_49": "Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).",
   "changelog_v2_0_0_bullet_50": "Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated.",
-  "changelog_v2_0_0_bullet_51": "More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields."
+  "changelog_v2_0_0_bullet_51": "More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields.",
+  "changelog_v2_0_0_bullet_52": "Google sign-in updated to the new Android account picker (Credential Manager)."
 }

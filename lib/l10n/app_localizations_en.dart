@@ -1765,4 +1765,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_51 =>
       'More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields.';
+
+  @override
+  String get changelog_v2_0_0_bullet_52 =>
+      'Google sign-in updated to the new Android account picker (Credential Manager).';
 }

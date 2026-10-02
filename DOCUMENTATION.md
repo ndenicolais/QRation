@@ -65,7 +65,7 @@ L'app è completamente localizzata in italiano e inglese, con supporto a tema ch
 | Framework | Flutter 3 / Dart `^3.5.2` |
 | State management | [get](https://pub.dev/packages/get) `^4.6.6` (GetX) |
 | Backend / Database | [cloud_firestore](https://pub.dev/packages/cloud_firestore) `^6.10.0` |
-| Autenticazione | [firebase_auth](https://pub.dev/packages/firebase_auth) `^6.7.0` + [google_sign_in](https://pub.dev/packages/google_sign_in) `^6.2.1` |
+| Autenticazione | [firebase_auth](https://pub.dev/packages/firebase_auth) `^6.7.0` + [google_sign_in](https://pub.dev/packages/google_sign_in) `^7.2.0` |
 | Core Firebase | [firebase_core](https://pub.dev/packages/firebase_core) `^4.15.0` |
 | Error reporting | [firebase_crashlytics](https://pub.dev/packages/firebase_crashlytics) `^5.4.0` (errori Flutter/Dart non gestiti, disabilitato su web) |
 | Font | Montserrat, asset locale (`assets/fonts/`), esposto via `AppFonts` (`app_fonts.dart`) |
@@ -636,7 +636,7 @@ Gestisce tutta la logica di autenticazione tramite Firebase Auth e Firestore. In
 **Operazioni:**
 - **Registrazione email/password:** controlla se l'email è già registrata su Firestore, crea le credenziali Firebase Auth, salva il `UserModel` su Firestore
 - **Login email/password:** cerca l'email su Firestore per ottenere l'email primaria, esegue `signInWithEmailAndPassword`. Gestisce errori specifici (`email_not_found`, `invalid_password`)
-- **Login con Google:** avvia il flusso OAuth `GoogleSignIn`, ottiene le credenziali Google, esegue `signInWithCredential`. Se è un nuovo utente Google, crea il `UserModel` su Firestore
+- **Login con Google:** usa `GoogleSignIn.instance` (API v7). `initialize()` va chiamato una sola volta e atteso prima di ogni altra chiamata: `_ensureGoogleSignIn()` lo memorizza per istanza (`Expando`), così parte al primo login o logout. `authenticate()` apre il selettore account (Credential Manager su Android). Se l'utente lo chiude arriva una `GoogleSignInException` con codice `canceled`, che viene ignorata; gli altri errori passano a `_handleAuthError`. Firebase riceve solo l'`idToken` (`GoogleAuthProvider.credential(idToken: …)`): l'app non chiede scope OAuth, quindi non serve un access token tramite `authorizationClient`. Se è un nuovo utente Google, crea il `UserModel` su Firestore
 - **Ricorda me:** gestito da `SessionStore` (`lib/features/auth/services/session_store.dart`), che salva `remember_me = true` e `user_id` in `SharedPreferences`. Con email/password avviene solo se la checkbox è attiva; con Google e dopo la registrazione avviene sempre
 - **Recupero dati utente:** legge il documento `users/{uid}` da Firestore e restituisce `UserModel`
 - **Logout:** esegue `signOut` su Firebase Auth e Google Sign-In e cancella la sessione salvata (`SessionStore.clear()`)
@@ -840,6 +840,8 @@ Riepilogo di tutte le chiavi salvate in `SharedPreferences`:
 
 **Firebase (FlutterFire):** `firebase_core` 4, `firebase_auth` 6, `cloud_firestore` 6 e `firebase_crashlytics` 5 vanno aggiornati insieme (stesso rilascio FlutterFire, Firebase Android BoM 34.x); per i test seguono `fake_cloud_firestore` 4 e `firebase_auth_mocks` 0.15. Il passaggio dalle versioni 3/5/5/4 non ha richiesto modifiche al codice Dart (le API rimosse non erano usate). `android/app/build.gradle` non dichiara dipendenze native Firebase o Google: BoM, `firebase-auth` e `play-services-auth` arrivano dai plugin, e le versioni fissate a mano (in precedenza `firebase-auth:22.3.0`, BoM `33.1.1`, `play-services-auth:19.0.0`) sono state rimosse perché entravano in concorrenza con quelle dei plugin. `google_sign_in` è rimasto alla 6: la 7 cambia completamente l'API di login ed è un aggiornamento separato.
 
+**Google Sign-In 7:** migrato da `google_sign_in` 6 (`GoogleSignIn()`, `signIn()`, `authentication` asincrono con access token) alla v7 (`GoogleSignIn.instance`, `initialize()` una sola volta, `authenticate()`, `authentication` sincrono con il solo `idToken`, `signOut()` che restituisce `Future<void>`). Su Android il plugin usa Credential Manager e ha bisogno dell'ID client OAuth *web*. Lo legge da `google-services.json` (voce `oauth_client` con `client_type: 3`, già presente) tramite il plugin Gradle `com.google.gms.google-services`, quindi `initialize()` non riceve `serverClientId`. Se il login Google fallisce con "serverClientId must be provided", verifica nella console Firebase che esista il client web e riscarica `google-services.json`. Il login va provato su un dispositivo reale, con la SHA-1 della chiave di firma (debug e release) registrata nel progetto Firebase.
+
 ```yaml
 dependencies:
   get: ^4.6.6                          # State management e routing
@@ -853,7 +855,7 @@ dependencies:
   firebase_auth: ^6.7.0                # Autenticazione Firebase
   cloud_firestore: ^6.10.0             # Database cloud
   firebase_crashlytics: ^5.4.0         # Error reporting in produzione
-  google_sign_in: ^6.2.1               # Login con Google
+  google_sign_in: ^7.2.0               # Login con Google
   mobile_scanner: ^7.4.0               # Scanner QR/barcode
   pretty_qr_code: ^3.6.0               # Generazione QR code
   path_provider: ^2.1.5                # Percorsi filesystem

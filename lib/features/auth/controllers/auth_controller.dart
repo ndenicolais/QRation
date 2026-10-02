@@ -31,7 +31,7 @@ class AuthController extends GetxController {
     VoidCallback? navigateBack,
   })  : _auth = auth ?? FirebaseAuth.instance,
         _firestore = firestore ?? FirebaseFirestore.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn(),
+        _googleSignIn = googleSignIn ?? GoogleSignIn.instance,
         _session = session ?? SessionStore(),
         _navigateTo = navigateTo ?? ((route) => Get.offAllNamed(route)),
         _navigateBack = navigateBack ?? (() => Get.back());
@@ -39,6 +39,14 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   final GoogleSignIn _googleSignIn;
+
+  /// One `initialize()` per [GoogleSignIn] object: the plugin requires it to
+  /// be called exactly once, and awaited, before any other call. Keyed by
+  /// instance so tests with fresh mocks still initialize each of them.
+  static final _googleInit = Expando<Future<void>>();
+
+  Future<void> _ensureGoogleSignIn() =>
+      _googleInit[_googleSignIn] ??= _googleSignIn.initialize();
   final SessionStore _session;
 
   /// Replaces the navigation stack with a route (injectable for tests).
@@ -125,13 +133,20 @@ class AuthController extends GetxController {
   Future<void> loginWithGoogle() async {
     isLoading.value = true;
     try {
-      final googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return;
+      await _ensureGoogleSignIn();
+      final GoogleSignInAccount googleUser;
+      try {
+        googleUser = await _googleSignIn.authenticate();
+      } on GoogleSignInException catch (e) {
+        // Closing the account picker is not an error.
+        if (e.code == GoogleSignInExceptionCode.canceled) return;
+        rethrow;
+      }
 
-      final googleAuth = await googleUser.authentication;
+      // Firebase only needs the ID token: no OAuth scopes are requested, so
+      // there is no access token to fetch through `authorizationClient`.
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
+        idToken: googleUser.authentication.idToken,
       );
 
       final result = await _auth.signInWithCredential(credential);
@@ -238,6 +253,7 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     try {
       await _auth.signOut();
+      await _ensureGoogleSignIn();
       await _googleSignIn.signOut();
       await _session.clear();
       clearForm();

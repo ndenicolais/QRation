@@ -3319,6 +3319,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields.'**
   String get changelog_v2_0_0_bullet_51;
+
+  /// No description provided for @changelog_v2_0_0_bullet_52.
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in updated to the new Android account picker (Credential Manager).'**
+  String get changelog_v2_0_0_bullet_52;
 }
 
 class _AppLocalizationsDelegate

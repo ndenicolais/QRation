@@ -580,5 +580,6 @@
   "changelog_v2_0_0_bullet_48": "La mappa per scegliere una posizione non chiede più il permesso di posizione e non si chiude più se lo neghi: basta toccare il punto che vuoi.",
   "changelog_v2_0_0_bullet_49": "Schermata Info ridisegnata: cosa fa QRation in breve, le funzionalità principali e i link utili (codice sorgente, sito web, contatti, privacy policy e licenze open source).",
   "changelog_v2_0_0_bullet_50": "Accessibilità migliorata: testi secondari più contrastati nel tema chiaro, aree tattili di almeno 48 dp, schermate che si adattano al testo di sistema ingrandito (accesso, eliminazione account, tipi di codice, preferiti) ed etichette per gli screen reader su interruttori, pulsanti e codici QR. Il pulsante \"Salta\" dell'onboarding ora è tradotto.",
-  "changelog_v2_0_0_bullet_51": "Aspetto più uniforme: dimensioni dei testi e arrotondamento degli angoli seguono una sola scala in tutta l'app, e i campi data e ora sono uguali agli altri campi."
+  "changelog_v2_0_0_bullet_51": "Aspetto più uniforme: dimensioni dei testi e arrotondamento degli angoli seguono una sola scala in tutta l'app, e i campi data e ora sono uguali agli altri campi.",
+  "changelog_v2_0_0_bullet_52": "Accesso con Google aggiornato al nuovo selettore account di Android (Credential Manager)."
 }

@@ -23,9 +23,6 @@ class MockGoogleSignIn extends Mock implements GoogleSignIn {}
 
 class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
 
-class MockGoogleSignInAuthentication extends Mock
-    implements GoogleSignInAuthentication {}
-
 void main() {
   // Error paths look up the app context for the toast through a GlobalKey.
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -66,6 +63,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     firestore = FakeFirebaseFirestore();
     googleSignIn = MockGoogleSignIn();
+    when(() => googleSignIn.initialize()).thenAnswer((_) async {});
     session = SessionStore();
     routes = [];
     backCalls = 0;
@@ -114,24 +112,43 @@ void main() {
   });
 
   group('google sign-in', () {
+    void signInAs(String idToken) {
+      final account = MockGoogleSignInAccount();
+      when(() => googleSignIn.authenticate()).thenAnswer((_) async => account);
+      when(() => account.authentication)
+          .thenReturn(GoogleSignInAuthentication(idToken: idToken));
+    }
+
     test('cancelled picker does nothing', () async {
-      when(() => googleSignIn.signIn()).thenAnswer((_) async => null);
+      when(() => googleSignIn.authenticate()).thenThrow(
+        const GoogleSignInException(code: GoogleSignInExceptionCode.canceled),
+      );
       final controller = createController();
 
       await controller.loginWithGoogle();
 
       expect(routes, isEmpty);
+      expect(controller.lastError, isNull);
+      expect(controller.isLoading.value, isFalse);
+    });
+
+    test('other sign-in failures are reported', () async {
+      when(() => googleSignIn.authenticate()).thenThrow(
+        const GoogleSignInException(
+          code: GoogleSignInExceptionCode.clientConfigurationError,
+        ),
+      );
+      final controller = createController();
+
+      await controller.loginWithGoogle();
+
+      expect(routes, isEmpty);
+      expect(controller.lastError, isA<GoogleSignInException>());
       expect(controller.isLoading.value, isFalse);
     });
 
     test('creates the profile once and always remembers the session', () async {
-      final account = MockGoogleSignInAccount();
-      final authentication = MockGoogleSignInAuthentication();
-      when(() => googleSignIn.signIn()).thenAnswer((_) async => account);
-      when(() => account.authentication)
-          .thenAnswer((_) async => authentication);
-      when(() => authentication.accessToken).thenReturn('access');
-      when(() => authentication.idToken).thenReturn('id');
+      signInAs('id');
       final controller = createController(
         user: MockUser(uid: 'g-1', email: 'g@example.com', displayName: 'G'),
       );
@@ -142,6 +159,19 @@ void main() {
       expect(await session.rememberedUserId(), 'g-1');
       final doc = await firestore.collection('users').doc('g-1').get();
       expect(doc.data()?['userEmail'], 'g@example.com');
+    });
+
+    test('initializes the plugin only once', () async {
+      signInAs('id');
+      final controller = createController(
+        user: MockUser(uid: 'g-1', email: 'g@example.com'),
+      );
+
+      await controller.loginWithGoogle();
+      await controller.loginWithGoogle();
+
+      verify(() => googleSignIn.initialize()).called(1);
+      verify(() => googleSignIn.authenticate()).called(2);
     });
   });
 
@@ -204,7 +234,7 @@ void main() {
   });
 
   test('logout signs out, forgets the session and goes to welcome', () async {
-    when(() => googleSignIn.signOut()).thenAnswer((_) async => null);
+    when(() => googleSignIn.signOut()).thenAnswer((_) async {});
     await session.save('uid-1');
     final controller = createController(signedIn: true);
     controller.emailController.text = email;
@@ -219,7 +249,7 @@ void main() {
   });
 
   test('deleteAccount removes codes and profile, then logs out', () async {
-    when(() => googleSignIn.signOut()).thenAnswer((_) async => null);
+    when(() => googleSignIn.signOut()).thenAnswer((_) async {});
     await registerUserDoc('uid-1', email);
     final codes =
         firestore.collection('users').doc('uid-1').collection('codes');

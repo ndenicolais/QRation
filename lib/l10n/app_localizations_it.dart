@@ -1792,4 +1792,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_51 =>
       'Aspetto più uniforme: dimensioni dei testi e arrotondamento degli angoli seguono una sola scala in tutta l\'app, e i campi data e ora sono uguali agli altri campi.';
+
+  @override
+  String get changelog_v2_0_0_bullet_52 =>
+      'Accesso con Google aggiornato al nuovo selettore account di Android (Credential Manager).';
 }
