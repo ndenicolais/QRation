@@ -36,13 +36,15 @@ class SectionCard extends StatelessWidget {
             children: [
               Icon(icon, size: 18.sp, color: theme.colorScheme.primary),
               SizedBox(width: 8.w),
-              Text(
-                title,
-                style: AppFonts.montserrat(
-                  color: theme.colorScheme.primary,
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.2,
+              Flexible(
+                child: Text(
+                  title,
+                  style: AppFonts.montserrat(
+                    color: theme.colorScheme.primary,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.2,
+                  ),
                 ),
               ),
             ],
