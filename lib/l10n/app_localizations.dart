@@ -2003,7 +2003,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_tile_changelog.
   ///
   /// In en, this message translates to:
-  /// **'What\'s new'**
+  /// **'Changelog'**
   String get settings_tile_changelog;
 
   /// No description provided for @settings_tile_support.
@@ -3005,7 +3005,7 @@ abstract class AppLocalizations {
   /// No description provided for @changelog_dialog_title.
   ///
   /// In en, this message translates to:
-  /// **'What\'s new'**
+  /// **'Changelog'**
   String get changelog_dialog_title;
 
   /// No description provided for @changelog_dialog_close.
@@ -3014,317 +3014,65 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get changelog_dialog_close;
 
-  /// No description provided for @changelog_v1_1_0_bullet_1.
+  /// No description provided for @changelog_v2_0_0_bullet_1.
   ///
   /// In en, this message translates to:
-  /// **'Added the \"What\'s new\" dialog: shows the app\'s updates after every update and can be opened anytime from Settings.'**
-  String get changelog_v1_1_0_bullet_1;
+  /// **'Scanner: it is the first screen at launch and has a new look (torch with state, animated scan line, dimmed outer area, touch feedback). A loading indicator appears after a scan and the same code can be scanned again without restarting the app. Fixed the scanner getting stuck after the first scan, when offline or when sound and vibration failed to play.'**
+  String get changelog_v2_0_0_bullet_1;
 
-  /// No description provided for @changelog_v1_1_0_bullet_2.
+  /// No description provided for @changelog_v2_0_0_bullet_2.
   ///
   /// In en, this message translates to:
-  /// **'Fixed a graphical overflow in the Database screen\'s statistics section.'**
-  String get changelog_v1_1_0_bullet_2;
+  /// **'Creating codes: Home opens code creation directly, the preview updates live for every type (socials included) and you can put a logo in the middle of the QR. QR codes with a logo saved as images are recognized, and the map for picking a location no longer asks for the location permission.'**
+  String get changelog_v2_0_0_bullet_2;
 
   /// No description provided for @changelog_v2_0_0_bullet_3.
   ///
   /// In en, this message translates to:
-  /// **'\"Remember me\" is now automatically enabled when signing in with Google.'**
+  /// **'History and Favorites: cards share the same style, filters are in a single panel showing how many are active, and search is smoother. Long-press a code to select several and delete them with a single Trash button. Pull down to refresh, with a notice when you are offline. Empty screens suggest what to do, and no black screen is left after a deletion.'**
   String get changelog_v2_0_0_bullet_3;
 
   /// No description provided for @changelog_v2_0_0_bullet_4.
   ///
   /// In en, this message translates to:
-  /// **'Moved the account info section and account deletion from the Database screen to the Profile screen.'**
+  /// **'Code details: new layout with labeled quick actions, an animated opening from the list and notes in a bottom panel (which previously could fail to open).'**
   String get changelog_v2_0_0_bullet_4;
 
   /// No description provided for @changelog_v2_0_0_bullet_5.
   ///
   /// In en, this message translates to:
-  /// **'Improved the code detail page layout and the notes editor, now a bottom sheet instead of the old popup.'**
+  /// **'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. Fixed the permission error when exporting and an overflow in the statistics.'**
   String get changelog_v2_0_0_bullet_5;
 
   /// No description provided for @changelog_v2_0_0_bullet_6.
   ///
   /// In en, this message translates to:
-  /// **'Fixed a layout crash that prevented the notes bottom sheet in the code detail page from opening (only the keyboard would show).'**
+  /// **'Account: Google sign-in uses the new Android account picker and is also available from the sign-up screen. With Google the session always stays active and is restored at launch, even offline. Account details and account deletion are now in Profile, reachable from Settings.'**
   String get changelog_v2_0_0_bullet_6;
 
   /// No description provided for @changelog_v2_0_0_bullet_7.
   ///
   /// In en, this message translates to:
-  /// **'Reduced excessive text boldness across the app.'**
+  /// **'Settings: pick the main color among 8 palettes and a light, dark or system theme, with new segmented buttons. The chosen language applies from launch, scan sound and vibration take effect immediately and the Changelog shows what\'s new after every update.'**
   String get changelog_v2_0_0_bullet_7;
 
   /// No description provided for @changelog_v2_0_0_bullet_8.
   ///
   /// In en, this message translates to:
-  /// **'The QR scanner is now the first screen you see, so you can scan right after opening the app.'**
+  /// **'Look and feel: new app logo and icon (with Android 13+ themed icons), consistently redesigned screens, a new Info screen, lighter bold text and a single scale for text sizes and corners.'**
   String get changelog_v2_0_0_bullet_8;
 
   /// No description provided for @changelog_v2_0_0_bullet_9.
   ///
   /// In en, this message translates to:
-  /// **'Fixed a bug where, after the first scan, the scanner would stop recognizing further codes if the confirmation sound or vibration failed to start.'**
+  /// **'Accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, screens that adapt to a larger system text size and labels for screen readers. The onboarding \"Skip\" button is now translated.'**
   String get changelog_v2_0_0_bullet_9;
 
   /// No description provided for @changelog_v2_0_0_bullet_10.
   ///
   /// In en, this message translates to:
-  /// **'Fixed a bug where, after scanning a code with no or unstable connectivity, the app stayed stuck on the scanner instead of opening the detail page (the code was still saved and visible in History).'**
+  /// **'Privacy and performance: privacy policy readable in the app even offline, faster startup, updated scanning and QR generation engines and the latest Firebase libraries.'**
   String get changelog_v2_0_0_bullet_10;
-
-  /// No description provided for @changelog_v2_0_0_bullet_11.
-  ///
-  /// In en, this message translates to:
-  /// **'Added a loading indicator after scanning a code, so the save delay doesn\'t look like the app froze.'**
-  String get changelog_v2_0_0_bullet_11;
-
-  /// No description provided for @changelog_v2_0_0_bullet_12.
-  ///
-  /// In en, this message translates to:
-  /// **'Shortened the wait time on the splash screen at app startup.'**
-  String get changelog_v2_0_0_bullet_12;
-
-  /// No description provided for @changelog_v2_0_0_bullet_13.
-  ///
-  /// In en, this message translates to:
-  /// **'Home now shows the code-creation screen directly instead of an extra intermediate step; profile access has been moved to Settings.'**
-  String get changelog_v2_0_0_bullet_13;
-
-  /// No description provided for @changelog_v2_0_0_bullet_14.
-  ///
-  /// In en, this message translates to:
-  /// **'Updated the icon and label of the \"Create\" navigation tab, no longer labeled \"Home\" since it now opens code creation directly.'**
-  String get changelog_v2_0_0_bullet_14;
-
-  /// No description provided for @changelog_v2_0_0_bullet_15.
-  ///
-  /// In en, this message translates to:
-  /// **'Fixed a bug where confirming a code deletion (in History or account deletion) left a black screen afterward: the confirmation dialog already closed itself, but an extra close right after it also removed the screen underneath. Bulk deletes in History now also run in parallel instead of one at a time, cutting the wait.'**
-  String get changelog_v2_0_0_bullet_15;
-
-  /// No description provided for @changelog_v2_0_0_bullet_16.
-  ///
-  /// In en, this message translates to:
-  /// **'Updated the scanning engine and modernized the QR code generation engine, keeping the existing color and shape customizations unchanged.'**
-  String get changelog_v2_0_0_bullet_16;
-
-  /// No description provided for @changelog_v2_0_0_bullet_17.
-  ///
-  /// In en, this message translates to:
-  /// **'Fixed a bug where exporting the database to PDF, Excel, or CSV failed with a storage permission denied error that was never actually requested from the user.'**
-  String get changelog_v2_0_0_bullet_17;
-
-  /// No description provided for @changelog_v2_0_0_bullet_18.
-  ///
-  /// In en, this message translates to:
-  /// **'The exported PDF, Excel, or CSV file is now also automatically saved to the device\'s Download folder, so it can be found later even without sharing it right away.'**
-  String get changelog_v2_0_0_bullet_18;
-
-  /// No description provided for @changelog_v2_0_0_bullet_19.
-  ///
-  /// In en, this message translates to:
-  /// **'Simplified deleting codes in History: a single Trash icon now starts multi-selection and deletes the chosen codes, replacing the two icons that previously did the same thing.'**
-  String get changelog_v2_0_0_bullet_19;
-
-  /// No description provided for @changelog_v2_0_0_bullet_20.
-  ///
-  /// In en, this message translates to:
-  /// **'Refreshed the Database page layout: import/export actions are now directly accessible from the top app bar, and statistics are easier to read thanks to summary cards for total, created, and scanned codes.'**
-  String get changelog_v2_0_0_bullet_20;
-
-  /// No description provided for @changelog_v2_0_0_bullet_21.
-  ///
-  /// In en, this message translates to:
-  /// **'Added the option to embed a custom logo at the center of generated QR codes.'**
-  String get changelog_v2_0_0_bullet_21;
-
-  /// No description provided for @changelog_v2_0_0_bullet_22.
-  ///
-  /// In en, this message translates to:
-  /// **'Added the ability to customize the app\'s accent color from Settings, choosing among 8 preset palettes, in addition to the existing light/dark theme.'**
-  String get changelog_v2_0_0_bullet_22;
-
-  /// No description provided for @changelog_v2_0_0_bullet_23.
-  ///
-  /// In en, this message translates to:
-  /// **'Fixed an issue where a QR code, especially with an embedded logo, could fail to be recognized when scanned from a saved image.'**
-  String get changelog_v2_0_0_bullet_23;
-
-  /// No description provided for @changelog_v2_0_0_bullet_24.
-  ///
-  /// In en, this message translates to:
-  /// **'Refreshed the theme, language, and accent color selectors in Settings with a new segmented-button layout.'**
-  String get changelog_v2_0_0_bullet_24;
-
-  /// No description provided for @changelog_v2_0_0_bullet_25.
-  ///
-  /// In en, this message translates to:
-  /// **'Sped up the transition from the splash screen to scanning and lightened bold text weight throughout the app.'**
-  String get changelog_v2_0_0_bullet_25;
-
-  /// No description provided for @changelog_v2_0_0_bullet_26.
-  ///
-  /// In en, this message translates to:
-  /// **'Added a \"System\" theme option that automatically follows the device\'s light/dark setting.'**
-  String get changelog_v2_0_0_bullet_26;
-
-  /// No description provided for @changelog_v2_0_0_bullet_27.
-  ///
-  /// In en, this message translates to:
-  /// **'Fixed an issue where changing the scan beep or vibration in Settings only took effect after restarting the app.'**
-  String get changelog_v2_0_0_bullet_27;
-
-  /// No description provided for @changelog_v2_0_0_bullet_28.
-  ///
-  /// In en, this message translates to:
-  /// **'Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.'**
-  String get changelog_v2_0_0_bullet_28;
-
-  /// No description provided for @changelog_v2_0_0_bullet_29.
-  ///
-  /// In en, this message translates to:
-  /// **'Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.'**
-  String get changelog_v2_0_0_bullet_29;
-
-  /// No description provided for @changelog_v2_0_0_bullet_30.
-  ///
-  /// In en, this message translates to:
-  /// **'History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.'**
-  String get changelog_v2_0_0_bullet_30;
-
-  /// No description provided for @changelog_v2_0_0_bullet_31.
-  ///
-  /// In en, this message translates to:
-  /// **'Faster, smoother opening of code details, with the type icon animating from the list into the details screen.'**
-  String get changelog_v2_0_0_bullet_31;
-
-  /// No description provided for @changelog_v2_0_0_bullet_32.
-  ///
-  /// In en, this message translates to:
-  /// **'Empty screens now suggest what to do next: create your first code from Favorites, scan from History, or clear the filters when a search finds nothing.'**
-  String get changelog_v2_0_0_bullet_32;
-
-  /// No description provided for @changelog_v2_0_0_bullet_33.
-  ///
-  /// In en, this message translates to:
-  /// **'The chosen app language is applied right from startup, without a brief flash in the device language.'**
-  String get changelog_v2_0_0_bullet_33;
-
-  /// No description provided for @changelog_v2_0_0_bullet_34.
-  ///
-  /// In en, this message translates to:
-  /// **'Refreshed scanner: the flashlight button shows whether it is on, the scan line is animated, the area outside the frame is dimmed, and the buttons give touch and haptic feedback.'**
-  String get changelog_v2_0_0_bullet_34;
-
-  /// No description provided for @changelog_v2_0_0_bullet_35.
-  ///
-  /// In en, this message translates to:
-  /// **'History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.'**
-  String get changelog_v2_0_0_bullet_35;
-
-  /// No description provided for @changelog_v2_0_0_bullet_36.
-  ///
-  /// In en, this message translates to:
-  /// **'You can now sign up with Google directly from the registration screen.'**
-  String get changelog_v2_0_0_bullet_36;
-
-  /// No description provided for @changelog_v2_0_0_bullet_37.
-  ///
-  /// In en, this message translates to:
-  /// **'Signing in with Google now always keeps you logged in, and the saved session is restored reliably at startup, even offline or after reinstalling the app from a backup.'**
-  String get changelog_v2_0_0_bullet_37;
-
-  /// No description provided for @changelog_v2_0_0_bullet_38.
-  ///
-  /// In en, this message translates to:
-  /// **'The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.'**
-  String get changelog_v2_0_0_bullet_38;
-
-  /// No description provided for @changelog_v2_0_0_bullet_39.
-  ///
-  /// In en, this message translates to:
-  /// **'Refreshed look for Code details, Create code, Info and Profile, consistent with the rest of the app: more readable text, labeled quick actions in code details and a clearer layout.'**
-  String get changelog_v2_0_0_bullet_39;
-
-  /// No description provided for @changelog_v2_0_0_bullet_40.
-  ///
-  /// In en, this message translates to:
-  /// **'The QR preview while creating a code now updates live for every code type, including social codes.'**
-  String get changelog_v2_0_0_bullet_40;
-
-  /// No description provided for @changelog_v2_0_0_bullet_41.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings now show the language actually in use, and switches that are off no longer look switched on.'**
-  String get changelog_v2_0_0_bullet_41;
-
-  /// No description provided for @changelog_v2_0_0_bullet_42.
-  ///
-  /// In en, this message translates to:
-  /// **'Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced.'**
-  String get changelog_v2_0_0_bullet_42;
-
-  /// No description provided for @changelog_v2_0_0_bullet_43.
-  ///
-  /// In en, this message translates to:
-  /// **'Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted.'**
-  String get changelog_v2_0_0_bullet_43;
-
-  /// No description provided for @changelog_v2_0_0_bullet_44.
-  ///
-  /// In en, this message translates to:
-  /// **'Updated the Firebase libraries used for sign-in, cloud sync and crash reporting to their latest versions.'**
-  String get changelog_v2_0_0_bullet_44;
-
-  /// No description provided for @changelog_v2_0_0_bullet_45.
-  ///
-  /// In en, this message translates to:
-  /// **'New app logo and icon, with support for Android 13+ themed icons; inside the app the logo follows the theme and accent colors.'**
-  String get changelog_v2_0_0_bullet_45;
-
-  /// No description provided for @changelog_v2_0_0_bullet_46.
-  ///
-  /// In en, this message translates to:
-  /// **'Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.'**
-  String get changelog_v2_0_0_bullet_46;
-
-  /// No description provided for @changelog_v2_0_0_bullet_47.
-  ///
-  /// In en, this message translates to:
-  /// **'Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab.'**
-  String get changelog_v2_0_0_bullet_47;
-
-  /// No description provided for @changelog_v2_0_0_bullet_48.
-  ///
-  /// In en, this message translates to:
-  /// **'The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.'**
-  String get changelog_v2_0_0_bullet_48;
-
-  /// No description provided for @changelog_v2_0_0_bullet_49.
-  ///
-  /// In en, this message translates to:
-  /// **'Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).'**
-  String get changelog_v2_0_0_bullet_49;
-
-  /// No description provided for @changelog_v2_0_0_bullet_50.
-  ///
-  /// In en, this message translates to:
-  /// **'Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated.'**
-  String get changelog_v2_0_0_bullet_50;
-
-  /// No description provided for @changelog_v2_0_0_bullet_51.
-  ///
-  /// In en, this message translates to:
-  /// **'More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields.'**
-  String get changelog_v2_0_0_bullet_51;
-
-  /// No description provided for @changelog_v2_0_0_bullet_52.
-  ///
-  /// In en, this message translates to:
-  /// **'Google sign-in updated to the new Android account picker (Credential Manager).'**
-  String get changelog_v2_0_0_bullet_52;
 }
 
 class _AppLocalizationsDelegate

@@ -98,14 +98,7 @@ class AppChangelogDialog extends StatelessWidget {
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      Expanded(
-                        child: Text(
-                          bullet,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ),
+                      Expanded(child: _BulletText(bullet)),
                     ],
                   ),
                 ),
@@ -123,6 +116,40 @@ class AppChangelogDialog extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// A changelog bullet; a leading "Category: " (e.g. "Scanner: …") is shown
+/// in bold so the grouped entries are easy to scan.
+class _BulletText extends StatelessWidget {
+  const _BulletText(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme.bodyMedium?.copyWith(
+      color: theme.colorScheme.onSurfaceVariant,
+    );
+    final colon = text.indexOf(': ');
+    // Only a short prefix counts as a category, not a colon mid-sentence.
+    if (colon <= 0 || colon > 30) return Text(text, style: style);
+    return Text.rich(
+      TextSpan(
+        style: style,
+        children: [
+          TextSpan(
+            text: text.substring(0, colon + 1),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+          TextSpan(text: text.substring(colon + 1)),
+        ],
+      ),
     );
   }
 }

@@ -1038,7 +1038,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings_tile_info => 'Info';
 
   @override
-  String get settings_tile_changelog => 'Novità';
+  String get settings_tile_changelog => 'Changelog';
 
   @override
   String get settings_tile_support => 'Supporto';
@@ -1584,216 +1584,48 @@ class AppLocalizationsIt extends AppLocalizations {
       'L\'accesso alla fotocamera è necessario per scansionare i codici.';
 
   @override
-  String get changelog_dialog_title => 'Novità';
+  String get changelog_dialog_title => 'Changelog';
 
   @override
   String get changelog_dialog_close => 'Chiudi';
 
   @override
-  String get changelog_v1_1_0_bullet_1 =>
-      'Aggiunta la finestra \"Novità\": mostra gli aggiornamenti dell\'app dopo ogni update ed è consultabile in qualsiasi momento da Impostazioni.';
+  String get changelog_v2_0_0_bullet_1 =>
+      'Scanner: è la prima schermata all\'avvio e ha un nuovo aspetto (torcia con stato, linea animata, area esterna oscurata, riscontro al tocco). Dopo la scansione compare un indicatore di caricamento e lo stesso codice si può riscansionare senza riavviare l\'app. Corretti i blocchi dopo la prima scansione, senza connessione o quando suono e vibrazione non partivano.';
 
   @override
-  String get changelog_v1_1_0_bullet_2 =>
-      'Corretto un overflow grafico nella sezione statistiche della schermata Database.';
+  String get changelog_v2_0_0_bullet_2 =>
+      'Creazione: la Home apre direttamente la creazione dei codici, l\'anteprima si aggiorna in tempo reale per ogni tipo (anche social) e puoi inserire un logo al centro del QR. I QR con logo salvati come immagine vengono riconosciuti, e la mappa per scegliere una posizione non chiede più il permesso di posizione.';
 
   @override
   String get changelog_v2_0_0_bullet_3 =>
-      'Il \"Ricordami\" viene ora attivato automaticamente quando si effettua l\'accesso con Google.';
+      'Cronologia e Preferiti: card con lo stesso stile, filtri in un unico pannello con il numero di filtri attivi e ricerca più fluida. Tieni premuto un codice per selezionarne più di uno ed eliminarli con un solo Cestino. Trascina verso il basso per aggiornare, con un avviso quando sei offline. Le schermate vuote suggeriscono cosa fare, e non resta più una schermata nera dopo un\'eliminazione.';
 
   @override
   String get changelog_v2_0_0_bullet_4 =>
-      'Spostate la sezione informazioni account e l\'eliminazione account dalla schermata Database alla schermata Profilo.';
+      'Dettaglio codice: nuovo layout con azioni rapide con etichetta, apertura animata dalla lista e note in un pannello dal basso (che prima poteva non aprirsi).';
 
   @override
   String get changelog_v2_0_0_bullet_5 =>
-      'Migliorati il layout della pagina di dettaglio codice e l\'editor delle note, ora un pannello a comparsa dal basso più comodo del vecchio popup.';
+      'Database ed esportazione: nuova pagina con azioni nella barra superiore e statistiche più leggibili. PDF, Excel, CSV e backup JSON vengono salvati anche nella cartella Download, ed è indicata la data dell\'ultimo backup. Corretti l\'errore di permesso in esportazione e un overflow nelle statistiche.';
 
   @override
   String get changelog_v2_0_0_bullet_6 =>
-      'Risolto un crash di layout che impediva l\'apertura del pannello delle note nella pagina di dettaglio codice (si apriva solo la tastiera).';
+      'Account: l\'accesso con Google usa il nuovo selettore account di Android ed è disponibile anche dalla schermata di registrazione. Con Google la sessione resta sempre attiva e viene ripristinata all\'avvio, anche offline. Informazioni ed eliminazione dell\'account sono ora nel Profilo, raggiungibile dalle Impostazioni.';
 
   @override
   String get changelog_v2_0_0_bullet_7 =>
-      'Ridotta l\'eccessiva grassezza del testo in varie schermate dell\'app.';
+      'Impostazioni: scegli il colore principale tra 8 palette e il tema chiaro, scuro o di sistema, con nuovi pulsanti segmentati. La lingua scelta vale fin dall\'avvio, suono e vibrazione della scansione si applicano subito e il Changelog mostra le novità dopo ogni aggiornamento.';
 
   @override
   String get changelog_v2_0_0_bullet_8 =>
-      'Lo scanner QR è ora la prima schermata che si apre, per rendere immediato scansionare un codice appena avviata l\'app.';
+      'Aspetto: nuovo logo e nuova icona dell\'app (con le icone a tema di Android 13+), schermate ridisegnate in modo coerente, nuova schermata Info, testi meno marcati e una sola scala per dimensioni dei testi e angoli.';
 
   @override
   String get changelog_v2_0_0_bullet_9 =>
-      'Risolto un bug per cui, dopo la prima scansione, lo scanner smetteva di riconoscere altri codici se il suono o la vibrazione di conferma non riuscivano a partire.';
+      'Accessibilità: testi secondari più contrastati nel tema chiaro, aree tattili di almeno 48 dp, schermate che si adattano al testo di sistema ingrandito ed etichette per gli screen reader. Il pulsante \"Salta\" dell\'onboarding ora è tradotto.';
 
   @override
   String get changelog_v2_0_0_bullet_10 =>
-      'Risolto un bug per cui, dopo aver scansionato un codice con connessione assente o instabile, l\'app restava bloccata sullo scanner invece di aprire la pagina di dettaglio (il codice veniva comunque salvato ed era visibile in Cronologia).';
-
-  @override
-  String get changelog_v2_0_0_bullet_11 =>
-      'Aggiunto un indicatore di caricamento dopo la scansione di un codice, così l\'attesa per il salvataggio non sembra un blocco dell\'app.';
-
-  @override
-  String get changelog_v2_0_0_bullet_12 =>
-      'Ridotto il tempo di attesa sulla schermata iniziale all\'avvio dell\'app.';
-
-  @override
-  String get changelog_v2_0_0_bullet_13 =>
-      'La Home ora mostra direttamente la schermata di creazione codici invece di un passaggio intermedio; l\'accesso al profilo è stato spostato nelle Impostazioni.';
-
-  @override
-  String get changelog_v2_0_0_bullet_14 =>
-      'Aggiornati icona e testo del tab \"Crea\" nella barra di navigazione, non più etichettato come \"Home\" dato che ora apre direttamente la creazione di un codice.';
-
-  @override
-  String get changelog_v2_0_0_bullet_15 =>
-      'Corretto un bug per cui, confermando l\'eliminazione di codici (in Cronologia o dell\'account), la schermata restava nera dopo l\'eliminazione: il dialogo di conferma si chiudeva già da solo, ma un\'ulteriore chiusura eseguita subito dopo rimuoveva anche la schermata sottostante. Le eliminazioni multiple in Cronologia ora avvengono anche in parallelo invece che una alla volta, per ridurre i tempi di attesa.';
-
-  @override
-  String get changelog_v2_0_0_bullet_16 =>
-      'Aggiornato il motore di scansione e modernizzato quello di generazione dei QR code, mantenendo invariate le personalizzazioni di colore e forma già disponibili.';
-
-  @override
-  String get changelog_v2_0_0_bullet_17 =>
-      'Corretto un bug per cui l\'esportazione del database in PDF, Excel o CSV falliva con un errore di permesso di archiviazione negato, mai effettivamente richiesto all\'utente.';
-
-  @override
-  String get changelog_v2_0_0_bullet_18 =>
-      'Il file esportato in PDF, Excel o CSV viene ora salvato automaticamente anche nella cartella Download del dispositivo, così da poterlo ritrovare facilmente anche senza condividerlo subito.';
-
-  @override
-  String get changelog_v2_0_0_bullet_19 =>
-      'Semplificata l\'eliminazione dei codici in Cronologia: un\'unica icona Cestino avvia la selezione multipla ed elimina i codici scelti, al posto delle due icone precedenti che svolgevano lo stesso compito.';
-
-  @override
-  String get changelog_v2_0_0_bullet_20 =>
-      'Rinnovato il layout della pagina Database: azioni di import/export ora accessibili direttamente dalla barra superiore e statistiche più leggibili grazie a schede riepilogative per totale, creati e scansionati.';
-
-  @override
-  String get changelog_v2_0_0_bullet_21 =>
-      'Aggiunta la possibilità di incorporare un logo personalizzato al centro dei QR code generati.';
-
-  @override
-  String get changelog_v2_0_0_bullet_22 =>
-      'Aggiunta la possibilità di personalizzare il colore principale dell\'app dalle Impostazioni, scegliendo tra 8 palette predefinite, oltre al tema chiaro/scuro già presente.';
-
-  @override
-  String get changelog_v2_0_0_bullet_23 =>
-      'Risolto un problema per cui un QR code, in particolare con logo incorporato, una volta salvato come immagine poteva non essere riconosciuto scansionandolo da immagine.';
-
-  @override
-  String get changelog_v2_0_0_bullet_24 =>
-      'Rinnovata la selezione di tema, lingua e colore principale nelle Impostazioni con un nuovo layout a pulsanti segmentati.';
-
-  @override
-  String get changelog_v2_0_0_bullet_25 =>
-      'Velocizzato il passaggio dalla schermata iniziale alla scansione e alleggerito il peso dei caratteri in bold in tutta l\'app.';
-
-  @override
-  String get changelog_v2_0_0_bullet_26 =>
-      'Aggiunta l\'opzione tema \"Sistema\", che segue automaticamente l\'impostazione chiaro/scuro del dispositivo.';
-
-  @override
-  String get changelog_v2_0_0_bullet_27 =>
-      'Risolto un problema per cui la modifica di beep o vibrazione della scansione nelle Impostazioni aveva effetto solo dopo il riavvio dell\'app.';
-
-  @override
-  String get changelog_v2_0_0_bullet_28 =>
-      'Risolto un problema per cui non era possibile scansionare di nuovo lo stesso codice senza riavviare l\'app: ora basta allontanare la fotocamera e inquadrarlo di nuovo.';
-
-  @override
-  String get changelog_v2_0_0_bullet_29 =>
-      'Ricerca più fluida nella Cronologia: la lista non si ricarica più a ogni tasto premuto e i filtri vengono applicati appena smetti di digitare.';
-
-  @override
-  String get changelog_v2_0_0_bullet_30 =>
-      'Cronologia e Preferiti ora condividono lo stesso stile delle card e, nella Cronologia, un tocco in qualsiasi punto della card apre il dettaglio del codice.';
-
-  @override
-  String get changelog_v2_0_0_bullet_31 =>
-      'Apertura del dettaglio di un codice più rapida e fluida, con l\'icona del tipo che si anima dalla lista alla schermata di dettaglio.';
-
-  @override
-  String get changelog_v2_0_0_bullet_32 =>
-      'Le schermate vuote ora suggeriscono cosa fare: creare il primo codice dai Preferiti, scansionare dalla Cronologia o azzerare i filtri quando una ricerca non trova risultati.';
-
-  @override
-  String get changelog_v2_0_0_bullet_33 =>
-      'La lingua scelta per l\'app viene applicata fin dall\'avvio, senza un breve passaggio nella lingua del dispositivo.';
-
-  @override
-  String get changelog_v2_0_0_bullet_34 =>
-      'Scanner rinnovato: il pulsante della torcia mostra se è accesa, la linea di scansione è animata, l\'area fuori dal riquadro è oscurata e i pulsanti danno un riscontro al tocco e con vibrazione.';
-
-  @override
-  String get changelog_v2_0_0_bullet_35 =>
-      'I filtri della Cronologia sono ora riuniti in un unico pannello con chip descrittivi, e l\'icona del filtro mostra quanti filtri sono attivi.';
-
-  @override
-  String get changelog_v2_0_0_bullet_36 =>
-      'Ora puoi registrarti con Google direttamente dalla schermata di registrazione.';
-
-  @override
-  String get changelog_v2_0_0_bullet_37 =>
-      'L\'accesso con Google mantiene sempre la sessione attiva e la sessione salvata viene ripristinata correttamente all\'avvio, anche offline o dopo aver reinstallato l\'app da un backup.';
-
-  @override
-  String get changelog_v2_0_0_bullet_38 =>
-      'La pagina Database mostra quando è stato esportato e importato l\'ultimo backup JSON, e i backup esportati vengono ora salvati anche nella cartella Download pubblica, così non vanno persi disinstallando l\'app.';
-
-  @override
-  String get changelog_v2_0_0_bullet_39 =>
-      'Nuova veste grafica per Dettaglio codice, Crea codice, Info e Profilo, coerente con il resto dell\'app: testi più leggibili, azioni rapide con etichetta nel dettaglio e layout più ordinato.';
-
-  @override
-  String get changelog_v2_0_0_bullet_40 =>
-      'L\'anteprima del QR durante la creazione ora si aggiorna in tempo reale per ogni tipo di codice, compresi quelli social.';
-
-  @override
-  String get changelog_v2_0_0_bullet_41 =>
-      'Le Impostazioni mostrano la lingua effettivamente in uso e gli interruttori spenti non sembrano più accesi.';
-
-  @override
-  String get changelog_v2_0_0_bullet_42 =>
-      'Trascina verso il basso Cronologia e Preferiti per aggiornarli; un piccolo avviso indica quando sei offline o quando ci sono modifiche ancora da sincronizzare.';
-
-  @override
-  String get changelog_v2_0_0_bullet_43 =>
-      'Selezione dei codici in Cronologia più comoda: tieni premuto un codice per iniziare a selezionare, la barra di ricerca diventa una barra di selezione animata e la conferma indica quanti codici sono stati eliminati.';
-
-  @override
-  String get changelog_v2_0_0_bullet_44 =>
-      'Aggiornate all\'ultima versione le librerie Firebase usate per accesso, sincronizzazione dei codici e segnalazione degli errori.';
-
-  @override
-  String get changelog_v2_0_0_bullet_45 =>
-      'Nuovo logo e nuova icona dell\'app, con supporto alle icone a tema di Android 13+; dentro l\'app il logo segue il tema e il colore principale.';
-
-  @override
-  String get changelog_v2_0_0_bullet_46 =>
-      'Informativa privacy riscritta, ora leggibile direttamente nell\'app (anche offline) da Impostazioni > Info, con lo stesso testo pubblicato online.';
-
-  @override
-  String get changelog_v2_0_0_bullet_47 =>
-      'Database, Supporto ed Elimina account ora hanno lo stesso stile delle altre schermate; le FAQ del Supporto hanno risposte corrette e in Preferiti la scheda selezionata è evidenziata per intero.';
-
-  @override
-  String get changelog_v2_0_0_bullet_48 =>
-      'La mappa per scegliere una posizione non chiede più il permesso di posizione e non si chiude più se lo neghi: basta toccare il punto che vuoi.';
-
-  @override
-  String get changelog_v2_0_0_bullet_49 =>
-      'Schermata Info ridisegnata: cosa fa QRation in breve, le funzionalità principali e i link utili (codice sorgente, sito web, contatti, privacy policy e licenze open source).';
-
-  @override
-  String get changelog_v2_0_0_bullet_50 =>
-      'Accessibilità migliorata: testi secondari più contrastati nel tema chiaro, aree tattili di almeno 48 dp, schermate che si adattano al testo di sistema ingrandito (accesso, eliminazione account, tipi di codice, preferiti) ed etichette per gli screen reader su interruttori, pulsanti e codici QR. Il pulsante \"Salta\" dell\'onboarding ora è tradotto.';
-
-  @override
-  String get changelog_v2_0_0_bullet_51 =>
-      'Aspetto più uniforme: dimensioni dei testi e arrotondamento degli angoli seguono una sola scala in tutta l\'app, e i campi data e ora sono uguali agli altri campi.';
-
-  @override
-  String get changelog_v2_0_0_bullet_52 =>
-      'Accesso con Google aggiornato al nuovo selettore account di Android (Credential Manager).';
+      'Privacy e prestazioni: informativa privacy leggibile nell\'app anche offline, avvio più rapido, motore di scansione e generazione dei QR aggiornati e librerie Firebase all\'ultima versione.';
 }

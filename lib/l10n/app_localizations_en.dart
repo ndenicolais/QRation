@@ -1016,7 +1016,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_tile_info => 'Info';
 
   @override
-  String get settings_tile_changelog => 'What\'s new';
+  String get settings_tile_changelog => 'Changelog';
 
   @override
   String get settings_tile_support => 'Support';
@@ -1557,216 +1557,48 @@ class AppLocalizationsEn extends AppLocalizations {
       'Camera access is required to scan codes.';
 
   @override
-  String get changelog_dialog_title => 'What\'s new';
+  String get changelog_dialog_title => 'Changelog';
 
   @override
   String get changelog_dialog_close => 'Close';
 
   @override
-  String get changelog_v1_1_0_bullet_1 =>
-      'Added the \"What\'s new\" dialog: shows the app\'s updates after every update and can be opened anytime from Settings.';
+  String get changelog_v2_0_0_bullet_1 =>
+      'Scanner: it is the first screen at launch and has a new look (torch with state, animated scan line, dimmed outer area, touch feedback). A loading indicator appears after a scan and the same code can be scanned again without restarting the app. Fixed the scanner getting stuck after the first scan, when offline or when sound and vibration failed to play.';
 
   @override
-  String get changelog_v1_1_0_bullet_2 =>
-      'Fixed a graphical overflow in the Database screen\'s statistics section.';
+  String get changelog_v2_0_0_bullet_2 =>
+      'Creating codes: Home opens code creation directly, the preview updates live for every type (socials included) and you can put a logo in the middle of the QR. QR codes with a logo saved as images are recognized, and the map for picking a location no longer asks for the location permission.';
 
   @override
   String get changelog_v2_0_0_bullet_3 =>
-      '\"Remember me\" is now automatically enabled when signing in with Google.';
+      'History and Favorites: cards share the same style, filters are in a single panel showing how many are active, and search is smoother. Long-press a code to select several and delete them with a single Trash button. Pull down to refresh, with a notice when you are offline. Empty screens suggest what to do, and no black screen is left after a deletion.';
 
   @override
   String get changelog_v2_0_0_bullet_4 =>
-      'Moved the account info section and account deletion from the Database screen to the Profile screen.';
+      'Code details: new layout with labeled quick actions, an animated opening from the list and notes in a bottom panel (which previously could fail to open).';
 
   @override
   String get changelog_v2_0_0_bullet_5 =>
-      'Improved the code detail page layout and the notes editor, now a bottom sheet instead of the old popup.';
+      'Database and export: new page with actions in the top bar and clearer statistics. PDF, Excel, CSV and JSON backups are also saved to the Download folder, and the date of the last backup is shown. Fixed the permission error when exporting and an overflow in the statistics.';
 
   @override
   String get changelog_v2_0_0_bullet_6 =>
-      'Fixed a layout crash that prevented the notes bottom sheet in the code detail page from opening (only the keyboard would show).';
+      'Account: Google sign-in uses the new Android account picker and is also available from the sign-up screen. With Google the session always stays active and is restored at launch, even offline. Account details and account deletion are now in Profile, reachable from Settings.';
 
   @override
   String get changelog_v2_0_0_bullet_7 =>
-      'Reduced excessive text boldness across the app.';
+      'Settings: pick the main color among 8 palettes and a light, dark or system theme, with new segmented buttons. The chosen language applies from launch, scan sound and vibration take effect immediately and the Changelog shows what\'s new after every update.';
 
   @override
   String get changelog_v2_0_0_bullet_8 =>
-      'The QR scanner is now the first screen you see, so you can scan right after opening the app.';
+      'Look and feel: new app logo and icon (with Android 13+ themed icons), consistently redesigned screens, a new Info screen, lighter bold text and a single scale for text sizes and corners.';
 
   @override
   String get changelog_v2_0_0_bullet_9 =>
-      'Fixed a bug where, after the first scan, the scanner would stop recognizing further codes if the confirmation sound or vibration failed to start.';
+      'Accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, screens that adapt to a larger system text size and labels for screen readers. The onboarding \"Skip\" button is now translated.';
 
   @override
   String get changelog_v2_0_0_bullet_10 =>
-      'Fixed a bug where, after scanning a code with no or unstable connectivity, the app stayed stuck on the scanner instead of opening the detail page (the code was still saved and visible in History).';
-
-  @override
-  String get changelog_v2_0_0_bullet_11 =>
-      'Added a loading indicator after scanning a code, so the save delay doesn\'t look like the app froze.';
-
-  @override
-  String get changelog_v2_0_0_bullet_12 =>
-      'Shortened the wait time on the splash screen at app startup.';
-
-  @override
-  String get changelog_v2_0_0_bullet_13 =>
-      'Home now shows the code-creation screen directly instead of an extra intermediate step; profile access has been moved to Settings.';
-
-  @override
-  String get changelog_v2_0_0_bullet_14 =>
-      'Updated the icon and label of the \"Create\" navigation tab, no longer labeled \"Home\" since it now opens code creation directly.';
-
-  @override
-  String get changelog_v2_0_0_bullet_15 =>
-      'Fixed a bug where confirming a code deletion (in History or account deletion) left a black screen afterward: the confirmation dialog already closed itself, but an extra close right after it also removed the screen underneath. Bulk deletes in History now also run in parallel instead of one at a time, cutting the wait.';
-
-  @override
-  String get changelog_v2_0_0_bullet_16 =>
-      'Updated the scanning engine and modernized the QR code generation engine, keeping the existing color and shape customizations unchanged.';
-
-  @override
-  String get changelog_v2_0_0_bullet_17 =>
-      'Fixed a bug where exporting the database to PDF, Excel, or CSV failed with a storage permission denied error that was never actually requested from the user.';
-
-  @override
-  String get changelog_v2_0_0_bullet_18 =>
-      'The exported PDF, Excel, or CSV file is now also automatically saved to the device\'s Download folder, so it can be found later even without sharing it right away.';
-
-  @override
-  String get changelog_v2_0_0_bullet_19 =>
-      'Simplified deleting codes in History: a single Trash icon now starts multi-selection and deletes the chosen codes, replacing the two icons that previously did the same thing.';
-
-  @override
-  String get changelog_v2_0_0_bullet_20 =>
-      'Refreshed the Database page layout: import/export actions are now directly accessible from the top app bar, and statistics are easier to read thanks to summary cards for total, created, and scanned codes.';
-
-  @override
-  String get changelog_v2_0_0_bullet_21 =>
-      'Added the option to embed a custom logo at the center of generated QR codes.';
-
-  @override
-  String get changelog_v2_0_0_bullet_22 =>
-      'Added the ability to customize the app\'s accent color from Settings, choosing among 8 preset palettes, in addition to the existing light/dark theme.';
-
-  @override
-  String get changelog_v2_0_0_bullet_23 =>
-      'Fixed an issue where a QR code, especially with an embedded logo, could fail to be recognized when scanned from a saved image.';
-
-  @override
-  String get changelog_v2_0_0_bullet_24 =>
-      'Refreshed the theme, language, and accent color selectors in Settings with a new segmented-button layout.';
-
-  @override
-  String get changelog_v2_0_0_bullet_25 =>
-      'Sped up the transition from the splash screen to scanning and lightened bold text weight throughout the app.';
-
-  @override
-  String get changelog_v2_0_0_bullet_26 =>
-      'Added a \"System\" theme option that automatically follows the device\'s light/dark setting.';
-
-  @override
-  String get changelog_v2_0_0_bullet_27 =>
-      'Fixed an issue where changing the scan beep or vibration in Settings only took effect after restarting the app.';
-
-  @override
-  String get changelog_v2_0_0_bullet_28 =>
-      'Fixed an issue where the same code could not be scanned again without restarting the app: it can now be rescanned by moving the camera away and back.';
-
-  @override
-  String get changelog_v2_0_0_bullet_29 =>
-      'Smoother search in History: the list no longer reloads on every keystroke and filters are applied as soon as you stop typing.';
-
-  @override
-  String get changelog_v2_0_0_bullet_30 =>
-      'History and Favorites now share the same card style, and tapping a code anywhere on its card in History opens its details.';
-
-  @override
-  String get changelog_v2_0_0_bullet_31 =>
-      'Faster, smoother opening of code details, with the type icon animating from the list into the details screen.';
-
-  @override
-  String get changelog_v2_0_0_bullet_32 =>
-      'Empty screens now suggest what to do next: create your first code from Favorites, scan from History, or clear the filters when a search finds nothing.';
-
-  @override
-  String get changelog_v2_0_0_bullet_33 =>
-      'The chosen app language is applied right from startup, without a brief flash in the device language.';
-
-  @override
-  String get changelog_v2_0_0_bullet_34 =>
-      'Refreshed scanner: the flashlight button shows whether it is on, the scan line is animated, the area outside the frame is dimmed, and the buttons give touch and haptic feedback.';
-
-  @override
-  String get changelog_v2_0_0_bullet_35 =>
-      'History filters are now grouped in a single panel with labeled chips, and the filter icon shows how many filters are active.';
-
-  @override
-  String get changelog_v2_0_0_bullet_36 =>
-      'You can now sign up with Google directly from the registration screen.';
-
-  @override
-  String get changelog_v2_0_0_bullet_37 =>
-      'Signing in with Google now always keeps you logged in, and the saved session is restored reliably at startup, even offline or after reinstalling the app from a backup.';
-
-  @override
-  String get changelog_v2_0_0_bullet_38 =>
-      'The Database page shows when the JSON backup was last exported and imported, and exported backups are now also saved to the public Download folder, so they are not lost if the app is uninstalled.';
-
-  @override
-  String get changelog_v2_0_0_bullet_39 =>
-      'Refreshed look for Code details, Create code, Info and Profile, consistent with the rest of the app: more readable text, labeled quick actions in code details and a clearer layout.';
-
-  @override
-  String get changelog_v2_0_0_bullet_40 =>
-      'The QR preview while creating a code now updates live for every code type, including social codes.';
-
-  @override
-  String get changelog_v2_0_0_bullet_41 =>
-      'Settings now show the language actually in use, and switches that are off no longer look switched on.';
-
-  @override
-  String get changelog_v2_0_0_bullet_42 =>
-      'Pull down History and Favorites to refresh them, and a small banner now tells you when you are offline or when changes are still waiting to be synced.';
-
-  @override
-  String get changelog_v2_0_0_bullet_43 =>
-      'Selecting codes in History is smoother: long-press a code to start selecting, the search bar turns into an animated selection bar, and the confirmation tells you how many codes were deleted.';
-
-  @override
-  String get changelog_v2_0_0_bullet_44 =>
-      'Updated the Firebase libraries used for sign-in, cloud sync and crash reporting to their latest versions.';
-
-  @override
-  String get changelog_v2_0_0_bullet_45 =>
-      'New app logo and icon, with support for Android 13+ themed icons; inside the app the logo follows the theme and accent colors.';
-
-  @override
-  String get changelog_v2_0_0_bullet_46 =>
-      'Rewritten privacy policy, now readable directly in the app (also offline) from Settings > Info, with the same text published online.';
-
-  @override
-  String get changelog_v2_0_0_bullet_47 =>
-      'Database, Support and Delete account now match the style of the other screens; the Support FAQ has corrected answers, and the selected tab in Favorites is highlighted across the whole tab.';
-
-  @override
-  String get changelog_v2_0_0_bullet_48 =>
-      'The map for picking a location no longer asks for the location permission and no longer closes if you deny it: just tap the point you want.';
-
-  @override
-  String get changelog_v2_0_0_bullet_49 =>
-      'Redesigned Info screen: what QRation does at a glance, the main features and useful links (source code, website, contact, privacy policy and open source licenses).';
-
-  @override
-  String get changelog_v2_0_0_bullet_50 =>
-      'Better accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, layouts that adapt to a larger system text size (login, account deletion, code types, favorites) and labels for screen readers on switches, buttons and QR codes. The onboarding \"Skip\" button is now translated.';
-
-  @override
-  String get changelog_v2_0_0_bullet_51 =>
-      'More consistent look: text sizes and corner roundness now follow a single scale across the app, and the date and time fields match the other fields.';
-
-  @override
-  String get changelog_v2_0_0_bullet_52 =>
-      'Google sign-in updated to the new Android account picker (Credential Manager).';
+      'Privacy and performance: privacy policy readable in the app even offline, faster startup, updated scanning and QR generation engines and the latest Firebase libraries.';
 }
