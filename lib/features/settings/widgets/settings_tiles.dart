@@ -63,12 +63,16 @@ class SettingsNavTile extends StatelessWidget {
     required this.title,
     this.subtitle,
     required this.onTap,
+    this.trailingIcon = MingCuteIcons.mgc_right_fill,
   });
 
   final IconData icon;
   final String title;
   final String? subtitle;
   final VoidCallback onTap;
+
+  /// Chevron by default; use an external-link icon for rows leaving the app.
+  final IconData trailingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +82,7 @@ class SettingsNavTile extends StatelessWidget {
       title: _TileTitle(title),
       subtitle: subtitle != null ? _TileSubtitle(subtitle!) : null,
       trailing: Icon(
-        MingCuteIcons.mgc_right_fill,
+        trailingIcon,
         color: colorScheme.onSurfaceVariant,
       ),
       onTap: onTap,

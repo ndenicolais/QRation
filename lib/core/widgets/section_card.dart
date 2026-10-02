@@ -30,26 +30,7 @@ class SectionCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: 4.w, bottom: 10.h),
-          child: Row(
-            children: [
-              Icon(icon, size: 18.sp, color: theme.colorScheme.primary),
-              SizedBox(width: 8.w),
-              Flexible(
-                child: Text(
-                  title,
-                  style: AppFonts.montserrat(
-                    color: theme.colorScheme.primary,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.2,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        SectionHeader(title: title, icon: icon),
         Container(
           width: double.infinity,
           padding: EdgeInsets.all(16.r),
@@ -64,6 +45,40 @@ class SectionCard extends StatelessWidget {
           child: child,
         ),
       ],
+    );
+  }
+}
+
+/// Icon + title shown above a [SectionCard], also usable on its own above
+/// content that is not a single padded card (e.g. a grid or a tile list).
+class SectionHeader extends StatelessWidget {
+  const SectionHeader({super.key, required this.title, required this.icon});
+
+  final String title;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: EdgeInsets.only(left: 4.w, bottom: 10.h),
+      child: Row(
+        children: [
+          Icon(icon, size: 18.sp, color: colorScheme.primary),
+          SizedBox(width: 8.w),
+          Flexible(
+            child: Text(
+              title,
+              style: AppFonts.montserrat(
+                color: colorScheme.primary,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
