@@ -26,7 +26,7 @@ class AppConstants {
   static final Uri uriGithubProfile =
       Uri.parse('https://github.com/ndenicolais');
   static final Uri uriGithubLink = Uri.parse('https://ndenicolais.github.io/');
-  static final Uri uriGithubDocumentation =
+  static final Uri uriGithubRepository =
       Uri.parse('https://github.com/ndenicolais/QRation');
   static final Uri uriPrivacyPolicy =
       Uri.parse('https://ndenicolais.github.io/qration/privacy/');

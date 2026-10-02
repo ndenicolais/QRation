@@ -84,7 +84,7 @@ class SupportScreen extends StatelessWidget {
                   subtitle: l10n.support_screen_documentation_decription,
                   trailingIcon: MingCuteIcons.mgc_external_link_line,
                   onTap: () => launchUrl(
-                    AppConstants.uriGithubDocumentation,
+                    AppConstants.uriGithubRepository,
                     mode: LaunchMode.externalApplication,
                   ),
                 ),

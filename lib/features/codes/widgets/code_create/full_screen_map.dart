@@ -38,7 +38,7 @@ class FullScreenMapState extends State<FullScreenMap> {
   final _tileProvider = NetworkTileProvider(
     headers: {
       'User-Agent': 'QRation/${AppVersion.current} '
-          '(+${AppConstants.uriGithubDocumentation}; '
+          '(+${AppConstants.uriGithubRepository}; '
           'contact: ${AppConstants.developerEmail})',
     },
   );

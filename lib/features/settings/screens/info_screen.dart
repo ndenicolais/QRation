@@ -251,7 +251,7 @@ class _LinksCard extends StatelessWidget {
         icon: MingCuteIcons.mgc_github_fill,
         title: l10n.info_screen_link_source,
         trailingIcon: MingCuteIcons.mgc_external_link_line,
-        onTap: () => _open(AppConstants.uriGithubDocumentation),
+        onTap: () => _open(AppConstants.uriGithubRepository),
       ),
       SettingsNavTile(
         icon: MingCuteIcons.mgc_world_2_fill,
