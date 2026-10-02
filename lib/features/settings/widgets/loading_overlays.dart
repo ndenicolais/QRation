@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/widgets/app_loader.dart';
 
@@ -36,11 +35,11 @@ class FileLoadingIndicator extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 100.w,
-              height: 100.h,
+              width: 100,
+              height: 100,
               child: CircularProgressIndicator(
                 value: downloadProgress,
-                strokeWidth: 4.w,
+                strokeWidth: 4,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   Theme.of(context).colorScheme.primary,
                 ),
@@ -50,7 +49,7 @@ class FileLoadingIndicator extends StatelessWidget {
               '${(downloadProgress * 100).toStringAsFixed(0)}%',
               style: AppFonts.montserrat(
                 color: Theme.of(context).colorScheme.primary,
-                fontSize: 20.sp,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
             ),

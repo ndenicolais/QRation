@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -48,10 +47,10 @@ class SupportScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: 20.h,
+            spacing: 20,
             children: [
               SectionCard(
                 title: l10n.support_screen_contacts_text,
@@ -73,7 +72,7 @@ class SupportScreen extends StatelessWidget {
                       l10n.support_screen_faq_decription,
                       style: AppFonts.montserrat(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontSize: 13.sp,
+                        fontSize: 13,
                       ),
                     ),
                     for (final (question, answer) in faqs)

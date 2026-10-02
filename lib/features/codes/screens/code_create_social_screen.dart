@@ -11,7 +11,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/features/codes/controllers/code_create_social_controller.dart';
@@ -54,12 +53,12 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 24),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: 16.h,
+                spacing: 16,
                 children: [
                   SectionCard(
                     title: AppLocalizations.of(context)!
@@ -141,7 +140,7 @@ class CodeCreateSocialScreenState extends State<CodeCreateSocialScreen> {
   Widget _buildInputFields(BuildContext context) {
     if (_controller.isSpotify) {
       return Column(
-        spacing: 12.h,
+        spacing: 12,
         children: [
           _buildSpotifyField(
             label: AppLocalizations.of(context)!

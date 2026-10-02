@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:qration/app.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/accent_presets.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -41,14 +40,14 @@ class SettingsScreenState extends State<SettingsScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.all(16.r),
+          padding: EdgeInsets.all(16),
           children: [
             _buildGeneralSection(context),
-            SizedBox(height: 16.h),
+            SizedBox(height: 16),
             _buildScanSection(context),
-            SizedBox(height: 16.h),
+            SizedBox(height: 16),
             _buildAccountSection(context),
-            SizedBox(height: 16.h),
+            SizedBox(height: 16),
             _buildAppSection(context),
           ],
         ),
@@ -75,17 +74,17 @@ class SettingsScreenState extends State<SettingsScreen> {
               segments: [
                 ButtonSegment(
                   value: ThemeMode.system,
-                  icon: Icon(MingCuteIcons.mgc_cellphone_fill, size: 16.r),
+                  icon: Icon(MingCuteIcons.mgc_cellphone_fill, size: 16),
                   label: Text(l10n.settings_subtitle_theme_option_system),
                 ),
                 ButtonSegment(
                   value: ThemeMode.light,
-                  icon: Icon(MingCuteIcons.mgc_sun_fill, size: 16.r),
+                  icon: Icon(MingCuteIcons.mgc_sun_fill, size: 16),
                   label: Text(l10n.settings_subtitle_theme_option_light),
                 ),
                 ButtonSegment(
                   value: ThemeMode.dark,
-                  icon: Icon(MingCuteIcons.mgc_moon_fill, size: 16.r),
+                  icon: Icon(MingCuteIcons.mgc_moon_fill, size: 16),
                   label: Text(l10n.settings_subtitle_theme_option_dark),
                 ),
               ],
@@ -124,8 +123,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                   icon: Tooltip(
                     message: _accentPresetName(l10n, preset.key),
                     child: Container(
-                      width: 20.r,
-                      height: 20.r,
+                      width: 20,
+                      height: 20,
                       decoration: BoxDecoration(
                         color: isDark ? preset.dark : preset.light,
                         shape: BoxShape.circle,

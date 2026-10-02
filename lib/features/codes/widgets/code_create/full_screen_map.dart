@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -75,7 +74,7 @@ class FullScreenMapState extends State<FullScreenMap> {
     return FlutterMap(
       options: MapOptions(
         initialCenter: selectedLocation,
-        initialZoom: 5.5.r,
+        initialZoom: 5.5,
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
         ),
@@ -93,13 +92,13 @@ class FullScreenMapState extends State<FullScreenMap> {
         MarkerLayer(
           markers: [
             Marker(
-              width: 60.w,
-              height: 60.h,
+              width: 60,
+              height: 60,
               point: selectedLocation,
               child: Icon(
                 MingCuteIcons.mgc_location_fill,
                 color: AppColors.qrMarkerColor,
-                size: 34.sp,
+                size: 34,
               ),
             ),
           ],

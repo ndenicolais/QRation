@@ -11,7 +11,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -42,13 +41,13 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
       body: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.all(30.r),
+            padding: EdgeInsets.all(30),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 40.h),
+                  SizedBox(height: 40),
                   _buildBodyText(context),
-                  SizedBox(height: 40.h),
+                  SizedBox(height: 40),
                   _buildDeleteButton(context),
                 ],
               ),
@@ -120,17 +119,17 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
         Icon(
           MingCuteIcons.mgc_warning_fill,
           color: AppColors.error,
-          size: 100.sp,
+          size: 100,
         ),
-        SizedBox(height: 40.h),
+        SizedBox(height: 40),
         SizedBox(
-          width: 420.w,
+          width: 420,
           child: Text(
             AppLocalizations.of(context)!.delete_description,
             textAlign: TextAlign.center,
             style: AppFonts.montserrat(
               color: Theme.of(context).colorScheme.onSurface,
-              fontSize: 20.sp,
+              fontSize: 20,
             ),
           ),
         ),
@@ -140,24 +139,24 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
 
   Widget _buildDeleteButton(BuildContext context) {
     return SizedBox(
-      width: 180.w,
-      height: 80.h,
+      width: 180,
+      height: 80,
       child: ElevatedButton.icon(
         onPressed: _deleteAccount,
         style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.error,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.r))),
+                borderRadius: BorderRadius.circular(15))),
         icon: Icon(
           MingCuteIcons.mgc_delete_2_fill,
-          size: 32.sp,
+          size: 32,
           color: Colors.white,
         ),
         label: Text(
           AppLocalizations.of(context)!.delete_d_title,
           style: AppFonts.montserrat(
             color: AppColors.qrWhite,
-            fontSize: 20.sp,
+            fontSize: 20,
           ),
         ),
       ),
@@ -177,7 +176,7 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen>
           ),
           child: Icon(
             MingCuteIcons.mgc_eraser_fill,
-            size: 50.sp,
+            size: 50,
             color: Theme.of(context).colorScheme.primary,
           ),
         ),

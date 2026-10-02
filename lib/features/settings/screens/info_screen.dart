@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:qration/core/widgets/app_logo.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -44,10 +43,10 @@ class InfoScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: 20.h,
+            spacing: 20,
             children: [
               const _AppHeader(),
               SectionCard(
@@ -55,13 +54,13 @@ class InfoScreen extends StatelessWidget {
                 icon: MingCuteIcons.mgc_information_fill,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 10.h,
+                  spacing: 10,
                   children: [
                     Text(
                       l10n.info_screen_about_text,
                       style: AppFonts.montserrat(
                         color: colorScheme.onSurface,
-                        fontSize: 14.sp,
+                        fontSize: 14,
                         height: 1.5,
                       ),
                     ),
@@ -69,7 +68,7 @@ class InfoScreen extends StatelessWidget {
                       l10n.info_screen_origin_description,
                       style: AppFonts.montserrat(
                         color: colorScheme.onSurfaceVariant,
-                        fontSize: 13.sp,
+                        fontSize: 13,
                         height: 1.5,
                       ),
                     ),
@@ -101,7 +100,7 @@ class InfoScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: AppFonts.montserrat(
                   color: colorScheme.onSurfaceVariant,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                 ),
               ),
             ],
@@ -122,28 +121,28 @@ class _AppHeader extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
-        AppLogo(size: 120.w),
-        SizedBox(height: 12.h),
+        AppLogo(size: 120),
+        SizedBox(height: 12),
         Text(
           'QRation',
           style: AppFonts.montserrat(
             color: colorScheme.primary,
-            fontSize: 24.sp,
+            fontSize: 24,
             fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: 4.h),
+        SizedBox(height: 4),
         Text(
           l10n.info_screen_tagline,
           textAlign: TextAlign.center,
           style: AppFonts.montserrat(
             color: colorScheme.onSurfaceVariant,
-            fontSize: 14.sp,
+            fontSize: 14,
           ),
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 10),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
             color: colorScheme.primary.withValues(alpha: 0.14),
             borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -152,7 +151,7 @@ class _AppHeader extends StatelessWidget {
             '${l10n.info_screen_version_text} ${AppVersion.current}',
             style: AppFonts.montserrat(
               color: colorScheme.primary,
-              fontSize: 12.sp,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -193,13 +192,13 @@ class _FeatureGrid extends StatelessWidget {
     ];
 
     return Column(
-      spacing: 12.h,
+      spacing: 12,
       children: [
         for (var i = 0; i < features.length; i += 2)
           IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 12.w,
+              spacing: 12,
               children: [
                 Expanded(child: _FeatureCard(feature: features[i])),
                 Expanded(child: _FeatureCard(feature: features[i + 1])),
@@ -222,34 +221,34 @@ class _FeatureCard extends StatelessWidget {
     final (icon, title, text) = feature;
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(14.r),
+        padding: EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 36.r,
-              height: 36.r,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: colorScheme.primary.withValues(alpha: 0.14),
                 borderRadius: BorderRadius.circular(AppRadius.medium),
               ),
-              child: Icon(icon, size: 20.r, color: colorScheme.primary),
+              child: Icon(icon, size: 20, color: colorScheme.primary),
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 10),
             Text(
               title,
               style: AppFonts.montserrat(
                 color: colorScheme.onSurface,
-                fontSize: 14.sp,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 4.h),
+            SizedBox(height: 4),
             Text(
               text,
               style: AppFonts.montserrat(
                 color: colorScheme.onSurfaceVariant,
-                fontSize: 12.sp,
+                fontSize: 12,
                 height: 1.4,
               ),
             ),
@@ -299,8 +298,8 @@ class _LinksCard extends StatelessWidget {
           applicationName: 'QRation',
           applicationVersion: AppVersion.current,
           applicationIcon: Padding(
-            padding: EdgeInsets.all(8.r),
-            child: AppLogo(size: 64.r),
+            padding: EdgeInsets.all(8),
+            child: AppLogo(size: 64),
           ),
         ),
       ),
@@ -311,7 +310,7 @@ class _LinksCard extends StatelessWidget {
       child: Column(
         children: [
           for (var i = 0; i < rows.length; i++) ...[
-            if (i > 0) Divider(height: 1, indent: 56.w),
+            if (i > 0) Divider(height: 1, indent: 56),
             rows[i],
           ],
         ],

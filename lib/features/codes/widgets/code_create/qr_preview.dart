@@ -10,7 +10,6 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -48,8 +47,8 @@ class QrPreview extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(AppRadius.medium),
           child: SizedBox(
-            width: 200.w,
-            height: 200.w,
+            width: 200,
+            height: 200,
             child: AnimatedBuilder(
               animation: contentListenable,
               builder: (context, _) => Obx(() {

@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
@@ -45,7 +44,7 @@ class BackupSection extends StatelessWidget {
             label: l10n.database_screen_backup_last_export,
             value: format(lastExportAt),
           ),
-          Divider(height: 20.h),
+          Divider(height: 20),
           _BackupRow(
             icon: MingCuteIcons.mgc_file_import_line,
             label: l10n.database_screen_backup_last_import,
@@ -73,14 +72,14 @@ class _BackupRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
-        Icon(icon, size: 20.sp, color: colorScheme.primary),
-        SizedBox(width: 12.w),
+        Icon(icon, size: 20, color: colorScheme.primary),
+        SizedBox(width: 12),
         Expanded(
           child: Text(
             label,
             style: AppFonts.montserrat(
               color: colorScheme.onSurface,
-              fontSize: 14.sp,
+              fontSize: 14,
             ),
           ),
         ),
@@ -88,7 +87,7 @@ class _BackupRow extends StatelessWidget {
           value,
           style: AppFonts.montserrat(
             color: colorScheme.onSurfaceVariant,
-            fontSize: 13.sp,
+            fontSize: 13,
             fontWeight: FontWeight.w500,
           ),
         ),

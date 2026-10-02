@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -43,7 +42,7 @@ class ExportSection extends StatelessWidget {
               onTap: onPdf,
             ),
           ),
-          SizedBox(width: 10.w),
+          SizedBox(width: 10),
           Expanded(
             child: _ExportCard(
               iconData: LineAwesomeIcons.file_excel_solid,
@@ -51,7 +50,7 @@ class ExportSection extends StatelessWidget {
               onTap: onExcel,
             ),
           ),
-          SizedBox(width: 10.w),
+          SizedBox(width: 10),
           Expanded(
             child: _ExportCard(
               iconData: LineAwesomeIcons.file_csv_solid,
@@ -81,13 +80,13 @@ class _ExportCard extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(14.r),
+      borderRadius: BorderRadius.circular(14),
       child: Container(
-        constraints: BoxConstraints(minHeight: 100.h),
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 14.h),
+        constraints: BoxConstraints(minHeight: 100),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 14),
         decoration: BoxDecoration(
           color: theme.colorScheme.primary.withValues(alpha: 0.07),
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: theme.colorScheme.primary.withValues(alpha: 0.20),
           ),
@@ -95,8 +94,8 @@ class _ExportCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(iconData, size: 30.sp, color: theme.colorScheme.primary),
-            SizedBox(height: 8.h),
+            Icon(iconData, size: 30, color: theme.colorScheme.primary),
+            SizedBox(height: 8),
             Text(
               text,
               textAlign: TextAlign.center,
@@ -104,7 +103,7 @@ class _ExportCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: AppFonts.montserrat(
                 color: theme.colorScheme.onSurface,
-                fontSize: 12.sp,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
             ),

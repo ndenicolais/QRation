@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 
 class CodeDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -101,12 +100,12 @@ class _PopupMenu extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: itemColor),
-          SizedBox(width: 10.w),
+          SizedBox(width: 10),
           Text(
             text,
             style: AppFonts.montserrat(
               color: itemColor,
-              fontSize: 14.sp,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),

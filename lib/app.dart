@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/routes/app_pages.dart';
 import 'package:qration/core/routes/app_routes.dart';
@@ -39,38 +38,28 @@ class QrationApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
 
-    return LayoutBuilder(
-      builder: (_, constraints) => ScreenUtilInit(
-        designSize: Size(
-          constraints.maxWidth > 0 ? constraints.maxWidth : 390,
-          constraints.maxHeight > 0 ? constraints.maxHeight : 844,
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'QRation',
+        theme: AppTheme.lightTheme(
+          primary: themeController.currentAccent.light,
         ),
-        splitScreenMode: true,
-        minTextAdapt: true,
-        builder: (_, __) => Obx(
-          () => GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'QRation',
-            theme: AppTheme.lightTheme(
-              primary: themeController.currentAccent.light,
-            ),
-            darkTheme: AppTheme.darkTheme(
-              primary: themeController.currentAccent.dark,
-            ),
-            themeMode: themeController.themeMode,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            locale: initialLocale,
-            supportedLocales: L10n.all,
-            getPages: AppPages.pages,
-            unknownRoute: AppPages.unknownRoute,
-            initialRoute: AppRoutes.splash,
-          ),
+        darkTheme: AppTheme.darkTheme(
+          primary: themeController.currentAccent.dark,
         ),
+        themeMode: themeController.themeMode,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: initialLocale,
+        supportedLocales: L10n.all,
+        getPages: AppPages.pages,
+        unknownRoute: AppPages.unknownRoute,
+        initialRoute: AppRoutes.splash,
       ),
     );
   }

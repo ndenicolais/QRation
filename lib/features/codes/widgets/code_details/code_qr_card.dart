@@ -10,7 +10,6 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -60,7 +59,7 @@ class CodeInfoRow extends StatelessWidget {
         Expanded(
           child: _InfoChip(label: dateLabel, value: formattedDate),
         ),
-        SizedBox(width: 10.w),
+        SizedBox(width: 10),
         Expanded(
           child: _InfoChip(
             label: typeLabel,
@@ -92,7 +91,7 @@ class _InfoChip extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         color: theme.cardTheme.color ?? colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.large),
@@ -109,18 +108,18 @@ class _InfoChip extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 4),
           Row(
             children: [
               if (icon != null) ...[
                 if (iconHeroTag != null)
                   Hero(
                     tag: iconHeroTag!,
-                    child: Icon(icon, size: 16.sp, color: colorScheme.primary),
+                    child: Icon(icon, size: 16, color: colorScheme.primary),
                   )
                 else
-                  Icon(icon, size: 16.sp, color: colorScheme.primary),
-                SizedBox(width: 6.w),
+                  Icon(icon, size: 16, color: colorScheme.primary),
+                SizedBox(width: 6),
               ],
               Expanded(
                 child: Text(
@@ -164,16 +163,16 @@ class CodeQrSection extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(AppRadius.medium),
           child: SizedBox(
-            width: 220.w,
-            height: 220.h,
+            width: 220,
+            height: 220,
             child: Screenshot(
               controller: screenshotController,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 220.sp,
-                    height: 220.sp,
+                    width: 220,
+                    height: 220,
                     child: PrettyQrView.data(
                       data: code.barcode.rawValue ?? '',
                       errorCorrectLevel: code.logoPath != null

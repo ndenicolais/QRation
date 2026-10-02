@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -65,7 +64,7 @@ class HistoryScreenState extends State<HistoryScreen> {
             Column(
               children: [
                 _buildSearchBar(context),
-                SizedBox(height: 10.h),
+                SizedBox(height: 10),
                 _buildCodesList(context),
               ],
             ),
@@ -123,7 +122,7 @@ class HistoryScreenState extends State<HistoryScreen> {
 
   Widget _buildSearchBar(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 14.r),
+      padding: EdgeInsets.symmetric(horizontal: 14),
       child: Obx(() {
         final isSelecting = _controller.isSelecting.value;
         // The search row turns into a contextual selection bar.
@@ -165,14 +164,14 @@ class HistoryScreenState extends State<HistoryScreen> {
                 FocusManager.instance.primaryFocus?.unfocus(),
             style: AppFonts.montserrat(
               color: theme.colorScheme.onSurface,
-              fontSize: 14.sp,
+              fontSize: 14,
             ),
             cursorColor: theme.colorScheme.primary,
             onChanged: _controller.onSearchChanged,
             decoration: InputDecoration(
               prefixIcon: Icon(
                 MingCuteIcons.mgc_search_2_fill,
-                size: 18.sp,
+                size: 18,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
               suffixIcon: hasSearch
@@ -189,11 +188,11 @@ class HistoryScreenState extends State<HistoryScreen> {
               fillColor: theme.colorScheme.surfaceContainerHighest
                   .withValues(alpha: 0.35),
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                  EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               labelText: l10n.history_screen_search_label,
               labelStyle: AppFonts.montserrat(
                 color: theme.colorScheme.onSurfaceVariant,
-                fontSize: 13.sp,
+                fontSize: 13,
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
@@ -250,8 +249,8 @@ class HistoryScreenState extends State<HistoryScreen> {
     final allSelected = _controller.allSelected;
     return Container(
       key: const ValueKey('selection'),
-      height: 52.h,
-      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      height: 52,
+      padding: EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(14),
@@ -273,7 +272,7 @@ class HistoryScreenState extends State<HistoryScreen> {
               overflow: TextOverflow.ellipsis,
               style: AppFonts.montserrat(
                 color: theme.colorScheme.onSurface,
-                fontSize: 15.sp,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
             ),

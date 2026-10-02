@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -393,13 +392,13 @@ class CodeContentCard extends StatelessWidget {
                       ? MingCuteIcons.mgc_arrows_up_line
                       : MingCuteIcons.mgc_arrows_down_line,
                   color: Theme.of(context).colorScheme.onSurface,
-                  size: 30.sp,
+                  size: 30,
                 ),
               )),
-        SizedBox(height: 14.h),
+        SizedBox(height: 14),
         ElevatedButton.icon(
           onPressed: onButtonPressed,
-          icon: Icon(buttonIcon, size: 22.sp),
+          icon: Icon(buttonIcon, size: 22),
           label: Text(buttonText),
         ),
       ],
@@ -515,7 +514,7 @@ class CodeContentCard extends StatelessWidget {
         option.label,
         style: AppFonts.montserrat(
           color: Theme.of(context).colorScheme.onSurface,
-          fontSize: 14.r,
+          fontSize: 14,
         ),
       ),
       onTap: () async {

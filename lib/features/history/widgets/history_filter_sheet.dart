@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/constants/app_constants.dart';
@@ -56,19 +55,19 @@ class HistoryFilterSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 l10n.history_filter_sheet_title,
                 style: AppFonts.montserrat(
                   color: theme.colorScheme.onSurface,
-                  fontSize: 18.sp,
+                  fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
             Flexible(
               child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 8.h),
+                padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -98,8 +97,8 @@ class HistoryFilterSheet extends StatelessWidget {
                     ),
                     _SectionTitle(l10n.history_filter_sheet_types),
                     Wrap(
-                      spacing: 8.w,
-                      runSpacing: 4.h,
+                      spacing: 8,
+                      runSpacing: 4,
                       children: [
                         for (final type
                             in AppConstants.customOrderedBarcodeTypes)
@@ -121,8 +120,8 @@ class HistoryFilterSheet extends StatelessWidget {
                     ),
                     _SectionTitle(l10n.history_filter_sheet_social),
                     Wrap(
-                      spacing: 8.w,
-                      runSpacing: 4.h,
+                      spacing: 8,
+                      runSpacing: 4,
                       children: [
                         for (final social in AppConstants.socialCodesList)
                           FilterChip(
@@ -141,7 +140,7 @@ class HistoryFilterSheet extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 16.h),
+              padding: EdgeInsets.fromLTRB(20, 8, 20, 16),
               child: Row(
                 children: [
                   Expanded(
@@ -152,7 +151,7 @@ class HistoryFilterSheet extends StatelessWidget {
                       child: Text(l10n.history_screen_clear_filters),
                     ),
                   ),
-                  SizedBox(width: 12.w),
+                  SizedBox(width: 12),
                   Expanded(
                     child: FilledButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -177,12 +176,12 @@ class _SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 16.h, bottom: 8.h),
+      padding: EdgeInsets.only(top: 16, bottom: 8),
       child: Text(
         text,
         style: AppFonts.montserrat(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
-          fontSize: 13.sp,
+          fontSize: 13,
           fontWeight: FontWeight.w500,
         ),
       ),

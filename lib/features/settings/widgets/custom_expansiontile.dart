@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 
@@ -42,20 +41,20 @@ class CustomExpansionTileState extends State<CustomExpansionTile> {
       shape: const Border(),
       collapsedShape: const Border(),
       tilePadding: EdgeInsets.zero,
-      childrenPadding: EdgeInsets.only(bottom: 12.h),
+      childrenPadding: EdgeInsets.only(bottom: 12),
       expandedAlignment: Alignment.centerLeft,
       title: Text(
         widget.title,
         style: AppFonts.montserrat(
           color: colorScheme.onSurface,
-          fontSize: 14.sp,
+          fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
       ),
       trailing: Icon(
         isExpanded ? widget.iconOpened : widget.iconClosed,
         color: isExpanded ? colorScheme.primary : colorScheme.onSurfaceVariant,
-        size: 24.sp,
+        size: 24,
       ),
       onExpansionChanged: (bool expanded) {
         setState(() {
@@ -67,7 +66,7 @@ class CustomExpansionTileState extends State<CustomExpansionTile> {
           widget.answer,
           style: AppFonts.montserrat(
             color: colorScheme.onSurfaceVariant,
-            fontSize: 14.sp,
+            fontSize: 14,
             height: 1.5,
           ),
         ),

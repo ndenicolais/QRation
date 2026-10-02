@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 
@@ -33,7 +32,7 @@ class SettingsGroup extends StatelessWidget {
         Text(
           title,
           style: AppFonts.montserrat(
-            fontSize: 18.sp,
+            fontSize: 18,
             color: theme.colorScheme.primary,
             fontWeight: FontWeight.w500,
           ),
@@ -44,10 +43,10 @@ class SettingsGroup extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
             side: BorderSide(
               color: theme.colorScheme.outline,
-              width: 1.w,
+              width: 1,
             ),
           ),
-          margin: EdgeInsets.only(top: 8.r),
+          margin: EdgeInsets.only(top: 8),
           child: Column(children: children),
         ),
       ],
@@ -118,7 +117,7 @@ class SettingsSwitchTile extends StatelessWidget {
           _TileTitle(title),
           if (subtitle != null)
             Padding(
-              padding: EdgeInsets.only(top: 4.r),
+              padding: EdgeInsets.only(top: 4),
               child: _TileSubtitle(subtitle!),
             ),
         ],
@@ -152,18 +151,18 @@ class SettingsSegmentedTile<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, color: colorScheme.primary, size: 20.r),
-              SizedBox(width: 12.w),
+              Icon(icon, color: colorScheme.primary, size: 20),
+              SizedBox(width: 12),
               _TileTitle(title),
             ],
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 10),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SegmentedButton<T>(
@@ -197,7 +196,7 @@ class _TileTitle extends StatelessWidget {
       text,
       style: AppFonts.montserrat(
         color: Theme.of(context).colorScheme.onSurface,
-        fontSize: 14.sp,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -215,7 +214,7 @@ class _TileSubtitle extends StatelessWidget {
       text,
       style: AppFonts.montserrat(
         color: Theme.of(context).colorScheme.onSurfaceVariant,
-        fontSize: 12.sp,
+        fontSize: 12,
         fontWeight: FontWeight.w500,
       ),
     );

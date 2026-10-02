@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_font_sizes.dart';
@@ -73,12 +72,12 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
             FocusScope.of(context).unfocus();
           },
           child: Padding(
-            padding: EdgeInsets.all(16.r),
+            padding: EdgeInsets.all(16),
             child: SingleChildScrollView(
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: 16.h,
+                  spacing: 16,
                   children: [
                     CodeInfoRow(
                       dateLabel: l10n.code_details_screen_date_title,
@@ -161,10 +160,10 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
       builder: (BuildContext context) {
         return Padding(
           padding: EdgeInsets.fromLTRB(
-            20.r,
+            20,
             0,
-            20.r,
-            MediaQuery.of(context).viewInsets.bottom + 20.r,
+            20,
+            MediaQuery.of(context).viewInsets.bottom + 20,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -178,7 +177,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: 12),
               TextField(
                 controller: notesController,
                 decoration: InputDecoration(
@@ -196,7 +195,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                 maxLines: 5,
                 maxLength: 160,
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -211,7 +210,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8.w),
+                  SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: () async {
                       await _controller.updateNotes(notesController.text);
@@ -223,7 +222,7 @@ class CodeDetailsScreenState extends State<CodeDetailsScreen> {
                       // Overrides the app theme's minimumSize(double.infinity, 52):
                       // inside a Row the child gets unbounded width constraints,
                       // and an infinite minimumSize width crashes layout.
-                      minimumSize: Size(88.w, 44.h),
+                      minimumSize: Size(88, 44),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppRadius.medium),
                       ),

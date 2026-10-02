@@ -11,7 +11,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -71,21 +70,21 @@ class _UserScreenState extends State<UserScreen> {
         child: _loading
             ? const Center(child: AppLoader())
             : SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+                padding: EdgeInsets.fromLTRB(16, 16, 16, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _ProfileHeader(user: _user, firebaseUser: firebaseUser),
-                    SizedBox(height: 24.h),
+                    SizedBox(height: 24),
                     if (firebaseUser != null)
                       AccountInfoCard(currentUser: firebaseUser),
-                    SizedBox(height: 28.h),
+                    SizedBox(height: 28),
                     AppButton.outlined(
                       label: l10n.user_screen_logout_button,
                       icon: MingCuteIcons.mgc_exit_fill,
                       onPressed: _authCtrl.logout,
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 12),
                     AppButton.outlined(
                       label: l10n.settings_tile_delete_account,
                       icon: MingCuteIcons.mgc_delete_2_fill,
@@ -120,7 +119,7 @@ class _ProfileHeader extends StatelessWidget {
         initial,
         style: AppFonts.montserrat(
           color: colorScheme.primary,
-          fontSize: 40.sp,
+          fontSize: 40,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -129,14 +128,14 @@ class _ProfileHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(3.r),
+          padding: EdgeInsets.all(3),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(color: colorScheme.primary, width: 2),
           ),
           child: Container(
-            width: 96.r,
-            height: 96.r,
+            width: 96,
+            height: 96,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: colorScheme.primary.withValues(alpha: 0.14),
@@ -152,25 +151,25 @@ class _ProfileHeader extends StatelessWidget {
           ),
         ),
         if (name.isNotEmpty) ...[
-          SizedBox(height: 14.h),
+          SizedBox(height: 14),
           Text(
             name,
             textAlign: TextAlign.center,
             style: AppFonts.montserrat(
               color: colorScheme.onSurface,
-              fontSize: 20.sp,
+              fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
           ),
         ],
         if (email.isNotEmpty) ...[
-          SizedBox(height: 4.h),
+          SizedBox(height: 4),
           Text(
             email,
             textAlign: TextAlign.center,
             style: AppFonts.montserrat(
               color: colorScheme.onSurfaceVariant,
-              fontSize: 13.sp,
+              fontSize: 13,
             ),
           ),
         ],

@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -80,7 +79,7 @@ class FavoritesScreenState extends State<FavoritesScreen>
       // Sized on the whole tab: with the default `label` size the horizontal
       // padding shrank the pill to the middle of the icon + text pair.
       indicatorSize: TabBarIndicatorSize.tab,
-      indicatorPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+      indicatorPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       splashBorderRadius: BorderRadius.circular(14),
       overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
         if (states.contains(WidgetState.pressed)) {
@@ -93,12 +92,12 @@ class FavoritesScreenState extends State<FavoritesScreen>
       }),
       labelColor: theme.colorScheme.primary,
       labelStyle: AppFonts.montserrat(
-        fontSize: 14.sp,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
       unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
       unselectedLabelStyle: AppFonts.montserrat(
-        fontSize: 14.sp,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
       dividerColor: Colors.transparent,
@@ -120,8 +119,8 @@ class FavoritesScreenState extends State<FavoritesScreen>
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 20.sp),
-          SizedBox(width: 8.w),
+          Icon(icon, size: 20),
+          SizedBox(width: 8),
           Text(text),
         ],
       ),

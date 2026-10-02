@@ -11,7 +11,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/widgets/app_toast.dart';
@@ -140,7 +139,7 @@ class DatabaseScreenState extends State<DatabaseScreen> {
                           onRetry: _controller.loadData,
                         )
                       : SingleChildScrollView(
-                          padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 32.h),
+                          padding: EdgeInsets.fromLTRB(16, 24, 16, 32),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -159,12 +158,12 @@ class DatabaseScreenState extends State<DatabaseScreen> {
                                 socialCodesByScanned:
                                     _controller.socialCodesByScanned.value,
                               ),
-                              SizedBox(height: 28.h),
+                              SizedBox(height: 28),
                               BackupSection(
                                 lastExportAt: _controller.lastExportAt.value,
                                 lastImportAt: _controller.lastImportAt.value,
                               ),
-                              SizedBox(height: 28.h),
+                              SizedBox(height: 28),
                               ExportSection(
                                 onPdf: _generatePdf,
                                 onExcel: _generateExcel,
@@ -208,7 +207,7 @@ class DatabaseScreenState extends State<DatabaseScreen> {
           icon: const Icon(MingCuteIcons.mgc_file_export_line),
           onPressed: _exportCodes,
         ),
-        SizedBox(width: 4.w),
+        SizedBox(width: 4),
       ],
     );
   }

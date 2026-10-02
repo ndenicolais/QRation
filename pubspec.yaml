@@ -16,7 +16,6 @@ dependencies:
   get: ^4.6.6
 
   # UI
-  flutter_screenutil: ^5.9.3
   ming_cute_icons: ^0.0.7
   line_awesome_flutter: ^3.0.1
   smooth_page_indicator: ^1.2.0+3

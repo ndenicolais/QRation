@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_radius.dart';
@@ -46,12 +45,12 @@ class _Banner extends StatelessWidget {
     final offline = status == SyncStatus.offline;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(14.w, 8.h, 14.w, 0),
+      padding: EdgeInsets.fromLTRB(14, 8, 14, 0),
       child: Semantics(
         liveRegion: true,
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: colorScheme.primary.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(AppRadius.medium),
@@ -62,16 +61,16 @@ class _Banner extends StatelessWidget {
                 offline
                     ? MingCuteIcons.mgc_wifi_off_line
                     : MingCuteIcons.mgc_upload_2_line,
-                size: 18.sp,
+                size: 18,
                 color: colorScheme.primary,
               ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 10),
               Expanded(
                 child: Text(
                   offline ? l10n.sync_status_offline : l10n.sync_status_pending,
                   style: AppFonts.montserrat(
                     color: colorScheme.onSurface,
-                    fontSize: 12.sp,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

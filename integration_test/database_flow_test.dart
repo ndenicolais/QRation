@@ -1,4 +1,4 @@
-﻿// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -20,7 +20,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:integration_test/integration_test.dart';
@@ -63,29 +62,26 @@ void main() {
       final controller = Get.put(DatabaseController());
 
       await tester.pumpWidget(
-        ScreenUtilInit(
-          designSize: const Size(390, 844),
-          builder: (_, __) => GetMaterialApp(
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            home: Scaffold(
-              body: Obx(
-                () => controller.isLoading.value
-                    ? const Center(child: CircularProgressIndicator())
-                    : StatisticsSection(
-                        totalCodes: controller.totalCodes.value,
-                        createdCodesCount: controller.createdCodesCount.value,
-                        scannedCodesCount: controller.scannedCodesCount.value,
-                        standardCodesByCreated:
-                            controller.standardCodesByCreated.value,
-                        socialCodesByCreated:
-                            controller.socialCodesByCreated.value,
-                        standardCodesByScanned:
-                            controller.standardCodesByScanned.value,
-                        socialCodesByScanned:
-                            controller.socialCodesByScanned.value,
-                      ),
-              ),
+        GetMaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Obx(
+              () => controller.isLoading.value
+                  ? const Center(child: CircularProgressIndicator())
+                  : StatisticsSection(
+                      totalCodes: controller.totalCodes.value,
+                      createdCodesCount: controller.createdCodesCount.value,
+                      scannedCodesCount: controller.scannedCodesCount.value,
+                      standardCodesByCreated:
+                          controller.standardCodesByCreated.value,
+                      socialCodesByCreated:
+                          controller.socialCodesByCreated.value,
+                      standardCodesByScanned:
+                          controller.standardCodesByScanned.value,
+                      socialCodesByScanned:
+                          controller.socialCodesByScanned.value,
+                    ),
             ),
           ),
         ),

@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -53,8 +52,7 @@ class CodeListTile extends StatelessWidget {
   final VoidCallback? onLongPress;
 
   /// Padding shared by the lists hosting these tiles.
-  static EdgeInsets get listPadding =>
-      EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 16.h);
+  static EdgeInsets get listPadding => EdgeInsets.fromLTRB(12, 8, 12, 16);
 
   static final _dateFormat = DateFormat('dd/MM/yyyy HH:mm');
 
@@ -69,21 +67,21 @@ class CodeListTile extends StatelessWidget {
       color: highlighted
           ? colorScheme.primary.withValues(alpha: 0.10)
           : Theme.of(context).cardTheme.color,
-      margin: EdgeInsets.symmetric(vertical: 6.h),
+      margin: EdgeInsets.symmetric(vertical: 6),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.large),
         side: BorderSide(
           color: highlighted
               ? colorScheme.primary.withValues(alpha: 0.60)
               : colorScheme.outline,
-          width: 1.w,
+          width: 1,
         ),
       ),
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: selectable ? () => onSelectedChanged?.call(!selected) : onTap,
         onLongPress: onLongPress,
-        contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
+        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 4),
         leading: selectable
             ? Checkbox(
                 value: selected,
@@ -105,30 +103,30 @@ class CodeListTile extends StatelessWidget {
                 code.source.name.capitalize!,
                 style: AppFonts.montserrat(
                   color: colorScheme.primary,
-                  fontSize: 14.sp,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 4.h),
+              SizedBox(height: 4),
             ],
             Text(
               getContentBody(code).formattedContent,
               style: AppFonts.montserrat(
                 color: colorScheme.onSurface,
-                fontSize: 14.sp,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 4.h),
+            SizedBox(height: 4),
           ],
         ),
         subtitle: Text(
           _dateFormat.format(code.date),
           style: AppFonts.montserrat(
             color: colorScheme.onSurfaceVariant,
-            fontSize: 12.sp,
+            fontSize: 12,
           ),
         ),
         trailing: selectable

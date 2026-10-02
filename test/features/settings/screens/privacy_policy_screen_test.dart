@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qration/core/constants/app_constants.dart';
 import 'package:qration/features/settings/screens/privacy_policy_screen.dart';
@@ -24,14 +23,11 @@ Future<void> _pumpScreen(WidgetTester tester, Locale locale) async {
   addTearDown(tester.view.resetDevicePixelRatio);
 
   await tester.pumpWidget(
-    ScreenUtilInit(
-      designSize: const Size(390, 844),
-      builder: (_, __) => MaterialApp(
-        locale: locale,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: const PrivacyPolicyScreen(),
-      ),
+    MaterialApp(
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const PrivacyPolicyScreen(),
     ),
   );
   await tester.pump();

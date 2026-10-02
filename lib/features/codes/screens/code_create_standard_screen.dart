@@ -12,7 +12,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
@@ -85,10 +84,10 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 16.h,
+              spacing: 16,
               children: [
                 SectionCard(
                   title: AppLocalizations.of(context)!
@@ -196,7 +195,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         isUrlField: true,
       ),
       BarcodeType.email: Column(
-        spacing: 12.h,
+        spacing: 12,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -225,7 +224,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         controllerKey: 'phone',
       ),
       BarcodeType.sms: Column(
-        spacing: 12.h,
+        spacing: 12,
         children: [
           _buildPhoneNumberField(
             label: AppLocalizations.of(context)!
@@ -242,7 +241,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         ],
       ),
       BarcodeType.contactInfo: Column(
-        spacing: 12.h,
+        spacing: 12,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -274,7 +273,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         ],
       ),
       BarcodeType.geo: Column(
-        spacing: 12.h,
+        spacing: 12,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -290,7 +289,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             textInputAction: TextInputAction.done,
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 10),
           AppButton.outlined(
             label: AppLocalizations.of(context)!
                 .code_create_standard_screen_geo_select_button,
@@ -300,7 +299,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         ],
       ),
       BarcodeType.wifi: Column(
-        spacing: 12.h,
+        spacing: 12,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!
@@ -373,7 +372,7 @@ class CodeCreateStandardScreenState extends State<CodeCreateStandardScreen> {
         ],
       ),
       BarcodeType.calendarEvent: Column(
-        spacing: 12.h,
+        spacing: 12,
         children: [
           _buildTextField(
             label: AppLocalizations.of(context)!

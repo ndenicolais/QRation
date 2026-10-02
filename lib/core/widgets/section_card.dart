@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 
 class SectionCard extends StatelessWidget {
@@ -33,10 +32,10 @@ class SectionCard extends StatelessWidget {
         SectionHeader(title: title, icon: icon),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(16.r),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: theme.cardTheme.color ?? theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(20.r),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: theme.colorScheme.outline,
               width: 1,
@@ -61,17 +60,17 @@ class SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: EdgeInsets.only(left: 4.w, bottom: 10.h),
+      padding: EdgeInsets.only(left: 4, bottom: 10),
       child: Row(
         children: [
-          Icon(icon, size: 18.sp, color: colorScheme.primary),
-          SizedBox(width: 8.w),
+          Icon(icon, size: 18, color: colorScheme.primary),
+          SizedBox(width: 8),
           Flexible(
             child: Text(
               title,
               style: AppFonts.montserrat(
                 color: colorScheme.primary,
-                fontSize: 15.sp,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 0.2,
               ),

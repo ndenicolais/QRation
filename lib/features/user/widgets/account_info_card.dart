@@ -11,7 +11,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -82,12 +81,12 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h),
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 18.sp, color: theme.colorScheme.primary),
-          SizedBox(width: 10.w),
+          Icon(icon, size: 18, color: theme.colorScheme.primary),
+          SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,23 +95,23 @@ class _InfoRow extends StatelessWidget {
                   label,
                   style: AppFonts.montserrat(
                     color: theme.colorScheme.onSurfaceVariant,
-                    fontSize: 11.sp,
+                    fontSize: 11,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 0.4,
                   ),
                 ),
-                SizedBox(height: 2.h),
+                SizedBox(height: 2),
                 Text(
                   value,
                   style: isMonospace
                       ? AppFonts.monospace(
                           color: theme.colorScheme.onSurface,
-                          fontSize: 12.sp,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                         )
                       : AppFonts.montserrat(
                           color: theme.colorScheme.onSurface,
-                          fontSize: 13.sp,
+                          fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
                   overflow: TextOverflow.ellipsis,

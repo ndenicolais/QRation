@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
@@ -44,7 +43,7 @@ class CodeActionButtons extends StatelessWidget {
             onTap: onCopy,
           ),
         ),
-        SizedBox(width: 10.w),
+        SizedBox(width: 10),
         Expanded(
           child: Obx(() {
             final isFavorite = controller.isFavorite.value;
@@ -58,7 +57,7 @@ class CodeActionButtons extends StatelessWidget {
             );
           }),
         ),
-        SizedBox(width: 10.w),
+        SizedBox(width: 10),
         Expanded(
           child: _ActionTile(
             icon: MingCuteIcons.mgc_download_2_fill,
@@ -66,7 +65,7 @@ class CodeActionButtons extends StatelessWidget {
             onTap: onSave,
           ),
         ),
-        SizedBox(width: 10.w),
+        SizedBox(width: 10),
         Expanded(
           child: _ActionTile(
             icon: MingCuteIcons.mgc_share_2_fill,
@@ -115,19 +114,19 @@ class _ActionTile extends StatelessWidget {
           onTap();
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 4.w),
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 4),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, color: colorScheme.primary, size: 24.sp),
-              SizedBox(height: 6.h),
+              Icon(icon, color: colorScheme.primary, size: 24),
+              SizedBox(height: 6),
               Text(
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppFonts.montserrat(
                   color: colorScheme.onSurface,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),

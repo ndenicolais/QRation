@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -101,26 +100,26 @@ class PrivacyPolicyScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
             Text(
               l10n.policy_screen_updated(updated),
               style: AppFonts.montserrat(
                 color: colorScheme.onSurfaceVariant,
-                fontSize: 12.sp,
+                fontSize: 12,
               ),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 8),
             _Paragraph(l10n.policy_screen_intro),
             for (final (index, (icon, title, text)) in sections.indexed) ...[
-              SizedBox(height: 20.h),
+              SizedBox(height: 20),
               SectionCard(
                 title: '${index + 1}. $title',
                 icon: icon,
                 child: _Paragraph(text),
               ),
             ],
-            SizedBox(height: 16.h),
+            SizedBox(height: 16),
             Center(
               child: TextButton.icon(
                 onPressed: () => launchUrl(
@@ -130,7 +129,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 icon: const Icon(MingCuteIcons.mgc_external_link_line),
                 label: Text(
                   l10n.policy_screen_online,
-                  style: AppFonts.montserrat(fontSize: 14.sp),
+                  style: AppFonts.montserrat(fontSize: 14),
                 ),
               ),
             ),
@@ -152,7 +151,7 @@ class _Paragraph extends StatelessWidget {
       text,
       style: AppFonts.montserrat(
         color: Theme.of(context).colorScheme.onSurface,
-        fontSize: 14.sp,
+        fontSize: 14,
         height: 1.5,
       ),
     );

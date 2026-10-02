@@ -68,7 +68,6 @@ L'app è completamente localizzata in italiano e inglese, con supporto a tema ch
 | Autenticazione | [firebase_auth](https://pub.dev/packages/firebase_auth) `^6.7.0` + [google_sign_in](https://pub.dev/packages/google_sign_in) `^6.2.1` |
 | Core Firebase | [firebase_core](https://pub.dev/packages/firebase_core) `^4.15.0` |
 | Error reporting | [firebase_crashlytics](https://pub.dev/packages/firebase_crashlytics) `^5.4.0` (errori Flutter/Dart non gestiti, disabilitato su web) |
-| UI responsiva | [flutter_screenutil](https://pub.dev/packages/flutter_screenutil) `^5.9.3` |
 | Font | Montserrat, asset locale (`assets/fonts/`), esposto via `AppFonts` (`app_fonts.dart`) |
 | Icone UI | [ming_cute_icons](https://pub.dev/packages/ming_cute_icons) `^0.0.7` + [line_awesome_flutter](https://pub.dev/packages/line_awesome_flutter) `^3.0.1` |
 | Animazioni | [flutter_animate](https://pub.dev/packages/flutter_animate) `^4.5.0` |
@@ -733,9 +732,9 @@ La modalità tema (`ThemeMode.system`/`light`/`dark`) è salvata in `SharedPrefe
 
 **Colori:** Definiti in `app_colors.dart`. Palette distinta per tema chiaro e scuro.
 
-**Responsività UI:** Tutte le dimensioni (padding, font size, icon size) usano `flutter_screenutil` con suffissi `.sp`, `.r`, `.w`, `.h` per adattarsi a qualsiasi schermo.
+**Dimensioni e responsività:** padding, font e icone sono valori fissi in dp. `flutter_screenutil` è stato rimosso: in `app.dart` il `designSize` coincideva con lo schermo reale, quindi il fattore di scala era sempre 1 e `.sp`/`.w`/`.h`/`.r` non scalavano nulla. I numeri sono rimasti gli stessi, quindi l'aspetto non cambia. Il testo segue la dimensione scelta nelle impostazioni di sistema tramite `MediaQuery.textScaler`, che i widget `Text` applicano da soli. Per adattare un layout allo spazio disponibile si usano `LayoutBuilder`/`MediaQuery`, non fattori di scala globali.
 
-**Token condivisi:** `AppFontSizes` (`app_font_sizes.dart`) e `AppRadius` (`app_radius.dart`) centralizzano i valori di font size e border radius ricorrenti, da preferire ai valori `.sp`/`.r` inline quando coincidono con un token esistente.
+**Token condivisi:** `AppFontSizes` (`app_font_sizes.dart`) e `AppRadius` (`app_radius.dart`) centralizzano i valori di font size e border radius ricorrenti, da preferire ai valori inline quando coincidono con un token esistente.
 
 **Linea guida visiva delle schermate:** le app bar non impostano colori propri (valgono `appBarTheme`: sfondo superficie, titolo e icone nel colore principale), gli `Switch` usano `switchTheme` (traccia neutra da spento, colore principale da acceso), i testi usano `onSurface`/`onSurfaceVariant` e i contenuti sono raggruppati in `SectionCard` (`lib/core/widgets/section_card.dart`: titolo con icona + card con bordo; l'intestazione è anche esposta da sola come `SectionHeader` per contenuti che non stanno in una singola card; spostata da `settings/widgets` perché usata anche da Dettaglio, Crea, Info e Database). Il colore principale si usa solo per accenti, icone e azione principale. Le righe cliccabili dentro una card (titolo + sottotitolo + freccia o link esterno) usano `SectionLinkRow` (`lib/core/widgets/section_link_row.dart`, usata da Supporto); le FAQ del Supporto usano `CustomExpansionTile` senza bordi né padding laterale propri. Dettaglio codice, Crea codice, Info, Profilo, Database, Supporto ed Elimina account sono stati riallineati a questa linea: in precedenza usavano il colore principale come sfondo pieno di app bar e card e il colore secondario per i testi, con contrasti insufficienti (ad esempio testo blu su blu in Info e nel form di creazione). Le intestazioni di Info ora sono con iniziale maiuscola come nel resto dell'app.
 
@@ -817,7 +816,6 @@ Riepilogo di tutte le chiavi salvate in `SharedPreferences`:
 ```yaml
 dependencies:
   get: ^4.6.6                          # State management e routing
-  flutter_screenutil: ^5.9.3           # UI responsiva
   ming_cute_icons: ^0.0.7              # Icone UI
   line_awesome_flutter: ^3.0.1         # Icone aggiuntive
   smooth_page_indicator: ^1.2.0+3      # Indicatore pagine onboarding

@@ -12,7 +12,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
@@ -43,7 +42,7 @@ class QrStyleCustomizer extends StatelessWidget {
             rounded: style.eyeRounded,
             onPickColor: () => _pickColor(context, style.eyeColor),
           ),
-          Divider(height: 24.h),
+          Divider(height: 24),
           _StyleRow(
             title: l10n.code_create_standard_screen_module_title,
             colorLabel: l10n.code_create_standard_screen_module_color,
@@ -52,7 +51,7 @@ class QrStyleCustomizer extends StatelessWidget {
             rounded: style.moduleRounded,
             onPickColor: () => _pickColor(context, style.moduleColor),
           ),
-          Divider(height: 24.h),
+          Divider(height: 24),
           _LogoRow(
               style: style, title: l10n.code_create_standard_screen_logo_title),
         ],
@@ -112,7 +111,7 @@ class _StyleRow extends StatelessWidget {
             title,
             style: AppFonts.montserrat(
               color: colorScheme.onSurface,
-              fontSize: 15.sp,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -124,8 +123,8 @@ class _StyleRow extends StatelessWidget {
             customBorder: const CircleBorder(),
             child: Obx(
               () => Container(
-                width: 36.r,
-                height: 36.r,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
                   color: color.value,
                   shape: BoxShape.circle,
@@ -135,15 +134,15 @@ class _StyleRow extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 16.w),
+        SizedBox(width: 16),
         Text(
           roundedLabel,
           style: AppFonts.montserrat(
             color: colorScheme.onSurfaceVariant,
-            fontSize: 12.sp,
+            fontSize: 12,
           ),
         ),
-        SizedBox(width: 4.w),
+        SizedBox(width: 4),
         // Colors come from the theme switchTheme (neutral track when off).
         Obx(
           () => Switch(
@@ -172,7 +171,7 @@ class _LogoRow extends StatelessWidget {
             title,
             style: AppFonts.montserrat(
               color: colorScheme.onSurface,
-              fontSize: 15.sp,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -196,8 +195,8 @@ class _LogoRow extends StatelessWidget {
                 onTap: style.pickLogo,
                 borderRadius: BorderRadius.circular(AppRadius.medium),
                 child: Container(
-                  width: 52.r,
-                  height: 52.r,
+                  width: 52,
+                  height: 52,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.medium),
                     border: Border.all(color: colorScheme.outline, width: 2),

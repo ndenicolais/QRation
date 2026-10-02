@@ -9,7 +9,6 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:qration/core/theme/app_radius.dart';
@@ -46,22 +45,22 @@ class SectionLinkRow extends StatelessWidget {
                   title,
                   style: AppFonts.montserrat(
                     color: colorScheme.onSurface,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 2.h),
+                SizedBox(height: 2),
                 Text(
                   subtitle,
                   style: AppFonts.montserrat(
                     color: colorScheme.onSurfaceVariant,
-                    fontSize: 13.sp,
+                    fontSize: 13,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(width: 8.w),
+          SizedBox(width: 8),
           Icon(trailingIcon, color: colorScheme.onSurfaceVariant),
         ],
       ),

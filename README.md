@@ -33,7 +33,6 @@
 | Autenticazione | Firebase Auth + Google Sign-In |
 | Scanner QR | mobile_scanner |
 | Generazione QR | qr_flutter |
-| UI responsiva | flutter_screenutil |
 | Font | Montserrat (Google Fonts) |
 | Export | pdf, excel, csv |
 

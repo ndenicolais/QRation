@@ -1,4 +1,4 @@
-﻿// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
+// QRation â€” Copyright Â© 2026 Nicola De Nicolais â€” All Rights Reserved.
 // Licensed under a source-available, non-commercial license. See LICENSE.
 //
 // Commercial use, including publishing or monetizing on any app store,
@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
@@ -62,7 +61,7 @@ class StatisticsSection extends StatelessWidget {
                   background: theme.colorScheme.surfaceContainerHighest,
                 ),
               ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 10),
               Expanded(
                 child: _StatCard(
                   icon: MingCuteIcons.mgc_qrcode_fill,
@@ -72,7 +71,7 @@ class StatisticsSection extends StatelessWidget {
                   background: theme.colorScheme.primary.withValues(alpha: 0.08),
                 ),
               ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 10),
               Expanded(
                 child: _StatCard(
                   icon: MingCuteIcons.mgc_scan_fill,
@@ -84,14 +83,14 @@ class StatisticsSection extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 22.h),
+          SizedBox(height: 22),
           _DistributionBar(
             created: created,
             scanned: scanned,
             total: total,
             createdRatio: createdRatio,
           ),
-          SizedBox(height: 22.h),
+          SizedBox(height: 22),
           _SourceTile(
             label: l10n.database_screen_codes_field_created_title,
             icon: MingCuteIcons.mgc_qrcode_fill,
@@ -99,7 +98,7 @@ class StatisticsSection extends StatelessWidget {
             standardCounts: standardCodesByCreated,
             socialCounts: socialCodesByCreated,
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 10),
           _SourceTile(
             label: l10n.database_screen_codes_field_scanned_title,
             icon: MingCuteIcons.mgc_scan_fill,
@@ -131,25 +130,25 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 6.w),
+      padding: EdgeInsets.symmetric(vertical: 14, horizontal: 6),
       decoration: BoxDecoration(
         color: background,
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
         children: [
-          Icon(icon, size: 18.sp, color: color),
-          SizedBox(height: 6.h),
+          Icon(icon, size: 18, color: color),
+          SizedBox(height: 6),
           Text(
             '$value',
             style: AppFonts.montserrat(
               color: color,
-              fontSize: 24.sp,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
               height: 1,
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 4),
           Text(
             label,
             textAlign: TextAlign.center,
@@ -157,7 +156,7 @@ class _StatCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: AppFonts.montserrat(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontSize: 11.sp,
+              fontSize: 11,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -192,24 +191,24 @@ class _DistributionBar extends StatelessWidget {
         Row(
           children: [
             _LegendDot(theme.colorScheme.primary),
-            SizedBox(width: 4.w),
+            SizedBox(width: 4),
             Flexible(
               child: Text(
                 l10n.database_screen_codes_field_created_title,
                 overflow: TextOverflow.ellipsis,
                 style: AppFonts.montserrat(
                   color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 11.sp,
+                  fontSize: 11,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            SizedBox(width: 4.w),
+            SizedBox(width: 4),
             Text(
               total > 0 ? '${(createdRatio * 100).toStringAsFixed(0)}%' : '0%',
               style: AppFonts.montserrat(
                 color: theme.colorScheme.primary,
-                fontSize: 11.sp,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -218,31 +217,31 @@ class _DistributionBar extends StatelessWidget {
               total > 0 ? '${(scannedRatio * 100).toStringAsFixed(0)}%' : '0%',
               style: AppFonts.montserrat(
                 color: AppColors.qrGold,
-                fontSize: 11.sp,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(width: 4.w),
+            SizedBox(width: 4),
             Flexible(
               child: Text(
                 l10n.database_screen_codes_field_scanned_title,
                 overflow: TextOverflow.ellipsis,
                 style: AppFonts.montserrat(
                   color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 11.sp,
+                  fontSize: 11,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            SizedBox(width: 4.w),
+            SizedBox(width: 4),
             _LegendDot(AppColors.qrGold),
           ],
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 8),
         ClipRRect(
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(8),
           child: SizedBox(
-            height: 10.h,
+            height: 10,
             child: total > 0
                 ? Row(
                     children: [
@@ -307,7 +306,7 @@ class _SourceTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: theme.colorScheme.outlineVariant,
           width: 1,
@@ -316,24 +315,24 @@ class _SourceTile extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(8.r),
+                  padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10.r),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(icon, size: 20.sp, color: color),
+                  child: Icon(icon, size: 20, color: color),
                 ),
-                SizedBox(width: 12.w),
+                SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     label,
                     style: AppFonts.montserrat(
                       color: theme.colorScheme.onSurface,
-                      fontSize: 13.sp,
+                      fontSize: 13,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -370,20 +369,20 @@ class _SourceTile extends StatelessWidget {
                 thickness: 1,
                 color: theme.colorScheme.outlineVariant),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               child: Row(
                 children: [
                   Icon(
                     MingCuteIcons.mgc_inbox_2_fill,
-                    size: 16.sp,
+                    size: 16,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
-                  SizedBox(width: 8.w),
+                  SizedBox(width: 8),
                   Text(
                     l10n.database_screen_codes_field_empty,
                     style: AppFonts.montserrat(
                       color: theme.colorScheme.onSurfaceVariant,
-                      fontSize: 12.sp,
+                      fontSize: 12,
                     ),
                   ),
                 ],
@@ -416,35 +415,35 @@ class _BreakdownTile extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(14.r),
-        bottomRight: Radius.circular(14.r),
+        bottomLeft: Radius.circular(14),
+        bottomRight: Radius.circular(14),
       ),
       onTap: isEmpty || counts == null
           ? null
           : () => showCodesBreakdownDialog(context, dialogTitle, counts!),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Row(
           children: [
-            Icon(icon, size: 16.sp, color: theme.colorScheme.onSurfaceVariant),
-            SizedBox(width: 10.w),
+            Icon(icon, size: 16, color: theme.colorScheme.onSurfaceVariant),
+            SizedBox(width: 10),
             Expanded(
               child: Text(
                 label,
                 style: AppFonts.montserrat(
                   color: theme.colorScheme.onSurface,
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
             if (!isEmpty) _TypeBadges(counts: counts!),
-            if (!isEmpty) SizedBox(width: 6.w),
+            if (!isEmpty) SizedBox(width: 6),
             Icon(
               isEmpty
                   ? MingCuteIcons.mgc_inbox_2_fill
                   : MingCuteIcons.mgc_right_fill,
-              size: 14.sp,
+              size: 14,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ],
@@ -471,17 +470,17 @@ class _TypeBadges extends StatelessWidget {
       children: [
         ...display.map(
           (e) => Container(
-            margin: EdgeInsets.only(right: 4.w),
-            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+            margin: EdgeInsets.only(right: 4),
+            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(6.r),
+              borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
               '${e.key}: ${e.value}',
               style: AppFonts.montserrat(
                 color: theme.colorScheme.primary,
-                fontSize: 10.sp,
+                fontSize: 10,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -489,16 +488,16 @@ class _TypeBadges extends StatelessWidget {
         ),
         if (remaining > 0)
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               color: theme.colorScheme.outline.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(6.r),
+              borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
               '+$remaining',
               style: AppFonts.montserrat(
                 color: theme.colorScheme.onSurfaceVariant,
-                fontSize: 10.sp,
+                fontSize: 10,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -521,33 +520,33 @@ void showCodesBreakdownDialog(
       return AlertDialog(
         backgroundColor: theme.cardTheme.color ?? theme.colorScheme.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(20),
           side: BorderSide(color: theme.colorScheme.outline),
         ),
         title: Row(
           children: [
             Icon(MingCuteIcons.mgc_chart_pie_fill,
-                color: theme.colorScheme.primary, size: 20.sp),
-            SizedBox(width: 8.w),
+                color: theme.colorScheme.primary, size: 20),
+            SizedBox(width: 8),
             Text(
               title,
               style: AppFonts.montserrat(
                 color: theme.colorScheme.onSurface,
-                fontSize: 15.sp,
+                fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ],
         ),
         content: Wrap(
-          spacing: 8.w,
-          runSpacing: 8.h,
+          spacing: 8,
+          runSpacing: 8,
           children: counts.entries.map((entry) {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withValues(alpha: 0.10),
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: theme.colorScheme.primary.withValues(alpha: 0.25),
                 ),
@@ -559,23 +558,22 @@ void showCodesBreakdownDialog(
                     entry.key,
                     style: AppFonts.montserrat(
                       color: theme.colorScheme.onSurface,
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(width: 6.w),
+                  SizedBox(width: 6),
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary,
-                      borderRadius: BorderRadius.circular(6.r),
+                      borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       '${entry.value}',
                       style: AppFonts.montserrat(
                         color: theme.colorScheme.onPrimary,
-                        fontSize: 11.sp,
+                        fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -592,7 +590,7 @@ void showCodesBreakdownDialog(
               backgroundColor:
                   theme.colorScheme.primary.withValues(alpha: 0.10),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Text(
@@ -600,7 +598,7 @@ void showCodesBreakdownDialog(
               style: AppFonts.montserrat(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w500,
-                fontSize: 13.sp,
+                fontSize: 13,
               ),
             ),
           ),
