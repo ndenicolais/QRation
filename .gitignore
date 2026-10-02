@@ -63,3 +63,6 @@ CLAUDE.md
 TASKS.md
 # Raw device screenshots (sources for tool/preview, kept locally)
 images/screenshots/*_raw.png
+
+# Local helper scripts and tooling
+/tool/
