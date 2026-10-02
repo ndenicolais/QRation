@@ -64,7 +64,8 @@ dependencies:
 
   # Network
   wifi_iot: ^0.3.19+2
-  free_map: ^2.0.2
+  flutter_map: ^8.3.1
+  latlong2: ^0.9.1
 
   # Export
   pdf: ^3.11.1

@@ -92,7 +92,7 @@ L'app è completamente localizzata in italiano e inglese, con supporto a tema ch
 | Contatti | [flutter_contacts](https://pub.dev/packages/flutter_contacts) `^1.1.9+2` |
 | Calendario | [add_2_calendar](https://pub.dev/packages/add_2_calendar) `^3.0.1` |
 | Wi-Fi | [wifi_iot](https://pub.dev/packages/wifi_iot) `^0.3.19+2` |
-| Mappe | [free_map](https://pub.dev/packages/free_map) `^2.0.2` |
+| Mappe | [flutter_map](https://pub.dev/packages/flutter_map) `^8.3.1` + [latlong2](https://pub.dev/packages/latlong2) `^0.9.1` (tasselli OpenStreetMap) |
 | Export PDF | [pdf](https://pub.dev/packages/pdf) `^3.11.1` |
 | Export Excel | [excel](https://pub.dev/packages/excel) `^4.0.6` |
 | Export CSV | [csv](https://pub.dev/packages/csv) `^6.0.0` |
@@ -411,7 +411,7 @@ Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in b
 | Telefono | Prefisso paese + numero |
 | SMS | Numero, testo messaggio |
 | Contatto | Nome, cognome, telefono, email |
-| Geo | Latitudine, longitudine (con mappa interattiva `free_map`, `FullScreenMap`: punto scelto toccando la mappa, nessun permesso di posizione richiesto) |
+| Geo | Latitudine, longitudine (con mappa interattiva `flutter_map`, `FullScreenMap`: punto scelto toccando la mappa, nessun permesso di posizione richiesto; i tasselli arrivano da `tile.openstreetmap.org` con `userAgentPackageName` impostato come chiede la policy OSM, più l'attribuzione "OpenStreetMap contributors") |
 | Wi-Fi | SSID, password, tipo cifratura, rete nascosta |
 | Evento calendario | Titolo, luogo, data inizio/fine |
 | Prodotto / ISBN | Codice numerico |
@@ -839,7 +839,8 @@ dependencies:
   flutter_contacts: ^1.1.9+2           # Salvataggio contatti
   add_2_calendar: ^3.0.1               # Aggiunta eventi calendario
   wifi_iot: ^0.3.19+2                  # Connessione Wi-Fi
-  free_map: ^2.0.2                     # Mappa per coordinate geo
+  flutter_map: ^8.3.1                  # Mappa per coordinate geo (tasselli OSM)
+  latlong2: ^0.9.1                     # Coordinate LatLng per la mappa
   pdf: ^3.11.1                         # Generazione PDF
   excel: ^4.0.6                        # Export Excel
   csv: ^6.0.0                          # Export CSV

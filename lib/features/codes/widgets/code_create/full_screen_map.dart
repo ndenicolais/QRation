@@ -11,8 +11,9 @@
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:free_map/free_map.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/theme/app_colors.dart';
 
@@ -58,8 +59,8 @@ class FullScreenMapState extends State<FullScreenMap> {
   }
 
   Widget _buildMap() {
-    return FmMap(
-      mapOptions: MapOptions(
+    return FlutterMap(
+      options: MapOptions(
         initialCenter: selectedLocation,
         initialZoom: 5.5.r,
         interactionOptions: const InteractionOptions(
@@ -71,16 +72,29 @@ class FullScreenMapState extends State<FullScreenMap> {
           });
         },
       ),
-      markers: [
-        Marker(
-          width: 60.w,
-          height: 60.h,
-          point: selectedLocation,
-          child: Icon(
-            MingCuteIcons.mgc_location_fill,
-            color: AppColors.qrMarkerColor,
-            size: 34.sp,
-          ),
+      children: [
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          // Required by the OSM tile usage policy to identify the app.
+          userAgentPackageName: 'com.ndn21.qration',
+        ),
+        MarkerLayer(
+          markers: [
+            Marker(
+              width: 60.w,
+              height: 60.h,
+              point: selectedLocation,
+              child: Icon(
+                MingCuteIcons.mgc_location_fill,
+                color: AppColors.qrMarkerColor,
+                size: 34.sp,
+              ),
+            ),
+          ],
+        ),
+        const SimpleAttributionWidget(
+          source: Text('OpenStreetMap contributors'),
+          alignment: Alignment.bottomLeft,
         ),
       ],
     );

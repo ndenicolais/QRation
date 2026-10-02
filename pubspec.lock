@@ -561,7 +561,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_map:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_map
       sha256: ce1debbb29cade61964334b2a19c7c76e5bb2ef7dacf126c6424ee44036232f8
@@ -602,14 +602,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  free_map:
-    dependency: "direct main"
-    description:
-      name: free_map
-      sha256: aa69fb9c4c5fa456b7fe900d74e867975b24bbf701a39024f975938b9169ea22
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -813,7 +805,7 @@ packages:
     source: hosted
     version: "4.9.0"
   latlong2:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: latlong2
       sha256: "98227922caf49e6056f91b6c56945ea1c7b166f28ffcd5fb8e72fc0b453cc8fe"
