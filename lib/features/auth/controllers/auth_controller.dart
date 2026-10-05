@@ -108,13 +108,6 @@ class AuthController extends GetxController {
   Future<void> submitLogin() async {
     isLoading.value = true;
     try {
-      final snapshot = await _firestore
-          .collection('users')
-          .where('userEmail', isEqualTo: emailController.text.trim())
-          .get();
-
-      if (snapshot.docs.isEmpty) throw Exception('email_not_found');
-
       await _auth.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
@@ -189,13 +182,6 @@ class AuthController extends GetxController {
   Future<void> submitSignup() async {
     isLoading.value = true;
     try {
-      final emailCheck = await _firestore
-          .collection('users')
-          .where('userEmail', isEqualTo: emailController.text.trim())
-          .get();
-
-      if (emailCheck.docs.isNotEmpty) throw Exception('email_already_register');
-
       final result = await _auth.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
@@ -231,13 +217,6 @@ class AuthController extends GetxController {
   Future<void> submitResetPassword() async {
     isLoading.value = true;
     try {
-      final snapshot = await _firestore
-          .collection('users')
-          .where('userEmail', isEqualTo: emailController.text.trim())
-          .get();
-
-      if (snapshot.docs.isEmpty) throw Exception('email_not_found');
-
       await _auth.sendPasswordResetEmail(email: emailController.text.trim());
       clearForm();
       _navigateBack();
@@ -293,7 +272,22 @@ class AuthController extends GetxController {
     if (id != null) await _session.save(id);
   }
 
-  void _handleAuthError(Object e) {
+  /// Existence checks come from Firebase Auth, not from a lookup in `users`:
+  /// signed-out clients cannot query that collection (see firestore.rules).
+  static Object _authErrorKey(Object e) {
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'user-not-found':
+          return Exception('email_not_found');
+        case 'email-already-in-use':
+          return Exception('email_already_register');
+      }
+    }
+    return e;
+  }
+
+  void _handleAuthError(Object error) {
+    final e = _authErrorKey(error);
     lastError = e;
     final msg = e.toString();
     _logger.e('Auth error: $msg');

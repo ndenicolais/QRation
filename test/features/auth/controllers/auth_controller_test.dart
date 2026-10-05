@@ -9,6 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,34 @@ class MockGoogleSignIn extends Mock implements GoogleSignIn {}
 
 class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
 
+/// Firebase Auth rejecting every email operation with [code].
+class _RejectingAuth extends MockFirebaseAuth {
+  _RejectingAuth(this.code);
+
+  final String code;
+
+  @override
+  Future<UserCredential> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) =>
+      throw FirebaseAuthException(code: code);
+
+  @override
+  Future<UserCredential> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) =>
+      throw FirebaseAuthException(code: code);
+
+  @override
+  Future<void> sendPasswordResetEmail({
+    required String email,
+    ActionCodeSettings? actionCodeSettings,
+  }) =>
+      throw FirebaseAuthException(code: code);
+}
+
 void main() {
   // Error paths look up the app context for the toast through a GlobalKey.
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -36,11 +65,17 @@ void main() {
 
   const email = 'mario@example.com';
 
-  AuthController createController({MockUser? user, bool signedIn = false}) {
-    auth = MockFirebaseAuth(
-      signedIn: signedIn,
-      mockUser: user ?? MockUser(uid: 'uid-1', email: email),
-    );
+  AuthController createController({
+    MockUser? user,
+    bool signedIn = false,
+    String? authError,
+  }) {
+    auth = authError != null
+        ? _RejectingAuth(authError)
+        : MockFirebaseAuth(
+            signedIn: signedIn,
+            mockUser: user ?? MockUser(uid: 'uid-1', email: email),
+          );
     return AuthController(
       auth: auth,
       firestore: firestore,
@@ -71,7 +106,7 @@ void main() {
 
   group('login', () {
     test('unknown email is rejected without navigating', () async {
-      final controller = createController();
+      final controller = createController(authError: 'user-not-found');
       controller.emailController.text = email;
       controller.passwordController.text = 'secret';
 
@@ -177,8 +212,7 @@ void main() {
 
   group('signup', () {
     test('already registered email is rejected', () async {
-      await registerUserDoc('other', email);
-      final controller = createController();
+      final controller = createController(authError: 'email-already-in-use');
       controller.emailController.text = email;
       controller.passwordController.text = 'secret';
 
@@ -212,7 +246,7 @@ void main() {
 
   group('reset password', () {
     test('unknown email is rejected', () async {
-      final controller = createController();
+      final controller = createController(authError: 'user-not-found');
       controller.emailController.text = email;
 
       await controller.submitResetPassword();
