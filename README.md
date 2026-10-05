@@ -128,6 +128,7 @@ lib/
 - Android 7.0+ (API 24+), 64-bit (arm64), with Google Play services
 - Internet connection (for authentication and Firestore sync)
 - A configured `android/app/google-services.json` file (Firebase Auth + Firestore)
+- Firestore security rules that let each user access only `users/{uid}` and its `codes` subcollection, with Storage closed (see [DOCUMENTATION.md §14](DOCUMENTATION.md#14-regole-di-sicurezza-firebase))
 
 ### Run
 

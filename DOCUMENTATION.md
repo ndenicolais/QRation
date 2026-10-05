@@ -37,6 +37,7 @@
 11. [Dipendenze](#11-dipendenze)
 12. [Requisiti di sistema](#12-requisiti-di-sistema)
 13. [Build e distribuzione](#13-build-e-distribuzione)
+14. [Regole di sicurezza Firebase](#14-regole-di-sicurezza-firebase)
 
 ---
 
@@ -554,9 +555,9 @@ La screen contiene solo il contenuto delle sezioni; i mattoni visivi sono in `li
 
 **Privacy Policy** (`PrivacyPolicyScreen` in `lib/features/settings/screens/privacy_policy_screen.dart`, route `AppRoutes.privacyPolicy`): informativa nativa e localizzata, che sostituisce la vecchia WebView su freeprivacypolicy.com (rimosso `webview_flutter`). L'unico punto d'ingresso è la riga "Privacy Policy" nella card "Link utili" della schermata Info. Mostra la data di aggiornamento (`AppConstants.privacyPolicyUpdatedAt`, formattata con `DateFormat.yMMMMd` nella lingua corrente), l'intro, 10 sezioni in `SectionCard` (chiavi ARB `policy_section_*_title`/`_text`; il titolare usa i placeholder `{name}`/`{email}` valorizzati da `AppConstants.developerName`/`developerEmail`) e il link "Versione online" ad `AppConstants.uriPrivacyPolicy` (`https://ndenicolais.github.io/qration/privacy/`). Lo stesso testo, in italiano e inglese, è in `PRIVACY.md` nella radice del repo: quando cambia vanno aggiornati insieme `PRIVACY.md`, le chiavi ARB, `privacyPolicyUpdatedAt` e la pagina sul portfolio. Se si aggiungono servizi, permessi o dati trattati (analytics, pubblicità, nuovi plugin con accesso alla rete), la policy va aggiornata prima della release.
 
-**Changelog dialog** (`AppChangelogDialog` in `lib/core/widgets/app_changelog_dialog.dart`): le voci sono definite in `lib/core/constants/changelog.dart` (`changelogEntries`, una lista di `ChangelogEntry` versione + bullet localizzati, ordinata dalla più recente). Va aggiornata ad ogni cambiamento user-facing, mantenendo `version` allineata a `version:` in `pubspec.yaml` — vedi CLAUDE.md. La versione mostrata nel dialog e nella schermata Info (`InfoScreen`) è `AppVersion.current` (`lib/core/constants/app_version.dart`), letta a runtime dal build della piattaforma tramite `package_info_plus` in `main()` — non è più una costante da aggiornare manualmente né una chiave di traduzione duplicata negli arb.
+**Changelog dialog** (`AppChangelogDialog` in `lib/core/widgets/app_changelog_dialog.dart`): segue `CHANGELOG_DIALOG_GUIDE.md`, lo standard comune a tutte le app. Le voci sono definite in `lib/core/constants/changelog.dart` (`changelogEntries`, una lista di `ChangelogEntry` ordinata dalla più recente; ogni voce ha una lista di `ChangelogItem` con un `ChangeType`: `added`, `improved`, `fixed`, `security`). Il dialog raggruppa le voci di ogni versione in sezioni in quest'ordine (Novità, Miglioramenti, Correzioni, Sicurezza), ognuna con un'icona MingCute (`sparkles`, `rocket`, `bug`, `shield`); le sezioni vuote non compaiono. Quali versioni mostrare lo decide `ChangelogService.pendingEntries` (`lib/core/services/changelog_service.dart`), che usa ancora la chiave `changelog_last_seen_version` invece di quella del guide: cambiarla farebbe sembrare ogni installazione nuova e salterebbe le novità del primo aggiornamento. La lista va aggiornata ad ogni cambiamento user-facing, mantenendo `version` allineata a `version:` in `pubspec.yaml` — vedi CLAUDE.md. La versione mostrata nel dialog e nella schermata Info (`InfoScreen`) è `AppVersion.current` (`lib/core/constants/app_version.dart`), letta a runtime dal build della piattaforma tramite `package_info_plus` in `main()` — non è più una costante da aggiornare manualmente né una chiave di traduzione duplicata negli arb.
 
-**Voci del changelog:** la finestra e la voce delle Impostazioni si chiamano "Changelog" (prima "Novità" / "What's new"). Ogni versione ha **una voce per categoria**, nel formato `Categoria: testo` (Scanner, Creazione, Cronologia e Preferiti, Dettaglio codice, Database ed esportazione, Account, Impostazioni, Aspetto, Accessibilità, Privacy e prestazioni). Il prefisso prima dei due punti (entro 30 caratteri) è mostrato in grassetto da `_BulletText`. Una modifica nuova nella stessa versione va aggiunta alla voce della sua categoria; si crea una voce nuova solo per una categoria non ancora presente. La 2.0.0 è passata così da 52 voci a 10: le chiavi `changelog_v1_1_0_*` e le vecchie `changelog_v2_0_0_bullet_1…52` sono state sostituite da `changelog_v2_0_0_bullet_1…10`. `test/core/widgets/app_changelog_dialog_test.dart` verifica, in italiano e inglese, che ogni voce sia mostrata con la categoria in grassetto.
+**Voci del changelog:** il dialog si intitola "Novità" / "What's new"; la voce delle Impostazioni resta "Changelog". Le voci nuove sono una frase per l'utente, senza termini tecnici, con il tipo giusto (vedi §10 del guide). Le 10 voci della 2.0.0 scritte prima del guide (formato `Categoria: testo`, una per area dell'app) restano così: `_BulletText`, che metteva in grassetto la categoria, è stato rimosso, e il prefisso ora si legge come testo normale. Sono classificate come `added` (2 Creazione, 7 Impostazioni) e `improved` (le altre); la 11 è di tipo `security`. Test: `test/core/constants/changelog_test.dart` (ordine delle sezioni; ogni chiave `changelog_v*` dell'ARB inglese è usata una sola volta), `test/core/services/changelog_service_test.dart` (prima installazione, aggiornamento, versione sconosciuta, stessa versione) e `test/core/widgets/app_changelog_dialog_test.dart` (in italiano e inglese ogni versione e ogni voce viene mostrata).
 
 **Schermata Info** (`InfoScreen` in `lib/features/settings/screens/info_screen.dart`, route `AppRoutes.settingsInfo`), sul modello della Info di Shox:
 - **Intestazione** (`_AppHeader`): logo, nome, tagline (`info_screen_tagline`) e pill con `AppVersion.current`.
@@ -638,13 +639,13 @@ I binding di rotta usano `Get.lazyPut`: grazie alla smart management di GetX il 
 Gestisce tutta la logica di autenticazione tramite Firebase Auth e Firestore. In precedenza esisteva anche un `auth_service.dart` con una copia divergente di queste operazioni, non usato da nessun file: è stato rimosso.
 
 **Operazioni:**
-- **Registrazione email/password:** controlla se l'email è già registrata su Firestore, crea le credenziali Firebase Auth, salva il `UserModel` su Firestore
-- **Login email/password:** cerca l'email su Firestore per ottenere l'email primaria, esegue `signInWithEmailAndPassword`. Gestisce errori specifici (`email_not_found`, `invalid_password`)
+- **Registrazione email/password:** crea le credenziali Firebase Auth e salva il `UserModel` su Firestore. Un'email già registrata arriva da Firebase Auth (`email-already-in-use` → `email_already_register`), senza query su `users` (vedi [§14](#14-regole-di-sicurezza-firebase))
+- **Login email/password:** esegue direttamente `signInWithEmailAndPassword`; `user-not-found` diventa `email_not_found`, gli altri codici Firebase (es. `invalid-credential`) passano invariati
 - **Login con Google:** usa `GoogleSignIn.instance` (API v7). `initialize()` va chiamato una sola volta e atteso prima di ogni altra chiamata: `_ensureGoogleSignIn()` lo memorizza per istanza (`Expando`), così parte al primo login o logout. `authenticate()` apre il selettore account (Credential Manager su Android). Se l'utente lo chiude arriva una `GoogleSignInException` con codice `canceled`, che viene ignorata; gli altri errori passano a `_handleAuthError`. Firebase riceve solo l'`idToken` (`GoogleAuthProvider.credential(idToken: …)`): l'app non chiede scope OAuth, quindi non serve un access token tramite `authorizationClient`. Se è un nuovo utente Google, crea il `UserModel` su Firestore
 - **Ricorda me:** gestito da `SessionStore` (`lib/features/auth/services/session_store.dart`), che salva `remember_me = true` e `user_id` in `SharedPreferences`. Con email/password avviene solo se la checkbox è attiva; con Google e dopo la registrazione avviene sempre
 - **Recupero dati utente:** legge il documento `users/{uid}` da Firestore e restituisce `UserModel`
 - **Logout:** esegue `signOut` su Firebase Auth e Google Sign-In e cancella la sessione salvata (`SessionStore.clear()`)
-- **Reset password:** invia email di reset tramite `sendPasswordResetEmail`
+- **Reset password:** invia email di reset tramite `sendPasswordResetEmail`, senza verificare prima l'email su Firestore
 - **Eliminazione account:** elimina tutti i codici dell'utente da Firestore, elimina il documento utente, quindi elimina l'account Firebase Auth
 
 ---
@@ -964,6 +965,25 @@ Dentro l'app il logo si mostra con `AppLogo` (`lib/core/widgets/app_logo.dart`),
 ### Anteprime del README
 
 Seguendo `APP_PREVIEW_GUIDE.md`, `flutter test tool/preview/generate_preview_test.dart` genera da `images/screenshots/<nome>_raw.png` (screenshot del telefono, esclusi da git e tenuti in locale) il banner `images/qration_preview.png` (2400×1350, cinque telefoni inclinati su sfondo `AppColors.surfaceVariantLight`) e le schermate della galleria `images/screenshots/<nome>.png` senza barra di stato e di navigazione (larghe 540 px). Schermate, in ordine di banner: `create` (form Testo), `details`, `home` (griglia dei tipi QR, al centro), `settings`, `database`. Le barre di sistema (`_statusBarHeight` 108 px, `_navBarHeight` 70 px) sono misurate su screenshot 1080×2392 e vanno ricontrollate se cambia telefono. Lo script sta fuori da `test/`, quindi `flutter test` non lo esegue.
+
+---
+
+## 14. Regole di sicurezza Firebase
+
+Nel repo ci sono `firebase.json` e `.firebaserc` (progetto `qration-b5a7a`), ma non i file delle regole (`firestore.rules`, `storage.rules`): le regole si gestiscono solo dalla console Firebase (Firestore → Regole, Storage → Regole). Qui ne è descritto il comportamento, da rispettare quando si modificano. Per usare la Firebase CLI (`firebase deploy --only firestore:rules,storage`) bisogna prima ricreare in locale i due file a cui punta `firebase.json`.
+
+**Modello dati e accessi** (unico proprietario = uid nel percorso, nessun dato condiviso o pubblico):
+
+| Percorso | Operazioni dell'app | Accesso consentito |
+|---|---|---|
+| `users/{uid}` | `get` (profilo, Google sign-in), `set` alla registrazione / primo accesso Google, `delete` (elimina account) | solo `request.auth.uid == uid`; niente `list` |
+| `users/{uid}/codes/{codeId}` | stream e `get` della collection, query `isFavorite ==`, `source ==`, `socialMedia != null` (+ `source ==`), `set` (aggiunta/import), `update` di `notes`/`isFavorite`, `delete` singolo e massivo | solo `request.auth.uid == uid` |
+| qualsiasi altro percorso Firestore | — | negato |
+| Storage (tutto il bucket) | non usato (nessuna dipendenza `firebase_storage`, i loghi restano sul dispositivo) | negato |
+
+L'app non usa `collectionGroup`, transazioni o batch. Le regole verificano anche la forma dei documenti: `users/{uid}` ammette solo `userEmail`, `userName`, `userImage`, `userDate`; un codice nuovo ammette solo i campi di `CodeModel.toMap()` con `id` uguale all'id del documento; un aggiornamento di un codice può toccare solo `notes` e `isFavorite`. Se si aggiunge un campo a `UserModel` o `CodeModel`, o un nuovo percorso, vanno aggiornate anche le regole.
+
+**Controlli pre-login rimossi:** in precedenza login, registrazione e reset password interrogavano `users` per `userEmail` prima dell'autenticazione. Con regole a minimo privilegio quella query da utente non autenticato viene negata, e permetterla significherebbe esporre email e nomi di tutti gli utenti. Ora l'esistenza dell'email la verifica Firebase Auth: `AuthController._authErrorKey` converte `user-not-found` in `email_not_found` ed `email-already-in-use` in `email_already_register`. Con la protezione dall'enumerazione delle email attiva (default dei progetti recenti) il login con email sconosciuta restituisce `invalid-credential` e il reset password non segnala errori per email non registrate. Le build precedenti a questa modifica non riescono più ad accedere con email/password dopo la pubblicazione delle regole (l'accesso con Google continua a funzionare): pubblicare le regole insieme alla nuova build della 2.0.0.
 
 ---
 
