@@ -2603,7 +2603,7 @@ abstract class AppLocalizations {
   /// No description provided for @changelog_dialog_title.
   ///
   /// In en, this message translates to:
-  /// **'Changelog'**
+  /// **'What\'s new'**
   String get changelog_dialog_title;
 
   /// No description provided for @changelog_dialog_close.
@@ -2611,6 +2611,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get changelog_dialog_close;
+
+  /// No description provided for @changelog_section_added.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get changelog_section_added;
+
+  /// No description provided for @changelog_section_improved.
+  ///
+  /// In en, this message translates to:
+  /// **'Improvements'**
+  String get changelog_section_improved;
+
+  /// No description provided for @changelog_section_fixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixes'**
+  String get changelog_section_fixed;
+
+  /// No description provided for @changelog_section_security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get changelog_section_security;
 
   /// No description provided for @changelog_v2_0_0_bullet_1.
   ///
@@ -2671,6 +2695,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy and performance: privacy policy readable in the app even offline, faster startup, updated scanning and QR generation engines and the latest Firebase libraries.'**
   String get changelog_v2_0_0_bullet_10;
+
+  /// No description provided for @changelog_v2_0_0_bullet_11.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile and saved codes can only be accessed from your own account.'**
+  String get changelog_v2_0_0_bullet_11;
 }
 
 class _AppLocalizationsDelegate

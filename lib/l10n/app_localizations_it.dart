@@ -1372,10 +1372,22 @@ class AppLocalizationsIt extends AppLocalizations {
       'L\'accesso alla fotocamera è necessario per scansionare i codici.';
 
   @override
-  String get changelog_dialog_title => 'Changelog';
+  String get changelog_dialog_title => 'Novità';
 
   @override
   String get changelog_dialog_close => 'Chiudi';
+
+  @override
+  String get changelog_section_added => 'Novità';
+
+  @override
+  String get changelog_section_improved => 'Miglioramenti';
+
+  @override
+  String get changelog_section_fixed => 'Correzioni';
+
+  @override
+  String get changelog_section_security => 'Sicurezza';
 
   @override
   String get changelog_v2_0_0_bullet_1 =>
@@ -1416,4 +1428,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_10 =>
       'Privacy e prestazioni: informativa privacy leggibile nell\'app anche offline, avvio più rapido, motore di scansione e generazione dei QR aggiornati e librerie Firebase all\'ultima versione.';
+
+  @override
+  String get changelog_v2_0_0_bullet_11 =>
+      'Il profilo e i codici salvati sono accessibili solo dal tuo account.';
 }

@@ -9,15 +9,14 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:flutter/material.dart';
+import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:qration/core/constants/app_version.dart';
 import 'package:qration/core/constants/changelog.dart';
+import 'package:qration/core/services/changelog_service.dart';
 import 'package:qration/core/theme/app_radius.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppChangelogDialog extends StatelessWidget {
-  static const _lastSeenVersionKey = 'changelog_last_seen_version';
-
   final List<ChangelogEntry> entries;
 
   const AppChangelogDialog({super.key, required this.entries});
@@ -31,27 +30,10 @@ class AppChangelogDialog extends StatelessWidget {
   }
 
   /// Shows only the entries newer than the last version the user has seen,
-  /// once per version bump. Does nothing on first install (there is nothing
-  /// "new" to a user who has never used a previous version) and does nothing
-  /// if the app hasn't been updated since the dialog was last shown.
+  /// once per update (see [ChangelogService.pendingEntries]).
   static Future<void> maybeShow(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    final lastSeenVersion = prefs.getString(_lastSeenVersionKey);
-
-    if (lastSeenVersion == AppVersion.current) return;
-    if (lastSeenVersion == null) {
-      await prefs.setString(_lastSeenVersionKey, AppVersion.current);
-      return;
-    }
-
-    final lastSeenIndex = changelogEntries.indexWhere(
-      (entry) => entry.version == lastSeenVersion,
-    );
-    final entriesToShow = lastSeenIndex == -1
-        ? changelogEntries
-        : changelogEntries.sublist(0, lastSeenIndex);
-
-    await prefs.setString(_lastSeenVersionKey, AppVersion.current);
+    final entriesToShow =
+        await ChangelogService.pendingEntries(AppVersion.current);
     if (entriesToShow.isEmpty || !context.mounted) return;
 
     await showDialog(
@@ -64,6 +46,9 @@ class AppChangelogDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
+    final bulletStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: theme.colorScheme.onSurfaceVariant,
+    );
     return AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.extraLarge)),
@@ -80,29 +65,29 @@ class AppChangelogDialog extends StatelessWidget {
             for (final entry in entries) ...[
               Text(
                 'v${entry.version}',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: theme.textTheme.titleSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 8),
-              for (final bullet in entry.bulletsBuilder(l10n))
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '•  ',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+              for (final section in entry.sections.entries) ...[
+                const SizedBox(height: 12),
+                _SectionHeader(type: section.key),
+                const SizedBox(height: 6),
+                for (final item in section.value)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('•  ', style: bulletStyle),
+                        Expanded(
+                          child:
+                              Text(item.textBuilder(l10n), style: bulletStyle),
                         ),
-                      ),
-                      Expanded(child: _BulletText(bullet)),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              const SizedBox(height: 12),
+              ],
+              const SizedBox(height: 16),
             ],
           ],
         ),
@@ -120,36 +105,47 @@ class AppChangelogDialog extends StatelessWidget {
   }
 }
 
-/// A changelog bullet; a leading "Category: " (e.g. "Scanner: …") is shown
-/// in bold so the grouped entries are easy to scan.
-class _BulletText extends StatelessWidget {
-  const _BulletText(this.text);
+class _SectionHeader extends StatelessWidget {
+  final ChangeType type;
 
-  final String text;
+  const _SectionHeader({required this.type});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.bodyMedium?.copyWith(
-      color: theme.colorScheme.onSurfaceVariant,
-    );
-    final colon = text.indexOf(': ');
-    // Only a short prefix counts as a category, not a colon mid-sentence.
-    if (colon <= 0 || colon > 30) return Text(text, style: style);
-    return Text.rich(
-      TextSpan(
-        style: style,
-        children: [
-          TextSpan(
-            text: text.substring(0, colon + 1),
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface,
-            ),
+    final l10n = AppLocalizations.of(context)!;
+    final color = Theme.of(context).colorScheme.primary;
+    final (icon, label) = switch (type) {
+      ChangeType.added => (
+          MingCuteIcons.mgc_sparkles_line,
+          l10n.changelog_section_added,
+        ),
+      ChangeType.improved => (
+          MingCuteIcons.mgc_rocket_line,
+          l10n.changelog_section_improved,
+        ),
+      ChangeType.fixed => (
+          MingCuteIcons.mgc_bug_line,
+          l10n.changelog_section_fixed,
+        ),
+      ChangeType.security => (
+          MingCuteIcons.mgc_shield_line,
+          l10n.changelog_section_security,
+        ),
+    };
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: color),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            label,
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(color: color, fontWeight: FontWeight.bold),
           ),
-          TextSpan(text: text.substring(colon + 1)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

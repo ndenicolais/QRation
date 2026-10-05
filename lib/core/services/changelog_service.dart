@@ -1,0 +1,41 @@
+// QRation — Copyright © 2026 Nicola De Nicolais — All Rights Reserved.
+// Licensed under a source-available, non-commercial license. See LICENSE.
+//
+// Commercial use, including publishing or monetizing on any app store,
+// requires explicit written permission from the copyright holder.
+//
+// Author: Nicola De Nicolais
+// Contact: ndn21dev@gmail.com
+// GitHub: https://github.com/ndenicolais
+
+import 'package:qration/core/constants/changelog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+/// Decides which changelog entries to show after an update.
+class ChangelogService {
+  /// Kept from the earlier dialog (the shared guide uses
+  /// `last_seen_changelog_version`): renaming it would make every installed
+  /// app look like a fresh install and skip the next update's entries.
+  static const String prefsLastSeenVersion = 'changelog_last_seen_version';
+
+  /// Returns the entries newer than the version the user last saw and
+  /// records [currentVersion] as seen.
+  ///
+  /// On a fresh install nothing is shown: the current version is only
+  /// recorded, so the dialog appears from the next update on.
+  static Future<List<ChangelogEntry>> pendingEntries(
+    String currentVersion, {
+    List<ChangelogEntry>? entries,
+  }) async {
+    final all = entries ?? changelogEntries;
+    final prefs = await SharedPreferences.getInstance();
+    final lastSeen = prefs.getString(prefsLastSeenVersion);
+
+    if (lastSeen == currentVersion) return const [];
+    await prefs.setString(prefsLastSeenVersion, currentVersion);
+    if (lastSeen == null) return const [];
+
+    final lastSeenIndex = all.indexWhere((e) => e.version == lastSeen);
+    return lastSeenIndex == -1 ? all : all.sublist(0, lastSeenIndex);
+  }
+}

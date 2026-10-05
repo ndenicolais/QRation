@@ -1350,10 +1350,22 @@ class AppLocalizationsEn extends AppLocalizations {
       'Camera access is required to scan codes.';
 
   @override
-  String get changelog_dialog_title => 'Changelog';
+  String get changelog_dialog_title => 'What\'s new';
 
   @override
   String get changelog_dialog_close => 'Close';
+
+  @override
+  String get changelog_section_added => 'New';
+
+  @override
+  String get changelog_section_improved => 'Improvements';
+
+  @override
+  String get changelog_section_fixed => 'Fixes';
+
+  @override
+  String get changelog_section_security => 'Security';
 
   @override
   String get changelog_v2_0_0_bullet_1 =>
@@ -1394,4 +1406,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_10 =>
       'Privacy and performance: privacy policy readable in the app even offline, faster startup, updated scanning and QR generation engines and the latest Firebase libraries.';
+
+  @override
+  String get changelog_v2_0_0_bullet_11 =>
+      'Your profile and saved codes can only be accessed from your own account.';
 }
