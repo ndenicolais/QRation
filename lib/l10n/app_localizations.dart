@@ -368,6 +368,12 @@ abstract class AppLocalizations {
   /// **'Account deleted successfully'**
   String get toast_delete_success;
 
+  /// No description provided for @toast_delete_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t delete the account. Sign in again and retry.'**
+  String get toast_delete_error;
+
   /// No description provided for @validator_name_empty.
   ///
   /// In en, this message translates to:
@@ -1598,12 +1604,6 @@ abstract class AppLocalizations {
   /// **'Account Info'**
   String get database_screen_account_title;
 
-  /// No description provided for @database_screen_account_field_userid.
-  ///
-  /// In en, this message translates to:
-  /// **'ID'**
-  String get database_screen_account_field_userid;
-
   /// No description provided for @database_screen_account_field_name.
   ///
   /// In en, this message translates to:
@@ -2432,12 +2432,6 @@ abstract class AppLocalizations {
   /// **'Delete Account'**
   String get delete_title;
 
-  /// No description provided for @delete_description.
-  ///
-  /// In en, this message translates to:
-  /// **'On this page you can permanently delete your Account.\n\nConfirming the cancellation will also delete all the Database linked to the Account.\n\nRemember that the process is irreversible.\n\nIf you want to proceed click on the Button below:'**
-  String get delete_description;
-
   /// No description provided for @delete_d_title.
   ///
   /// In en, this message translates to:
@@ -2447,7 +2441,7 @@ abstract class AppLocalizations {
   /// No description provided for @delete_d_description.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to delete your account?'**
+  /// **'Your account and all the codes saved to it will be permanently deleted. This action cannot be undone.'**
   String get delete_d_description;
 
   /// No description provided for @custom_picker_field_date_text.
@@ -2701,6 +2695,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your profile and saved codes can only be accessed from your own account.'**
   String get changelog_v2_0_0_bullet_11;
+
+  /// No description provided for @changelog_v2_0_0_bullet_12.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deletion now asks for confirmation in a simple dialog straight from the Profile, instead of a separate screen. If deletion fails, an error message is shown.'**
+  String get changelog_v2_0_0_bullet_12;
+
+  /// No description provided for @changelog_v2_0_0_bullet_13.
+  ///
+  /// In en, this message translates to:
+  /// **'The Profile no longer shows the technical account ID.'**
+  String get changelog_v2_0_0_bullet_13;
 }
 
 class _AppLocalizationsDelegate

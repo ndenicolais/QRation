@@ -32,7 +32,6 @@ import 'package:qration/features/settings/screens/privacy_policy_screen.dart';
 import 'package:qration/features/settings/screens/settings_screen.dart';
 import 'package:qration/features/settings/screens/support_screen.dart';
 import 'package:qration/features/splash/screens/splash_screen.dart';
-import 'package:qration/features/user/screens/delete_account_screen.dart';
 import 'package:qration/features/user/screens/user_screen.dart';
 import 'package:qration/features/welcome/screens/welcome_screen.dart';
 
@@ -104,10 +103,6 @@ class AppPages {
     GetPage(
       name: AppRoutes.user,
       page: () => const UserScreen(),
-    ),
-    GetPage(
-      name: AppRoutes.deleteAccount,
-      page: () => const DeleteAccountScreen(),
     ),
     GetPage(
       name: AppRoutes.settings,

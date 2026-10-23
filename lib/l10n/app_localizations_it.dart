@@ -150,6 +150,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get toast_delete_success => 'Account eliminato con successo';
 
   @override
+  String get toast_delete_error =>
+      'Impossibile eliminare l\'account. Accedi di nuovo e riprova.';
+
+  @override
   String get validator_name_empty => 'Il nome non può essere vuoto';
 
   @override
@@ -814,9 +818,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get database_screen_account_title => 'Info Account';
 
   @override
-  String get database_screen_account_field_userid => 'ID';
-
-  @override
   String get database_screen_account_field_name => 'Nome';
 
   @override
@@ -1283,15 +1284,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get delete_title => 'Elimina Account';
 
   @override
-  String get delete_description =>
-      'In questa pagina puoi cancellare definitivamente il tuo account.\n\nLa conferma della cancellazione comporterà anche l\'eliminazione di tutti i database collegati all\'account.\n\nRicorda che il processo è irreversibile.\n\nSe desideri procedere clicca sul pulsante qui sotto:';
-
-  @override
   String get delete_d_title => 'Elimina';
 
   @override
   String get delete_d_description =>
-      'Sei sicuro di voler eliminare il tuo account?';
+      'L\'account e tutti i codici salvati verranno eliminati definitivamente. L\'operazione è irreversibile.';
 
   @override
   String get custom_picker_field_date_text => 'Seleziona Data';
@@ -1432,4 +1429,12 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_11 =>
       'Il profilo e i codici salvati sono accessibili solo dal tuo account.';
+
+  @override
+  String get changelog_v2_0_0_bullet_12 =>
+      'L\'eliminazione dell\'account ora chiede conferma con un semplice dialog direttamente dal Profilo, invece che in una schermata a parte. Se l\'eliminazione non riesce viene mostrato un messaggio di errore.';
+
+  @override
+  String get changelog_v2_0_0_bullet_13 =>
+      'Il Profilo non mostra più l\'ID tecnico dell\'account.';
 }

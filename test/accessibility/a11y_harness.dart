@@ -47,7 +47,6 @@ import 'package:qration/features/settings/screens/info_screen.dart';
 import 'package:qration/features/settings/screens/privacy_policy_screen.dart';
 import 'package:qration/features/settings/screens/settings_screen.dart';
 import 'package:qration/features/settings/screens/support_screen.dart';
-import 'package:qration/features/user/screens/delete_account_screen.dart';
 import 'package:qration/features/welcome/screens/welcome_screen.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -124,7 +123,6 @@ final a11yScreens = <String, Widget Function()>{
   'Info': () => const InfoScreen(),
   'Support': () => const SupportScreen(),
   'PrivacyPolicy': () => const PrivacyPolicyScreen(),
-  'DeleteAccount': () => const DeleteAccountScreen(),
 };
 
 Future<void> pumpA11yScreen(

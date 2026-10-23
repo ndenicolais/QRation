@@ -15,7 +15,9 @@ import 'package:get/get.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/routes/app_routes.dart';
 import 'package:qration/core/widgets/app_button.dart';
+import 'package:qration/core/widgets/app_delete_dialog.dart';
 import 'package:qration/core/widgets/app_loader.dart';
+import 'package:qration/core/widgets/app_toast.dart';
 import 'package:qration/features/auth/controllers/auth_controller.dart';
 import 'package:qration/features/user/models/user_model.dart';
 import 'package:qration/features/user/widgets/account_info_card.dart';
@@ -31,6 +33,7 @@ class _UserScreenState extends State<UserScreen> {
   final _authCtrl = Get.find<AuthController>();
   UserModel? _user;
   bool _loading = true;
+  bool _deleting = false;
 
   @override
   void initState() {
@@ -48,13 +51,41 @@ class _UserScreenState extends State<UserScreen> {
     }
   }
 
+  void _confirmDeleteAccount() {
+    final l10n = AppLocalizations.of(context)!;
+    AppDeleteDialog.show(
+      context: context,
+      title: l10n.delete_title,
+      message: l10n.delete_d_description,
+      confirmLabel: l10n.delete_d_title,
+      onConfirm: _deleteAccount,
+    );
+  }
+
+  Future<void> _deleteAccount() async {
+    setState(() => _deleting = true);
+    try {
+      await _authCtrl.deleteAccount();
+      if (!mounted) return;
+      showSuccessToast(
+        context,
+        AppLocalizations.of(context)!.toast_delete_success,
+      );
+      Get.offAllNamed(AppRoutes.welcome);
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _deleting = false);
+      showErrorToast(context, AppLocalizations.of(context)!.toast_delete_error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final firebaseUser = FirebaseAuth.instance.currentUser;
 
-    return Scaffold(
+    final screen = Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       // Colors and title style come from the theme appBarTheme.
       appBar: AppBar(
@@ -88,12 +119,26 @@ class _UserScreenState extends State<UserScreen> {
                       label: l10n.settings_tile_delete_account,
                       icon: MingCuteIcons.mgc_delete_2_fill,
                       foregroundColor: colorScheme.error,
-                      onPressed: () => Get.toNamed(AppRoutes.deleteAccount),
+                      onPressed: _confirmDeleteAccount,
                     ),
                   ],
                 ),
               ),
       ),
+    );
+
+    // Blocks the screen while the account and its codes are being deleted.
+    return Stack(
+      children: [
+        screen,
+        if (_deleting)
+          Positioned.fill(
+            child: ColoredBox(
+              color: colorScheme.tertiary.withValues(alpha: 0.7),
+              child: const Center(child: AppLoader()),
+            ),
+          ),
+      ],
     );
   }
 }

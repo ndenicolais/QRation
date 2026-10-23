@@ -21,7 +21,6 @@ abstract class AppRoutes {
   static const codeCreateSocial = '/code-create-social';
   static const codeDetails = '/code-details';
   static const user = '/user';
-  static const deleteAccount = '/delete-account';
   static const settings = '/settings';
   static const settingsDatabase = '/settings-database';
   static const settingsInfo = '/settings-info';

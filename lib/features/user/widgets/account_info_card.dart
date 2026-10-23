@@ -12,7 +12,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qration/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:qration/core/theme/app_fonts.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:qration/core/widgets/section_card.dart';
 
@@ -34,13 +33,6 @@ class AccountInfoCard extends StatelessWidget {
       icon: MingCuteIcons.mgc_user_3_fill,
       child: Column(
         children: [
-          _InfoRow(
-            icon: MingCuteIcons.mgc_card_pay_fill,
-            label: l10n.database_screen_account_field_userid,
-            value: currentUser.uid,
-            isMonospace: true,
-          ),
-          const _InfoDivider(),
           _InfoRow(
             icon: MingCuteIcons.mgc_user_2_fill,
             label: l10n.database_screen_account_field_name,
@@ -69,13 +61,11 @@ class _InfoRow extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.value,
-    this.isMonospace = false,
   });
 
   final IconData icon;
   final String label;
   final String value;
-  final bool isMonospace;
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +90,7 @@ class _InfoRow extends StatelessWidget {
                 SizedBox(height: 2),
                 Text(
                   value,
-                  style: isMonospace
-                      ? AppFonts.monospace(
-                          color: theme.colorScheme.onSurface,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        )
-                      : Theme.of(context).textTheme.labelMedium,
+                  style: Theme.of(context).textTheme.labelMedium,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),

@@ -62,6 +62,7 @@
   "validator_confirm_password": "Passwords do not match",
 
   "toast_delete_success": "Account deleted successfully",
+  "toast_delete_error": "Couldn't delete the account. Sign in again and retry.",
 
   "validator_name": "Name",
   "validator_name_empty": "Name cannot be empty",
@@ -288,7 +289,6 @@
 
   "database_screen_title": "Database",
   "database_screen_account_title": "Account Info",
-  "database_screen_account_field_userid": "ID",
   "database_screen_account_field_name": "Name",
   "database_screen_account_field_email": "Email",
   "database_screen_account_field_date": "Account Created",
@@ -454,9 +454,8 @@
   "support_screen_documentation_info": "Go to the documentation on GitHub",
 
   "delete_title": "Delete Account",
-  "delete_description": "On this page you can permanently delete your Account.\n\nConfirming the cancellation will also delete all the Database linked to the Account.\n\nRemember that the process is irreversible.\n\nIf you want to proceed click on the Button below:",
   "delete_d_title": "Delete",
-  "delete_d_description": "Are you sure you want to delete your account?",
+  "delete_d_description": "Your account and all the codes saved to it will be permanently deleted. This action cannot be undone.",
 
   "custom_picker_field_date_text": "Select Date",
   "custom_picker_field_time_text": "Select Time",
@@ -504,5 +503,7 @@
   "changelog_v2_0_0_bullet_8": "Look and feel: new app logo and icon (with Android 13+ themed icons), consistently redesigned screens, a new Info screen, lighter bold text and a single scale for text sizes and corners.",
   "changelog_v2_0_0_bullet_9": "Accessibility: higher-contrast secondary text in the light theme, touch targets of at least 48 dp, screens that adapt to a larger system text size and labels for screen readers. The onboarding \"Skip\" button is now translated.",
   "changelog_v2_0_0_bullet_10": "Privacy and performance: privacy policy readable in the app even offline, faster startup, updated scanning and QR generation engines and the latest Firebase libraries.",
-  "changelog_v2_0_0_bullet_11": "Your profile and saved codes can only be accessed from your own account."
+  "changelog_v2_0_0_bullet_11": "Your profile and saved codes can only be accessed from your own account.",
+  "changelog_v2_0_0_bullet_12": "Account deletion now asks for confirmation in a simple dialog straight from the Profile, instead of a separate screen. If deletion fails, an error message is shown.",
+  "changelog_v2_0_0_bullet_13": "The Profile no longer shows the technical account ID."
 }

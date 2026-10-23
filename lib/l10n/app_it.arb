@@ -52,6 +52,7 @@
   "validator_confirm_password": "Le password non coincidono",
 
   "toast_delete_success": "Account eliminato con successo",
+  "toast_delete_error": "Impossibile eliminare l'account. Accedi di nuovo e riprova.",
 
   "validator_name": "Nome",
   "validator_name_empty": "Il nome non può essere vuoto",
@@ -273,7 +274,6 @@
 
   "database_screen_title": "Database",
   "database_screen_account_title": "Info Account",
-  "database_screen_account_field_userid": "ID",
   "database_screen_account_field_name": "Nome",
   "database_screen_account_field_email": "Email",
   "database_screen_account_field_date": "Account Creato",
@@ -419,9 +419,8 @@
   "support_screen_documentation_info": "Vai alla documentazione su GitHub",
 
   "delete_title": "Elimina Account",
-  "delete_description": "In questa pagina puoi cancellare definitivamente il tuo account.\n\nLa conferma della cancellazione comporterà anche l'eliminazione di tutti i database collegati all'account.\n\nRicorda che il processo è irreversibile.\n\nSe desideri procedere clicca sul pulsante qui sotto:",
   "delete_d_title": "Elimina",
-  "delete_d_description": "Sei sicuro di voler eliminare il tuo account?",
+  "delete_d_description": "L'account e tutti i codici salvati verranno eliminati definitivamente. L'operazione è irreversibile.",
 
   "custom_picker_field_date_text": "Seleziona Data",
   "custom_picker_field_time_text": "Seleziona Ora",
@@ -469,5 +468,7 @@
   "changelog_v2_0_0_bullet_8": "Aspetto: nuovo logo e nuova icona dell'app (con le icone a tema di Android 13+), schermate ridisegnate in modo coerente, nuova schermata Info, testi meno marcati e una sola scala per dimensioni dei testi e angoli.",
   "changelog_v2_0_0_bullet_9": "Accessibilità: testi secondari più contrastati nel tema chiaro, aree tattili di almeno 48 dp, schermate che si adattano al testo di sistema ingrandito ed etichette per gli screen reader. Il pulsante \"Salta\" dell'onboarding ora è tradotto.",
   "changelog_v2_0_0_bullet_10": "Privacy e prestazioni: informativa privacy leggibile nell'app anche offline, avvio più rapido, motore di scansione e generazione dei QR aggiornati e librerie Firebase all'ultima versione.",
-  "changelog_v2_0_0_bullet_11": "Il profilo e i codici salvati sono accessibili solo dal tuo account."
+  "changelog_v2_0_0_bullet_11": "Il profilo e i codici salvati sono accessibili solo dal tuo account.",
+  "changelog_v2_0_0_bullet_12": "L'eliminazione dell'account ora chiede conferma con un semplice dialog direttamente dal Profilo, invece che in una schermata a parte. Se l'eliminazione non riesce viene mostrato un messaggio di errore.",
+  "changelog_v2_0_0_bullet_13": "Il Profilo non mostra più l'ID tecnico dell'account."
 }

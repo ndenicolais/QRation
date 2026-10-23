@@ -150,6 +150,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toast_delete_success => 'Account deleted successfully';
 
   @override
+  String get toast_delete_error =>
+      'Couldn\'t delete the account. Sign in again and retry.';
+
+  @override
   String get validator_name_empty => 'Name cannot be empty';
 
   @override
@@ -797,9 +801,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get database_screen_account_title => 'Account Info';
 
   @override
-  String get database_screen_account_field_userid => 'ID';
-
-  @override
   String get database_screen_account_field_name => 'Name';
 
   @override
@@ -1262,15 +1263,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete_title => 'Delete Account';
 
   @override
-  String get delete_description =>
-      'On this page you can permanently delete your Account.\n\nConfirming the cancellation will also delete all the Database linked to the Account.\n\nRemember that the process is irreversible.\n\nIf you want to proceed click on the Button below:';
-
-  @override
   String get delete_d_title => 'Delete';
 
   @override
   String get delete_d_description =>
-      'Are you sure you want to delete your account?';
+      'Your account and all the codes saved to it will be permanently deleted. This action cannot be undone.';
 
   @override
   String get custom_picker_field_date_text => 'Select Date';
@@ -1410,4 +1407,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_11 =>
       'Your profile and saved codes can only be accessed from your own account.';
+
+  @override
+  String get changelog_v2_0_0_bullet_12 =>
+      'Account deletion now asks for confirmation in a simple dialog straight from the Profile, instead of a separate screen. If deletion fails, an error message is shown.';
+
+  @override
+  String get changelog_v2_0_0_bullet_13 =>
+      'The Profile no longer shows the technical account ID.';
 }

@@ -169,7 +169,7 @@ qration/
 │   │   │   └── screens/            # splash_screen
 │   │   ├── user/
 │   │   │   ├── models/             # UserModel
-│   │   │   ├── screens/            # user_screen, delete_account_screen
+│   │   │   ├── screens/            # user_screen
 │   │   │   └── widgets/            # account_info_card
 │   │   └── welcome/
 │   │       └── screens/            # welcome_screen
@@ -509,7 +509,7 @@ Le card sono `CodeListTile` (`showSource: true` per mostrare "Created"/"Scanned"
 
 L'eliminazione in blocco (`HistoryController.deleteSelected`) esegue `Future.wait` sulle `deleteCode` selezionate (in parallelo invece che in sequenza, per ridurre il tempo sotto l'overlay di caricamento). Nella screen il toast di conferma è preceduto da un controllo `context.mounted`, perché `HistoryScreenState` potrebbe non essere più montato al termine dell'`await`.
 
-In precedenza, dopo l'eliminazione lo schermo restava comunque nero: la causa reale era un doppio `Navigator.pop()`. `AppDeleteDialog` chiude già da sé il proprio dialogo prima di invocare `onConfirm`, ma il callback `onConfirm` di Cronologia eseguiva un ulteriore `Navigator.of(context).pop()` come prima istruzione; poiché `HistoryScreen` vive nell'`IndexedStack` di `HomeScreen` senza una route propria, quel secondo pop chiudeva la Home stessa (da cui il crash `setState()` dopo dispose, sintomo secondario). Corretto rimuovendo la chiamata `Navigator.pop()` ridondante. Lo stesso bug era presente anche in `delete_account_screen.dart` ed è stato corretto allo stesso modo.
+In precedenza, dopo l'eliminazione lo schermo restava comunque nero: la causa reale era un doppio `Navigator.pop()`. `AppDeleteDialog` chiude già da sé il proprio dialogo prima di invocare `onConfirm`, ma il callback `onConfirm` di Cronologia eseguiva un ulteriore `Navigator.of(context).pop()` come prima istruzione; poiché `HistoryScreen` vive nell'`IndexedStack` di `HomeScreen` senza una route propria, quel secondo pop chiudeva la Home stessa (da cui il crash `setState()` dopo dispose, sintomo secondario). Corretto rimuovendo la chiamata `Navigator.pop()` ridondante. Lo stesso bug era presente anche nella vecchia schermata di eliminazione account ed è stato corretto allo stesso modo.
 
 ---
 
@@ -519,13 +519,15 @@ In precedenza, dopo l'eliminazione lo schermo restava comunque nero: la causa re
 
 **Profilo utente (`user_screen.dart`):**
 - Intestazione con avatar (foto o iniziale, bordo nel colore principale), nome ed email
-- `AccountInfoCard` (`lib/features/user/widgets/account_info_card.dart`, spostata da `settings/widgets` perché usata solo qui): ID, nome, email e data di creazione (`dd/MM/yyyy`), con divisori del tema
+- `AccountInfoCard` (`lib/features/user/widgets/account_info_card.dart`, spostata da `settings/widgets` perché usata solo qui): nome, email e data di creazione (l'UID Firebase non viene mostrato: è un dato tecnico non utile all'utente) (`dd/MM/yyyy`), con divisori del tema
 - Pulsanti "Esci" e "Elimina account" come `AppButton.outlined` (il secondo nel colore di errore)
+- "Elimina account" apre direttamente un `AppDeleteDialog` (titolo `delete_title`, messaggio `delete_d_description`, conferma `delete_d_title`): non esiste più una schermata dedicata né la route `/delete-account`
 - Dati caricati da Firestore tramite `AuthController`
 
-**Eliminazione account (`delete_account_screen.dart`):**
-- Conferma con re-autenticazione prima dell'eliminazione
-- Elimina tutti i dati utente da Firestore e l'account da Firebase Auth
+**Eliminazione account (`_UserScreenState._deleteAccount`):**
+- Alla conferma mostra un overlay con `AppLoader` che blocca la schermata e chiama `AuthController.deleteAccount()`, che elimina i codici e il documento utente da Firestore e poi l'account da Firebase Auth
+- In caso di successo: toast `toast_delete_success` e `Get.offAllNamed(AppRoutes.welcome)`
+- In caso di errore (es. `requires-recent-login` di Firebase Auth): l'overlay viene rimosso e si mostra il toast `toast_delete_error`, che invita a riaccedere e riprovare
 
 ---
 
@@ -824,7 +826,6 @@ Splash
 | `codeCreateSocial` | `/code-create-social` | CodeCreateSocialScreen |
 | `codeDetails` | `/code-details` | CodeDetailsScreen |
 | `user` | `/user` | UserScreen |
-| `deleteAccount` | `/delete-account` | DeleteAccountScreen |
 | `settings` | `/settings` | SettingsScreen |
 | `settingsDatabase` | `/settings-database` | DatabaseScreen |
 | `settingsInfo` | `/settings-info` | InfoScreen |
