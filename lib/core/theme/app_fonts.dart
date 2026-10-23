@@ -32,21 +32,4 @@ class AppFonts {
       letterSpacing: letterSpacing,
     );
   }
-
-  /// Uses the platform's built-in generic monospace family since no
-  /// monospace font is bundled as an asset.
-  static TextStyle monospace({
-    Color? color,
-    double? fontSize,
-    FontWeight? fontWeight,
-    double? letterSpacing,
-  }) {
-    return TextStyle(
-      fontFamily: 'monospace',
-      color: color,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      letterSpacing: letterSpacing,
-    );
-  }
 }
