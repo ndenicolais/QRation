@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qration/app.dart';
 import 'package:qration/core/bindings/app_binding.dart';
@@ -32,6 +33,15 @@ Future<void> main() async {
     };
   }
 
+  LicenseRegistry.addLicense(_fontLicenses);
+
   AppBinding().dependencies();
   runApp(QrationApp(initialLocale: await QrationApp.loadSavedLocale()));
+}
+
+/// Bundled fonts are not pub packages, so their licenses must be registered
+/// by hand to appear in `showLicensePage`.
+Stream<LicenseEntry> _fontLicenses() async* {
+  final ofl = await rootBundle.loadString('assets/fonts/OFL.txt');
+  yield LicenseEntryWithLineBreaks(['Montserrat'], ofl);
 }
