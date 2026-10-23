@@ -1,1003 +1,925 @@
-# QRation — Documentazione completa
+# QRation — Full documentation
 
-> Copyright © 2026 Nicola De Nicolais — Tutti i diritti riservati.
-
----
-
-## Indice
-
-1. [Panoramica dell'app](#1-panoramica-dellapp)
-2. [Architettura e stack tecnologico](#2-architettura-e-stack-tecnologico)
-3. [Struttura del progetto](#3-struttura-del-progetto)
-4. [Modelli dati](#4-modelli-dati)
-5. [Schermate e funzionalità](#5-schermate-e-funzionalità)
-   - [Splash](#51-splash)
-   - [Onboarding](#52-onboarding)
-   - [Welcome](#53-welcome)
-   - [Auth — Autenticazione](#54-auth--autenticazione)
-   - [Home](#55-home)
-   - [Scanner](#56-scanner)
-   - [Creazione QR code](#57-creazione-qr-code)
-   - [Dettaglio codice](#58-dettaglio-codice)
-   - [Preferiti](#59-preferiti)
-   - [Cronologia](#510-cronologia)
-   - [Utente](#511-utente)
-   - [Impostazioni](#512-impostazioni)
-   - [Database](#513-database)
-6. [Controllers (State Management)](#6-controllers-state-management)
-7. [Servizi](#7-servizi)
-   - [Autenticazione (AuthController)](#71-autenticazione-authcontroller)
-   - [Codici (codes_service)](#72-codici-codes_service)
-   - [Export CSV (csv_service)](#73-export-csv-csv_service)
-   - [Export Excel (excel_service)](#74-export-excel-excel_service)
-   - [Export PDF (pdf_service, pdf_report)](#75-export-pdf-pdf_service-pdf_report)
-8. [Tema e stile](#8-tema-e-stile)
-9. [Navigazione](#9-navigazione)
-10. [Impostazioni disponibili](#10-impostazioni-disponibili)
-11. [Dipendenze](#11-dipendenze)
-12. [Requisiti di sistema](#12-requisiti-di-sistema)
-13. [Build e distribuzione](#13-build-e-distribuzione)
-14. [Regole di sicurezza Firebase](#14-regole-di-sicurezza-firebase)
+> Copyright © 2026 Nicola De Nicolais — All Rights Reserved. Source-available, non-commercial license (see [LICENSE](LICENSE)).
 
 ---
 
-## 1. Panoramica dell'app
+## Table of contents
 
-**QRation** è un'app per la scansione e la creazione di QR code e codici a barre, sviluppata in Flutter per Android. Permette all'utente di:
-
-- Scansionare QR code e codici a barre tramite fotocamera o da immagine in galleria
-- Creare QR code personalizzati per più di 12 tipologie standard (testo, URL, email, telefono, SMS, contatto, posizione, Wi-Fi, evento calendario, prodotto, ISBN, patente)
-- Creare QR code per 10 social network (YouTube, Facebook, Instagram, TikTok, Telegram, LinkedIn, X, Pinterest, Spotify, WhatsApp)
-- Personalizzare l'aspetto visivo del QR code con colori e arrotondamento personalizzati per occhi e moduli
-- Salvare tutti i codici scansionati e creati su Firebase Firestore con sincronizzazione cloud
-- Gestire una cronologia completa dei codici con ricerca e filtri avanzati
-- Marcare codici come preferiti e consultarli rapidamente
-- Esportare i dati in CSV, Excel e PDF con statistiche dettagliate
-- Condividere QR code come immagine o salvarli in galleria
-
-L'app è completamente localizzata in italiano e inglese, con supporto a tema chiaro e scuro.
+1. [App overview](#1-app-overview)
+2. [Architecture and tech stack](#2-architecture-and-tech-stack)
+3. [Project structure](#3-project-structure)
+4. [Data models](#4-data-models)
+   - [CodeModel](#codemodel)
+   - [CodeSocial](#codesocial)
+   - [Standard barcode types](#standard-barcode-types)
+   - [UserModel](#usermodel)
+   - [Local preferences](#local-preferences)
+   - [Security rules](#security-rules)
+5. [Screens and features](#5-screens-and-features)
+   - [5.1 Splash](#51-splash)
+   - [5.2 Onboarding](#52-onboarding)
+   - [5.3 Welcome](#53-welcome)
+   - [5.4 Authentication](#54-authentication)
+   - [5.5 Home](#55-home)
+   - [5.6 Scanner](#56-scanner)
+   - [5.7 Code creation](#57-code-creation)
+   - [5.8 Code details](#58-code-details)
+   - [5.9 Favorites](#59-favorites)
+   - [5.10 History](#510-history)
+   - [5.11 Profile](#511-profile)
+   - [5.12 Settings](#512-settings)
+   - [5.13 Database](#513-database)
+6. [State management](#6-state-management)
+7. [Services](#7-services)
+   - [7.1 AuthController and SessionStore](#71-authcontroller-and-sessionstore)
+   - [7.2 CodesService](#72-codesservice)
+   - [7.3 ChangelogService](#73-changelogservice)
+   - [7.4 BackupHistory](#74-backuphistory)
+   - [7.5 Public Downloads copy](#75-public-downloads-copy)
+   - [7.6 CSV export](#76-csv-export)
+   - [7.7 Excel export](#77-excel-export)
+   - [7.8 PDF export](#78-pdf-export)
+8. [Theme and style](#8-theme-and-style)
+9. [Navigation](#9-navigation)
+10. [Localization](#10-localization)
+11. [Dependencies](#11-dependencies)
+12. [System requirements](#12-system-requirements)
+13. [Build and distribution](#13-build-and-distribution)
+- [License](#license)
 
 ---
 
-## 2. Architettura e stack tecnologico
+## 1. App overview
 
-| Componente | Tecnologia / Libreria |
+**QRation** is an Android app, built with Flutter, for scanning and creating QR codes and barcodes and keeping them in a personal cloud collection. Users can:
+
+- Scan QR codes and barcodes with the camera or from an image in the gallery
+- Create QR codes for 12 standard types (text, URL, email, phone, SMS, contact, location, Wi-Fi, calendar event, product, ISBN, driver's license)
+- Create QR codes for 10 social networks (YouTube, Facebook, Instagram, TikTok, Telegram, LinkedIn, X, Pinterest, Spotify, WhatsApp)
+- Customize a QR code with eye and module colors, rounded shapes and a center logo
+- Mark codes as favorites and browse them by source
+- Search and filter the full history, and delete codes in bulk
+- Share a QR code as an image or save it to the gallery
+- Export the collection as PDF, Excel and CSV, and back it up and restore it as JSON
+
+All codes are stored in Cloud Firestore under the user's account. The app is available in English and Italian, with system, light and dark themes and 8 accent colors.
+
+---
+
+## 2. Architecture and tech stack
+
+Versions are listed only in [Dependencies](#11-dependencies).
+
+| Component | Technology |
 |---|---|
-| Framework | Flutter 3 / Dart `^3.5.2` |
-| State management | [get](https://pub.dev/packages/get) `^4.6.6` (GetX) |
-| Backend / Database | [cloud_firestore](https://pub.dev/packages/cloud_firestore) `^6.10.0` |
-| Autenticazione | [firebase_auth](https://pub.dev/packages/firebase_auth) `^6.7.0` + [google_sign_in](https://pub.dev/packages/google_sign_in) `^7.2.0` |
-| Core Firebase | [firebase_core](https://pub.dev/packages/firebase_core) `^4.15.0` |
-| Error reporting | [firebase_crashlytics](https://pub.dev/packages/firebase_crashlytics) `^5.4.0` (errori Flutter/Dart non gestiti, disabilitato su web) |
-| Font | Montserrat, asset locale (`assets/fonts/`), esposto via `AppFonts` (`app_fonts.dart`) |
-| Icone UI | [ming_cute_icons](https://pub.dev/packages/ming_cute_icons) `^0.0.7` + [line_awesome_flutter](https://pub.dev/packages/line_awesome_flutter) `^3.0.1` |
-| Animazioni | [flutter_animate](https://pub.dev/packages/flutter_animate) `^4.5.0` |
-| Indicatore pagine | [smooth_page_indicator](https://pub.dev/packages/smooth_page_indicator) `^1.2.0+3` |
-| Color picker | [flutter_colorpicker](https://pub.dev/packages/flutter_colorpicker) `^1.1.0` |
-| Toast/notifiche UI | [toastification](https://pub.dev/packages/toastification) `^2.3.0` |
-| Scanner QR | [mobile_scanner](https://pub.dev/packages/mobile_scanner) `^7.4.0` |
-| Generazione QR | [pretty_qr_code](https://pub.dev/packages/pretty_qr_code) `^3.6.0` |
-| Persistenza locale | [shared_preferences](https://pub.dev/packages/shared_preferences) `^2.3.4` |
-| Percorsi filesystem | [path_provider](https://pub.dev/packages/path_provider) `^2.1.5` |
-| Permessi | [permission_handler](https://pub.dev/packages/permission_handler) `^11.3.1` |
-| Info dispositivo | [device_info_plus](https://pub.dev/packages/device_info_plus) `^11.2.0` |
-| Selezione immagine | [image_picker](https://pub.dev/packages/image_picker) `^1.1.2` |
-| Salvataggio galleria | [image_gallery_saver_plus](https://pub.dev/packages/image_gallery_saver_plus) `^4.0.1` |
-| Screenshot | [screenshot](https://pub.dev/packages/screenshot) `^3.0.0` |
-| Audio | [audioplayers](https://pub.dev/packages/audioplayers) `^6.1.0` |
-| Vibrazione | [vibration](https://pub.dev/packages/vibration) `^3.1.3` |
-| Condivisione | [share_plus](https://pub.dev/packages/share_plus) `^10.1.1` |
-| URL launcher | [url_launcher](https://pub.dev/packages/url_launcher) `^6.3.1` |
-| Prefissi telefonici | [country_code_picker](https://pub.dev/packages/country_code_picker) `^3.1.0` |
-| Contatti | [flutter_contacts](https://pub.dev/packages/flutter_contacts) `^1.1.9+2` |
-| Calendario | [add_2_calendar](https://pub.dev/packages/add_2_calendar) `^3.0.1` |
-| Wi-Fi | [wifi_iot](https://pub.dev/packages/wifi_iot) `^0.3.19+2` |
-| Mappe | [flutter_map](https://pub.dev/packages/flutter_map) `^8.3.1` + [latlong2](https://pub.dev/packages/latlong2) `^0.9.1` (tasselli OpenStreetMap) |
-| Export PDF | [pdf](https://pub.dev/packages/pdf) `^3.11.1` |
-| Export Excel | [excel](https://pub.dev/packages/excel) `^4.0.6` |
-| Export CSV | [csv](https://pub.dev/packages/csv) `^6.0.0` |
-| Selettore file | [file_picker](https://pub.dev/packages/file_picker) `^9.0.2` |
-| Internazionalizzazione | [intl](https://pub.dev/packages/intl) `^0.19.0` |
-| Logging | [logger](https://pub.dev/packages/logger) `^2.5.0` |
+| Framework | Flutter / Dart |
+| State management and routing | [get](https://pub.dev/packages/get) (GetX) |
+| Database | [cloud_firestore](https://pub.dev/packages/cloud_firestore) |
+| Authentication | [firebase_auth](https://pub.dev/packages/firebase_auth), [google_sign_in](https://pub.dev/packages/google_sign_in) |
+| Error reporting | [firebase_crashlytics](https://pub.dev/packages/firebase_crashlytics) |
+| Local persistence | [shared_preferences](https://pub.dev/packages/shared_preferences), [path_provider](https://pub.dev/packages/path_provider) |
+| Scanning | [mobile_scanner](https://pub.dev/packages/mobile_scanner), [image_picker](https://pub.dev/packages/image_picker) |
+| QR generation | [pretty_qr_code](https://pub.dev/packages/pretty_qr_code), [flutter_colorpicker](https://pub.dev/packages/flutter_colorpicker) |
+| Images and sharing | [screenshot](https://pub.dev/packages/screenshot), [image_gallery_saver_plus](https://pub.dev/packages/image_gallery_saver_plus), [share_plus](https://pub.dev/packages/share_plus) |
+| Code actions | [url_launcher](https://pub.dev/packages/url_launcher), [flutter_contacts](https://pub.dev/packages/flutter_contacts), [add_2_calendar](https://pub.dev/packages/add_2_calendar), [wifi_iot](https://pub.dev/packages/wifi_iot), [country_code_picker](https://pub.dev/packages/country_code_picker) |
+| Maps | [flutter_map](https://pub.dev/packages/flutter_map), [latlong2](https://pub.dev/packages/latlong2) (OpenStreetMap tiles) |
+| Export and import | [pdf](https://pub.dev/packages/pdf), [excel](https://pub.dev/packages/excel), [csv](https://pub.dev/packages/csv), [file_picker](https://pub.dev/packages/file_picker) |
+| Feedback | [audioplayers](https://pub.dev/packages/audioplayers), [vibration](https://pub.dev/packages/vibration), [toastification](https://pub.dev/packages/toastification) |
+| UI | [ming_cute_icons](https://pub.dev/packages/ming_cute_icons), [line_awesome_flutter](https://pub.dev/packages/line_awesome_flutter), [flutter_animate](https://pub.dev/packages/flutter_animate), [smooth_page_indicator](https://pub.dev/packages/smooth_page_indicator) |
+| Platform info and permissions | [permission_handler](https://pub.dev/packages/permission_handler), [device_info_plus](https://pub.dev/packages/device_info_plus), [package_info_plus](https://pub.dev/packages/package_info_plus) |
+| Localization and logging | [intl](https://pub.dev/packages/intl), [logger](https://pub.dev/packages/logger) |
 
-**Pattern architetturale:** Feature-first con GetX. I controller fungono da ViewModel reattivi con `Rx`; i modelli sono POJO serializzabili; i service incapsulano la logica di accesso a Firebase e alle risorse di sistema; le schermate sono `StatelessWidget` o `StatefulWidget` che si collegano ai controller tramite `Get.find` / `Get.put`.
+**Architectural pattern:** feature-first with GetX. Controllers are reactive view models (`Rx` fields) and hold all state and logic of a screen; screens only compose widgets and call the controller. Models are plain serializable classes. Services wrap Firebase and platform resources. Controllers are registered by bindings (see [State management](#6-state-management)) and screens resolve them with `Get.find`.
 
-L'accesso ai codici segue un pattern repository: `CodesRepository` (`lib/features/codes/services/codes_repository.dart`) è un'interfaccia astratta con il contratto CRUD/query sui codici; `CodesService` la implementa usando Cloud Firestore. L'implementazione viene registrata una sola volta in `main.dart` (`Get.put<CodesRepository>(CodesService())`), e le 7 screen/servizi export che ne hanno bisogno la risolvono con `Get.find<CodesRepository>()` invece di istanziare direttamente `CodesService()`. Questo disaccoppia la UI dal backend concreto e rende l'implementazione sostituibile (es. con un mock) senza toccare le screen.
+Code storage goes through a repository: `CodesRepository` (`lib/features/codes/services/codes_repository.dart`) is the abstract contract for code CRUD and queries, and `CodesService` implements it on Firestore. Screens, controllers and export services depend on `CodesRepository` only, resolved with `Get.find<CodesRepository>()`, so tests can replace it with a mock.
 
 ---
 
-## 3. Struttura del progetto
+## 3. Project structure
 
 ```
 qration/
-├── android/                        # Configurazione Android nativa
+├── android/                        # Native Android project
 ├── assets/
-│   ├── fonts/                      # Font Montserrat (regular + bold) + QrationIcons
-│   ├── images/                     # Logo e immagini app
-│   └── sounds/                     # Suono beep per scanner
+│   ├── fonts/                      # Montserrat (Regular, Bold), OFL.txt, QrationIcons
+│   ├── images/                     # Logo and launcher icon sources
+│   └── sounds/                     # Scanner beep
+├── images/                         # README banner, screenshots, store icons
 ├── lib/
-│   ├── main.dart                   # Entry point: inizializza Firebase, Crashlytics, ThemeController, ScannerPreferencesController
-│   ├── app.dart                    # QrationApp: GetMaterialApp con routing e localizzazione (locale iniziale da main)
+│   ├── main.dart                   # Entry point: Firebase, Crashlytics, font licenses, AppVersion, AppBinding, saved locale
+│   ├── app.dart                    # QrationApp: GetMaterialApp with themes, routes and localization
 │   ├── core/
-│   │   ├── constants/
-│   │   │   └── app_constants.dart  # Costanti globali: URI, tipi barcode ordinati, social list
-│   │   ├── routes/
-│   │   │   ├── app_routes.dart     # Definizione costanti nomi route
-│   │   │   └── app_pages.dart      # Mappa route → widget (GetPage)
-│   │   ├── theme/
-│   │   │   ├── app_colors.dart     # Palette colori app
-│   │   │   ├── app_fonts.dart      # Montserrat locale (AppFonts)
-│   │   │   ├── app_radius.dart     # Token dei raggi (AppRadius)
-│   │   │   ├── app_theme.dart      # Temi chiaro e scuro, scala tipografica (textTheme)
-│   │   │   └── theme_controller.dart # Controller GetX per gestione tema
-│   │   ├── controllers/
-│   │   │   └── scanner_preferences_controller.dart # Preferenze beep/vibrazione condivise
-│   │   ├── utils/                  # Utility: icone/testi per tipo codice, validator, RescanGuard, ecc.
-│   │   └── widgets/                # Widget riutilizzabili core (toast, pulsanti, CodeListTile, ecc.)
+│   │   ├── bindings/               # AppBinding (permanent dependencies)
+│   │   ├── constants/              # AppConstants, AppVersion, changelog entries
+│   │   ├── controllers/            # ScannerPreferencesController
+│   │   ├── routes/                 # AppRoutes (names), AppPages (GetPage list)
+│   │   ├── services/               # ChangelogService
+│   │   ├── theme/                  # Colors, accent presets, fonts, radii, themes, ThemeController
+│   │   ├── utils/                  # Code type icons/texts, validators, RescanGuard, QR decoration, downloads saver, permissions
+│   │   └── widgets/                # Shared App* widgets, CodeListTile, SectionCard, SyncStatusBanner
 │   ├── features/
-│   │   ├── auth/
-│   │   │   ├── controllers/        # AuthController
-│   │   │   ├── screens/            # login, signup, reset_password
-│   │   │   ├── services/           # session_store (flag "Ricordami")
-│   │   │   └── widgets/            # auth_divider
-│   │   ├── codes/
-│   │   │   ├── controllers/        # CodeDetailsController, CodeCreateStandardController, CodeCreateSocialController, ScannerController
-│   │   │   ├── models/             # CodeModel, CodeSocial, CodeTypes (parser per ogni tipo)
-│   │   │   ├── screens/            # scanner, create_types, create_standard, create_social, details
-│   │   │   ├── services/           # CodesRepository (interfaccia) + CodesService (Firestore CRUD)
-│   │   │   └── widgets/            # Sotto-widget di dettaglio/creazione codice, incl. code_create/
-│   │   │                           # (custom_picker_field, full_screen_map)
-│   │   ├── export/
-│   │   │   └── services/           # csv_service, excel_service, pdf_service, pdf_report
-│   │   ├── favorites/
-│   │   │   ├── controllers/        # FavoritesController
-│   │   │   └── screens/            # favorites_screen
-│   │   ├── history/
-│   │   │   ├── controllers/        # HistoryController (stream, ricerca con debounce, filtri, selezione)
-│   │   │   ├── screens/            # history_screen
-│   │   │   └── widgets/            # history_filter_sheet
-│   │   ├── home/
-│   │   │   └── screens/            # home_screen (bottom nav container)
-│   │   ├── onboarding/
-│   │   │   ├── models/
-│   │   │   └── screens/            # onboarding_screen
-│   │   ├── settings/
-│   │   │   ├── controllers/        # SettingsController, DatabaseController
-│   │   │   ├── screens/            # settings, database, info, privacy_policy, support
-│   │   │   └── widgets/            # Sotto-widget della schermata Database + custom_expansiontile
-│   │   ├── splash/
-│   │   │   └── screens/            # splash_screen
-│   │   ├── user/
-│   │   │   ├── models/             # UserModel
-│   │   │   ├── screens/            # user_screen
-│   │   │   └── widgets/            # account_info_card
-│   │   └── welcome/
-│   │       └── screens/            # welcome_screen
-│   └── l10n/                       # Localizzazione (ARB files: EN + IT)
-├── test/
-│   ├── core/utils/                 # Unit: isbn_formatter, code_type_conversion, code_social_template, validator, code_type_body
-│   ├── features/                   # Unit/widget: models, controllers (mocktail), services (fake_cloud_firestore), widgets
-│   ├── integration/                # Multi-layer flutter_test: controller reale + repository mockata + widget veri
-│   ├── support/                    # Helper condivisi (es. pumpLocalizedWidget)
-│   └── flutter_test_config.dart    # Setup globale test (no-op)
-├── integration_test/               # Test end-to-end su device/emulatore reale (integration_test package)
-├── pubspec.yaml
-├── README.md
-└── DOCUMENTATION.md
+│   │   ├── auth/                   # controllers, screens (login, signup, reset password), services (SessionStore), widgets
+│   │   ├── codes/                  # bindings, controllers, models, screens (scanner, create, details), services, widgets
+│   │   ├── export/                 # services: CSV, Excel, PDF data and PDF layout
+│   │   ├── favorites/              # controllers, screens
+│   │   ├── history/                # controllers, screens, widgets (filter sheet)
+│   │   ├── home/                   # bindings, screens (bottom navigation shell)
+│   │   ├── onboarding/             # models, screens
+│   │   ├── settings/               # bindings, controllers, screens (settings, database, info, privacy, support), services, widgets
+│   │   ├── splash/                 # screens
+│   │   ├── user/                   # models (UserModel), screens (profile), widgets (account info card)
+│   │   └── welcome/                # screens
+│   └── l10n/                       # ARB files (EN, IT), generated AppLocalizations, L10n.all
+├── test/                           # Unit, widget, accessibility and multi-layer tests (mirrors lib/)
+├── integration_test/               # End-to-end tests on a device or emulator
+├── tool/
+│   ├── icons/                      # generate_icons.ps1
+│   └── preview/                    # README banner and screenshot generator
+├── deploy_android.ps1              # Release APK build script
+├── PRIVACY.md
+└── pubspec.yaml
 ```
+
+**Inside a feature:** `bindings/` (GetX bindings for the feature's routes), `controllers/`, `models/`, `screens/`, `services/`, `widgets/`. A feature only has the folders it needs.
+
+**Conventions:**
+- One public class per file; the file name is the class name in snake_case.
+- Widgets shared by more than one feature live in `lib/core/widgets/` and are prefixed `App*` (`AppButton`, `AppTextField`, `AppToast`, `AppLoader`, `AppEmptyState`, `AppErrorState`, `AppDeleteDialog`, `AppChangelogDialog`, `AppLogo`). Widgets used by a single feature live in that feature's `widgets/`.
+- Screens never instantiate controllers or services: they get them with `Get.find`.
+- Every source file starts with the copyright header.
 
 ---
 
-## 4. Modelli dati
+## 4. Data models
 
-I dati dei codici sono persistiti su **Cloud Firestore** nella collection `users/{uid}/codes`. Le impostazioni utente sono salvate in **SharedPreferences**.
+Codes and profiles live in Cloud Firestore; preferences and backup timestamps live on the device in `SharedPreferences`; logo images live on the device in `<app documents>/logos/`.
 
 ### CodeModel
 
-Rappresenta un QR code o codice a barre, sia scansionato che creato.
+A scanned or created QR code or barcode. Firestore path: `users/{uid}/codes/{codeId}`.
 
-| Campo | Tipo | Descrizione |
-|---|---|---|
-| `id` | `String` | ID del documento Firestore |
-| `barcode` | `Barcode` | Oggetto barcode (rawValue + BarcodeType) |
-| `date` | `DateTime` | Data di creazione/scansione |
-| `isFavorite` | `bool` | Marcato come preferito |
-| `source` | `CodeSource` | Origine: `scanned` / `created` / `unknown` |
-| `eyeColor` | `Color` | Colore degli occhi del QR code (default nero) |
-| `eyeRounded` | `int` | Arrotondamento degli occhi (0 = nessuno) |
-| `moduleColor` | `Color` | Colore dei moduli del QR code (default nero) |
-| `moduleRounded` | `int` | Arrotondamento dei moduli (0 = nessuno) |
-| `socialMedia` | `CodeSocial?` | Dati social collegati (se è un codice social) |
-| `notes` | `String?` | Note dell'utente sul codice |
-| `logoPath` | `String?` | Percorso locale del logo incorporato al centro del QR (solo device, nessuna sincronizzazione cloud) |
+| Field | Type | Firestore key | Description |
+|---|---|---|---|
+| `id` | `String` | `id` | Firestore document ID, also stored in the document |
+| `barcode` | `Barcode` | `type`, `content` | `BarcodeType` name and raw value |
+| `date` | `DateTime` | `date` | Scan or creation time, ISO 8601 string |
+| `isFavorite` | `bool` | `isFavorite` | Favorite flag, default `false` |
+| `source` | `CodeSource` | `source` | `scanned`, `created` or `unknown` |
+| `eyeColor` | `Color` | `eyeColor` | Finder pattern color as ARGB int, default black |
+| `eyeRounded` | `int` | `eyeRounded` | Finder pattern rounding, `0` = square |
+| `moduleColor` | `Color` | `moduleColor` | Module color as ARGB int, default black |
+| `moduleRounded` | `int` | `moduleRounded` | Module rounding, `0` = square |
+| `socialMedia` | `CodeSocial?` | `socialMedia` | Social network name, `null` for standard codes |
+| `notes` | `String?` | `notes` | User notes |
+| `logoPath` | `String?` | `logoPath` | Local path of the center logo. Only the path is synced: the image file stays on the device that created it |
 
-**Enum `CodeSource`:** `scanned`, `created`, `unknown`
-
----
+`CodeModel.fromMap` is lenient: an unknown `type` becomes `BarcodeType.unknown`, an unknown `source` becomes `CodeSource.unknown`, and missing colors, rounding and favorite flag fall back to their defaults. `socialMedia` is stored and read back as the network name only.
 
 ### CodeSocial
 
-Metadati del social network associato a un codice di tipo social.
+Metadata of the social network of a social code.
 
-| Campo | Tipo | Descrizione |
+| Field | Type | Description |
 |---|---|---|
-| `name` | `String` | Nome del social (es. `YouTube`, `Instagram`) |
-| `url` | `String` | URL base del profilo social |
-| `icon` | `IconData` | Icona MingCute del social |
+| `name` | `String` | Network name (`YouTube`, `Instagram`…) |
+| `url` | `String` | Base profile URL |
+| `icon` | `IconData` | Network icon |
 
-**Social supportati (10):** YouTube, Facebook, Instagram, TikTok, Telegram, LinkedIn, X, Pinterest, Spotify, WhatsApp
+Supported networks: YouTube, Facebook, Instagram, TikTok, Telegram, LinkedIn, X, Pinterest, Spotify, WhatsApp.
 
----
+### Standard barcode types
 
-### Tipi barcode standard (12)
+`BarcodeType` values from `mobile_scanner` that the app creates and parses. Each type has a parser class in `lib/features/codes/models/code_types.dart` (`CodeEmail`, `CodeSms`, `CodeContact`, `CodePhoneNumber`, `CodeUrl`…).
 
-Gestiti dalla libreria `mobile_scanner` come `BarcodeType`:
-
-| Tipo | Descrizione |
+| Type | Content |
 |---|---|
-| `text` | Testo libero |
-| `url` | Indirizzo web |
-| `email` | Email con destinatario, oggetto e corpo (`MATMSG`) |
-| `phone` | Numero di telefono (`tel:`) |
-| `sms` | SMS con numero e testo (`SMSTO:`) |
-| `contactInfo` | Contatto vCard (`BEGIN:VCARD`) |
-| `geo` | Coordinate geografiche |
-| `wifi` | Credenziali Wi-Fi (SSID, password, cifratura) |
-| `calendarEvent` | Evento calendario (VEVENT) |
-| `product` | Codice prodotto (EAN, UPC) |
-| `isbn` | Codice ISBN libro |
-| `driverLicense` | Patente di guida |
-
-Ogni tipo ha classi parser dedicate in `lib/features/codes/models/code_types.dart` (es. `CodeEmail`, `CodeSms`, `CodeContact`, `CodePhoneNumber`, `CodeUrl`).
-
----
+| `text` | Free text |
+| `url` | Web address |
+| `email` | Recipient, subject and body (`MATMSG`) |
+| `phone` | Phone number (`tel:`) |
+| `sms` | Number and message (`SMSTO:`) |
+| `contactInfo` | vCard contact (`BEGIN:VCARD`) |
+| `geo` | Coordinates |
+| `wifi` | SSID, password, encryption |
+| `calendarEvent` | Calendar event (`VEVENT`) |
+| `product` | Product code (EAN, UPC) |
+| `isbn` | Book ISBN |
+| `driverLicense` | Driver's license data |
 
 ### UserModel
 
-Rappresenta il profilo dell'utente autenticato, salvato su Firestore nella collection `users/{uid}`.
+The signed-in user's profile. Firestore path: `users/{uid}`.
 
-| Campo | Tipo | Descrizione |
+| Field | Type | Description |
 |---|---|---|
-| `userEmail` | `String` | Email dell'utente |
-| `userName` | `String` | Nome visualizzato |
-| `userImage` | `String?` | URL immagine profilo (opzionale, da Google) |
-| `userDate` | `DateTime` | Data di registrazione |
+| `userEmail` | `String` | Email address |
+| `userName` | `String` | Display name |
+| `userImage` | `String?` | Profile picture URL (Google accounts) |
+| `userDate` | `DateTime` | Registration date, stored as a Firestore `Timestamp` |
+
+### Local preferences
+
+Keys stored in `SharedPreferences`.
+
+| Key | Type | Default | Owner | Description |
+|---|---|---|---|---|
+| `seen_onboarding` | `bool` | `false` | Splash, Onboarding | Onboarding already shown |
+| `theme_mode` | `String` | `system` | `ThemeController` | `system`, `light` or `dark`. A legacy `theme_preference` bool is migrated (`true` → `dark`, `false` → `light`) and removed |
+| `accent_preset_index` | `int` | `0` | `ThemeController` | Index in `AccentPresets` |
+| `language_code` | `String` | none (system) | `QrationApp.languageKey` | `en` or `it` |
+| `beepEnabled` | `bool` | `false` | `ScannerPreferencesController` | Beep on scan |
+| `vibrateEnabled` | `bool` | `false` | `ScannerPreferencesController` | Vibration on scan |
+| `remember_me` | `bool` | `false` | `SessionStore` | Restore the session at startup |
+| `user_id` | `String` | none | `SessionStore` | UID the saved session belongs to |
+| `changelog_last_seen_version` | `String` | none | `ChangelogService` | Last version whose "What's new" dialog was shown |
+| `backup_last_export_<uid>` | `int` | none | `BackupHistory` | Epoch milliseconds of the last successful JSON export |
+| `backup_last_import_<uid>` | `int` | none | `BackupHistory` | Epoch milliseconds of the last successful JSON import |
+
+### Security rules
+
+The rules are not in the repo: they are edited and published only from the Firebase console of project `qration-b5a7a` (Firestore → Rules, Storage → Rules). `.firebaserc` links the repo to the project for the Firebase CLI. This table is the documented copy to compare with the console before a release.
+
+| Path | Allowed operations | Who |
+|---|---|---|
+| `users/{uid}` | `get`, `create`/`set` (sign-up, first Google sign-in), `delete` (account deletion); no `list` | `request.auth.uid == uid` |
+| `users/{uid}/codes/{codeId}` | Stream and `get` of the collection; queries `isFavorite ==`, `source ==`, `socialMedia != null` (+ `source ==`); `set` (add, import); `update` of `notes` and `isFavorite` only; single and bulk `delete` | `request.auth.uid == uid` |
+| Any other Firestore path | — | Denied |
+| Storage (whole bucket) | Not used: there is no `firebase_storage` dependency and logos stay on the device | Denied |
+
+The rules also check document shape: `users/{uid}` accepts only `userEmail`, `userName`, `userImage`, `userDate`; a new code accepts only the keys of `CodeModel.toMap()`, with `id` equal to the document ID. Adding a field to `UserModel` or `CodeModel`, or a new path, requires updating the rules in the same release. The app uses no `collectionGroup` queries, transactions or batches.
+
+Signed-out clients cannot read `users`, so email existence checks come from Firebase Auth error codes, not from Firestore queries (see [AuthController](#71-authcontroller-and-sessionstore)).
+
+**Unauthenticated check:** this request must return `403 PERMISSION_DENIED`:
+
+```bash
+curl "https://firestore.googleapis.com/v1/projects/qration-b5a7a/databases/(default)/documents/users"
+```
 
 ---
 
-## 5. Schermate e funzionalità
+## 5. Screens and features
 
 ### 5.1 Splash
 
-**Percorso:** `lib/features/splash/`
+**Path:** `lib/features/splash/`
 
-Schermata di avvio visualizzata al lancio dell'app. Mostra il logo animato e reindirizza automaticamente alla schermata corretta in base allo stato dell'utente:
-- Primo avvio → Onboarding
-- Utente non autenticato → Welcome
-- Utente autenticato → Home
+Shows the animated logo and routes the user to the right screen.
 
-La permanenza minima sulla splash (`Future.delayed`, 350ms) esiste solo per dare tempo all'animazione del logo di essere visibile prima del redirect automatico.
-
-**Ripristino della sessione:** lo splash va in Home solo se `SessionStore.canRestore(uid)` è vero, cioè se esiste un utente Firebase autenticato **e** il "Ricordami" salvato (`remember_me` + `user_id`) si riferisce proprio a quell'utente. Poiché Firebase ripristina l'utente persistito in modo asincrono all'avvio, `currentUser` può essere ancora `null`: in quel caso lo splash attende il primo evento di `authStateChanges()` (timeout 3 s) invece di leggerlo in modo sincrono. In precedenza lo splash faceva anche una lettura Firestore del profilo utente il cui fallimento (ad esempio offline e senza cache) rimandava al Welcome pur con sessione valida: la lettura è stata rimossa.
-
-**Backup automatico Android e sessione Firebase:** Firebase Auth salva l'utente in `shared_prefs/com.google.firebase.auth.api.Store.<id>.xml`, cifrato con una chiave del Keystore Android (`...api.crypto.<id>.xml`). La chiave del Keystore non viene mai inclusa nei backup: se Auto Backup ripristina quei file dopo una reinstallazione, Firebase non riesce né a leggerli né a sovrascriverli, e ogni nuovo login resta solo in memoria (l'hot reload sembra funzionare, un riavvio dell'app riporta al Welcome con `currentUser == null`). Per questo `AndroidManifest.xml` dichiara `android:fullBackupContent="@xml/backup_rules"` (Android 6–11) e `android:dataExtractionRules="@xml/data_extraction_rules"` (Android 12+), che escludono questi due file dal backup e dal trasferimento tra dispositivi. I nomi dei file includono `base64("[DEFAULT]")+base64(mobilesdk_app_id)`: vanno aggiornati se cambia l'app Firebase in `google-services.json`. Su un dispositivo già in questo stato basta cancellare i due file (o i dati dell'app) e rifare il login.
-
----
+**Features:**
+- First launch (`seen_onboarding` false) → Onboarding; signed out → Welcome; restorable session → Home.
+- The 350 ms minimum delay only lets the logo animation be seen before the redirect.
+- **Session restore:** Home is opened only when `SessionStore.canRestore(uid)` is true, i.e. a Firebase user is signed in **and** the saved "Remember me" session belongs to that same UID. Firebase restores the persisted user asynchronously, so `currentUser` can still be `null` at startup: the splash waits for the first signed-in `authStateChanges()` event, with a 5 s timeout, instead of reading it synchronously. No Firestore read happens here, so a valid session also opens offline.
+- **Android Auto Backup:** Firebase Auth stores the user in `shared_prefs/com.google.firebase.auth.api.Store.<id>.xml`, encrypted with an Android Keystore key (`...api.crypto.<id>.xml`). Keystore keys are never backed up, so if Auto Backup restored those files after a reinstall Firebase could neither read nor overwrite them, and every new sign-in would live only in memory. `AndroidManifest.xml` therefore sets `android:fullBackupContent="@xml/backup_rules"` (Android 6–11) and `android:dataExtractionRules="@xml/data_extraction_rules"` (Android 12+), which exclude both files from backup and device transfer. The file names contain `base64("[DEFAULT]")+base64(mobilesdk_app_id)` and must be updated if the Firebase app in `google-services.json` changes.
 
 ### 5.2 Onboarding
 
-**Percorso:** `lib/features/onboarding/`
+**Path:** `lib/features/onboarding/`
 
-Presentazione guidata mostrata solo al primo avvio dell'app. Introduce le funzionalità principali con pagine scorrevoli e un indicatore `SmoothPageIndicator`. Al termine reindirizza alla schermata Welcome.
-
----
+Shown once, on first launch. Swipeable pages present the main features with a `SmoothPageIndicator`, which screen readers announce as "Page X of Y". At the end it sets `seen_onboarding` and opens Welcome.
 
 ### 5.3 Welcome
 
-**Percorso:** `lib/features/welcome/`
+**Path:** `lib/features/welcome/`
 
-Schermata di benvenuto con accesso rapido alle opzioni di autenticazione:
-- Pulsante **Accedi** → Login
-- Pulsante **Registrati** → Signup
+Entry screen for signed-out users with **Log in** (→ Login) and **Sign up** (→ Signup) buttons.
 
----
+### 5.4 Authentication
 
-### 5.4 Auth — Autenticazione
+**Path:** `lib/features/auth/`
 
-**Percorso:** `lib/features/auth/`
+Email/password and Google authentication on Firebase Auth. Logic is in `AuthController` (see [7.1](#71-authcontroller-and-sessionstore)).
 
-Gestione completa dell'autenticazione tramite Firebase Auth.
-
-**Schermate:**
-- **Login (`login_screen.dart`):**
-  - Login con email e password
-  - Login con Google (un tap, OAuth 2.0)
-  - Opzione "Ricordami" (salva in `SharedPreferences` il flag di sessione, non le credenziali); con Google la sessione è sempre ricordata
-  - Link a Registrazione e Reset password
-- **Signup (`signup_screen.dart`):**
-  - Registrazione con nome, email e password
-  - Validazione form (email duplicata, password sicura)
-  - Creazione profilo utente su Firestore dopo la registrazione
-  - Registrazione con Google: stesso pulsante "Continua con Google" del Login (`loginWithGoogle`, che crea il profilo Firestore se manca), separato dal form dal divisore condiviso `AuthDivider` (`lib/features/auth/widgets/auth_divider.dart`)
-- **Reset password (`reset_password_screen.dart`):**
-  - Invio email di reset tramite Firebase Auth
-
----
+**Features:**
+- **Login (`login_screen.dart`):** email and password, "Continue with Google", "Remember me" checkbox (merged with its label for screen readers) and links to Sign up and Reset password. The "Remember me / Forgot password?" row is a `Wrap` so it does not overflow with large text.
+- **Signup (`signup_screen.dart`):** name, email, password and confirmation with form validation; creates the Firestore profile after registration. The same "Continue with Google" button as Login sits below the form, separated by `AuthDivider`.
+- **Reset password (`reset_password_screen.dart`):** sends the Firebase reset email.
+- **Errors:** shown as toasts. `email-already-in-use` → `email_already_register`, `user-not-found` → `email_not_found`; other Firebase codes (e.g. `invalid-credential`) are shown as they come. With email enumeration protection enabled on the project, an unknown email at login returns `invalid-credential` and reset password reports no error.
+- After every login, signup, reset or logout the form fields and "Remember me" are cleared (`clearForm()`), because `AuthController` is permanent and would otherwise keep typed data in memory.
 
 ### 5.5 Home
 
-**Percorso:** `lib/features/home/`
+**Path:** `lib/features/home/`
 
-Schermata contenitore con **bottom navigation bar** a 5 voci. Gestisce la navigazione tra le sezioni principali dell'app tramite `IndexedStack`.
+Shell with a 5-item bottom navigation bar; the tabs live in an `IndexedStack`, so they keep their state while switching.
 
-**Sezioni della bottom nav:**
-
-| # | Voce | Schermata |
+| # | Tab | Screen |
 |---|---|---|
-| 1 | Scansiona | Scanner QR (tab selezionato di default all'apertura dell'app) |
-| 2 | Crea | Selezione tipo codice (`CodeCreateTypesScreen`), mostrata direttamente come corpo del tab |
-| 3 | Preferiti | Codici marcati come preferiti |
-| 4 | Cronologia | Lista completa di tutti i codici |
-| 5 | Impostazioni | Configurazione app |
+| 1 | Scan | `ScannerScreen` (selected when the app opens) |
+| 2 | Create | `CodeCreateTypesScreen` |
+| 3 | Favorites | `FavoritesScreen` |
+| 4 | History | `HistoryScreen` |
+| 5 | Settings | `SettingsScreen` |
 
-Lo scanner (`ScannerScreen`) è il primo tab (indice 0) invece che uno schermo raggiungibile solo tramite tap, così l'utente può scansionare un codice subito dopo aver aperto l'app, senza passaggi intermedi. Vivendo dentro l'`IndexedStack` di Home, riceve un flag `isActive` che ne avvia/ferma la fotocamera (`MobileScannerController.start()`/`stop()`) quando l'utente entra o esce dal tab, per non tenerla accesa in background mentre si naviga in altre sezioni.
-
-La pipeline di scansione vive in `ScannerController` (`lib/features/codes/controllers/scanner_controller.dart`); `ScannerScreen` gestisce solo fotocamera (`MobileScannerController`), permessi, zoom, galleria e navigazione. In `_onDetect`, `ScannerController.tryBeginDetection` (flag osservabile `isProcessing` + `RescanGuard`) evita di elaborare più scansioni in parallelo mentre una è già in corso. Beep e vibrazione di conferma (`playFeedback`, iniettabili nel costruttore per i test) sono racchiusi in blocchi try/catch dedicati (un fallimento del plugin audio/vibrazione, es. su device senza vibratore o output audio, non deve bloccare il riconoscimento del codice) e il reset (`endDetection`) avviene in un `finally` attorno a `_processBarcode`, così anche un errore nell'elaborazione del barcode non lascia lo scanner bloccato sul primo scan.
-
-Beep e vibrazione vengono letti da `ScannerPreferencesController` (`lib/core/controllers/`, tramite `ScannerController`) a ogni rilevamento, non copiati in `initState`: poiché `ScannerScreen` vive nell'`IndexedStack` di Home e non viene mai ricreata, una copia locale renderebbe le modifiche fatte nelle Impostazioni invisibili fino al riavvio dell'app.
-
-Le rilevazioni ripetute dello stesso codice sono filtrate da `RescanGuard` (`lib/core/utils/rescan_guard.dart`): la fotocamera segnala continuamente il codice inquadrato, quindi lo stesso valore viene ignorato finché resta in vista e viene accettato di nuovo solo dopo essere rimasto fuori inquadratura per almeno 2 secondi. Al ritorno dai dettagli il `finally` di `_onDetect` chiama `endDetection()`, che invoca `touch()`, così il cooldown parte da quel momento: il codice ancora inquadrato non riapre subito i dettagli, ma è possibile riscansionarlo spostando la fotocamera e tornando a inquadrarlo (in precedenza `_lastScanned` non veniva mai azzerato e lo stesso codice non era più scansionabile finché lo scanner restava vivo). Un codice diverso viene invece accettato immediatamente.
-
-Dopo aver salvato il codice, `_processBarcode` naviga ai dettagli con `Get.toNamed` (non `Get.offNamed`): essendo `ScannerScreen` un tab dentro l'`IndexedStack` di Home e non più una route indipendente, la route corrente al momento dello scan è l'intera Home. `Get.toNamed` apre `CodeDetailsScreen` **sopra** la Home, preservando il tab-shell sottostante (tornando indietro l'utente rimane sullo stesso tab); `Get.offNamed` sostituirebbe invece l'intera Home, comportamento sbagliato per questa architettura.
-
-`CodesService.addCode` genera l'id del documento localmente (`collection.doc()`, sincrono, non richiede rete) e lo assegna a `code.id` **prima** di scrivere su Firestore con un singolo `set()`, invece del precedente `add()` + `update()` in due round-trip separati. In `_processBarcode`, l'`await` su `addCode` è avvolto in un `timeout(Duration(seconds: 3))`: con connessione assente o instabile la scrittura resta comunque in coda nella cache offline di Firestore (e quindi visibile subito in Cronologia), ma senza il timeout l'attesa della conferma dal server poteva bloccare indefinitamente la navigazione verso `CodeDetailsScreen`. Allo scadere del timeout si naviga comunque ai dettagli, poiché l'id è già noto e la scrittura si sincronizzerà in background.
-
-Prima di `Get.toNamed`, `_processBarcode` ferma anche la fotocamera (`_controller.stop()`), riavviandola (`_controller.start()`) al ritorno se il tab è ancora attivo: lasciare la preview della fotocamera attiva sotto la route appena spinta poteva causare un crash del renderer Impeller (`Invalid external texture`) quando la sua `SurfaceTexture` veniva oscurata da `CodeDetailsScreen`, impedendo di fatto alla nuova schermata di comparire anche se la navigazione GetX era già avvenuta correttamente.
-
-Mentre `isProcessing` è `true` (dal rilevamento del barcode fino al `finally` di `_onDetect`), lo scanner mostra un overlay scuro con `AppLoader` sopra la fotocamera, per dare un feedback visivo durante l'attesa del salvataggio — che con connessione assente può arrivare fino ai 3 secondi del timeout di `addCode` prima di procedere comunque alla navigazione.
-
-Il tab Home mostrava in precedenza una dashboard (`_HomeBody`) con un'unica card che rimandava, con un tap in più, alla selezione del tipo di codice (`CodeCreateTypesScreen`, raggiunta tramite la route `codeCreateTypes`). Poiché quella dashboard esponeva solo quell'azione, è stata rimossa: il tab Home mostra ora `CodeCreateTypesScreen` direttamente come corpo, senza passaggio intermedio né route dedicata (la costante `AppRoutes.codeCreateTypes` e la relativa `GetPage` sono state rimosse). Di conseguenza `CodeCreateTypesScreen` non ha più un proprio `AppBar` con freccia indietro, in linea con gli altri tab (`ScannerScreen`, `FavoritesScreen`, `HistoryScreen`, `SettingsScreen`), che vivono anch'essi senza `AppBar` dentro l'`IndexedStack` di Home.
-
-Il pulsante **Profilo utente**, prima nell'header della dashboard rimossa, è stato spostato come voce cliccabile nella sezione Account di [5.12 Impostazioni](#512-impostazioni) (`Get.toNamed(AppRoutes.user)`). `HomeController`, che gestiva solo il nome utente mostrato in quell'header, è stato rimosso insieme al file `home_controller.dart` in quanto non più referenziato.
-
-Al primo frame utile dopo l'ingresso in Home, `AppChangelogDialog.maybeShow` confronta la versione corrente (`AppVersion.current` in `lib/core/constants/app_version.dart`, popolata a runtime in `main()` tramite `package_info_plus`) con l'ultima versione vista, salvata in `SharedPreferences` (`changelog_last_seen_version`), e mostra automaticamente il dialog "Novità" con le sole voci più recenti — vedi [5.12 Impostazioni](#512-impostazioni).
-
----
+**Features:**
+- The scanner is the first tab so a code can be scanned right after opening the app.
+- Tabs have no `AppBar` of their own.
+- Each tab is wrapped in `HeroMode(enabled: i == _selectedIndex)`: History and Favorites stay built while hidden, and only the visible one may take part in `Hero` animations, otherwise the same code in both lists would produce duplicate Hero tags.
+- Empty states of Favorites and History receive `onCreateCode`/`onScanNow` callbacks from Home that switch tab, so features do not depend on each other.
+- On the first frame, `AppChangelogDialog.maybeShow` shows the "What's new" dialog if there are versions the user has not seen (see [5.12](#512-settings) and [7.3](#73-changelogservice)).
 
 ### 5.6 Scanner
 
-**Percorso:** `lib/features/codes/screens/code_scanner_screen.dart`
+**Path:** `lib/features/codes/screens/code_scanner_screen.dart` (UI) + `lib/features/codes/controllers/scanner_controller.dart` (pipeline)
 
-Scansione di QR code e codici a barre tramite fotocamera del dispositivo.
+Scans QR codes and barcodes with the camera or from a gallery image and opens the code details.
 
-**Funzionalità:**
-- **Anteprima fotocamera** in tempo reale con overlay di targeting
-- **Scansione automatica:** il primo barcode rilevato viene elaborato e salvato
-- **Scansione da immagine:** importa un'immagine dalla galleria e ne estrae il codice
-- **Zoom:** slider per regolare il livello di zoom della fotocamera
-- **Feedback audio:** beep opzionale alla rilevazione (configurabile nelle impostazioni)
-- **Feedback tattile:** vibrazione opzionale alla rilevazione (configurabile nelle impostazioni)
-- **Rilevamento social:** se il contenuto corrisponde a un URL di social network noto, crea automaticamente un `CodeModel` con i metadati social
-- Al completamento della scansione, naviga direttamente al **Dettaglio codice**
+**Features:**
+- Live camera preview with a scrim outside a 264×264 window (`_ScrimPainter`, an even-odd path) and a laser line animated for 1.8 s back and forth.
+- Zoom slider, torch button (filled and gold when on, disabled when `TorchState.unavailable`, e.g. front camera) and gallery import. Every control has a tooltip, a ripple and `HapticFeedback.selectionClick()`.
+- Optional beep and vibration, read from `ScannerPreferencesController` at every detection rather than copied in `initState`: the screen lives in the `IndexedStack` and is never rebuilt, so a copy would ignore changes made in Settings.
+- A URL that matches a known social network is saved as a social code.
+- **Camera lifecycle:** the screen receives `isActive` from Home and starts/stops `MobileScannerController` when the tab is entered or left; the laser animation also runs only while active. Before opening the details the camera is stopped and restarted on return if the tab is still active: leaving the preview running under the new route can crash the Impeller renderer (`Invalid external texture`) and keep the details screen from appearing.
+- **Single processing:** `ScannerController.tryBeginDetection` (observable `isProcessing` + `RescanGuard`) prevents parallel processing. Beep and vibration run in their own try/catch, because a device without vibrator or audio output must not block recognition, and `endDetection` runs in a `finally`, so an error never leaves the scanner stuck. While `isProcessing` is true a dark overlay with `AppLoader` covers the camera.
+- **Repeated detections:** `RescanGuard` (`lib/core/utils/rescan_guard.dart`) ignores the value still in view and accepts it again only after it has been out of frame for 2 s. `endDetection` calls `touch()` on return from the details, so the cooldown starts then and a code still in frame does not reopen the details immediately. A different code is accepted at once.
+- **Save and navigate:** the code is saved with a 3 s timeout (`saveTimeout`). The document ID is generated locally (see [7.2](#72-codesservice)), so on timeout the app still navigates and the write syncs from Firestore's offline cache. Navigation uses `Get.toNamed`, which pushes the details **over** Home and keeps the tab shell underneath; `Get.offNamed` would replace the whole Home.
+- **Permission:** `CAMERA`, requested by `permission_helper.dart`.
 
-**Overlay e controlli:**
-- `_ScanOverlay` oscura l'anteprima fuori dal riquadro di inquadratura (264×264, raggio 24) con `_ScrimPainter`, un `CustomPainter` che riempie l'intera area con un path `PathFillType.evenOdd` (rettangolo pieno + riquadro arrotondato come "foro").
-- La linea laser è animata da un `AnimationController` (1,8 s, avanti/indietro, `Curves.easeInOut`) che scorre dentro il riquadro. L'animazione gira solo quando il tab Scanner è attivo (`animate: widget.isActive`): essendo nell'`IndexedStack` di Home, altrimenti continuerebbe a consumare frame anche in background.
-- Il pulsante torcia è avvolto in un `ValueListenableBuilder<MobileScannerState>` sul `MobileScannerController` (che è un `ValueNotifier`): icona piena ed evidenziata in oro quando `torchState == TorchState.on`, tooltip "Accendi/Spegni la torcia", disabilitato se `TorchState.unavailable` (es. fotocamera frontale).
-- `_ControlButton` usa `Material` + `InkWell` circolari (ripple visibile) con `HapticFeedback.selectionClick()` al tocco e un `Tooltip` obbligatorio; anche il pulsante galleria nell'app bar ha ora il suo tooltip.
+### 5.7 Code creation
 
-**Permessi richiesti:** `CAMERA`
+**Path:** `lib/features/codes/screens/` (UI), `lib/features/codes/controllers/` (state), `lib/features/codes/widgets/code_create/` (widgets)
 
----
+Creates a customized QR code in two steps.
 
-### 5.7 Creazione QR code
+**Step 1 — Type (`code_create_types_screen.dart`):** grid with the 12 standard and 10 social types, each with icon and label and a fade + scale entrance (`flutter_animate`). Tiles grow in height only when the system text size is larger than default.
 
-**Percorso:** `lib/features/codes/screens/`
+**Step 2a — Standard (`code_create_standard_screen.dart`, `CodeCreateStandardController`):** a form whose fields depend on the type.
 
-Flusso a più step per la creazione di un QR code personalizzato.
-
-**Step 1 — Selezione tipo (`code_create_types_screen.dart`):**
-- Griglia di selezione con **12 tipi standard** e **10 tipi social**
-- Ogni tipo è rappresentato da icona e label
-- Animazione di entrata con `flutter_animate` (fade + scale)
-
-**Step 2a — Creazione standard (`code_create_standard_screen.dart`):**
-Form di inserimento dati specifico per ogni tipo di barcode. Campi dinamici in base al tipo selezionato:
-
-| Tipo | Campi |
+| Type | Fields |
 |---|---|
-| Testo | Contenuto testuale |
-| URL | Indirizzo web |
-| Email | Destinatario, oggetto, corpo |
-| Telefono | Prefisso paese + numero |
-| SMS | Numero, testo messaggio |
-| Contatto | Nome, cognome, telefono, email |
-| Geo | Latitudine, longitudine (con mappa interattiva `flutter_map`, `FullScreenMap`: punto scelto toccando la mappa, nessun permesso di posizione richiesto; i tasselli arrivano da `tile.openstreetmap.org` con uno User-Agent `QRation/<versione> (+<repo>; contact: <email>)` impostato via `NetworkTileProvider`, come chiede la policy OSM (il formato predefinito `flutter_map (<package>)` viene bloccato con 403), più l'attribuzione "OpenStreetMap contributors") |
-| Wi-Fi | SSID, password, tipo cifratura, rete nascosta |
-| Evento calendario | Titolo, luogo, data inizio/fine |
-| Prodotto / ISBN | Codice numerico |
-| Patente | Dati patente |
+| Text | Content |
+| URL | Address |
+| Email | Recipient, subject, body |
+| Phone | Country prefix + number |
+| SMS | Number, message |
+| Contact | First name, last name, phone, email |
+| Geo | Latitude, longitude, or a point picked on a full-screen map (`FullScreenMap`) |
+| Wi-Fi | SSID, password, encryption, hidden network |
+| Calendar event | Title, location, start and end |
+| Product / ISBN | Numeric code |
+| Driver's license | License data |
 
-- **Personalizzazione visiva:** color picker per colore occhi e moduli; switch per arrotondamento; selezione opzionale di un **logo** dalla galleria, incorporato al centro del QR (`pretty_qr_code`'s `PrettyQrDecorationImage`, scale 0.2, salvato solo localmente sul device in `<app documents>/logos/`). Quando è presente un logo, il livello di correzione d'errore del QR passa da `M` a `H` (in tutti i punti di rendering: anteprima, dettaglio, export PDF), per compensare l'area coperta dal logo e mantenere il codice scansionabile anche da immagine statica. Ogni QR viene inoltre renderizzato con un **quiet zone** standard di 4 moduli (`buildQrDecoration()` in `qr_decoration.dart`, `PrettyQrQuietZone.standard`): senza questo margine i moduli arrivano fino al bordo dell'immagine catturata/salvata, impedendo ai decoder (es. `mobile_scanner`'s `analyzeImage`, usato dalla scansione "da galleria") di individuare i finder pattern
-- **Anteprima live** (`QrPreview`, `widgets/code_create/qr_preview.dart`) per **tutti** i tipi: si aggiorna a ogni modifica dei campi (`Listenable.merge` dei `TextEditingController`) e delle scelte osservabili (prefisso, cifratura Wi-Fi, stile), usando `generateContent()`; finché il form è incompleto mostra un QR segnaposto. In precedenza l'anteprima si aggiornava solo per il tipo Testo
-- **Layout:** campi del form in una `SectionCard` "Contenuto", poi le card "Anteprima" e "Stile" (`QrStyleCustomizer`) e il pulsante "Crea" pieno a tutta larghezza (`GenerateButton`, con indicatore di caricamento durante il salvataggio). App bar (`CodeCreateAppBar`, generica con callback `hasContent`) e switch prendono i colori dal tema
-- Validazione campi con messaggi di errore
+**Step 2b — Social (`code_create_social_screen.dart`, `CodeCreateSocialController`):** username or profile field for the chosen network; `buildContent()` turns it into the final content (profile URL, Spotify search URI `spotify:search:<artist>;<track>`, `wa.me` link with prefix).
 
-**Step 2b — Creazione social (`code_create_social_screen.dart`):**
-- Form semplificato con il campo username/profilo per il social selezionato
-- Stessi widget dello Step 2a (`CodeCreateAppBar`, `QrPreview`, `QrStyleCustomizer`, `GenerateButton`): lo stato di stile (colori e arrotondamento di occhi e moduli, logo) è nel mixin `QrStyleMixin` (`controllers/qr_style_mixin.dart`), condiviso da `CodeCreateStandardController` e `CodeCreateSocialController`
-- Il contenuto viene formattato automaticamente con l'URL base del social
-- Anteprima live del QR code col contenuto reale (`buildContent()`): in precedenza mostrava sempre un QR vuoto con il solo stile
-- Stato e logica in `CodeCreateSocialController` (`lib/features/codes/controllers/`), speculare a `CodeCreateStandardController`: `TextEditingController` dei campi, stile osservabile (colori, arrotondamenti, logo, prefisso WhatsApp), `buildContent()` per la costruzione del contenuto (URL, URI di ricerca Spotify `spotify:search:<artista>;<brano>`, link `wa.me` con prefisso) e `createQrCode()` per il salvataggio. La screen gestisce solo validazione del form, toast e navigazione; il dialog di conferma all'uscita usa `showDiscardDialog` condiviso (`widgets/code_create/discard_dialog.dart`) come la creazione standard
+**Shared features:**
+- Layout: form fields in a "Content" `SectionCard`, then "Preview" and "Style" cards and a full-width "Create" button (`GenerateButton`, with loading state while saving). The app bar is `CodeCreateAppBar`.
+- **Live preview** (`QrPreview`) for every type, rebuilt on every field change (`Listenable.merge` of the text controllers) and every observable choice; a placeholder QR is shown while the form is incomplete.
+- **Style** (`QrStyleCustomizer`, state in the `QrStyleMixin` shared by both controllers): eye and module colors, rounding switches, optional logo from the gallery. The color circles are 36 dp with a 48 dp touch area.
+- **Logo:** embedded with `PrettyQrDecorationImage` at scale 0.2 and copied to `<app documents>/logos/`. With a logo the error correction level goes from `M` to `H` everywhere the QR is rendered (preview, details, PDF), to compensate for the covered area.
+- **Quiet zone:** every QR is rendered with a standard 4-module quiet zone (`buildQrDecoration()` in `qr_decoration.dart`). Without it the modules reach the image edge and decoders such as `mobile_scanner`'s `analyzeImage` (gallery scan) cannot find the finder patterns.
+- **Map (Geo):** tiles come from `tile.openstreetmap.org` with a `QRation/<version> (+<repo>; contact: <email>)` User-Agent set through `NetworkTileProvider`, as the OSM tile policy requires (the default `flutter_map (<package>)` agent is blocked with 403), plus the "OpenStreetMap contributors" attribution. No location permission is used: the point is picked by tapping the map.
+- Leaving with unsaved content asks for confirmation (`showDiscardDialog`). After saving, the details open with `Get.offNamed`.
 
----
+### 5.8 Code details
 
-### 5.8 Dettaglio codice
+**Path:** `lib/features/codes/screens/code_details_screen.dart` + `CodeDetailsController`
 
-**Percorso:** `lib/features/codes/screens/code_details_screen.dart`
+Shows one code and its actions.
 
-Schermata di visualizzazione e gestione di un singolo codice.
+**Features:**
+- Every entry point opens it through `AppRoutes.codeDetails` with the `CodeModel` as argument; the fade transition (250 ms) is defined once in the `GetPage`. The type icon of `CodeListTile` and of the "Type" chip share the Hero tag `codeIconHeroTag(code.id)`.
+- Layout: app bar with a menu (the "Delete" item in the error color), "Date" (`dd/MM/yyyy HH:mm`) and "Type" chips (`CodeInfoRow`), "QR code" `SectionCard` (`CodeQrSection`, announced as an image with a label), a row of labeled quick actions (`CodeActionButtons`) and a "Content" `SectionCard` (`CodeContentCard`) with the type-specific action as a full-width button.
 
-**Navigazione e transizione:** tutti i punti di ingresso (Scanner, Cronologia, Preferiti, creazione standard e social) aprono il dettaglio tramite la route `AppRoutes.codeDetails` con il `CodeModel` come argomento (`Get.toNamed`, oppure `Get.offNamed` dopo la creazione). La transizione è definita una sola volta nella `GetPage` in `app_pages.dart` (`Transition.fade`, 250 ms), invece di essere ripetuta in ogni `Get.to(...)` con 500 ms. L'icona del tipo nella card di lista (`CodeListTile`) e quella nel chip "Tipo" del dettaglio (`CodeInfoRow`, parametro `typeIconHeroTag`) condividono il tag `codeIconHeroTag(code.id)`, così l'icona "vola" dalla lista al dettaglio e ritorno. Poiché Cronologia e Preferiti restano costruiti nell'`IndexedStack` di `HomeScreen` anche quando non visibili, ogni tab è avvolto in `HeroMode(enabled: i == _selectedIndex)`: solo il tab attivo partecipa alle animazioni `Hero`, evitando tag duplicati quando lo stesso codice compare in entrambe le liste.
-
-**Layout:** app bar con i colori del tema (`code_details_app_bar.dart`; nel menu la voce "Elimina" è nel colore di errore); chip "Data" (formato `dd/MM/yyyy HH:mm`, come nelle liste) e "Tipo" come card neutre con bordo (`CodeInfoRow`); `SectionCard` "Codice QR" (`CodeQrSection`); riga di azioni rapide con etichetta (`CodeActionButtons`: Copia, Preferito 'evidenziato quando attivo', Salva, Condividi, con ripple e feedback aptico, al posto dei `FloatingActionButton` senza testo); `SectionCard` "Contenuto" (`CodeContentCard`) con l'azione specifica del tipo come `ElevatedButton` a tutta larghezza. In precedenza card e app bar usavano il colore principale come sfondo pieno.
-
-**Informazioni mostrate:**
-- Data di creazione/scansione
-- Tipo del codice (con icona)
-- Immagine QR code generata con colori personalizzati
-- Contenuto decodificato (testo, URL cliccabile, email, telefono, ecc.)
-- Note dell'utente (modificabili dall'azione in appbar): l'apertura del bottom sheet (`_showNotesBottomSheet`, `code_details_screen.dart`) è ritardata di 300ms nell'`onSelected` del `PopupMenuButton` (`code_details_app_bar.dart`) perché aprire una nuova route in modo sincrono mentre la route del popup menu sta ancora chiudendosi genera un conflitto. La causa principale del mancato rendering, però, era un crash di layout: il tema globale (`app_theme.dart`) imposta `minimumSize: Size(double.infinity, 52)` per tutti gli `ElevatedButton`, ma il pulsante "Salva" del bottom sheet note è dentro una `Row` (assieme al pulsante "Annulla"), che passa larghezza non vincolata ai figli non-`Expanded` — larghezza minima infinita in un contesto non vincolato genera un'eccezione di layout che interrompe il rendering del bottom sheet lasciando però la tastiera già aperta. Corretto sovrascrivendo localmente `minimumSize` sul pulsante "Salva" con una dimensione finita.
-
-**Azioni disponibili:**
-
-| Azione | Descrizione |
+| Action | Description |
 |---|---|
-| **Preferito** | Aggiunge/rimuove dai preferiti |
-| **Copia** | Copia il contenuto negli appunti |
-| **Condividi** | Condivide il QR come immagine tramite sistema operativo |
-| **Salva in galleria** | Salva l'immagine QR nella galleria foto |
-| **Apri** | Apre URL nel browser / compone email / chiama numero / connette Wi-Fi / aggiunge contatto / aggiunge evento calendario |
-| **Elimina** | Elimina il codice da Firestore |
+| Copy | Copies the content to the clipboard |
+| Favorite | Toggles the favorite flag (highlighted when active) |
+| Save | Saves the QR image to the gallery |
+| Share | Shares the QR image through the system sheet |
+| Open | Opens the URL, writes the email, calls, sends the SMS, connects to Wi-Fi, adds the contact or the calendar event, shows the location |
+| Notes | Edits the notes in a bottom sheet |
+| Delete | Deletes the code after confirmation |
 
-**Sincronizzazione e pull-to-refresh (Cronologia e Preferiti):** `CodesRepository.getSyncStatusStream()` ascolta la collection dei codici con `snapshots(includeMetadataChanges: true)` e traduce i metadata Firestore in `SyncStatus` (`CodesService.syncStatusFrom`: `hasPendingWrites` → `pending`, altrimenti `isFromCache` → `offline`, altrimenti `synced`). `HistoryController` e `FavoritesController` usano il mixin `SyncStatusMixin` (`features/codes/controllers/sync_status_mixin.dart`), che espone `syncStatus` e `refreshCodes()`. Lo stato `offline` viene mostrato solo dopo 2 s (`offlineGracePeriod`), perché all'avvio Firestore risponde prima dalla cache anche con la rete attiva e il banner altrimenti lampeggerebbe a ogni apertura; `pending` è immediato. `SyncStatusBanner` (`core/widgets/sync_status_banner.dart`) mostra un avviso sopra la lista solo in quei due stati. Il pull-to-refresh (`RefreshIndicator`) chiama `CodesRepository.refreshCodes()`, cioè una lettura `GetOptions(source: Source.server)` che aggiorna cache e stream; se il server non è raggiungibile compare un toast. Le liste usano `AlwaysScrollableScrollPhysics` e gli stati vuoti sono avvolti in `PullToRefreshFill`, così il gesto funziona anche con pochi elementi o nessuno. Nei Preferiti c'è un `RefreshIndicator` per ogni tab, perché uno esterno non riceverebbe lo scroll verticale delle liste annidate nel `TabBarView` orizzontale.
+- **Notes sheet:** opened 300 ms after the popup menu item is selected, because pushing a route while the menu route is still closing conflicts with it. The sheet's "Save" button overrides the theme's `minimumSize(double.infinity, 52)` with a finite size: it sits in a `Row`, where an infinite minimum width breaks layout.
+- The tap that dismisses the keyboard is excluded from semantics.
+- **Permissions:** contacts (`READ_CONTACTS`/`WRITE_CONTACTS`) to add a contact; location and Wi-Fi state permissions, declared for `wifi_iot`, to connect to a network.
 
----
+### 5.9 Favorites
 
-### 5.9 Preferiti
+**Path:** `lib/features/favorites/screens/favorites_screen.dart` + `lib/features/favorites/controllers/favorites_controller.dart`
 
-**Percorso:** `lib/features/favorites/screens/favorites_screen.dart` (UI) + `lib/features/favorites/controllers/favorites_controller.dart` (stato)
+Favorite codes in two tabs, **Scanned** (`source = scanned`) and **Created** (`source = created`).
 
-Lista dei codici marcati come preferiti, organizzata in due tab. `FavoritesController` si iscrive una sola volta a `getFavoriteCodesStream()` ed espone `isLoading`, `error`, `hasFavorites` e le liste `createdCodes`/`scannedCodes` già divise per sorgente e ordinate per data decrescente (ricalcolate solo a ogni evento dello stream, non a ogni rebuild).
+**Features:**
+- `FavoritesController` subscribes once to `getFavoriteCodesStream()` and exposes `isLoading`, `error`, `hasFavorites` and the two lists, already split by source and sorted by date descending (recomputed only on stream events).
+- Items are `CodeListTile`s; a tap opens the details. Tab labels truncate with an ellipsis at large text sizes.
+- States: loading (`AppLoader`), error (`AppErrorState`), empty (`AppEmptyState` with "Create your first code").
+- Sync banner and pull-to-refresh as in [History](#510-history), with one `RefreshIndicator` per tab, because an outer one would not receive the vertical scroll of lists nested in the horizontal `TabBarView`.
 
-| Tab | Contenuto |
-|---|---|
-| Scansionati | Codici preferiti con `source = scanned` |
-| Creati | Codici preferiti con `source = created` |
+### 5.10 History
 
-- Ogni elemento è un `CodeListTile` (icona tipo, contenuto e data), la stessa card usata dalla Cronologia
-- Tap → naviga al Dettaglio codice
+**Path:** `lib/features/history/screens/history_screen.dart` + `lib/features/history/controllers/history_controller.dart`
 
----
+All of the user's codes, with search, filters and bulk delete. The screen holds only UI state (search `TextEditingController` and `FocusNode`); everything else is in `HistoryController`.
 
-### 5.10 Cronologia
+**Features:**
+- **Stream:** subscribed once in `onInit` (`getCodesStream()`), exposed as `isLoading`/`error`.
+- **Search** by content, debounced 300 ms (`searchInput` → `searchKeyword`).
+- **Filter sheet** (`HistoryFilterSheet`, opened from the filter icon): source (`SegmentedButton` All / Created / Scanned), code type and social network (`FilterChip`s with icon and label in a `Wrap`). Filters apply live; "Clear filters" (`clearSheetFilters()`, keeps the search) and "Show results" close the sheet. Type and social filters are OR-ed together, then AND-ed with search and source.
+- **Active filters badge** on the filter icon (`activeFilterCount`: types + social + source; the search is excluded because it is already visible); the icon turns primary when filters are active.
+- `filteredCodes` is memoized: an `everAll` worker recomputes it (filter + date sort) only when an input changes. The pure logic is the static `HistoryController.filterCodes`, tested on its own.
+- **Selection mode:** entered from the trash button or with a long press on a card (`startSelectionWith`, `mediumImpact` haptic). The search row turns into a contextual bar (close, "N selected" in an `Expanded` with ellipsis, select/deselect all, delete) with a 220 ms `AnimatedSwitcher`. Each toggle gives a `selectionClick` haptic, and each card has its own `Obx`, so toggling rebuilds only that card.
+- **Bulk delete** (`deleteSelected`): the deletes run in parallel with `Future.wait`; `isDeleting` is reset in a `finally`. The toast reports the count (`history_screen_deleted_count`, ICU plural) after a `context.mounted` check. `AppDeleteDialog` pops itself before calling `onConfirm`, so callers must not pop again: History has no route of its own, and an extra pop would close Home.
+- **States:** `hasCodes` and `hasActiveFilters` tell a real empty list ("No saved codes" + "Scan now") from an empty filter result ("No results for the active filters" + "Clear filters", which also clears the search field).
+- **Sync status:** `getSyncStatusStream()` maps Firestore metadata to `SyncStatus` (`hasPendingWrites` → `pending`, `isFromCache` → `offline`, otherwise `synced`). `SyncStatusMixin` (shared with Favorites) exposes `syncStatus` and `refreshCodes()`. `offline` is shown only after 2 s (`offlineGracePeriod`), because at startup Firestore answers from cache first even with network and the banner would flash; `pending` is immediate. `SyncStatusBanner` appears above the list only in those two states.
+- **Pull-to-refresh** calls `refreshCodes()` (a `Source.server` read that refreshes cache and stream); a toast appears if the server is unreachable. Lists use `AlwaysScrollableScrollPhysics` and empty states are wrapped in `PullToRefreshFill`, so the gesture works with few or no items.
 
-**Percorso:** `lib/features/history/screens/history_screen.dart` (UI) + `lib/features/history/controllers/history_controller.dart` (stato e logica)
+**`CodeListTile`** (`lib/core/widgets/code_list_tile.dart`) is the single card of every code list: type icon, content, date, optional source (`showSource`) and selection state (`selectable`). It uses `AppRadius.large`, a vertical margin of 6 and the shared `CodeListTile.listPadding`.
 
-Lista completa di tutti i codici dell'utente con funzionalità avanzate di ricerca e filtro.
+### 5.11 Profile
 
-**Separazione UI / logica:** `HistoryScreen` contiene solo composizione di widget e stato puramente UI (`TextEditingController`/`FocusNode` della ricerca); tutto il resto vive in `HistoryController` (creato con `Get.put` in `initState` e rimosso con `Get.delete` in `dispose`, come le altre screen con controller):
-- si iscrive **una sola volta** a `CodesRepository.getCodesStream()` in `onInit` (in precedenza lo `StreamBuilder` chiamava `getCodesStream()` a ogni rebuild, riaprendo il listener Firestore a ogni tasto premuto nella ricerca) ed espone `isLoading`/`error`;
-- stato dei filtri osservabile: `searchInput` (testo digitato) → `searchKeyword` con **debounce di 300 ms**, `selectedStandardTypes`, `selectedSocialTypes`, `selectedSource`;
-- `filteredCodes` è **memoizzato**: viene ricalcolato (filtro + ordinamento per data decrescente) da un worker `everAll` solo quando cambia uno degli input, non a ogni rebuild. La logica pura è nel metodo statico `HistoryController.filterCodes` (filtri per tipo standard/social in OR tra loro, poi in AND con ricerca e sorgente), testato separatamente;
-- selezione multipla (`isSelecting`, `selectedIds`, `toggleSelected`, `toggleSelectAll`, `allSelected`) ed eliminazione (`deleteSelected`, con `isDeleting` azzerato in `finally` anche in caso di errore).
+**Path:** `lib/features/user/`
 
-Le card sono `CodeListTile` (`showSource: true` per mostrare "Created"/"Scanned", `selectable` in modalità selezione): fuori dalla selezione un tocco su tutta la card, o sulla freccia, apre il dettaglio; in selezione il tocco seleziona/deseleziona. Ogni card della lista è avvolta in un proprio `Obx`, così la selezione di un elemento ricostruisce solo quella card. Nella barra di selezione il contatore "N selezionati" è in un `Expanded` con ellissi, per evitare overflow con testi lunghi o scala del testo di sistema elevata.
+Account details, logout and account deletion. Opened from Settings → Profile.
 
-**`CodeListTile`** (`lib/core/widgets/code_list_tile.dart`) è la card unica di tutte le liste di codici e sostituisce le due implementazioni precedenti (`CodeCard` nei Preferiti e `_buildCodeCard`/`_buildCardTitle`/`_buildCardTrailing` nella Cronologia), che avevano raggi e margini diversi (14 invece del 16 del `cardTheme`, margini 12/8 contro 2/6). Usa `AppRadius.large` (allineato al `cardTheme` globale) e un margine verticale di 6; le liste che la ospitano usano il padding comune `CodeListTile.listPadding`.
+**Features:**
+- Header with avatar (photo or initial, ring in the primary color), name and email; data loaded from Firestore through `AuthController.getUserDetails()`, with `AppLoader` while loading.
+- `AccountInfoCard`: name, email and account creation date (`dd/MM/yyyy`).
+- "Log out" and "Delete account" buttons (`AppButton.outlined`, the second in the error color).
+- **Account deletion:** "Delete account" opens an `AppDeleteDialog` (title `delete_title`, message `delete_d_description`, confirm `delete_d_title`). On confirm, a full-screen overlay with `AppLoader` blocks the screen while `AuthController.deleteAccount()` runs. On success: `toast_delete_success` and `Get.offAllNamed(AppRoutes.welcome)`. On failure (e.g. Firebase `requires-recent-login`) the overlay is removed and `toast_delete_error` asks the user to sign in again and retry.
 
-**Funzionalità:**
-- **Ricerca testuale** per contenuto del codice
-- **Pannello filtri unico** (`HistoryFilterSheet` in `lib/features/history/widgets/history_filter_sheet.dart`, aperto con `showHistoryFilterSheet` dall'icona filtro): bottom sheet con i colori standard del tema (non più `colorScheme.primary`) e tre sezioni:
-  - **Origine:** `SegmentedButton` Tutti / Creati / Scansionati
-  - **Tipo di codice:** `FilterChip` con icona **ed etichetta** (`CodeTypeText`) per ogni `BarcodeType`, disposti in un `Wrap`
-  - **Social:** `FilterChip` con icona e nome per ogni social network
-  - I filtri si applicano in tempo reale (il sheet osserva `HistoryController` con `Obx`); in fondo "Azzera i filtri" (`clearSheetFilters()`, lascia intatta la ricerca) e "Mostra risultati" (chiude il sheet)
-- **Indicatore filtri attivi:** l'icona filtro nella barra di ricerca è avvolta in un `Badge` con `HistoryController.activeFilterCount` (tipi + social + origine; la ricerca è esclusa perché già visibile nel campo) e diventa del colore primario quando ci sono filtri attivi. Le due righe di chip sempre visibili sotto la ricerca sono state rimosse, recuperando spazio verticale per la lista
-- **Modalità selezione multipla:** si entra con il pulsante Cestino della barra di ricerca oppure con una **pressione prolungata** su una card (`HistoryController.startSelectionWith`, che parte con quel codice già selezionato; feedback aptico `mediumImpact`). La riga di ricerca si trasforma, con un `AnimatedSwitcher` (dissolvenza + leggero scorrimento, 220 ms), in una **barra contestuale** con: chiudi, contatore "N selezionati", seleziona/deseleziona tutti (icona con tooltip) ed elimina. La vecchia bottom bar di selezione è stata rimossa. Ogni selezione/deselezione dà un feedback aptico `selectionClick`. Dopo l'eliminazione il toast indica quanti codici sono stati eliminati (`history_screen_deleted_count`, stringa ICU con plurale).
-- **Caricamento** da Firestore con indicatore di progresso animato
+### 5.12 Settings
 
-L'eliminazione in blocco (`HistoryController.deleteSelected`) esegue `Future.wait` sulle `deleteCode` selezionate (in parallelo invece che in sequenza, per ridurre il tempo sotto l'overlay di caricamento). Nella screen il toast di conferma è preceduto da un controllo `context.mounted`, perché `HistoryScreenState` potrebbe non essere più montato al termine dell'`await`.
+**Path:** `lib/features/settings/screens/settings_screen.dart`
 
-In precedenza, dopo l'eliminazione lo schermo restava comunque nero: la causa reale era un doppio `Navigator.pop()`. `AppDeleteDialog` chiude già da sé il proprio dialogo prima di invocare `onConfirm`, ma il callback `onConfirm` di Cronologia eseguiva un ulteriore `Navigator.of(context).pop()` come prima istruzione; poiché `HistoryScreen` vive nell'`IndexedStack` di `HomeScreen` senza una route propria, quel secondo pop chiudeva la Home stessa (da cui il crash `setState()` dopo dispose, sintomo secondario). Corretto rimuovendo la chiamata `Navigator.pop()` ridondante. Lo stesso bug era presente anche nella vecchia schermata di eliminazione account ed è stato corretto allo stesso modo.
+Global configuration in four groups. Building blocks are in `lib/features/settings/widgets/settings_tiles.dart`: `SettingsGroup` (title + card), `SettingsNavTile` (row with chevron, or `trailingIcon` for external links), `SettingsSwitchTile` (row with `Switch`, toggled by tapping the whole row and merged into one semantics node) and `SettingsSegmentedTile<T>` (single-choice `SegmentedButton`, horizontally scrollable). State comes from `SettingsController` through `Obx`.
 
----
-
-### 5.11 Utente
-
-**Percorso:** `lib/features/user/screens/`
-
-**Profilo utente (`user_screen.dart`):**
-- Intestazione con avatar (foto o iniziale, bordo nel colore principale), nome ed email
-- `AccountInfoCard` (`lib/features/user/widgets/account_info_card.dart`, spostata da `settings/widgets` perché usata solo qui): nome, email e data di creazione (l'UID Firebase non viene mostrato: è un dato tecnico non utile all'utente) (`dd/MM/yyyy`), con divisori del tema
-- Pulsanti "Esci" e "Elimina account" come `AppButton.outlined` (il secondo nel colore di errore)
-- "Elimina account" apre direttamente un `AppDeleteDialog` (titolo `delete_title`, messaggio `delete_d_description`, conferma `delete_d_title`): non esiste più una schermata dedicata né la route `/delete-account`
-- Dati caricati da Firestore tramite `AuthController`
-
-**Eliminazione account (`_UserScreenState._deleteAccount`):**
-- Alla conferma mostra un overlay con `AppLoader` che blocca la schermata e chiama `AuthController.deleteAccount()`, che elimina i codici e il documento utente da Firestore e poi l'account da Firebase Auth
-- In caso di successo: toast `toast_delete_success` e `Get.offAllNamed(AppRoutes.welcome)`
-- In caso di errore (es. `requires-recent-login` di Firebase Auth): l'overlay viene rimosso e si mostra il toast `toast_delete_error`, che invita a riaccedere e riprovare
-
----
-
-### 5.12 Impostazioni
-
-**Percorso:** `lib/features/settings/screens/settings_screen.dart`
-
-Configurazione globale dell'app organizzata in 4 sezioni.
-
-La screen contiene solo il contenuto delle sezioni; i mattoni visivi sono in `lib/features/settings/widgets/settings_tiles.dart`, accanto a `section_card.dart`: `SettingsGroup` (titolo + card della sezione), `SettingsNavTile` (voce con freccia che apre una schermata o esegue un'azione), `SettingsSwitchTile` (voce con `Switch`) e `SettingsSegmentedTile<T>` (voce con `SegmentedButton` a scelta singola, scrollabile orizzontalmente). Lo stato arriva da `SettingsController` tramite `Obx`; la lingua, non osservabile, viene salvata e applicata con `Get.updateLocale`.
-
-| Sezione | Impostazione | Dettaglio |
+| Group | Item | Behavior |
 |---|---|---|
-| **Generale** | Tema | Sistema / Chiaro / Scuro, tramite `SegmentedButton<ThemeMode>` (Sistema segue la luminosità del dispositivo) |
-| **Generale** | Colore principale | Selezione di una tra 8 palette predefinite (`AccentPresets` in `lib/core/theme/accent_presets.dart`), ognuna con una tonalità ottimizzata per il tema chiaro e una per lo scuro; segmenti mostrano solo lo swatch colorato (senza etichetta testuale, nome disponibile tramite `Tooltip` a pressione prolungata) tramite `SegmentedButton<int>` (scroll orizzontale se non entra tutto a schermo) |
-| **Generale** | Lingua | Italiano / English, tramite `SegmentedButton<String>` (cambia `Get.locale`) |
-| **Scansione** | Beep | Abilita/disabilita suono alla scansione |
-| **Scansione** | Vibrazione | Abilita/disabilita vibrazione alla scansione |
-| **Account** | Profilo | Naviga a `UserScreen` (`AppRoutes.user`) — avatar, dati account, logout, eliminazione account |
-| **Account** | Database | Accede alla schermata Database (statistiche + export) |
-| **Account** | Logout | Disconnette l'utente corrente |
-| **Account** | Elimina account | Naviga alla schermata di eliminazione account |
-| **App** | Informazioni | Info sull'app: funzionalità, link utili, Privacy Policy e licenze |
-| **App** | Changelog | Apre `AppChangelogDialog.showAll`, con l'intero storico di `changelogEntries` (non solo le voci dall'ultimo aggiornamento) |
-| **App** | Supporto | Contatta l'autore |
-| **App** | Condividi | Condivide il link del repository GitHub (`AppConstants.uriGithubRepository`, https://github.com/ndenicolais/QRation) tramite il foglio di condivisione del sistema |
+| General | Theme | System / Light / Dark (`SegmentedButton<ThemeMode>`) |
+| General | Language | Italiano / English; saved to `language_code` and applied with `Get.updateLocale` |
+| General | Accent color | One of 8 `AccentPresets`, shown as swatches with the name in a tooltip |
+| Scan | Beep | Sound on scan |
+| Scan | Vibration | Vibration on scan |
+| Account | Profile | Opens [Profile](#511-profile) |
+| Account | Database | Opens [Database](#513-database) |
+| Account | Log out | Signs out |
+| App | Info | Opens Info |
+| App | Changelog | `AppChangelogDialog.showAll`: the full history of `changelogEntries` |
+| App | Support | Opens Support (FAQ in `CustomExpansionTile`s, contact rows in `SectionLinkRow`s) |
+| App | Share | Shares `AppConstants.uriGithubRepository` through the system sheet |
 
-**Privacy Policy** (`PrivacyPolicyScreen` in `lib/features/settings/screens/privacy_policy_screen.dart`, route `AppRoutes.privacyPolicy`): informativa nativa e localizzata, che sostituisce la vecchia WebView su freeprivacypolicy.com (rimosso `webview_flutter`). L'unico punto d'ingresso è la riga "Privacy Policy" nella card "Link utili" della schermata Info. Mostra la data di aggiornamento (`AppConstants.privacyPolicyUpdatedAt`, formattata con `DateFormat.yMMMMd` nella lingua corrente), l'intro, 10 sezioni in `SectionCard` (chiavi ARB `policy_section_*_title`/`_text`; il titolare usa i placeholder `{name}`/`{email}` valorizzati da `AppConstants.developerName`/`developerEmail`) e il link "Versione online" ad `AppConstants.uriPrivacyPolicy` (`https://ndenicolais.github.io/qration/privacy/`). Lo stesso testo, in italiano e inglese, è in `PRIVACY.md` nella radice del repo: quando cambia vanno aggiornati insieme `PRIVACY.md`, le chiavi ARB, `privacyPolicyUpdatedAt` e la pagina sul portfolio. Se si aggiungono servizi, permessi o dati trattati (analytics, pubblicità, nuovi plugin con accesso alla rete), la policy va aggiornata prima della release.
+**Info** (`info_screen.dart`):
+- Header with logo, name, tagline and a pill with `AppVersion.current`.
+- "What is QRation" card with the description and the origin of the name.
+- Features grid: 2×2 cards (Scan, Create, Organize, Export), each row in `IntrinsicHeight` so both cards share the height.
+- Useful links: source code, website, contact, Privacy Policy (internal route), open source licenses (`showLicensePage` with logo and version). External links use `mgc_external_link_line` as trailing icon.
+- Footer `info_screen_made_by` with `AppConstants.developerName`.
 
-**Changelog dialog** (`AppChangelogDialog` in `lib/core/widgets/app_changelog_dialog.dart`): segue lo stesso schema del dialog changelog usato in tutte le app. Le voci sono definite in `lib/core/constants/changelog.dart` (`changelogEntries`, una lista di `ChangelogEntry` ordinata dalla più recente; ogni voce ha una lista di `ChangelogItem` con un `ChangeType`: `added`, `improved`, `fixed`, `security`). Il dialog raggruppa le voci di ogni versione in sezioni in quest'ordine (Novità, Miglioramenti, Correzioni, Sicurezza), ognuna con un'icona MingCute (`sparkles`, `rocket`, `bug`, `shield`); le sezioni vuote non compaiono. Quali versioni mostrare lo decide `ChangelogService.pendingEntries` (`lib/core/services/changelog_service.dart`), che usa ancora la chiave `changelog_last_seen_version` invece di `last_seen_changelog_version` dello standard comune: cambiarla farebbe sembrare ogni installazione nuova e salterebbe le novità del primo aggiornamento. La lista va aggiornata ad ogni cambiamento user-facing, mantenendo `version` allineata a `version:` in `pubspec.yaml` — vedi CLAUDE.md. La versione mostrata nel dialog e nella schermata Info (`InfoScreen`) è `AppVersion.current` (`lib/core/constants/app_version.dart`), letta a runtime dal build della piattaforma tramite `package_info_plus` in `main()` — non è più una costante da aggiornare manualmente né una chiave di traduzione duplicata negli arb.
+**Privacy Policy** (`privacy_policy_screen.dart`, reached only from Info): native, localized policy. Shows the update date (`AppConstants.privacyPolicyUpdatedAt`, formatted with `DateFormat.yMMMMd` in the current language), the intro, 10 sections in `SectionCard`s (ARB keys `policy_section_*_title`/`_text`; the controller section fills `{name}`/`{email}` from `AppConstants.developerName`/`developerEmail`) and an "Online version" link to `AppConstants.uriPrivacyPolicy`. The same text is in `PRIVACY.md`: `PRIVACY.md`, the ARB keys, `privacyPolicyUpdatedAt` and the online page change together. Any new service, permission or data flow (analytics, ads, network plugins) requires a policy update before the release.
 
-**Voci del changelog:** il dialog si intitola "Novità" / "What's new"; la voce delle Impostazioni resta "Changelog". Le voci nuove sono una frase per l'utente, senza termini tecnici, con il tipo giusto: `added` per una funzione o schermata nuova, `improved` per una funzione esistente migliorata, `fixed` per un bug risolto, `security` per protezione dei dati, permessi e privacy; i refactor interni non vanno nel changelog. Le 10 voci della 2.0.0 scritte prima dello standard comune (formato `Categoria: testo`, una per area dell'app) restano così: `_BulletText`, che metteva in grassetto la categoria, è stato rimosso, e il prefisso ora si legge come testo normale. Sono classificate come `added` (2 Creazione, 7 Impostazioni) e `improved` (le altre); la 11 è di tipo `security`. Test: `test/core/constants/changelog_test.dart` (ordine delle sezioni; ogni chiave `changelog_v*` dell'ARB inglese è usata una sola volta), `test/core/services/changelog_service_test.dart` (prima installazione, aggiornamento, versione sconosciuta, stessa versione) e `test/core/widgets/app_changelog_dialog_test.dart` (in italiano e inglese ogni versione e ogni voce viene mostrata).
-
-**Schermata Info** (`InfoScreen` in `lib/features/settings/screens/info_screen.dart`, route `AppRoutes.settingsInfo`), sul modello della Info di Shox:
-- **Intestazione** (`_AppHeader`): logo, nome, tagline (`info_screen_tagline`) e pill con `AppVersion.current`.
-- **Cos'è QRation**: `SectionCard` con la descrizione (`info_screen_about_text`) e, in secondo piano, l'origine del nome (`info_screen_origin_description`).
-- **Funzionalità** (`_FeatureGrid`): `SectionHeader` + griglia 2×2 di `_FeatureCard` (Card del tema, icona in un riquadro tinto col colore principale, titolo e testo) per Scansiona, Crea, Organizza ed Esporta; ogni riga è in `IntrinsicHeight` così le due card hanno la stessa altezza.
-- **Link utili** (`_LinksCard`): Card con `SettingsNavTile` separati da divisori — Codice sorgente (`AppConstants.uriGithubRepository`), Sito web (`uriGithubLink`), Contattami (`uriMail`), Privacy Policy (route interna) e Licenze open source (`showLicensePage` con logo e versione). Le righe che escono dall'app usano `trailingIcon: mgc_external_link_line` (nuovo parametro opzionale di `SettingsNavTile`, default chevron).
-- **Footer**: `info_screen_made_by` con `AppConstants.developerName`, che sostituisce la vecchia card Crediti (Ideazione/Sviluppo/Design). Rimosse le chiavi `info_screen_origin_text`, `info_screen_description_*`, `info_screen_credits_*` e `info_screen_privacy_*`.
-
----
+**"What's new" dialog** (`lib/core/widgets/app_changelog_dialog.dart`):
+- Entries are in `lib/core/constants/changelog.dart`: `changelogEntries`, a list of `ChangelogEntry` sorted newest first, each with `ChangelogItem`s typed by `ChangeType` (`added`, `improved`, `fixed`, `security`).
+- Each version is grouped in sections in that order (New, Improvements, Fixes, Security) with MingCute icons (`sparkles`, `rocket`, `bug`, `shield`); empty sections are hidden.
+- The dialog title is "What's new"; the Settings item is "Changelog". Items are one user-facing sentence each; internal refactors are not listed. The `version` of an entry matches `version:` in `pubspec.yaml`.
+- The version shown in the dialog and in Info is `AppVersion.current` (`lib/core/constants/app_version.dart`), read at startup with `package_info_plus`.
 
 ### 5.13 Database
 
-**Percorso:** `lib/features/settings/screens/database_screen.dart`
+**Path:** `lib/features/settings/screens/database_screen.dart` + `DatabaseController`
 
-Schermata avanzata di gestione dati accessibile dalle impostazioni.
+Statistics, exports and JSON backup of the user's codes.
 
-**App bar:** due `IconButton` diretti per Import (`mgc_file_import_line`) ed Export JSON (`mgc_file_export_line`), al posto del precedente menu a tendina (kebab) che nascondeva le due azioni dietro un `PopupMenuButton`.
-
-**Statistiche visualizzate (`StatisticsSection`):**
-- Riga di 3 `_StatCard` (Totale, Creati, Scansionati) con icona, numero in evidenza ed etichetta, per una lettura immediata dei KPI principali
-- `_DistributionBar` con il rapporto creati/scansionati
-- `_SourceTile` (Creati/Scansionati) con la sola label e l'eventuale breakdown per tipo (standard/social) al tap — il badge numerico duplicato è stato rimosso dall'header di ogni tile poiché il conteggio è già mostrato nella riga di `_StatCard` sovrastante
-
-**Sezione "Esporta e importa"** (`ExportImportSection`, `lib/features/settings/widgets/export_import_section.dart`): un'unica `SectionCard` con tutte le opzioni di esportazione e importazione, divisa in due gruppi con titolo e spiegazione. Prima le azioni del backup JSON erano due icone senza testo nella barra in alto e le date stavano in una card "Backup JSON" separata da quella dei formati.
-
-**Documenti** (riquadri PDF, Excel, CSV): file da leggere, stampare o condividere; dopo la generazione si apre il foglio di condivisione.
-- **CSV** — Esporta tutti i codici in formato CSV
-- **Excel** — Esporta tutti i codici in formato XLSX
-- **PDF** — Genera un PDF con copertina, riepilogo di account e statistiche e una card per ogni codice (con immagine QR), circa 5 codici per pagina
-
-**Backup** (pulsanti "Crea backup" e "Ripristina", con il testo dentro il pulsante; vanno a capo con il testo di sistema ingrandito):
-- "Crea backup" esporta tutti i codici in formato JSON (`DatabaseController.exportCodes`)
-- "Ripristina" importa un file JSON scelto con il selettore file (`DatabaseController.importCodes`). I codici del file vengono **aggiunti** a quelli presenti (`addCode` assegna un nuovo ID a ciascuno): ripristinare due volte lo stesso backup li duplica, e la spiegazione nella sezione lo dice
-- L'export scrive il file nella directory restituita da `getDownloadsDirectory()` (su Android è privata dell'app e viene cancellata alla disinstallazione) e ne salva una copia anche nella cartella Download pubblica con `saveBytesToPublicDownloads` (`application/json`), come già avveniva per PDF/Excel/CSV
-- Sotto i pulsanti, "Ultimo backup" e "Ultimo ripristino" mostrano data e ora dell'ultima esportazione e dell'ultima importazione riuscite, oppure "Mai". I timestamp sono salvati sul dispositivo da `BackupHistory` (`lib/features/settings/services/backup_history.dart`) in `SharedPreferences`, con chiavi per utente (`backup_last_export_<uid>`, `backup_last_import_<uid>`), ed esposti da `DatabaseController` come `lastExportAt`/`lastImportAt`
-
-Tutte le operazioni mostrano una barra di avanzamento animata.
+**Features:**
+- **Statistics** (`StatisticsSection`): three `_StatCard`s (Total, Created, Scanned), a `_DistributionBar` with the created/scanned ratio and two `_SourceTile`s that expand to the per-type breakdown (standard and social).
+- **Export and import** (`ExportImportSection`): one `SectionCard` with two titled groups.
+  - **Documents:** PDF, Excel and CSV tiles (see [7.6](#76-csv-export)–[7.8](#78-pdf-export)); the share sheet opens after generation.
+  - **Backup:** "Create backup" (`exportCodes`, JSON) and "Restore" (`importCodes`, JSON picked with `file_picker`). Restored codes are **added** to the existing ones, each with a new ID, so restoring the same backup twice duplicates it; the section text says so. Below the buttons, "Last backup" and "Last restore" show date and time, or "Never" (see [7.4](#74-backuphistory)). Button labels wrap at large text sizes.
+- Every operation shows an animated progress overlay (`loading_overlays.dart`).
 
 ---
 
-## 6. Controllers (State Management)
+## 6. State management
 
-L'app usa **GetX** come sistema di state management. Le screen ottengono i controller solo con `Get.find`; la registrazione è centralizzata nei **binding**:
+GetX. Screens get controllers only with `Get.find`; registration is centralized in bindings.
 
-| Binding | Dove | Registra |
+| Binding | Attached to | Registers |
 |---|---|---|
-| `AppBinding` (`lib/core/bindings/app_binding.dart`) | chiamato in `main()` prima di `runApp` (`QrationApp` legge `ThemeController` già al primo frame) | permanenti: `ThemeController`, `ScannerPreferencesController`, `CodesRepository` (`CodesService`), `AuthController` |
-| `HomeBinding` (`features/home/bindings/`) | `GetPage` di `home` | `ScannerController`, `FavoritesController`, `HistoryController`, `SettingsController` (i tab vivono nell'`IndexedStack` di Home, quindi seguono la rotta Home: vengono rimossi al logout con `offAllNamed` e ricreati per l'utente successivo) |
+| `AppBinding` (`lib/core/bindings/`) | `main()`, before `runApp` (`QrationApp` reads `ThemeController` on the first frame) | Permanent: `ThemeController`, `ScannerPreferencesController`, `CodesRepository` (`CodesService`), `AuthController` |
+| `HomeBinding` (`features/home/bindings/`) | `home` | `ScannerController`, `FavoritesController`, `HistoryController`, `SettingsController`. They follow the Home route, so logout (`offAllNamed`) disposes them and they are recreated for the next user |
 | `ScannerBinding` | `scanner` | `ScannerController` |
-| `SettingsBinding` / `DatabaseBinding` (`features/settings/bindings/`) | `settings` / `settingsDatabase` | `SettingsController` / `DatabaseController` (con l'uid dell'utente corrente) |
-| `CodeCreateStandardBinding`, `CodeCreateSocialBinding`, `CodeDetailsBinding` (`features/codes/bindings/code_bindings.dart`) | `codeCreateStandard`, `codeCreateSocial`, `codeDetails` | il controller della schermata, costruito con l'argomento della rotta (`Get.arguments`: `BarcodeType`, `CodeSocial`, `CodeModel`). Se l'argomento manca o è del tipo sbagliato non registrano nulla, e la `GetPage` ripiega su `HomeScreen` |
+| `SettingsBinding`, `DatabaseBinding` (`features/settings/bindings/`) | `settings`, `settingsDatabase` | `SettingsController`, `DatabaseController` (with the current UID) |
+| `CodeCreateStandardBinding`, `CodeCreateSocialBinding`, `CodeDetailsBinding` (`features/codes/bindings/code_bindings.dart`) | `codeCreateStandard`, `codeCreateSocial`, `codeDetails` | The screen's controller, built from the route argument (`BarcodeType`, `CodeSocial`, `CodeModel`). With a missing or wrong argument they register nothing and the `GetPage` falls back to `HomeScreen` |
 
-I binding di rotta usano `Get.lazyPut`: grazie alla smart management di GetX il controller viene creato alla prima `Get.find` e rimosso quando la rotta viene chiusa, sostituendo i `Get.put`/`Get.delete` che prima erano sparsi in `initState`/`dispose` delle screen (e, per `AuthController`, perfino dentro `build()` di Login, Registrazione, Reset password e Home). Poiché `AuthController` è ora permanente, `clearForm()` svuota i campi del form (email, password, nome, conferma) e resetta "Ricordami" dopo login, registrazione, reset password e logout, così i dati digitati non restano in memoria né ricompaiono alla visita successiva.
+Route bindings use `Get.lazyPut`: the controller is created on the first `Get.find` and removed when the route closes.
 
-| Controller | Responsabilità |
-|---|---|
-| `ThemeController` | Modalità tema (`ThemeMode` system/light/dark, `isDark` = luminosità effettiva) e colore principale selezionato (`AccentPreset`, indice persistito in `SharedPreferences`), applicati a `AppTheme.lightTheme`/`darkTheme` tramite il parametro `primary`, aggiornamento `SystemChrome` |
-| `ScannerPreferencesController` | Preferenze di feedback della scansione (`beepEnabled`, `vibrateEnabled`) osservabili e persistite in `SharedPreferences`; registrato in `main.dart` e letto da `ScannerScreen` al momento di ogni rilevamento, così una modifica nelle Impostazioni ha effetto subito anche se lo scanner resta vivo nell'`IndexedStack` di Home |
-| `AuthController` | Stato autenticazione, operazioni login/logout/signup, recupero dati utente |
-| `SettingsController` | Facade senza stato proprio per la schermata Impostazioni: espone e modifica `themeMode`/`accentIndex` delegando a `ThemeController` e `beepEnabled`/`vibrateEnabled` delegando a `ScannerPreferencesController` |
-| `HistoryController` | Stato e azioni della Cronologia: sottoscrizione unica allo stream dei codici, ricerca con debounce (300 ms), filtri tipo/social/sorgente con lista filtrata memoizzata, selezione multipla ed eliminazione in blocco |
-| `CodeDetailsController` | Stato e azioni della schermata Dettaglio codice (preferito, note, salvataggio/condivisione immagine, apertura URL/email/telefono/SMS/contatto/mappa/Wi-Fi/calendario, eliminazione) |
-| `CodeCreateStandardController` | Stato del form di creazione QR standard (`TextEditingController` per campo, colori/arrotondamento occhi e moduli, prefisso telefonico, cifratura Wi-Fi), generazione del contenuto per tipo e creazione del `CodeModel` |
-| `CodeCreateSocialController` | Stato del form di creazione QR social (campi URL/Spotify/WhatsApp, colori/arrotondamento occhi e moduli, logo, prefisso), costruzione del contenuto per social (`buildContent`) e creazione del `CodeModel` |
-| `ScannerController` | Pipeline di scansione: filtro duplicati (`RescanGuard`) e flag `isProcessing`, feedback beep/vibrazione secondo `ScannerPreferencesController`, costruzione del `CodeModel` (template social per i link) e salvataggio con timeout di 3 s |
-| `FavoritesController` | Stream dei preferiti sottoscritto una sola volta, stato di caricamento/errore e liste per tab (creati/scansionati) ordinate per data |
-| `DatabaseController` | Statistiche codici (totali, creati, scansionati, distribuzione per tipo), generazione export PDF/Excel/CSV, export/import JSON (con copia nella Download pubblica) e timestamp dell'ultimo backup (`lastExportAt`/`lastImportAt`, via `BackupHistory`, per utente) |
+| Controller | Path | Responsibility |
+|---|---|---|
+| `ThemeController` | `lib/core/theme/` | Theme mode, accent preset, persistence, `SystemChrome` colors (also on platform brightness changes) |
+| `ScannerPreferencesController` | `lib/core/controllers/` | Observable, persisted `beepEnabled`/`vibrateEnabled` |
+| `AuthController` | `lib/features/auth/controllers/` | Sign-up, login, Google sign-in, reset, logout, profile read, account deletion, form state |
+| `SettingsController` | `lib/features/settings/controllers/` | Stateless facade over `ThemeController` and `ScannerPreferencesController` for the Settings screen |
+| `DatabaseController` | `lib/features/settings/controllers/` | Statistics, PDF/Excel/CSV export, JSON export/import, last backup timestamps |
+| `HistoryController` | `lib/features/history/controllers/` | Code stream, debounced search, filters, memoized list, selection, bulk delete |
+| `FavoritesController` | `lib/features/favorites/controllers/` | Favorites stream, loading/error, per-tab sorted lists |
+| `ScannerController` | `lib/features/codes/controllers/` | Detection guard, feedback, `CodeModel` building (social templates), save with timeout |
+| `CodeCreateStandardController` | `lib/features/codes/controllers/` | Standard form fields, content generation per type, style, save |
+| `CodeCreateSocialController` | `lib/features/codes/controllers/` | Social form fields, `buildContent()`, style, save |
+| `CodeDetailsController` | `lib/features/codes/controllers/` | Favorite, notes, image save/share, type actions, delete |
 
----
-
-## 7. Servizi
-
-### 7.1 Autenticazione (AuthController)
-
-**Percorso:** `lib/features/auth/controllers/auth_controller.dart` (+ `lib/features/auth/services/session_store.dart` per il flag "Ricordami")
-
-**Testabilità:** Firebase Auth, Firestore, Google Sign-In, `SessionStore` e la navigazione (`navigateTo`/`navigateBack`) sono iniettabili nel costruttore, con le istanze reali come default (`AppBinding` usa il costruttore vuoto). `login`/`signup`/`resetPassword` validano il `Form` e poi chiamano `submitLogin`/`submitSignup`/`submitResetPassword`, che contengono la logica e si possono testare senza widget. L'ultimo errore è esposto in `lastError`; il toast d'errore usa `Get.key.currentContext`, nullable, invece di `Get.context`, che fallisce se l'app non è ancora montata. I test (`test/features/auth/controllers/auth_controller_test.dart`) usano `firebase_auth_mocks`, `fake_cloud_firestore` e un `GoogleSignIn` finto con mocktail.
-
-Gestisce tutta la logica di autenticazione tramite Firebase Auth e Firestore. In precedenza esisteva anche un `auth_service.dart` con una copia divergente di queste operazioni, non usato da nessun file: è stato rimosso.
-
-**Operazioni:**
-- **Registrazione email/password:** crea le credenziali Firebase Auth e salva il `UserModel` su Firestore. Un'email già registrata arriva da Firebase Auth (`email-already-in-use` → `email_already_register`), senza query su `users` (vedi [§14](#14-regole-di-sicurezza-firebase))
-- **Login email/password:** esegue direttamente `signInWithEmailAndPassword`; `user-not-found` diventa `email_not_found`, gli altri codici Firebase (es. `invalid-credential`) passano invariati
-- **Login con Google:** usa `GoogleSignIn.instance` (API v7). `initialize()` va chiamato una sola volta e atteso prima di ogni altra chiamata: `_ensureGoogleSignIn()` lo memorizza per istanza (`Expando`), così parte al primo login o logout. `authenticate()` apre il selettore account (Credential Manager su Android). Se l'utente lo chiude arriva una `GoogleSignInException` con codice `canceled`, che viene ignorata; gli altri errori passano a `_handleAuthError`. Firebase riceve solo l'`idToken` (`GoogleAuthProvider.credential(idToken: …)`): l'app non chiede scope OAuth, quindi non serve un access token tramite `authorizationClient`. Se è un nuovo utente Google, crea il `UserModel` su Firestore
-- **Ricorda me:** gestito da `SessionStore` (`lib/features/auth/services/session_store.dart`), che salva `remember_me = true` e `user_id` in `SharedPreferences`. Con email/password avviene solo se la checkbox è attiva; con Google e dopo la registrazione avviene sempre
-- **Recupero dati utente:** legge il documento `users/{uid}` da Firestore e restituisce `UserModel`
-- **Logout:** esegue `signOut` su Firebase Auth e Google Sign-In e cancella la sessione salvata (`SessionStore.clear()`)
-- **Reset password:** invia email di reset tramite `sendPasswordResetEmail`, senza verificare prima l'email su Firestore
-- **Eliminazione account:** elimina tutti i codici dell'utente da Firestore, elimina il documento utente, quindi elimina l'account Firebase Auth
+`ThemeController` only exposes observable state (`themeMode`, `currentAccent`) and never calls `Get.changeTheme`: `QrationApp` builds `theme:`/`darkTheme:`/`themeMode:` inside the `Obx` around `GetMaterialApp`, so it is the single source of truth and a rebuild cannot reset the accent.
 
 ---
 
-### 7.2 Codici (codes_service)
+## 7. Services
 
-**Percorso:** `lib/features/codes/services/codes_service.dart` (implementa l'interfaccia `CodesRepository` in `codes_repository.dart`)
+### 7.1 AuthController and SessionStore
 
-Gestisce tutte le operazioni CRUD sui codici su Firestore, nella collection `users/{uid}/codes`. Le screen e i service export dipendono dall'interfaccia `CodesRepository`, risolta tramite `Get.find<CodesRepository>()`, non dalla classe concreta.
+**Path:** `lib/features/auth/controllers/auth_controller.dart`, `lib/features/auth/services/session_store.dart`
 
-**Operazioni:**
-- **`addCode`:** aggiunge un nuovo codice, ottiene l'ID del documento generato da Firestore e lo aggiorna nel modello
-- **`deleteCode`:** elimina un singolo codice per ID
-- **`deleteAllCodes`:** elimina tutti i codici dell'utente
-- **`updateCodeNotes`:** aggiorna solo il campo `notes` di un codice specifico
-- **`toggleFavorite`:** inverte il flag `isFavorite` di un codice
-- **`getCodesStream`:** restituisce uno `Stream` della collection codici per aggiornamenti in tempo reale
+Firebase Auth and Firestore profile operations. `FirebaseAuth`, `FirebaseFirestore`, `GoogleSignIn`, `SessionStore` and navigation (`navigateTo`/`navigateBack`) are constructor parameters with real defaults. `login`/`signup`/`resetPassword` validate the `Form` and call `submitLogin`/`submitSignup`/`submitResetPassword`, which hold the logic and can be tested without widgets. The last error is in `lastError`; error toasts use the nullable `Get.key.currentContext`.
 
----
+- `submitSignup()`: creates the Firebase credentials and the `UserModel` document; saves the session.
+- `submitLogin()`: `signInWithEmailAndPassword`; saves the session only if "Remember me" is checked.
+- `loginWithGoogle()`: `GoogleSignIn.instance` (API v7). `initialize()` must be awaited once before any other call, so `_ensureGoogleSignIn()` memoizes it per instance (`Expando`). `authenticate()` opens the account picker (Credential Manager on Android); a `canceled` `GoogleSignInException` is ignored. Firebase receives only the `idToken`: the app requests no OAuth scopes. Creates the profile if missing and always saves the session.
+- `submitResetPassword()`: `sendPasswordResetEmail`.
+- `getUserDetails()`: reads `users/{uid}` as `UserModel`.
+- `logout()`: signs out of Firebase and Google and clears the session.
+- `deleteAccount()`: deletes every document in `users/{uid}/codes`, then `users/{uid}`, then the Firebase user, then logs out. Errors are logged and rethrown to the caller.
+- `_authErrorKey()`: maps Firebase codes to ARB keys (see [5.4](#54-authentication)).
 
-### 7.3 Export CSV (csv_service)
+`SessionStore` saves `remember_me` and `user_id`; `canRestore(uid)` is true only when both match the given UID.
 
-**Percorso:** `lib/features/export/services/csv_service.dart`
+Tests: `test/features/auth/controllers/auth_controller_test.dart` (with `firebase_auth_mocks`, `fake_cloud_firestore` and a mocktail `GoogleSignIn`), `test/features/auth/services/session_store_test.dart`.
 
-Esporta tutti i codici dell'utente in formato CSV.
+### 7.2 CodesService
 
-**Formato output:**
-- Recupera tutti i codici da Firestore e li ordina dalla data più recente
-- Colonne: ID, Data, Sorgente, Tipo, Contenuto, Colore occhi, Arrotondamento occhi, Colore moduli, Arrotondamento moduli, Preferito, Social
-- Colori in formato HEX (`#RRGGBB`)
-- Salva nel filesystem locale tramite `path_provider` (`getDownloadsDirectory()`, storage app-scoped: nessun permesso runtime richiesto)
-- Copia automaticamente il file nella cartella pubblica Download tramite `downloads_saver.dart` (MethodChannel nativo `com.ndn21.qration/downloads`): su Android 10+ (API 29+) via `MediaStore`, senza permessi; su Android 9 e precedenti richiede il permesso `WRITE_EXTERNAL_STORAGE` prima di scrivere
+**Path:** `lib/features/codes/services/codes_service.dart` (implements `CodesRepository`)
 
----
+Firestore access to `users/{uid}/codes`.
 
-### 7.4 Export Excel (excel_service)
+- `addCode(code)`: generates the ID locally with `collection.doc()` (synchronous, no network), assigns it to `code.id` and writes with a single `set()`.
+- `deleteCode(id)`, `deleteAllCodes()`, `updateCodeNotes(id, notes)`, `toggleFavoriteStatus(codeId, isFavorite)`.
+- `getCodesStream()`, `getFavoriteCodesStream()`, `getSocialCodesStream()`: real-time lists.
+- `getSyncStatusStream()`: `snapshots(includeMetadataChanges: true)` mapped by `syncStatusFrom` to `SyncStatus`.
+- `refreshCodes()`: `GetOptions(source: Source.server)` read.
+- `countAllCodes()`, `countCodesBySource(source)`, `countCodesByType(source)`, `countSocialCodesByType(source)`: statistics.
+- `exportCodesToJson()`, `importCodesFromJson(json)`: backup format; import calls `addCode` for each code, so every restored code gets a new ID.
 
-**Percorso:** `lib/features/export/services/excel_service.dart`
+Tests: `test/features/codes/services/codes_service_test.dart` (`fake_cloud_firestore`).
 
-Esporta tutti i codici in formato XLSX nativo.
+### 7.3 ChangelogService
 
-**Caratteristiche:**
-- Intestazione con titolo "QRation" in grassetto nella prima riga
-- Righe intestazione colonne con stile dedicato
-- Colonne equivalenti al CSV
-- Larghezza colonne auto-dimensionata
-- Utilizza la libreria `excel` per la generazione del file
+**Path:** `lib/core/services/changelog_service.dart`
 
----
+Decides which changelog entries to show automatically.
 
-### 7.5 Export PDF (pdf_service, pdf_report)
+- `pendingEntries(...)`: returns the entries newer than `changelog_last_seen_version`, relying on `changelogEntries` being sorted newest first, and saves the current version as seen. On a fresh install (no saved version) it returns nothing.
 
-**Percorsi:** `lib/features/export/services/pdf_service.dart` (dati) e `lib/features/export/services/pdf_report.dart` (impaginazione)
+The key name is `changelog_last_seen_version` and must not be renamed: existing installs would look new and skip the next update's notes.
 
-Il lavoro è diviso in due parti:
-- **`PdfService.generateCodesPdf`** legge i codici (dal più recente), traduce il tipo (`readableCodeType`), genera ogni QR con i suoi colori, forme e logo (300 px, `buildQrDecoration`; il logo viene ignorato se il file non esiste più) e calcola i conteggi per tipo (`countByType`). Con questi dati compone un `PdfReportData` e lo salva.
-- **`buildPdfReport`** costruisce il documento a partire da `PdfReportData`, `PdfReportAssets` (Montserrat regular e bold, logo) e `AppLocalizations`, senza dipendenze da Firebase o dai widget Flutter, così è testabile.
+Tests: `test/core/services/changelog_service_test.dart` (first install, update, unknown version, same version), `test/core/constants/changelog_test.dart` (section order; every `changelog_v*` key in the English ARB used exactly once), `test/core/widgets/app_changelog_dialog_test.dart` (every version and item rendered in English and Italian).
 
-**Struttura del documento (A4):**
-- **Copertina:** logo, "QRation", sottotitolo "La mia collezione di codici" (`pdf_report_subtitle`), linea oro, nome ed email dell'account e chip con il numero di codici.
-- **Pagine successive** (`pw.MultiPage`): intestazione con logo e "QRation"; piè di pagina "Pagina X di Y" (`pdf_report_page`).
-- **Informazioni utente:** tabella etichetta → valore (nome, email, data di creazione dell'account, ID).
-- **Statistiche:** tre riquadri (salvati, creati, scansionati) e due card con il dettaglio per tipo, divise in Standard e Social. I codici social sono contati per social e non anche come URL; il valore `Link` assegnato ai normali URL non è un social e non viene mostrato.
-- **Codici:** una card per codice che non si spezza tra due pagine (circa 5 per pagina invece di una). Contiene il QR, le chip Tipo, Fonte (Creato/Scansionato), social e Preferito, il contenuto, data e ora, le eventuali note e, solo per i codici creati, lo stile (colore e forma di occhi e moduli).
-- **Pagina finale:** logo, "QRation", "Ideata e sviluppata da" (`info_screen_made_by`) con `AppConstants.developerName`, email dello sviluppatore, sito (`AppConstants.uriGithubLink`) e "© <anno dell'esportazione> Nicola De Nicolais. Tutti i diritti riservati." (`pdf_report_rights`). Non ha intestazione né piè di pagina.
+### 7.4 BackupHistory
 
-Le date usano la lingua dell'app (`DateFormat.yMMMMd(l10n.localeName)`), quelle dei codici il formato `dd/MM/yyyy HH:mm` delle liste. Colori: blu `qrBlue` per il testo, oro `qrGold` per gli accenti, `cardLight`/`dividerLight` per le card.
+**Path:** `lib/features/settings/services/backup_history.dart`
 
-**Anteprima senza dispositivo:** `test/features/export/pdf_report_test.dart` costruisce un report di esempio (34 codici), verifica che occupi meno di 15 pagine e, se la variabile d'ambiente `QRATION_PDF_PREVIEW` contiene un percorso, lo salva lì: `QRATION_PDF_PREVIEW=anteprima.pdf flutter test test/features/export/pdf_report_test.dart`.
+Stores on the device, per user, when the last JSON export and import succeeded (`backup_last_export_<uid>`, `backup_last_import_<uid>`). `DatabaseController` exposes them as `lastExportAt`/`lastImportAt`.
 
-**Caratteristiche tecniche:**
-- Progresso esportazione restituito tramite callback `Function(double)`; la parte lenta è il rendering dei QR.
-- Salvataggio tramite `path_provider` (`getDownloadsDirectory()`, storage app-scoped: nessun permesso runtime richiesto)
-- Copia automaticamente il file nella cartella pubblica Download tramite `downloads_saver.dart` (MethodChannel nativo `com.ndn21.qration/downloads`): su Android 10+ (API 29+) via `MediaStore`, senza permessi; su Android 9 e precedenti richiede il permesso `WRITE_EXTERNAL_STORAGE` prima di scrivere
+Tests: `test/features/settings/services/backup_history_test.dart`.
 
----
+### 7.5 Public Downloads copy
 
-## 8. Tema e stile
+**Path:** `lib/core/utils/downloads_saver.dart`
 
-**Percorso:** `lib/core/theme/`
+`saveBytesToPublicDownloads(...)` copies an exported file (PDF, Excel, CSV, JSON) to the public Download folder through the native method channel `com.ndn21.qration/downloads`. On Android 10+ (API 29+) it uses `MediaStore` with no permission; on Android 9 and lower it first requests `WRITE_EXTERNAL_STORAGE`, which the manifest caps with `maxSdkVersion="28"`. The primary copy is written to `getDownloadsDirectory()`, which on Android is app-private and deleted on uninstall: hence the public copy.
 
-**Font:** Montserrat, incluso come asset locale (`assets/fonts/Montserrat.ttf`/`Montserrat-Bold.ttf`, famiglia `Montserrat` in `pubspec.yaml`) e usato tramite `AppFonts.montserrat(...)` (`app_fonts.dart`) al posto del package `google_fonts` (rimosso). Font icone personalizzate `QrationIcons` incluse come asset locali.
+### 7.6 CSV export
 
-**Licenza dei font:** Montserrat è distribuito sotto SIL Open Font License 1.1, che richiede di accompagnare il font con il suo testo di licenza. Il testo è in `assets/fonts/OFL.txt` e `main()` lo registra con `LicenseRegistry.addLicense` (`_fontLicenses`), così compare nella pagina "Licenze open source" (`showLicensePage`), che altrimenti mostra in automatico solo le licenze dei package pub. Un nuovo font aggiunto come asset va registrato allo stesso modo.
+**Path:** `lib/features/export/services/csv_service.dart`
 
-Essendo solo 2 i file font disponibili (Regular e Bold), in `pubspec.yaml` sono registrati con `weight: 400` e `weight: 900` (non 700): Flutter sceglie il file più vicino al `FontWeight` richiesto, e con Bold a 900 i pesi intermedi usati in tutto il codice come "semibold" (`FontWeight.w500`/`w600`, ~110 punti di utilizzo) restano vicini a Regular invece di risolvere erroneamente al file Bold — evitando che gran parte del testo dell'app appaia eccessivamente in grassetto. I titoli esplicitamente `FontWeight.w700`+ continuano a risolvere correttamente al file Bold. Se in futuro si aggiungono asset font per pesi intermedi reali (Medium/SemiBold), questo escamotage andrebbe rimosso.
+All codes, newest first. Columns: ID, Date, Source, Type, Content, Eye color, Eye rounding, Module color, Module rounding, Favorite, Social; colors as `#RRGGBB`; localized headers. Saved as in [7.5](#75-public-downloads-copy).
 
-Per ridurre ulteriormente la sensazione di grassetto invasivo, tutti i punti del codice sotto `lib/` sono stati scalati di un livello: `FontWeight.bold`/`w700` → `w600`, `w600` → `w500` (i pesi `w500`/`w400` esistenti restano invariati).
+### 7.7 Excel export
 
-**Temi supportati:**
-- **Chiaro** (`AppTheme.lightTheme({Color primary})`)
-- **Scuro** (`AppTheme.darkTheme({Color primary})`)
+**Path:** `lib/features/export/services/excel_service.dart`
 
-La modalità tema (`ThemeMode.system`/`light`/`dark`) è salvata in `SharedPreferences` alla chiave `theme_mode` (`String`, nome dell'enum; default `system`). Al primo avvio dopo l'aggiornamento il vecchio booleano `theme_preference` viene migrato (`true` → `dark`, `false` → `light`) e rimosso. Il `ThemeController` aggiorna anche il `SystemChrome` (colore della status bar e navigation bar) in base alla luminosità effettiva e, tramite `WidgetsBindingObserver.didChangePlatformBrightness`, lo riallinea quando in modalità Sistema l'utente cambia tema dal dispositivo.
+XLSX with the `excel` package, sheet `QRationData`: bold "QRation" title row, styled header row, the same columns as the CSV, and column widths computed from the longest value. Saved as in [7.5](#75-public-downloads-copy).
 
-**Colore principale personalizzabile:** `lightTheme`/`darkTheme` accettano un parametro opzionale `primary` (default `AppColors.qrBlue`/`AppColors.qrGold`, cioè il comportamento storico) che rimpiazza gli usi "brand/accent" del colore identitario del tema (es. `colorScheme.primary`/`tertiary`, app bar, bottom/navigation bar, bottoni, focus border, checkbox/switch selezionati, date/time picker, cursore testo, chip e icone `ListTile`); gli usi del colore "complementare" (oro in chiaro, blu in scuro) restano invariati per non introdurre problemi di contrasto. L'utente sceglie tra 8 palette predefinite in `AccentPresets` (`lib/core/theme/accent_presets.dart`, preset `'blue'` = valori storici); l'indice selezionato è salvato in `SharedPreferences` alla chiave `accent_preset_index` e gestito da `ThemeController`.
+### 7.8 PDF export
 
-**Unica sorgente di verità:** `ThemeController` espone solo lo stato osservabile (`themeMode`, `currentAccent`) e non chiama mai `Get.changeTheme`. È `QrationApp` (`app.dart`), dentro l'`Obx` che avvolge `GetMaterialApp`, a costruire `theme:`/`darkTheme:` con `currentAccent.light`/`.dark` e `themeMode` dal controller: ogni cambio di tema o accent ricostruisce l'app con i valori corretti, evitando che un rebuild riporti l'accent al colore di default.
+**Path:** `lib/features/export/services/pdf_service.dart` (data), `lib/features/export/services/pdf_report.dart` (layout)
 
-**Colori:** Definiti in `app_colors.dart`. Palette distinta per tema chiaro e scuro.
+- `PdfService.generateCodesPdf(onProgress)`: reads the codes (newest first), localizes the type (`readableCodeType`), renders each QR at 300 px with its colors, shapes and logo (`buildQrDecoration`; a missing logo file is skipped), counts by type (`countByType`), builds a `PdfReportData` and saves the file. Progress is reported through a `Function(double)`; QR rendering is the slow part.
+- `buildPdfReport(data, assets, l10n)`: builds the A4 document from `PdfReportData`, `PdfReportAssets` (Montserrat regular and bold, logo) and `AppLocalizations`, with no Firebase or Flutter widget dependency, so it is testable.
 
-**Dimensioni e responsività:** padding, font e icone sono valori fissi in dp. `flutter_screenutil` è stato rimosso: in `app.dart` il `designSize` coincideva con lo schermo reale, quindi il fattore di scala era sempre 1 e `.sp`/`.w`/`.h`/`.r` non scalavano nulla. I numeri sono rimasti gli stessi, quindi l'aspetto non cambia. Il testo segue la dimensione scelta nelle impostazioni di sistema tramite `MediaQuery.textScaler`, che i widget `Text` applicano da soli. Per adattare un layout allo spazio disponibile si usano `LayoutBuilder`/`MediaQuery`, non fattori di scala globali.
+Document layout:
+- **Cover:** logo, "QRation", subtitle (`pdf_report_subtitle`), gold rule, account name and email, code count chip.
+- **Following pages** (`pw.MultiPage`): header with logo and "QRation"; footer "Page X of Y" (`pdf_report_page`).
+- **User info:** name, email, account creation date, user ID.
+- **Statistics:** saved/created/scanned tiles and two per-type cards (Standard, Social). Social codes count only under their network, not also as URL; the `Link` value of plain URLs is not a network and is not listed.
+- **Codes:** one unbreakable card per code (about five per page) with QR, Type/Source/social/Favorite chips, content, date and time, notes and, for created codes only, the style.
+- **Last page:** logo, "QRation", `info_screen_made_by` with `AppConstants.developerName`, developer email, website and "© <export year> Nicola De Nicolais. All rights reserved." (`pdf_report_rights`); no header or footer.
 
-**Accessibilità:** regole seguite dalle schermate e verificate dai test in `test/accessibility/`.
-- **Contrasto:** i testi secondari (`onSurfaceVariant`) usano `AppColors.textSecondaryLight` `#4C6A8D`, almeno 5:1 su superficie, card e `surfaceVariant` (prima `#5A7A9E`, 4.0–4.5:1, sotto la soglia WCAG AA di 4.5:1). Il tema scuro era già conforme.
-- **Aree tattili ≥ 48 dp:** il cerchio colore dello stile QR resta di 36 dp ma ha un'area tattile di 48; `SectionLinkRow` ha altezza minima 48.
-- **Etichette:** ogni elemento toccabile ha un testo o un tooltip. Gli interruttori sono uniti alla loro etichetta con `MergeSemantics` (`SettingsSwitchTile`, che ora si attiva toccando tutta la riga, e "Arrotondati" nello stile QR, che pronuncia anche il titolo della riga). La casella "Ricordami" è unita al suo testo. Hanno un tooltip: mostra/nascondi password, espandi/comprimi contenuto, scelta del logo e "Avanti" dell'onboarding. Le immagini QR (dettaglio e anteprima) sono annunciate come immagini con un'etichetta. L'indicatore di pagina dell'onboarding viene letto come "Pagina X di Y" invece che come punti da toccare. Il tap che chiude la tastiera nel dettaglio è escluso dalla semantica (`excludeFromSemantics`).
-- **Testo ingrandito:** nessuna schermata va in overflow con scala del testo di sistema 1.5 e 2.0. La riga "Ricordami / Password dimenticata?" del login è un `Wrap`, l'etichetta di `AppButton` va a capo, le tab dei Preferiti troncano con "…", Elimina account è scorrevole e il pulsante ha una dimensione minima invece che fissa, e le tessere dei tipi di codice crescono in altezza solo quando il testo è ingrandito.
-- **Test:** `a11y_harness.dart` registra le dipendenze finte e l'elenco delle schermate (`a11yScreens`). `a11y_guidelines_test.dart` controlla, in tema chiaro e scuro, `androidTapTargetGuideline`, `labeledTapTargetGuideline` e `textContrastGuideline`, con il font di test perché il controllo di contrasto legge i colori da uno screenshot e con i bordi sfumati di un font reale sottostima il contrasto. `text_scale_test.dart` carica il vero Montserrat e verifica l'assenza di overflow a scala 1.5 e 2.0, indicando file e riga del widget. Restano fuori Scanner (fotocamera), Home e Profilo (utente autenticato). Una nuova schermata va aggiunta ad `a11yScreens`.
+Dates use the app language (`DateFormat.yMMMMd(l10n.localeName)`); code dates use `dd/MM/yyyy HH:mm`. Colors: `qrBlue` text, `qrGold` accents, `cardLight`/`dividerLight` cards.
 
-**Design system:**
-- **Tipografia:** le schermate usano i ruoli di `Theme.of(context).textTheme`, con `copyWith` solo per colore, peso o interlinea; niente dimensioni scritte a mano. La scala è definita in `_buildTextTheme` (`app_theme.dart`), con le dimensioni già usate dall'app:
-
-  | Ruolo | Dimensione | Uso |
-  |---|---|---|
-  | `displaySmall` | 36 | Titolo di benvenuto, iniziale dell'avatar |
-  | `headlineMedium` | 28 w500 | Titoli di login, registrazione e onboarding |
-  | `headlineSmall` | 24 w500 | Nome dell'app in Info, numeri delle statistiche |
-  | `titleLarge` | 20 w500 | Titoli dei dialoghi, messaggi in evidenza |
-  | `titleMedium` | 18 w500 | Titoli dei gruppi, stati vuoti e di errore |
-  | `titleSmall` | 15 w500 | Intestazioni di sezione (`SectionHeader`), titoli delle card |
-  | `bodyLarge` | 16 | Testo dei campi, testi lunghi |
-  | `bodyMedium` | 14 | Testo normale |
-  | `bodySmall` | 12, secondario | Sottotitoli, didascalie |
-  | `labelLarge` | 14 w500 | Titoli di righe e tile |
-  | `labelMedium` | 12 w500 | Chip, badge, etichette |
-  | `labelSmall` | 11 w500, secondario | Etichette delle tessere, legende |
-
-  `bodySmall` e `labelSmall` hanno già il colore secondario (`onSurfaceVariant`), gli altri ruoli il colore primario del testo (`onSurface`). Le dimensioni fuori scala sono state arrotondate al ruolo più vicino (13 → 12, 10 → 11). `AppFonts.montserrat` resta solo per definire il tema; `AppFonts.monospace` serve per l'ID account. Rimossi `AppTextStyles` (`app_text_styles.dart`, mai usato) e `AppFontSizes` (`app_font_sizes.dart`).
-- **Raggi:** solo token `AppRadius`: `extraSmall` 4 (indicatori, barre), `small` 8 (chip), `medium` 12 (pulsanti, icone in riquadro), `large` 16 (card, tessere, campi), `extraLarge` 20 (`SectionCard`, gruppi delle Impostazioni), `dialog` 28, `pill` (forme a pillola, che restano tali a qualunque altezza). I valori fuori scala sono stati normalizzati: 3/6 → 4, 10 → 12, 14/15 → 16, 24/25/28/30 → `dialog` o `pill`, 25 → 20 per i gruppi delle Impostazioni.
-
-**Linea guida visiva delle schermate:** le app bar non impostano colori propri (valgono `appBarTheme`: sfondo superficie, titolo e icone nel colore principale), gli `Switch` usano `switchTheme` (traccia neutra da spento, colore principale da acceso), i testi usano `onSurface`/`onSurfaceVariant` e i contenuti sono raggruppati in `SectionCard` (`lib/core/widgets/section_card.dart`: titolo con icona + card con bordo; l'intestazione è anche esposta da sola come `SectionHeader` per contenuti che non stanno in una singola card; spostata da `settings/widgets` perché usata anche da Dettaglio, Crea, Info e Database). Il colore principale si usa solo per accenti, icone e azione principale. Le righe cliccabili dentro una card (titolo + sottotitolo + freccia o link esterno) usano `SectionLinkRow` (`lib/core/widgets/section_link_row.dart`, usata da Supporto); le FAQ del Supporto usano `CustomExpansionTile` senza bordi né padding laterale propri. Dettaglio codice, Crea codice, Info, Profilo, Database, Supporto ed Elimina account sono stati riallineati a questa linea: in precedenza usavano il colore principale come sfondo pieno di app bar e card e il colore secondario per i testi, con contrasti insufficienti (ad esempio testo blu su blu in Info e nel form di creazione). Le intestazioni di Info ora sono con iniziale maiuscola come nel resto dell'app.
-
-**Stati vuoti/errore:** `AppEmptyState` (`app_empty_state.dart`) e `AppErrorState` (`app_error_state.dart`), entrambi in `lib/core/widgets/`, forniscono la UI standard per liste vuote e stati di errore, da riusare al posto di implementazioni inline. `lib/core/widgets/` contiene un file per ogni widget condiviso (`app_button.dart`, `app_textfield.dart`, `app_toast.dart`, `app_loader.dart`, `app_empty_state.dart`, `app_error_state.dart`, `app_delete_dialog.dart`, `app_changelog_dialog.dart`), tutti con convenzione `App*`. La cartella `lib/widgets/` (ex contenitore di widget "globali" ma di fatto usati da una sola feature ciascuno) è stata rimossa: `custom_picker_field.dart` e `full_screen_map.dart` sono ora in `lib/features/codes/widgets/code_create/` (usati solo dal flusso di creazione standard), `custom_expansiontile.dart` è in `lib/features/settings/widgets/` (usato solo da `support_screen.dart`).
-
-`AppEmptyState` accetta una call-to-action opzionale (`actionLabel` + `onAction`, mostrata come `FilledButton.tonal` solo se entrambi sono presenti). Preferiti e Cronologia ricevono da `HomeScreen` le callback `onCreateCode`/`onScanNow`, che cambiano tab (Crea / Scansiona) senza introdurre dipendenze tra le feature. Nei Preferiti senza codici il pulsante è "Crea il tuo primo codice"; in Cronologia `HistoryController.hasCodes` e `hasActiveFilters` distinguono il vuoto reale ("Nessun codice salvato" + "Scansiona ora") dal vuoto dovuto ai filtri ("Nessun risultato per i filtri attivi" + "Azzera i filtri", che chiama `clearFilters()` e svuota anche il campo di ricerca). Il caricamento dei Preferiti usa `AppLoader` come il resto dell'app.
+Tests and preview: `test/features/export/pdf_report_test.dart` builds a sample report, checks its page count stays bounded and, if `QRATION_PDF_PREVIEW` holds a path, writes the PDF there: `QRATION_PDF_PREVIEW=preview.pdf flutter test test/features/export/pdf_report_test.dart`.
 
 ---
 
-## 9. Navigazione
+## 8. Theme and style
 
-L'app usa il **routing dichiarativo di GetX** con named routes definite in `app_routes.dart` e la mappa dei widget in `app_pages.dart`.
+**Path:** `lib/core/theme/`
 
-**Flusso di navigazione principale:**
+**Font:** Montserrat, bundled in `assets/fonts/` (`Montserrat.ttf` registered as weight 400, `Montserrat-Bold.ttf` as weight 700, family `Montserrat`) and used through `AppFonts.montserrat(...)` only inside the theme. `QrationIcons.ttf` holds the custom icons. Montserrat is under the SIL Open Font License 1.1, which requires shipping its license: `assets/fonts/OFL.txt` is registered in `main()` with `LicenseRegistry.addLicense`, so it appears in the open source licenses page, which otherwise lists only pub packages. Any new bundled font must be registered the same way.
+
+**App icon:** every icon comes from `assets/images/app_logo.png` (navy stylized QR on transparent background).
+1. `powershell -ExecutionPolicy Bypass -File tool\icons\generate_icons.ps1` generates `assets/images/app_icon_legacy.png` (logo at 64% on a rounded white square, for Android 7 launchers that apply no mask), `app_icon_foreground.png` (62%, transparent) and `app_icon_monochrome.png` (62%, black silhouette), plus `images/icons/` `icon_512` (Play Store), `icon_192`, `oauth_logo_120` (Google consent screen) and `favicon_32` on white `#FFFFFF`.
+2. `dart run flutter_launcher_icons` generates the Android icons from the `flutter_launcher_icons` block in `pubspec.yaml` (`android: "launcher_icon"`, `min_sdk_android: 24`, legacy image, white adaptive background, foreground and monochrome layers). The monochrome layer is used by Android 13+ themed icons, which read only its alpha.
+
+The manifest uses `@mipmap/launcher_icon`; on Android 12+ the system splash uses it automatically. Inside the app `AppLogo` (`lib/core/widgets/app_logo.dart`) tints the logo with the theme primary (`BlendMode.srcIn`), so it follows the accent and stays visible on dark backgrounds; the PDF uses the original navy file.
+
+**Themes:** `AppTheme.lightTheme({Color primary})` and `AppTheme.darkTheme({Color primary})`. The mode (`ThemeMode.system`/`light`/`dark`) and the accent are chosen in Settings and persisted by `ThemeController` (see [Local preferences](#local-preferences)). In System mode `ThemeController` follows `didChangePlatformBrightness` to update `SystemChrome` colors.
+
+**Accent colors:** `primary` replaces the brand color of the theme (`colorScheme.primary`/`tertiary`, app bar, navigation bar, buttons, focus borders, selected switches and checkboxes, pickers, cursor, chips, list tile icons). The complementary color (gold in light, light blue in dark) stays fixed to keep contrast.
+
+| Preset (`AccentPresets`) | Light | Dark |
+|---|---|---|
+| `blue` (default) | `#274060` (`qrBlue`) | `#CCA775` (`qrGold`) |
+| `green` | `#1F5C4A` | `#6FCF9E` |
+| `purple` | `#4A2E6E` | `#B48AE0` |
+| `red` | `#7A2333` | `#E8869A` |
+| `teal` | `#14555C` | `#6FD1DA` |
+| `orange` | `#7A4A12` | `#E8A85C` |
+| `pink` | `#7A2E55` | `#E58FBE` |
+| `grey` | `#3A3A3A` | `#B0B0B0` |
+
+**Palette** (`app_colors.dart`):
+
+| Name | Value | Usage |
+|---|---|---|
+| `qrBlue` | `#274060` | Brand blue, light primary, PDF text |
+| `qrBlueDark` / `qrBlueLight` | `#1A2E46` / `#3A5A82` | Blue variants; `qrBlueLight` is the dark `secondary` |
+| `qrGold` | `#CCA775` | Brand gold, dark primary, light `secondary`, PDF accents |
+| `qrGoldDark` / `qrGoldLight` | `#B8935E` / `#DDBB90` | Gold variants |
+| `qrWhite` | `#FFFFFF` | Text on colored buttons |
+| `surfaceLight` / `surfaceDark` | `#FFFFFF` / `#1A2E46` | `surface` |
+| `surfaceVariantLight` / `surfaceVariantDark` | `#F5F3F0` / `#1F3554` | `surfaceContainerHighest`, README banner background |
+| `cardLight` / `cardDark` | `#FAF8F5` / `#243D5E` | Cards |
+| `dividerLight` / `dividerDark` | `#E8E4DF` / `#2D4A6E` | Dividers |
+| `textPrimaryLight` / `textPrimaryDark` | `#274060` / `#FFFFFF` | `onSurface` |
+| `textSecondaryLight` / `textSecondaryDark` | `#4C6A8D` / `#CCA775` | `onSurfaceVariant` (light value is at least 5:1 on surface, card and surface variant) |
+| `textHintLight` / `textHintDark` | `#9BAFC4` / `#7A9BBF` | Field hints |
+| `error` | `#D80032` | `colorScheme.error`, field error text and borders |
+| `scannerCorner` | `#CCA775` | Scanner window corners |
+| `qrMarkerColor` | `#E12729` | Geo map marker |
+
+`success`, `successLight`, `errorLight`, `warning`, `warningLight`, `info`, `infoLight`, `scannerOverlay` and the `toast*`/`successColor`/`errorColor` aliases are defined but not used by any screen; toasts take their colors from `toastification`'s `flatColored` style.
+
+`ColorScheme` roles used by screens: `primary` (accents, icons, main action), `secondary` (complementary color), `tertiary` (= primary, overlays), `surface`/`onSurface`, `surfaceContainerHighest`, `onSurfaceVariant` (secondary text), `error`/`onError`.
+
+**Typography:** screens use `Theme.of(context).textTheme` roles, with `copyWith` only for color, weight or line height; no hand-written sizes. Defined in `_buildTextTheme` (`app_theme.dart`):
+
+| Role | Size | Usage |
+|---|---|---|
+| `displaySmall` | 36 | Welcome title, avatar initial |
+| `headlineMedium` | 28 w500 | Login, signup and onboarding titles |
+| `headlineSmall` | 24 w500 | App name in Info, statistic numbers |
+| `titleLarge` | 20 w500 | Dialog titles, prominent messages |
+| `titleMedium` | 18 w500 | Group titles, empty and error states |
+| `titleSmall` | 15 w500 | Section headers (`SectionHeader`), card titles |
+| `bodyLarge` | 16 | Field text, long text |
+| `bodyMedium` | 14 | Body text |
+| `bodySmall` | 12, secondary color | Subtitles, captions |
+| `labelLarge` | 14 w500 | Row and tile titles |
+| `labelMedium` | 12 w500 | Chips, badges, labels |
+| `labelSmall` | 11 w500, secondary color | Tile labels, legends |
+
+**Radii:** only `AppRadius` tokens: `extraSmall` 4 (indicators, bars), `small` 8 (chips), `medium` 12 (buttons, icon boxes), `large` 16 (cards, tiles, fields), `extraLarge` 20 (`SectionCard`, Settings groups), `dialog` 28, `pill` 100 (pill shapes at any height).
+
+**Sizes and adaptive layout:** padding, font and icon sizes are fixed dp values. Text follows the system text size through `MediaQuery.textScaler`. Layouts adapt with `LayoutBuilder`/`MediaQuery` (e.g. the Export tiles, the type grid tiles), not with global scale factors.
+
+**Screen guidelines:**
+- App bars set no colors of their own (`appBarTheme`: surface background, primary title and icons); switches use `switchTheme`.
+- Content is grouped in `SectionCard` (`lib/core/widgets/section_card.dart`: header with icon + bordered card; the header alone is `SectionHeader`). The primary color is used only for accents, icons and the main action.
+- Clickable rows inside a card use `SectionLinkRow` (minimum height 48).
+- Empty and error states use `AppEmptyState` (optional `actionLabel` + `onAction`, shown as `FilledButton.tonal`) and `AppErrorState`.
+- `ElevatedButton` and `OutlinedButton` have a theme `minimumSize` of `(double.infinity, 52)`: inside a `Row` they need a local finite `minimumSize`.
+- `AppButton` labels wrap instead of overflowing.
+
+**Accessibility** (checked by `test/accessibility/`):
+- Touch targets of at least 48 dp; every tappable element has a text or a tooltip (password visibility, expand/collapse, logo picker, onboarding "Next").
+- Switches and the "Remember me" checkbox are merged with their labels (`MergeSemantics`).
+- QR images are announced as labeled images.
+- No screen overflows at system text scale 1.5 and 2.0.
+
+---
+
+## 9. Navigation
+
+GetX named routes: names in `lib/core/routes/app_routes.dart`, `GetPage`s in `lib/core/routes/app_pages.dart`. `unknownRoute` opens `HomeScreen`.
 
 ```
 Splash
-  ├── (primo avvio) → Onboarding → Welcome
-  ├── (non autenticato) → Welcome → Login / Signup
-  └── (autenticato) → Home
-                          ├── Scanner → Dettaglio
-                          ├── Crea (Selezione tipo) → Form creazione → Dettaglio
-                          ├── Preferiti → Dettaglio
-                          ├── Cronologia → Dettaglio
-                          └── Impostazioni
-                                ├── Profilo utente
-                                ├── Database
-                                ├── Info → Privacy Policy
-                                ├── Supporto
-                                └── Elimina account
+  ├── (first launch) → Onboarding → Welcome
+  ├── (signed out)   → Welcome → Login / Signup → Reset password
+  └── (signed in)    → Home
+                         ├── Scan → Details
+                         ├── Create → Standard / Social form → Details
+                         ├── Favorites → Details
+                         ├── History → Details
+                         └── Settings
+                               ├── Profile
+                               ├── Database
+                               ├── Info → Privacy Policy
+                               └── Support
 ```
 
-**Route definite:**
-
-| Costante | Percorso | Schermata |
+| Route | Screen | Description |
 |---|---|---|
-| `splash` | `/` | SplashScreen |
-| `onboarding` | `/onboarding` | OnboardingScreen |
-| `welcome` | `/welcome` | WelcomeScreen |
-| `login` | `/login` | LoginScreen |
-| `signup` | `/signup` | SignupScreen |
-| `resetPassword` | `/reset-password` | ResetPasswordScreen |
-| `home` | `/home` | HomeScreen |
-| `scanner` | `/scanner` | ScannerScreen |
-| `codeCreateStandard` | `/code-create-standard` | CodeCreateStandardScreen |
-| `codeCreateSocial` | `/code-create-social` | CodeCreateSocialScreen |
-| `codeDetails` | `/code-details` | CodeDetailsScreen |
-| `user` | `/user` | UserScreen |
-| `settings` | `/settings` | SettingsScreen |
-| `settingsDatabase` | `/settings-database` | DatabaseScreen |
-| `settingsInfo` | `/settings-info` | InfoScreen |
-| `privacyPolicy` | `/privacy-policy` | PrivacyPolicyScreen |
-| `settingsSupport` | `/settings-support` | SupportScreen |
+| `/` (`splash`) | `SplashScreen` | Startup redirect |
+| `/onboarding` | `OnboardingScreen` | First-launch introduction |
+| `/welcome` | `WelcomeScreen` | Signed-out entry |
+| `/login` | `LoginScreen` | Email and Google login |
+| `/signup` | `SignupScreen` | Registration |
+| `/reset-password` | `ResetPasswordScreen` | Password reset email |
+| `/home` | `HomeScreen` | Tab shell (`HomeBinding`) |
+| `/scanner` | `ScannerScreen` | Scanner as a standalone route (`ScannerBinding`) |
+| `/code-create-standard` | `CodeCreateStandardScreen` | Standard form, argument `BarcodeType` |
+| `/code-create-social` | `CodeCreateSocialScreen` | Social form, argument `CodeSocial` |
+| `/code-details` | `CodeDetailsScreen` | Code details, argument `CodeModel`, fade 250 ms |
+| `/user` | `UserScreen` | Profile and account deletion |
+| `/settings` | `SettingsScreen` | Settings as a standalone route (`SettingsBinding`) |
+| `/settings-database` | `DatabaseScreen` | Statistics, export, backup |
+| `/settings-info` | `InfoScreen` | About the app |
+| `/privacy-policy` | `PrivacyPolicyScreen` | Privacy policy |
+| `/settings-support` | `SupportScreen` | FAQ and contacts |
 
 ---
 
-## 10. Impostazioni disponibili
+## 10. Localization
 
-Riepilogo di tutte le chiavi salvate in `SharedPreferences`:
+| Code | Language |
+|---|---|
+| `en` | English (template and fallback) |
+| `it` | Italian |
 
-| Chiave | Tipo | Default | Descrizione |
-|---|---|---|---|
-| `theme_mode` | `String` | `system` | Tema: `system`, `light` o `dark` (sostituisce il vecchio `theme_preference` bool, migrato automaticamente) |
-| `language_code` (`QrationApp.languageKey`) | `String` | `''` (sistema) | Lingua: `en` / `it`. Letta in `main()` con `QrationApp.loadSavedLocale()` prima di `runApp` e passata come `initialLocale` a `QrationApp`, così il primo frame usa già la lingua scelta; i cambi successivi dalle Impostazioni passano da `Get.updateLocale` |
-| `beepEnabled` | `bool` | `false` | Beep audio alla scansione |
-| `vibrateEnabled` | `bool` | `false` | Vibrazione alla scansione |
-| `remember_me` | `bool` | `false` | Mantieni sessione al riavvio |
-| `user_id` | `String` | `''` | UID Firebase dell'utente autenticato |
-| `backup_last_export_<uid>` | `int` | assente | Millisecondi epoch dell'ultima esportazione JSON riuscita per quell'utente |
-| `backup_last_import_<uid>` | `int` | assente | Millisecondi epoch dell'ultima importazione JSON riuscita per quell'utente |
+- ARB files: `lib/l10n/app_en.arb` (template) and `lib/l10n/app_it.arb`. `l10n.yaml` generates `AppLocalizations` into `lib/l10n/` with `flutter gen-l10n` (also run by `flutter pub get`, since `generate: true`).
+- Supported locales are `L10n.all` (`lib/l10n/l10n.dart`).
+- The user's choice is saved to `language_code`. `main()` reads it with `QrationApp.loadSavedLocale()` before `runApp` and passes it as `initialLocale`, so the first frame is already in the chosen language; changes from Settings use `Get.updateLocale`.
+- Without a saved choice `locale` is `null` and Flutter resolves the system locale against `L10n.all`; an unsupported system language falls back to English, the first supported locale.
+- Changelog strings use the keys `changelog_v<version>_bullet_N`, in every ARB file.
 
 ---
 
-## 11. Dipendenze
-
-**Firebase (FlutterFire):** `firebase_core` 4, `firebase_auth` 6, `cloud_firestore` 6 e `firebase_crashlytics` 5 vanno aggiornati insieme (stesso rilascio FlutterFire, Firebase Android BoM 34.x); per i test seguono `fake_cloud_firestore` 4 e `firebase_auth_mocks` 0.15. Il passaggio dalle versioni 3/5/5/4 non ha richiesto modifiche al codice Dart (le API rimosse non erano usate). `android/app/build.gradle` non dichiara dipendenze native Firebase o Google: BoM, `firebase-auth` e `play-services-auth` arrivano dai plugin, e le versioni fissate a mano (in precedenza `firebase-auth:22.3.0`, BoM `33.1.1`, `play-services-auth:19.0.0`) sono state rimosse perché entravano in concorrenza con quelle dei plugin. `google_sign_in` è rimasto alla 6: la 7 cambia completamente l'API di login ed è un aggiornamento separato.
-
-**Google Sign-In 7:** migrato da `google_sign_in` 6 (`GoogleSignIn()`, `signIn()`, `authentication` asincrono con access token) alla v7 (`GoogleSignIn.instance`, `initialize()` una sola volta, `authenticate()`, `authentication` sincrono con il solo `idToken`, `signOut()` che restituisce `Future<void>`). Su Android il plugin usa Credential Manager e ha bisogno dell'ID client OAuth *web*. Lo legge da `google-services.json` (voce `oauth_client` con `client_type: 3`, già presente) tramite il plugin Gradle `com.google.gms.google-services`, quindi `initialize()` non riceve `serverClientId`. Se il login Google fallisce con "serverClientId must be provided", verifica nella console Firebase che esista il client web e riscarica `google-services.json`. Il login va provato su un dispositivo reale, con la SHA-1 della chiave di firma (debug e release) registrata nel progetto Firebase.
+## 11. Dependencies
 
 ```yaml
+environment:
+  sdk: ^3.5.2
+
 dependencies:
-  get: ^4.6.6                          # State management e routing
-  ming_cute_icons: ^0.0.7              # Icone UI
-  line_awesome_flutter: ^3.0.1         # Icone aggiuntive
-  smooth_page_indicator: ^1.2.0+3      # Indicatore pagine onboarding
-  flutter_colorpicker: ^1.1.0          # Selezione colore QR
-  toastification: ^2.3.0               # Toast/notifiche UI
-  flutter_animate: ^4.5.0              # Animazioni
-  firebase_core: ^4.15.0               # Firebase core
-  firebase_auth: ^6.7.0                # Autenticazione Firebase
-  cloud_firestore: ^6.10.0             # Database cloud
-  firebase_crashlytics: ^5.4.0         # Error reporting in produzione
-  google_sign_in: ^7.2.0               # Login con Google
-  mobile_scanner: ^7.4.0               # Scanner QR/barcode
-  pretty_qr_code: ^3.6.0               # Generazione QR code
-  path_provider: ^2.1.5                # Percorsi filesystem
-  shared_preferences: ^2.3.4           # Persistenza locale
-  permission_handler: ^11.3.1          # Gestione permessi
-  device_info_plus: ^11.2.0            # Info dispositivo
-  image_picker: ^1.1.2                 # Selezione immagine galleria
-  image_gallery_saver_plus: ^4.0.1     # Salvataggio galleria
-  screenshot: ^3.0.0                   # Screenshot widget
-  audioplayers: ^6.1.0                 # Riproduzione audio beep
-  vibration: ^3.1.3                    # Vibrazione dispositivo
-  share_plus: ^10.1.1                  # Condivisione file e testo
-  url_launcher: ^6.3.1                 # Apertura URL/app esterne
-  country_code_picker: ^3.1.0          # Prefissi telefonici internazionali
-  flutter_contacts: ^1.1.9+2           # Salvataggio contatti
-  add_2_calendar: ^3.0.1               # Aggiunta eventi calendario
-  wifi_iot: ^0.3.19+2                  # Connessione Wi-Fi
-  flutter_map: ^8.3.1                  # Mappa per coordinate geo (tasselli OSM)
-  latlong2: ^0.9.1                     # Coordinate LatLng per la mappa
-  pdf: ^3.11.1                         # Generazione PDF
-  excel: ^4.0.6                        # Export Excel
-  csv: ^6.0.0                          # Export CSV
-  file_picker: ^9.0.2                  # Selezione file per import
-  intl: ^0.19.0                        # Formattazione date
-  logger: ^2.5.0                       # Logging
-  flutter_localizations:               # Localizzazione Flutter
+  flutter:
     sdk: flutter
+  flutter_localizations:               # Material/Cupertino localizations
+    sdk: flutter
+  get: ^4.6.6                          # State management, DI and routing
+  ming_cute_icons: ^0.0.7              # UI icons
+  line_awesome_flutter: ^3.0.1         # Additional icons
+  smooth_page_indicator: ^1.2.0+3      # Onboarding page indicator
+  flutter_colorpicker: ^1.1.0          # QR color picker
+  toastification: ^2.3.0               # Toasts
+  flutter_animate: ^4.5.0              # Animations
+  firebase_core: ^4.15.0               # Firebase core
+  firebase_auth: ^6.7.0                # Authentication
+  cloud_firestore: ^6.10.0             # Cloud database
+  firebase_crashlytics: ^5.4.0         # Crash reporting (disabled on web)
+  google_sign_in: ^7.2.0               # Google sign-in
+  mobile_scanner: ^7.4.0               # Camera and image scanning
+  pretty_qr_code: ^3.6.0               # QR rendering
+  path_provider: ^2.1.5                # App directories
+  shared_preferences: ^2.3.4           # Local preferences
+  permission_handler: ^11.3.1          # Runtime permissions
+  device_info_plus: ^11.2.0            # Android API level checks
+  package_info_plus: ^9.0.1            # App version at runtime (AppVersion)
+  image_picker: ^1.1.2                 # Gallery images (scan, logo)
+  image_gallery_saver_plus: ^4.0.1     # Save QR images to the gallery
+  screenshot: ^3.0.0                   # Capture the QR widget as an image
+  audioplayers: ^6.1.0                 # Scan beep
+  vibration: ^3.1.3                    # Scan vibration
+  share_plus: ^10.1.1                  # System share sheet
+  url_launcher: ^6.3.1                 # URLs, email, phone, SMS
+  country_code_picker: ^3.1.0          # Phone country prefixes
+  flutter_contacts: ^1.1.9+2           # Add contacts
+  add_2_calendar: ^3.0.1               # Add calendar events
+  wifi_iot: ^0.3.19+2                  # Connect to Wi-Fi networks
+  flutter_map: ^8.3.1                  # Map for geo codes (OSM tiles)
+  latlong2: ^0.9.1                     # Map coordinates
+  pdf: ^3.11.1                         # PDF export
+  excel: ^4.0.6                        # Excel export
+  csv: ^6.0.0                          # CSV export
+  file_picker: ^9.0.2                  # Pick the JSON backup to restore
+  intl: ^0.20.2                        # Date formatting, ICU messages
+  logger: ^2.5.0                       # Logging
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:                    # On-device end-to-end tests
+    sdk: flutter
+  flutter_lints: ^5.0.0                # Base lint set
+  change_app_package_name: ^1.4.0      # One-off package rename tool
+  flutter_launcher_icons: ^0.14.2      # Android launcher icons
+  dependency_validator: ^5.0.2         # Unused/missing dependency check
+  mocktail: ^1.0.4                     # Mocks
+  fake_cloud_firestore: ^4.3.0         # In-memory Firestore for tests
+  firebase_auth_mocks: ^0.15.2         # Firebase Auth mocks
 ```
 
+**Integration notes:**
+- **FlutterFire:** `firebase_core`, `firebase_auth`, `cloud_firestore` and `firebase_crashlytics` must be upgraded together (same FlutterFire release, Firebase Android BoM 34.x), together with `fake_cloud_firestore` and `firebase_auth_mocks`. `android/app/build.gradle` declares no native Firebase or Google dependency: the BoM, `firebase-auth` and `play-services-auth` come from the plugins, and pinning them by hand would compete with the plugins' versions.
+- **Google Sign-In 7:** on Android the plugin uses Credential Manager and needs the *web* OAuth client ID, read from `google-services.json` (`oauth_client` with `client_type: 3`) by the `com.google.gms.google-services` Gradle plugin, so `initialize()` receives no `serverClientId`. If sign-in fails with "serverClientId must be provided", check that the web client exists in the Firebase console and download `google-services.json` again. Test it on a real device, with the SHA-1 of the debug and release signing keys registered in Firebase.
+- **Crashlytics:** initialized in `main()` only when `!kIsWeb`, for unhandled Flutter and Dart errors.
+
+**Tests** — `flutter test` (structure mirrors `lib/`):
+- **Pure logic** (`test/core/utils`, `test/features/codes/models`, `test/core/constants`): content parsing per type, validators, ISBN formatting, code type conversion and body, social templates, QR decoration, `RescanGuard`, changelog structure, `HistoryController.filterCodes`.
+- **With mocks** (`mocktail`, `fake_cloud_firestore`, `firebase_auth_mocks`): `AuthController`, `SessionStore`, `CodesService`, `ScannerController`, `CodeDetailsController`, `CodeCreateSocialController`, `SyncStatusMixin`, `HistoryController`, `FavoritesController`, `DatabaseController` (statistics, exports, backup history), `ThemeController`, `ScannerPreferencesController`, `ChangelogService`, `BackupHistory`, and the bindings (`test/features/bindings_test.dart`, including a missing route argument).
+- **Widget and layout:** `CodeListTile`, `AppEmptyState`, `AppLogo`, `SectionCard`, `SyncStatusBanner`, `AppChangelogDialog`, `GenerateButton`, `ExportImportSection`, loading overlays, and the History, Favorites, Settings and Privacy Policy screens (sections and date in IT/EN). `test/features/export/pdf_report_test.dart` builds the PDF layout.
+- **Accessibility** (`test/accessibility/`): `a11y_harness.dart` registers fake dependencies and the screen list `a11yScreens`. `a11y_guidelines_test.dart` checks `androidTapTargetGuideline`, `labeledTapTargetGuideline` and `textContrastGuideline` in light and dark themes, with the test font, because the contrast check reads colors from a screenshot and a real font's anti-aliased edges underestimate contrast. `text_scale_test.dart` loads the real Montserrat and checks for overflows at 1.5 and 2.0, reporting the widget's file and line. Scanner (camera), Home and Profile (signed-in user) are excluded. Every new screen that can be built without camera or user goes into `a11yScreens`.
+- **Multi-layer** (`test/integration/`): real controller + mocked repository + real widgets. **End-to-end** (`integration_test/`): on a device or emulator, `flutter test integration_test`.
+- Shared helpers in `test/support/` (e.g. `pumpLocalizedWidget`).
+- Testable classes take their dependencies as constructor parameters: `AuthController`, `ScannerController` (`rescanGuard`, `playBeep`, `vibrate`, `saveTimeout`), `HistoryController` (`searchDebounce`), `CodesService`, `SessionStore`, `BackupHistory`.
+- Practical notes: the test font (Ahem) is wider than Montserrat, so horizontal scrolls may need `tester.ensureVisible` before a tap; controllers with timers (e.g. `SyncStatusMixin`) must be created inside `testWidgets` so `tester.pump` controls time; controllers that load `SharedPreferences` in `onInit` need `SharedPreferences.setMockInitialValues` and a `pumpEventQueue()` first.
+
+**Lint:** `flutter analyze --fatal-infos --fatal-warnings`. `analysis_options.yaml` includes `package:flutter_lints/flutter.yaml` and adds `avoid_print`, `unnecessary_this`, `prefer_final_fields` and `avoid_empty_else`. No files are excluded.
+
 ---
 
-## 12. Requisiti di sistema
+## 12. System requirements
 
-| Requisito | Valore |
+| Requirement | Value |
 |---|---|
-| Flutter SDK | `^3.5.2` |
-| Dart SDK | `^3.5.2` |
-| Android minimo | API 24 (Android 7.0), imposto da Flutter tramite `minSdkVersion flutter.minSdkVersion` in `android/app/build.gradle` |
-| Android consigliato | API 29+ (Android 10) per accesso storage senza permessi |
-| Toolchain Android | Gradle 8.14.3 (`android/gradle/wrapper/gradle-wrapper.properties`), Android Gradle Plugin 8.11.1 e Kotlin 2.2.20 (`android/settings.gradle`), `compileSdk` 36, Java 17 |
-| Piattaforma principale | Android |
-| Piattaforma secondaria | Web (funzionalità fotocamera, Wi-Fi e contatti non disponibili) |
-| Servizi richiesti | Firebase project (Auth + Firestore) con `google-services.json` |
+| Dart SDK | `^3.5.2` (`pubspec.yaml`); Flutter stable with a matching Dart |
+| Platform | Android only |
+| Minimum Android | API 24 (Android 7.0), from `flutter.minSdkVersion` |
+| Recommended Android | API 29+ (Android 10): public Downloads copy without storage permission |
+| Target / compile SDK | `flutter.targetSdkVersion` / 36 |
+| Architectures | `arm64-v8a` for the release APK (see [Build](#13-build-and-distribution)) |
+| Internet | Required for sync, sign-in and map tiles; scanning and saving work offline through the Firestore cache |
+| Google Play services | Required for Google sign-in (Credential Manager) |
+| Firebase | Project with Auth (email/password, Google) and Firestore; `android/app/google-services.json` |
+
+**Permissions:**
+
+| Permission | API levels | Used by |
+|---|---|---|
+| `CAMERA` | all (merged from `mobile_scanner`) | Scanner |
+| `INTERNET`, `ACCESS_NETWORK_STATE` | all | Firebase, map tiles |
+| `READ_CONTACTS`, `WRITE_CONTACTS` | all | Add contact from a vCard code |
+| `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`, `ACCESS_WIFI_STATE`, `CHANGE_WIFI_STATE`, `CHANGE_NETWORK_STATE` | all | Connect to a Wi-Fi code's network (`wifi_iot`) |
+| `WRITE_EXTERNAL_STORAGE`, `READ_EXTERNAL_STORAGE` | ≤ 28 (`maxSdkVersion="28"`) | Public Downloads copy on Android 9 and lower; API 29+ uses `MediaStore` without permission |
 
 ---
 
-## 12b. Test
-
-I test sono in `test/` e rispecchiano la struttura di `lib/` (`flutter test`; lint con `flutter analyze --fatal-infos --fatal-warnings`). Coprono:
-
-- **Modelli e utility** (`test/core/utils`, `test/features/codes/models`): parsing dei contenuti, validator, formattazione ISBN, decorazioni QR.
-- **Controller**: codici (dettaglio, creazione social, scanner), `HistoryController`, `FavoritesController`, `SyncStatusMixin`, `DatabaseController` (statistiche, export PDF/Excel/CSV, storico backup), `AuthController` (login, Google, registrazione, reset, logout, eliminazione account), `ThemeController`, `ScannerPreferencesController`, `SessionStore`, `BackupHistory`, `RescanGuard`.
-- **Binding** (`test/features/bindings_test.dart`): controller registrati da `HomeBinding` e dai binding con argomento di rotta, incluso il caso di argomento mancante.
-- **Widget**: `CodeListTile`, `AppEmptyState`, `SyncStatusBanner`, `ExportImportSection`, sezioni del Database e le screen Cronologia, Preferiti, Impostazioni e Privacy Policy (sezioni e data localizzate in IT/EN).
-
-Note pratiche: il font dei test (Ahem) è più largo di Montserrat, quindi negli scroll orizzontali può servire `tester.ensureVisible` prima di un tap; i controller con timer (es. `SyncStatusMixin`) vanno creati dentro `testWidgets` perché `tester.pump` controlli il tempo; i controller che caricano `SharedPreferences` in `onInit` richiedono `SharedPreferences.setMockInitialValues` e un `pumpEventQueue()` prima di interagire.
-
-## 13. Build e distribuzione
+## 13. Build and distribution
 
 ```bash
-# Installa le dipendenze
-flutter pub get
+flutter pub get                       # Dependencies (also generates localizations)
+flutter run                           # Debug run
+flutter analyze --fatal-infos --fatal-warnings
+flutter test
 
-# Controlla eventuali problemi
-flutter doctor
+# Release APK, as built by deploy_android.ps1 (clean, pub get, build)
+flutter build apk --release --target-platform android-arm64 --no-tree-shake-icons
 
-# Avvia in modalità debug
-flutter run
-
-# Build APK release
-flutter build apk --release
-
-# Build App Bundle (consigliato per Google Play)
+# App bundle for Google Play
 flutter build appbundle --release
 ```
 
-**Prerequisiti per il build release:**
-- File `android/app/google-services.json` configurato con il progetto Firebase di produzione
-- Keystore di firma release fuori dal repo e file `android/key.properties` (ignorato da git) con `storeFile`, `storePassword`, `keyAlias`, `keyPassword`: `android/app/build.gradle` lo legge in `signingConfigs.release`. Se il file manca, la build release viene firmata con la chiave di debug e Gradle stampa un warning
-- Impronte SHA-1/SHA-256 della chiave release registrate nella console Firebase (necessarie per l'accesso con Google)
-- Il file `android/local.properties` non va committato (contiene percorsi locali SDK)
-- La cartella `build/` non va committata (output di compilazione)
+The release APK is written to `build/app/outputs/flutter-apk/app-release.apk`.
 
-### Icone e logo
+**Android toolchain:** Android Gradle Plugin 8.11.1 and Kotlin 2.2.20 (`android/settings.gradle`), Gradle 8.14.3 (`android/gradle/wrapper/gradle-wrapper.properties`), Java 17 (`compileOptions` and `jvmTarget`), `compileSdk` 36, NDK `28.2.13676358`. Gradle plugins applied in `android/app/build.gradle`: `com.google.gms.google-services` and `com.google.firebase.crashlytics`.
 
-Tutte le icone derivano da un solo file, `assets/images/app_logo.png` (QR stilizzato monocromatico blu navy su sfondo trasparente), seguendo `ICON_GENERATION_GUIDE.md`:
+**Firebase configuration:** put the production `google-services.json` in `android/app/`. Rules are published from the console (see [Security rules](#security-rules)); publish them together with the build that matches them.
 
-1. `powershell -ExecutionPolicy Bypass -File tool\icons\generate_icons.ps1` genera `assets/images/app_icon_legacy.png` (logo 64% su quadrato bianco arrotondato, per i launcher di Android 7 che non applicano maschere né sfondo), `app_icon_foreground.png` (62%, trasparente) e `app_icon_monochrome.png` (62%, silhouette nera trasparente), più in `images/icons/` le icone `icon_512` (Play Store), `icon_192`, `oauth_logo_120` (schermata di consenso Google) e `favicon_32`, con sfondo bianco `#FFFFFF` per le icone piene.
-2. `dart run flutter_launcher_icons` (configurazione `flutter_launcher_icons` in `pubspec.yaml`) genera le icone Android: `mipmap-*/launcher_icon.png`, `drawable-*/ic_launcher_foreground.png` e `ic_launcher_monochrome.png`, `mipmap-anydpi-v26/launcher_icon.xml` (icona adattiva con sfondo `@color/ic_launcher_background` bianco e margine del 16%) e `values/colors.xml`. `ic_launcher_monochrome.png` deriva da `app_icon_monochrome.png` ed è il livello delle icone a tema di Android 13+ (Android ne usa solo la trasparenza).
+**APK signing:** `android/key.properties` (git-ignored) points to the release keystore, kept outside the repo:
 
-Il manifest usa `@mipmap/launcher_icon`; i vecchi `mipmap-*/ic_launcher.png` e `app_logo_icon.png` sono stati rimossi. Su Android 12+ lo splash di sistema usa automaticamente l'icona del launcher.
+```properties
+storeFile=<path to the keystore>
+storePassword=<store password>
+keyAlias=<key alias>
+keyPassword=<key password>
+```
 
-Dentro l'app il logo si mostra con `AppLogo` (`lib/core/widgets/app_logo.dart`), che lo colora con il colore principale del tema (`BlendMode.srcIn`): blu navy nel tema chiaro, oro nel tema scuro, e segue l'accent scelto nelle Impostazioni. Senza questa colorazione il logo navy sparirebbe sugli sfondi scuri. Il PDF esportato usa il file originale (navy su pagina bianca).
+`android/app/build.gradle` reads it in `signingConfigs.release`. Without the file the release build is signed with the debug key and Gradle prints a warning. Keep a backup of the keystore and its passwords: a lost key means users must uninstall to install an update signed with a new one. Register the SHA-1 and SHA-256 fingerprints of the release key in the Firebase console (required for Google sign-in) and in the Play Console.
 
-### Anteprime del README
-
-Seguendo `APP_PREVIEW_GUIDE.md`, `flutter test tool/preview/generate_preview_test.dart` genera da `images/screenshots/<nome>_raw.png` (screenshot del telefono, esclusi da git e tenuti in locale) il banner `images/qration_preview.png` (2400×1350, cinque telefoni inclinati su sfondo `AppColors.surfaceVariantLight`) e le schermate della galleria `images/screenshots/<nome>.png` senza barra di stato e di navigazione (larghe 540 px). Schermate, in ordine di banner: `create` (form Testo), `details`, `home` (griglia dei tipi QR, al centro), `settings`, `database`. Le barre di sistema (`_statusBarHeight` 108 px, `_navBarHeight` 70 px) sono misurate su screenshot 1080×2392 e vanno ricontrollate se cambia telefono. Lo script sta fuori da `test/`, quindi `flutter test` non lo esegue.
-
----
-
-## 14. Regole di sicurezza Firebase
-
-Le regole non sono nel repo: si gestiscono solo dalla console Firebase del progetto `qration-b5a7a` (Firestore → Regole, Storage → Regole). Qui ne è descritto il comportamento, da rispettare quando si modificano. `.firebaserc` collega il repo al progetto per la Firebase CLI.
-
-**Modello dati e accessi** (unico proprietario = uid nel percorso, nessun dato condiviso o pubblico):
-
-| Percorso | Operazioni dell'app | Accesso consentito |
-|---|---|---|
-| `users/{uid}` | `get` (profilo, Google sign-in), `set` alla registrazione / primo accesso Google, `delete` (elimina account) | solo `request.auth.uid == uid`; niente `list` |
-| `users/{uid}/codes/{codeId}` | stream e `get` della collection, query `isFavorite ==`, `source ==`, `socialMedia != null` (+ `source ==`), `set` (aggiunta/import), `update` di `notes`/`isFavorite`, `delete` singolo e massivo | solo `request.auth.uid == uid` |
-| qualsiasi altro percorso Firestore | — | negato |
-| Storage (tutto il bucket) | non usato (nessuna dipendenza `firebase_storage`, i loghi restano sul dispositivo) | negato |
-
-L'app non usa `collectionGroup`, transazioni o batch. Le regole verificano anche la forma dei documenti: `users/{uid}` ammette solo `userEmail`, `userName`, `userImage`, `userDate`; un codice nuovo ammette solo i campi di `CodeModel.toMap()` con `id` uguale all'id del documento; un aggiornamento di un codice può toccare solo `notes` e `isFavorite`. Se si aggiunge un campo a `UserModel` o `CodeModel`, o un nuovo percorso, vanno aggiornate anche le regole.
-
-**Controlli pre-login rimossi:** in precedenza login, registrazione e reset password interrogavano `users` per `userEmail` prima dell'autenticazione. Con regole a minimo privilegio quella query da utente non autenticato viene negata, e permetterla significherebbe esporre email e nomi di tutti gli utenti. Ora l'esistenza dell'email la verifica Firebase Auth: `AuthController._authErrorKey` converte `user-not-found` in `email_not_found` ed `email-already-in-use` in `email_already_register`. Con la protezione dall'enumerazione delle email attiva (default dei progetti recenti) il login con email sconosciuta restituisce `invalid-credential` e il reset password non segnala errori per email non registrate. Le build precedenti a questa modifica non riescono più ad accedere con email/password dopo la pubblicazione delle regole (l'accesso con Google continua a funzionare): pubblicare le regole insieme alla nuova build della 2.0.0.
+**Notes:**
+- Do not commit `android/key.properties`, the keystore, `android/local.properties` (local SDK paths) or `build/`.
+- The version source of truth is `version:` in `pubspec.yaml`; `AppVersion.current` and the changelog follow it.
+- **README previews:** `flutter test tool/preview/generate_preview_test.dart` turns `images/screenshots/<name>_raw.png` phone screenshots (git-ignored, kept locally) into the banner `images/qration_preview.png` (2400×1350, five tilted phones on `AppColors.surfaceVariantLight`) and gallery images `images/screenshots/<name>.png` without status and navigation bars (540 px wide). Screens, in banner order: `create` (Text form), `details`, `home` (type grid, center), `settings`, `database`. The system bar heights (`_statusBarHeight` 108 px, `_navBarHeight` 70 px) are measured on 1080×2392 screenshots and must be re-measured for a different phone. The script is outside `test/`, so `flutter test` does not run it.
+- **Icons:** see [Theme and style](#8-theme-and-style).
 
 ---
 
-## Licenza
+## License
 
-Copyright © 2026 **Nicola De Nicolais** — Tutti i diritti riservati.
+Copyright © 2026 **Nicola De Nicolais** — All Rights Reserved.
 
-Licenza: **source-available, non-commerciale** (vedi [LICENSE](LICENSE)).
+License: **source-available, non-commercial** (see [LICENSE](LICENSE)). Commercial use, including publishing or monetizing on any app store, requires explicit written permission from the copyright holder.
 
-L'uso commerciale (inclusa la pubblicazione o monetizzazione su qualsiasi app store) richiede il consenso scritto esplicito del detentore del copyright.
+Third-party assets bundled with the app: Montserrat font, SIL Open Font License 1.1 (`assets/fonts/OFL.txt`, shown in the in-app licenses page).
 
-- **Autore:** Nicola De Nicolais
+- **Author:** Nicola De Nicolais
 - **Email:** [ndn21dev@gmail.com](mailto:ndn21dev@gmail.com)
 - **GitHub:** [https://github.com/ndenicolais](https://github.com/ndenicolais)
