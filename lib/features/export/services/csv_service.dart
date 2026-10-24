@@ -80,7 +80,7 @@ class CSVService {
   }
 
   Future<String> _saveCSV(List<List<String>> rows) async {
-    String csvData = const ListToCsvConverter().convert(rows);
+    String csvData = csv.encode(rows);
     final directory = (await getDownloadsDirectory()) ??
         (await getApplicationDocumentsDirectory());
     if (!await directory.exists()) {

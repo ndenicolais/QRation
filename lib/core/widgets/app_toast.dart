@@ -25,7 +25,7 @@ void showAppToast(
     autoCloseDuration: const Duration(seconds: 3),
     animationDuration: const Duration(milliseconds: 300),
     borderRadius: BorderRadius.circular(AppRadius.medium),
-    closeButtonShowType: CloseButtonShowType.onHover,
+    closeButton: const ToastCloseButton(showType: CloseButtonShowType.onHover),
     showProgressBar: false,
     dragToClose: true,
   );

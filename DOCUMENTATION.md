@@ -777,9 +777,9 @@ dependencies:
   get: ^4.6.6                          # State management, DI and routing
   ming_cute_icons: ^0.0.7              # UI icons
   line_awesome_flutter: ^3.0.1         # Additional icons
-  smooth_page_indicator: ^1.2.0+3      # Onboarding page indicator
+  smooth_page_indicator: ^3.0.0        # Onboarding page indicator
   flutter_colorpicker: ^1.1.0          # QR color picker
-  toastification: ^2.3.0               # Toasts
+  toastification: ^3.2.0               # Toasts
   flutter_animate: ^4.5.0              # Animations
   firebase_core: ^4.15.0               # Firebase core
   firebase_auth: ^6.7.0                # Authentication
@@ -803,12 +803,12 @@ dependencies:
   country_code_picker: ^3.1.0          # Phone country prefixes
   flutter_contacts: ^2.6.0             # Add contacts
   add_2_calendar: ^3.0.1               # Add calendar events
-  wifi_iot: ^0.3.19+2                  # Connect to Wi-Fi networks
+  wifi_iot: ^0.4.0                     # Connect to Wi-Fi networks
   flutter_map: ^8.3.1                  # Map for geo codes (OSM tiles)
-  latlong2: ^0.9.1                     # Map coordinates
+  latlong2: ^0.10.1                    # Map coordinates
   pdf: ^3.11.1                         # PDF export
   excel: ^4.0.6                        # Excel export
-  csv: ^6.0.0                          # CSV export
+  csv: ^8.0.0                          # CSV export
   file_picker: ^13.1.0                 # Pick the JSON backup to restore
   intl: ^0.20.2                        # Date formatting, ICU messages
   logger: ^2.5.0                       # Logging
@@ -818,7 +818,7 @@ dev_dependencies:
     sdk: flutter
   integration_test:                    # On-device end-to-end tests
     sdk: flutter
-  flutter_lints: ^5.0.0                # Base lint set
+  flutter_lints: ^6.0.0                # Base lint set
   change_app_package_name: ^1.4.0      # One-off package rename tool
   flutter_launcher_icons: ^0.14.2      # Android launcher icons
   dependency_validator: ^5.0.2         # Unused/missing dependency check

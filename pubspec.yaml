@@ -18,9 +18,9 @@ dependencies:
   # UI
   ming_cute_icons: ^0.0.7
   line_awesome_flutter: ^3.0.1
-  smooth_page_indicator: ^1.2.0+3
+  smooth_page_indicator: ^3.0.0
   flutter_colorpicker: ^1.1.0
-  toastification: ^2.3.0
+  toastification: ^3.2.0
   flutter_animate: ^4.5.0
 
   # Firebase
@@ -62,14 +62,14 @@ dependencies:
   add_2_calendar: ^3.0.1
 
   # Network
-  wifi_iot: ^0.3.19+2
+  wifi_iot: ^0.4.0
   flutter_map: ^8.3.1
-  latlong2: ^0.9.1
+  latlong2: ^0.10.1
 
   # Export
   pdf: ^3.11.1
   excel: ^4.0.6
-  csv: ^6.0.0
+  csv: ^8.0.0
   file_picker: ^13.1.0
 
   # Localization
@@ -83,7 +83,7 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   change_app_package_name: ^1.4.0
   flutter_launcher_icons: ^0.14.2
   dependency_validator: ^5.0.2
