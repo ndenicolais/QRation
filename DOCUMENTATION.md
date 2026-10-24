@@ -820,7 +820,6 @@ dev_dependencies:
   integration_test:                    # On-device end-to-end tests
     sdk: flutter
   flutter_lints: ^6.0.0                # Base lint set
-  change_app_package_name: ^1.4.0      # One-off package rename tool
   flutter_launcher_icons: ^0.14.2      # Android launcher icons
   dependency_validator: ^5.0.2         # Unused/missing dependency check
   mocktail: ^1.0.4                     # Mocks
@@ -854,7 +853,7 @@ dev_dependencies:
 | Platform | Android only |
 | Minimum Android | API 24 (Android 7.0), from `flutter.minSdkVersion` |
 | Recommended Android | API 29+ (Android 10): public Downloads copy without storage permission |
-| Target / compile SDK | `flutter.targetSdkVersion` / 36 |
+| Target / compile SDK | `flutter.targetSdkVersion` / 37 |
 | Architectures | `arm64-v8a` for the release APK (see [Build](#13-build-and-distribution)) |
 | Internet | Required for sync, sign-in and map tiles; scanning and saving work offline through the Firestore cache |
 | Google Play services | Required for Google sign-in (Credential Manager) |
@@ -881,13 +880,13 @@ flutter analyze --fatal-infos --fatal-warnings
 flutter test
 
 # Release APK, as built by deploy_android.ps1 (clean, pub get, build)
-flutter build apk --release --target-platform android-arm64 --no-tree-shake-icons
+flutter build apk --release --target-platform android-arm64 --obfuscate --split-debug-info=symbols
 
 # App bundle for Google Play
 flutter build appbundle --release
 ```
 
-The release APK is written to `build/app/outputs/flutter-apk/app-release.apk`.
+The release APK is written to `build/app/outputs/flutter-apk/app-release.apk` (39.5 MB for 2.0.0). Dart code is obfuscated: the debug symbols go to `symbols/` (git-ignored) and must be kept locally for each release to deobfuscate stack traces (`flutter symbolize -i <trace> -d symbols/app.android-arm64.symbols`). Icon font tree-shaking stays on: every `IconData` in the app is `const`, so unused glyphs of MingCute, Line Awesome, Material Icons and `QrationIcons` are dropped.
 
 **Android toolchain:** Android Gradle Plugin 9.1.1 and Kotlin 2.3.20 (`android/settings.gradle`), Gradle 9.3.1 (`android/gradle/wrapper/gradle-wrapper.properties`), Java 17 (`compileOptions` and `kotlin { compilerOptions { jvmTarget } }`), `compileSdk` 37 (required by `permission_handler_android`; runtime behavior follows `targetSdk = flutter.targetSdkVersion`), NDK `28.2.13676358`. Gradle plugins applied in `android/app/build.gradle`: `com.google.gms.google-services` 4.5.0 and `com.google.firebase.crashlytics` 3.0.8. `android.builtInKotlin=false` and `android.newDsl=false` in `gradle.properties` keep the AGP 8 behavior, as Flutter 3.44 requires: the app and some plugins (`firebase_*`, `image_gallery_saver_plus`) still apply the Kotlin Gradle Plugin, which Flutter reports as a build warning. `file_picker` must stay on 13+: its Android implementation applies KGP when `builtInKotlin=false`, while 11.x assumes built-in Kotlin under AGP 9 and its plugin class is not compiled.
 
@@ -903,6 +902,8 @@ keyPassword=<key password>
 ```
 
 `android/app/build.gradle` reads it in `signingConfigs.release`. Without the file the release build is signed with the debug key and Gradle prints a warning. Keep a backup of the keystore and its passwords: a lost key means users must uninstall to install an update signed with a new one. Register the SHA-1 and SHA-256 fingerprints of the release key in the Firebase console (required for Google sign-in) and in the Play Console.
+
+**Android developer verification:** the package `com.ndn21.qration` and the release key are registered in Play Console (Android developer verification) for distribution outside Google Play. Ownership of the key is proven by `android/app/src/main/assets/adi-registration.properties`, which holds the developer account snippet (not a secret, shared by every app of the account). Keep it in the repo and sign every release with the same key, or the registration no longer matches.
 
 **Notes:**
 - Do not commit `android/key.properties`, the keystore, `android/local.properties` (local SDK paths) or `build/`.
