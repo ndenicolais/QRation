@@ -790,15 +790,15 @@ dependencies:
   pretty_qr_code: ^3.6.0               # QR rendering
   path_provider: ^2.1.5                # App directories
   shared_preferences: ^2.3.4           # Local preferences
-  permission_handler: ^11.3.1          # Runtime permissions
-  device_info_plus: ^11.2.0            # Android API level checks
-  package_info_plus: ^9.0.1            # App version at runtime (AppVersion)
+  permission_handler: ^13.0.2          # Runtime permissions
+  device_info_plus: ^13.3.0            # Android API level checks
+  package_info_plus: ^10.2.2           # App version at runtime (AppVersion)
   image_picker: ^1.1.2                 # Gallery images (scan, logo)
   image_gallery_saver_plus: ^4.0.1     # Save QR images to the gallery
   screenshot: ^3.0.0                   # Capture the QR widget as an image
   audioplayers: ^6.1.0                 # Scan beep
   vibration: ^3.1.3                    # Scan vibration
-  share_plus: ^10.1.1                  # System share sheet
+  share_plus: ^13.3.1                  # System share sheet
   url_launcher: ^6.3.1                 # URLs, email, phone, SMS
   country_code_picker: ^3.1.0          # Phone country prefixes
   flutter_contacts: ^1.1.9+2           # Add contacts
@@ -809,7 +809,7 @@ dependencies:
   pdf: ^3.11.1                         # PDF export
   excel: ^4.0.6                        # Excel export
   csv: ^6.0.0                          # CSV export
-  file_picker: ^9.0.2                  # Pick the JSON backup to restore
+  file_picker: ^13.1.0                 # Pick the JSON backup to restore
   intl: ^0.20.2                        # Date formatting, ICU messages
   logger: ^2.5.0                       # Logging
 
@@ -889,7 +889,7 @@ flutter build appbundle --release
 
 The release APK is written to `build/app/outputs/flutter-apk/app-release.apk`.
 
-**Android toolchain:** Android Gradle Plugin 8.11.1 and Kotlin 2.2.20 (`android/settings.gradle`), Gradle 8.14.3 (`android/gradle/wrapper/gradle-wrapper.properties`), Java 17 (`compileOptions` and `jvmTarget`), `compileSdk` 36, NDK `28.2.13676358`. Gradle plugins applied in `android/app/build.gradle`: `com.google.gms.google-services` and `com.google.firebase.crashlytics`.
+**Android toolchain:** Android Gradle Plugin 9.1.1 and Kotlin 2.3.20 (`android/settings.gradle`), Gradle 9.3.1 (`android/gradle/wrapper/gradle-wrapper.properties`), Java 17 (`compileOptions` and `kotlin { compilerOptions { jvmTarget } }`), `compileSdk` 37 (required by `permission_handler_android`; runtime behavior follows `targetSdk = flutter.targetSdkVersion`), NDK `28.2.13676358`. Gradle plugins applied in `android/app/build.gradle`: `com.google.gms.google-services` 4.5.0 and `com.google.firebase.crashlytics` 3.0.8. `android.builtInKotlin=false` and `android.newDsl=false` in `gradle.properties` keep the AGP 8 behavior, as Flutter 3.44 requires: the app and some plugins (`firebase_*`, `flutter_contacts`, `image_gallery_saver_plus`…) still apply the Kotlin Gradle Plugin, which Flutter reports as a build warning. `file_picker` must stay on 13+: its Android implementation applies KGP when `builtInKotlin=false`, while 11.x assumes built-in Kotlin under AGP 9 and its plugin class is not compiled.
 
 **Firebase configuration:** put the production `google-services.json` in `android/app/`. Rules are published from the console (see [Security rules](#security-rules)); publish them together with the build that matches them.
 
