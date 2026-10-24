@@ -48,7 +48,7 @@ class DatabaseScreenState extends State<DatabaseScreen> {
 
   Future<void> _shareFile(String? filePath) async {
     if (filePath == null) return;
-    await Share.shareXFiles([XFile(filePath)]);
+    await SharePlus.instance.share(ShareParams(files: [XFile(filePath)]));
   }
 
   Future<void> _generatePdf() async {

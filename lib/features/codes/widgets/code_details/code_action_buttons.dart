@@ -69,7 +69,9 @@ class CodeActionButtons extends StatelessWidget {
           child: _ActionTile(
             icon: MingCuteIcons.mgc_share_2_fill,
             label: l10n.code_details_screen_action_button_share,
-            onTap: () => Share.share(controller.code.barcode.rawValue ?? ''),
+            onTap: () => SharePlus.instance.share(
+              ShareParams(text: controller.code.barcode.rawValue ?? ''),
+            ),
           ),
         ),
       ],

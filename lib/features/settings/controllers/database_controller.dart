@@ -174,17 +174,16 @@ class DatabaseController extends GetxController {
   Future<ImportResult> importCodes() async {
     isJsonLoading.value = true;
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
+      PlatformFile? picked = await FilePicker.pickFile(
         type: FileType.custom,
         allowedExtensions: ['json'],
       );
 
-      if (result == null) {
+      if (picked == null) {
         return ImportResult.cancelled;
       }
 
-      File file = File(result.files.single.path!);
-      String jsonCodes = await file.readAsString();
+      String jsonCodes = utf8.decode(await picked.readAsBytes());
       await _codesService.importCodesFromJson(jsonCodes);
       final now = _clock();
       await _backupHistory.recordImport(now);

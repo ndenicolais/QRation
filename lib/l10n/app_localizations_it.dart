@@ -1437,4 +1437,8 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_13 =>
       'Il Profilo non mostra più l\'ID tecnico dell\'account.';
+
+  @override
+  String get changelog_v2_0_0_bullet_14 =>
+      'Il ripristino del backup è più sicuro: un file selezionato non può più essere usato per accedere ad altri file del dispositivo.';
 }

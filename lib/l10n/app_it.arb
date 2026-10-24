@@ -470,5 +470,6 @@
   "changelog_v2_0_0_bullet_10": "Privacy e prestazioni: informativa privacy leggibile nell'app anche offline, avvio più rapido, motore di scansione e generazione dei QR aggiornati e librerie Firebase all'ultima versione.",
   "changelog_v2_0_0_bullet_11": "Il profilo e i codici salvati sono accessibili solo dal tuo account.",
   "changelog_v2_0_0_bullet_12": "L'eliminazione dell'account ora chiede conferma con un semplice dialog direttamente dal Profilo, invece che in una schermata a parte. Se l'eliminazione non riesce viene mostrato un messaggio di errore.",
-  "changelog_v2_0_0_bullet_13": "Il Profilo non mostra più l'ID tecnico dell'account."
+  "changelog_v2_0_0_bullet_13": "Il Profilo non mostra più l'ID tecnico dell'account.",
+  "changelog_v2_0_0_bullet_14": "Il ripristino del backup è più sicuro: un file selezionato non può più essere usato per accedere ad altri file del dispositivo."
 }

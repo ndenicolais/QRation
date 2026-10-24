@@ -2707,6 +2707,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The Profile no longer shows the technical account ID.'**
   String get changelog_v2_0_0_bullet_13;
+
+  /// No description provided for @changelog_v2_0_0_bullet_14.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring a backup is safer: a selected file can no longer be used to reach other files on the device.'**
+  String get changelog_v2_0_0_bullet_14;
 }
 
 class _AppLocalizationsDelegate

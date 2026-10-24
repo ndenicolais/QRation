@@ -236,7 +236,9 @@ class SettingsScreenState extends State<SettingsScreen> {
         SettingsNavTile(
           icon: MingCuteIcons.mgc_share_2_fill,
           title: l10n.settings_tile_share,
-          onTap: () => Share.share(AppConstants.uriGithubRepository.toString()),
+          onTap: () => SharePlus.instance.share(
+            ShareParams(text: AppConstants.uriGithubRepository.toString()),
+          ),
         ),
       ],
     );
