@@ -185,17 +185,14 @@ class CodeDetailsController extends GetxController {
   ) async {
     try {
       await requestContactsPermission(context);
-      final contact = contacts.Contact()
-        ..name.first = name
-        ..name.last = surname
-        ..phones = [contacts.Phone(phoneNumber)];
-
-      if (email.isNotEmpty) {
-        contact.emails = [contacts.Email(email)];
-      }
+      final contact = contacts.Contact(
+        name: contacts.Name(first: name, last: surname),
+        phones: [contacts.Phone(number: phoneNumber)],
+        emails: [if (email.isNotEmpty) contacts.Email(address: email)],
+      );
 
       try {
-        await contacts.FlutterContacts.insertContact(contact);
+        await contacts.FlutterContacts.create(contact);
         return true;
       } catch (e) {
         logger.e('Error while adding contact: $e');

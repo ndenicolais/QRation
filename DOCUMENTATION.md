@@ -794,14 +794,14 @@ dependencies:
   device_info_plus: ^13.3.0            # Android API level checks
   package_info_plus: ^10.2.2           # App version at runtime (AppVersion)
   image_picker: ^1.1.2                 # Gallery images (scan, logo)
-  image_gallery_saver_plus: ^4.0.1     # Save QR images to the gallery
+  image_gallery_saver_plus: ^5.1.1     # Save QR images to the gallery
   screenshot: ^3.0.0                   # Capture the QR widget as an image
   audioplayers: ^6.1.0                 # Scan beep
   vibration: ^3.1.3                    # Scan vibration
   share_plus: ^13.3.1                  # System share sheet
   url_launcher: ^6.3.1                 # URLs, email, phone, SMS
   country_code_picker: ^3.1.0          # Phone country prefixes
-  flutter_contacts: ^1.1.9+2           # Add contacts
+  flutter_contacts: ^2.6.0             # Add contacts
   add_2_calendar: ^3.0.1               # Add calendar events
   wifi_iot: ^0.3.19+2                  # Connect to Wi-Fi networks
   flutter_map: ^8.3.1                  # Map for geo codes (OSM tiles)
@@ -888,7 +888,7 @@ flutter build appbundle --release
 
 The release APK is written to `build/app/outputs/flutter-apk/app-release.apk`.
 
-**Android toolchain:** Android Gradle Plugin 9.1.1 and Kotlin 2.3.20 (`android/settings.gradle`), Gradle 9.3.1 (`android/gradle/wrapper/gradle-wrapper.properties`), Java 17 (`compileOptions` and `kotlin { compilerOptions { jvmTarget } }`), `compileSdk` 37 (required by `permission_handler_android`; runtime behavior follows `targetSdk = flutter.targetSdkVersion`), NDK `28.2.13676358`. Gradle plugins applied in `android/app/build.gradle`: `com.google.gms.google-services` 4.5.0 and `com.google.firebase.crashlytics` 3.0.8. `android.builtInKotlin=false` and `android.newDsl=false` in `gradle.properties` keep the AGP 8 behavior, as Flutter 3.44 requires: the app and some plugins (`firebase_*`, `flutter_contacts`, `image_gallery_saver_plus`…) still apply the Kotlin Gradle Plugin, which Flutter reports as a build warning. `file_picker` must stay on 13+: its Android implementation applies KGP when `builtInKotlin=false`, while 11.x assumes built-in Kotlin under AGP 9 and its plugin class is not compiled.
+**Android toolchain:** Android Gradle Plugin 9.1.1 and Kotlin 2.3.20 (`android/settings.gradle`), Gradle 9.3.1 (`android/gradle/wrapper/gradle-wrapper.properties`), Java 17 (`compileOptions` and `kotlin { compilerOptions { jvmTarget } }`), `compileSdk` 37 (required by `permission_handler_android`; runtime behavior follows `targetSdk = flutter.targetSdkVersion`), NDK `28.2.13676358`. Gradle plugins applied in `android/app/build.gradle`: `com.google.gms.google-services` 4.5.0 and `com.google.firebase.crashlytics` 3.0.8. `android.builtInKotlin=false` and `android.newDsl=false` in `gradle.properties` keep the AGP 8 behavior, as Flutter 3.44 requires: the app and some plugins (`firebase_*`, `image_gallery_saver_plus`) still apply the Kotlin Gradle Plugin, which Flutter reports as a build warning. `file_picker` must stay on 13+: its Android implementation applies KGP when `builtInKotlin=false`, while 11.x assumes built-in Kotlin under AGP 9 and its plugin class is not compiled.
 
 **Firebase configuration:** put the production `google-services.json` in `android/app/`. Rules are published from the console (see [Security rules](#security-rules)); publish them together with the build that matches them.
 
