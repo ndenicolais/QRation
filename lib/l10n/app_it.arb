@@ -184,6 +184,7 @@
   "code_details_screen_result_copy": "Contenuto copiato negli appunti!",
   "code_details_screen_result_contact": "Contatto aggiunto!",
   "code_details_screen_result_wifi": "WiFi salvato e connesso!",
+  "code_details_screen_result_wifi_error": "Impossibile connettersi alla rete WiFi",
   "code_details_screen_result_product_amazon": "Cerca su Amazon",
   "code_details_screen_result_product_ebay": "Cerca su Ebay",
   "code_details_screen_result_product_google": "Cerca su Google",
@@ -471,5 +472,7 @@
   "changelog_v2_0_0_bullet_11": "Il profilo e i codici salvati sono accessibili solo dal tuo account.",
   "changelog_v2_0_0_bullet_12": "L'eliminazione dell'account ora chiede conferma con un semplice dialog direttamente dal Profilo, invece che in una schermata a parte. Se l'eliminazione non riesce viene mostrato un messaggio di errore.",
   "changelog_v2_0_0_bullet_13": "Il Profilo non mostra più l'ID tecnico dell'account.",
-  "changelog_v2_0_0_bullet_14": "Il ripristino del backup è più sicuro: un file selezionato non può più essere usato per accedere ad altri file del dispositivo."
+  "changelog_v2_0_0_bullet_14": "Il ripristino del backup è più sicuro: un file selezionato non può più essere usato per accedere ad altri file del dispositivo.",
+  "changelog_v2_0_0_bullet_15": "La connessione alla rete di un codice Wi-Fi ora mostra un messaggio di errore quando non riesce, invece di confermarla sempre.",
+  "changelog_v2_0_0_bullet_16": "La password del Wi-Fi non viene più scritta nei log dell'app durante la connessione alla rete."
 }

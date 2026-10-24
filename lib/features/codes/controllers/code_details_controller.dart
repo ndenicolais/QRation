@@ -216,8 +216,7 @@ class CodeDetailsController extends GetxController {
   }
 
   Future<bool> connectToWifi(String ssid, String password) async {
-    logger.i('Trying to connect to WiFi');
-    logger.i('SSID: $ssid, Password: $password');
+    logger.i('Trying to connect to WiFi $ssid');
 
     try {
       bool result = await WiFiForIoTPlugin.findAndConnect(
@@ -232,7 +231,7 @@ class CodeDetailsController extends GetxController {
       } else {
         logger.e('Error connecting to $ssid: Connection failed.');
       }
-      return true;
+      return result;
     } catch (e) {
       logger.e('Error connecting to WiFi: $e');
       return false;

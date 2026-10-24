@@ -395,9 +395,12 @@ class CodeContentCard extends StatelessWidget {
   Future<void> _connectToWifi(
       BuildContext context, String ssid, String password) async {
     final success = await controller.connectToWifi(ssid, password);
-    if (success && context.mounted) {
-      showSuccessToast(context,
-          AppLocalizations.of(context)!.code_details_screen_result_wifi);
+    if (!context.mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    if (success) {
+      showSuccessToast(context, l10n.code_details_screen_result_wifi);
+    } else {
+      showErrorToast(context, l10n.code_details_screen_result_wifi_error);
     }
   }
 

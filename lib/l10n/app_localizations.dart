@@ -1088,6 +1088,12 @@ abstract class AppLocalizations {
   /// **'WiFi saved and connected!'**
   String get code_details_screen_result_wifi;
 
+  /// No description provided for @code_details_screen_result_wifi_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t connect to the WiFi network'**
+  String get code_details_screen_result_wifi_error;
+
   /// No description provided for @code_details_screen_result_product_amazon.
   ///
   /// In en, this message translates to:
@@ -2713,6 +2719,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restoring a backup is safer: a selected file can no longer be used to reach other files on the device.'**
   String get changelog_v2_0_0_bullet_14;
+
+  /// No description provided for @changelog_v2_0_0_bullet_15.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting to a Wi-Fi code\'s network now shows an error message when the connection fails, instead of always confirming it.'**
+  String get changelog_v2_0_0_bullet_15;
+
+  /// No description provided for @changelog_v2_0_0_bullet_16.
+  ///
+  /// In en, this message translates to:
+  /// **'The Wi-Fi password is no longer written to the app logs when connecting to a network.'**
+  String get changelog_v2_0_0_bullet_16;
 }
 
 class _AppLocalizationsDelegate

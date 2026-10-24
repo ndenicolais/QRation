@@ -194,6 +194,7 @@
   "code_details_screen_result_copy": "Content copied to clipboard!",
   "code_details_screen_result_contact": "Contact added!",
   "code_details_screen_result_wifi": "WiFi saved and connected!",
+  "code_details_screen_result_wifi_error": "Couldn't connect to the WiFi network",
   "code_details_screen_result_product_amazon": "Search on Amazon",
   "code_details_screen_result_product_ebay": "Search on Ebay",
   "code_details_screen_result_product_google": "Search on Google",
@@ -506,5 +507,7 @@
   "changelog_v2_0_0_bullet_11": "Your profile and saved codes can only be accessed from your own account.",
   "changelog_v2_0_0_bullet_12": "Account deletion now asks for confirmation in a simple dialog straight from the Profile, instead of a separate screen. If deletion fails, an error message is shown.",
   "changelog_v2_0_0_bullet_13": "The Profile no longer shows the technical account ID.",
-  "changelog_v2_0_0_bullet_14": "Restoring a backup is safer: a selected file can no longer be used to reach other files on the device."
+  "changelog_v2_0_0_bullet_14": "Restoring a backup is safer: a selected file can no longer be used to reach other files on the device.",
+  "changelog_v2_0_0_bullet_15": "Connecting to a Wi-Fi code's network now shows an error message when the connection fails, instead of always confirming it.",
+  "changelog_v2_0_0_bullet_16": "The Wi-Fi password is no longer written to the app logs when connecting to a network."
 }

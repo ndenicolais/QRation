@@ -529,6 +529,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get code_details_screen_result_wifi => 'WiFi saved and connected!';
 
   @override
+  String get code_details_screen_result_wifi_error =>
+      'Couldn\'t connect to the WiFi network';
+
+  @override
   String get code_details_screen_result_product_amazon => 'Search on Amazon';
 
   @override
@@ -1419,4 +1423,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_14 =>
       'Restoring a backup is safer: a selected file can no longer be used to reach other files on the device.';
+
+  @override
+  String get changelog_v2_0_0_bullet_15 =>
+      'Connecting to a Wi-Fi code\'s network now shows an error message when the connection fails, instead of always confirming it.';
+
+  @override
+  String get changelog_v2_0_0_bullet_16 =>
+      'The Wi-Fi password is no longer written to the app logs when connecting to a network.';
 }

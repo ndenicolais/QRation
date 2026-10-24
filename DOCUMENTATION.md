@@ -393,6 +393,7 @@ Shows one code and its actions.
 
 - **Notes sheet:** opened 300 ms after the popup menu item is selected, because pushing a route while the menu route is still closing conflicts with it. The sheet's "Save" button overrides the theme's `minimumSize(double.infinity, 52)` with a finite size: it sits in a `Row`, where an infinite minimum width breaks layout.
 - The tap that dismisses the keyboard is excluded from semantics.
+- **Wi-Fi connection:** `CodeDetailsController.connectToWifi` returns the real result of `WiFiForIoTPlugin.findAndConnect` and logs only the SSID, never the password. The card shows a success toast when connected and an error toast otherwise.
 - **Permissions:** contacts (`READ_CONTACTS`/`WRITE_CONTACTS`) to add a contact; location and Wi-Fi state permissions, declared for `wifi_iot`, to connect to a network.
 
 ### 5.9 Favorites

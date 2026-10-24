@@ -541,6 +541,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get code_details_screen_result_wifi => 'WiFi salvato e connesso!';
 
   @override
+  String get code_details_screen_result_wifi_error =>
+      'Impossibile connettersi alla rete WiFi';
+
+  @override
   String get code_details_screen_result_product_amazon => 'Cerca su Amazon';
 
   @override
@@ -1441,4 +1445,12 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get changelog_v2_0_0_bullet_14 =>
       'Il ripristino del backup è più sicuro: un file selezionato non può più essere usato per accedere ad altri file del dispositivo.';
+
+  @override
+  String get changelog_v2_0_0_bullet_15 =>
+      'La connessione alla rete di un codice Wi-Fi ora mostra un messaggio di errore quando non riesce, invece di confermarla sempre.';
+
+  @override
+  String get changelog_v2_0_0_bullet_16 =>
+      'La password del Wi-Fi non viene più scritta nei log dell\'app durante la connessione alla rete.';
 }
