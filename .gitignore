@@ -67,3 +67,6 @@ images/screenshots/*_raw.png
 
 # Local helper scripts and tooling
 /tool/
+
+# Android developer verification snippet (only needed for the Play Console ownership check)
+**/adi-registration.properties
