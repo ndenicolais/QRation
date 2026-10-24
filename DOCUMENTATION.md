@@ -541,7 +541,7 @@ Firebase Auth and Firestore profile operations. `FirebaseAuth`, `FirebaseFiresto
 
 `SessionStore` saves `remember_me` and `user_id`; `canRestore(uid)` is true only when both match the given UID.
 
-Tests: `test/features/auth/controllers/auth_controller_test.dart` (with `firebase_auth_mocks`, `fake_cloud_firestore` and a mocktail `GoogleSignIn`), `test/features/auth/services/session_store_test.dart`.
+Tests: `test/features/auth/controllers/auth_controller_test.dart` (with `FakeFirebaseAuth`, `fake_cloud_firestore` and a mocktail `GoogleSignIn`), `test/features/auth/services/session_store_test.dart`.
 
 ### 7.2 CodesService
 
@@ -823,22 +823,21 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.2      # Android launcher icons
   dependency_validator: ^5.0.2         # Unused/missing dependency check
   mocktail: ^1.0.4                     # Mocks
-  fake_cloud_firestore: ^4.3.0         # In-memory Firestore for tests
-  firebase_auth_mocks: ^0.15.2         # Firebase Auth mocks
+  fake_cloud_firestore: ^4.4.0         # In-memory Firestore for tests
 ```
 
 **Integration notes:**
-- **FlutterFire:** `firebase_core`, `firebase_auth`, `cloud_firestore` and `firebase_crashlytics` must be upgraded together (same FlutterFire release, Firebase Android BoM 34.x), together with `fake_cloud_firestore` and `firebase_auth_mocks`. `android/app/build.gradle` declares no native Firebase or Google dependency: the BoM, `firebase-auth` and `play-services-auth` come from the plugins, and pinning them by hand would compete with the plugins' versions.
+- **FlutterFire:** `firebase_core`, `firebase_auth`, `cloud_firestore` and `firebase_crashlytics` must be upgraded together (same FlutterFire release, Firebase Android BoM 34.x), together with `fake_cloud_firestore`. The next major (`firebase_core` 5, `firebase_auth` 7, `cloud_firestore` 7, `firebase_crashlytics` 6, Firebase Android BoM 35) waits for a `fake_cloud_firestore` release that implements `cloud_firestore_platform_interface` 8.1.0 (`FieldValue.minimum`/`maximum`): 4.4.0 does not compile against it. `android/app/build.gradle` declares no native Firebase or Google dependency: the BoM, `firebase-auth` and `play-services-auth` come from the plugins, and pinning them by hand would compete with the plugins' versions.
 - **Google Sign-In 7:** on Android the plugin uses Credential Manager and needs the *web* OAuth client ID, read from `google-services.json` (`oauth_client` with `client_type: 3`) by the `com.google.gms.google-services` Gradle plugin, so `initialize()` receives no `serverClientId`. If sign-in fails with "serverClientId must be provided", check that the web client exists in the Firebase console and download `google-services.json` again. Test it on a real device, with the SHA-1 of the debug and release signing keys registered in Firebase.
 - **Crashlytics:** initialized in `main()` only when `!kIsWeb`, for unhandled Flutter and Dart errors.
 
 **Tests** — `flutter test` (structure mirrors `lib/`):
 - **Pure logic** (`test/core/utils`, `test/features/codes/models`, `test/core/constants`): content parsing per type, validators, ISBN formatting, code type conversion and body, social templates, QR decoration, `RescanGuard`, changelog structure, `HistoryController.filterCodes`.
-- **With mocks** (`mocktail`, `fake_cloud_firestore`, `firebase_auth_mocks`): `AuthController`, `SessionStore`, `CodesService`, `ScannerController`, `CodeDetailsController`, `CodeCreateSocialController`, `SyncStatusMixin`, `HistoryController`, `FavoritesController`, `DatabaseController` (statistics, exports, backup history), `ThemeController`, `ScannerPreferencesController`, `ChangelogService`, `BackupHistory`, and the bindings (`test/features/bindings_test.dart`, including a missing route argument).
+- **With mocks** (`mocktail`, `fake_cloud_firestore`, `FakeFirebaseAuth`): `AuthController`, `SessionStore`, `CodesService`, `ScannerController`, `CodeDetailsController`, `CodeCreateSocialController`, `SyncStatusMixin`, `HistoryController`, `FavoritesController`, `DatabaseController` (statistics, exports, backup history), `ThemeController`, `ScannerPreferencesController`, `ChangelogService`, `BackupHistory`, and the bindings (`test/features/bindings_test.dart`, including a missing route argument).
 - **Widget and layout:** `CodeListTile`, `AppEmptyState`, `AppLogo`, `SectionCard`, `SyncStatusBanner`, `AppChangelogDialog`, `GenerateButton`, `ExportImportSection`, loading overlays, and the History, Favorites, Settings and Privacy Policy screens (sections and date in IT/EN). `test/features/export/pdf_report_test.dart` builds the PDF layout.
 - **Accessibility** (`test/accessibility/`): `a11y_harness.dart` registers fake dependencies and the screen list `a11yScreens`. `a11y_guidelines_test.dart` checks `androidTapTargetGuideline`, `labeledTapTargetGuideline` and `textContrastGuideline` in light and dark themes, with the test font, because the contrast check reads colors from a screenshot and a real font's anti-aliased edges underestimate contrast. `text_scale_test.dart` loads the real Montserrat and checks for overflows at 1.5 and 2.0, reporting the widget's file and line. Scanner (camera), Home and Profile (signed-in user) are excluded. Every new screen that can be built without camera or user goes into `a11yScreens`.
 - **Multi-layer** (`test/integration/`): real controller + mocked repository + real widgets. **End-to-end** (`integration_test/`): on a device or emulator, `flutter test integration_test`.
-- Shared helpers in `test/support/` (e.g. `pumpLocalizedWidget`).
+- Shared helpers in `test/support/` (e.g. `pumpLocalizedWidget`; `FakeFirebaseAuth` and `FakeUser`, a stateful in-memory Firebase Auth covering the calls the app makes).
 - Testable classes take their dependencies as constructor parameters: `AuthController`, `ScannerController` (`rescanGuard`, `playBeep`, `vibrate`, `saveTimeout`), `HistoryController` (`searchDebounce`), `CodesService`, `SessionStore`, `BackupHistory`.
 - Practical notes: the test font (Ahem) is wider than Montserrat, so horizontal scrolls may need `tester.ensureVisible` before a tap; controllers with timers (e.g. `SyncStatusMixin`) must be created inside `testWidgets` so `tester.pump` controls time; controllers that load `SharedPreferences` in `onInit` need `SharedPreferences.setMockInitialValues` and a `pumpEventQueue()` first.
 

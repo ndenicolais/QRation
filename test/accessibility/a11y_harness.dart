@@ -15,7 +15,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import '../support/fake_firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -94,7 +94,7 @@ void registerA11yDependencies() {
   Get.put(ThemeController());
   Get.put(ScannerPreferencesController());
   Get.put(AuthController(
-    auth: MockFirebaseAuth(),
+    auth: FakeFirebaseAuth(),
     firestore: FakeFirebaseFirestore(),
     googleSignIn: _MockGoogleSignIn(),
     navigateTo: (_) {},

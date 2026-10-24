@@ -10,7 +10,7 @@
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import '../../../support/fake_firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,7 +25,7 @@ class MockGoogleSignIn extends Mock implements GoogleSignIn {}
 class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
 
 /// Firebase Auth rejecting every email operation with [code].
-class _RejectingAuth extends MockFirebaseAuth {
+class _RejectingAuth extends FakeFirebaseAuth {
   _RejectingAuth(this.code);
 
   final String code;
@@ -57,7 +57,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late FakeFirebaseFirestore firestore;
-  late MockFirebaseAuth auth;
+  late FakeFirebaseAuth auth;
   late MockGoogleSignIn googleSignIn;
   late SessionStore session;
   late List<String> routes;
@@ -66,15 +66,15 @@ void main() {
   const email = 'mario@example.com';
 
   AuthController createController({
-    MockUser? user,
+    FakeUser? user,
     bool signedIn = false,
     String? authError,
   }) {
     auth = authError != null
         ? _RejectingAuth(authError)
-        : MockFirebaseAuth(
+        : FakeFirebaseAuth(
             signedIn: signedIn,
-            mockUser: user ?? MockUser(uid: 'uid-1', email: email),
+            mockUser: user ?? FakeUser(uid: 'uid-1', email: email),
           );
     return AuthController(
       auth: auth,
@@ -185,7 +185,7 @@ void main() {
     test('creates the profile once and always remembers the session', () async {
       signInAs('id');
       final controller = createController(
-        user: MockUser(uid: 'g-1', email: 'g@example.com', displayName: 'G'),
+        user: FakeUser(uid: 'g-1', email: 'g@example.com', displayName: 'G'),
       );
 
       await controller.loginWithGoogle();
@@ -199,7 +199,7 @@ void main() {
     test('initializes the plugin only once', () async {
       signInAs('id');
       final controller = createController(
-        user: MockUser(uid: 'g-1', email: 'g@example.com'),
+        user: FakeUser(uid: 'g-1', email: 'g@example.com'),
       );
 
       await controller.loginWithGoogle();

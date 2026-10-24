@@ -88,8 +88,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.2
   dependency_validator: ^5.0.2
   mocktail: ^1.0.4
-  fake_cloud_firestore: ^4.3.0
-  firebase_auth_mocks: ^0.15.2
+  fake_cloud_firestore: ^4.4.0
 
 flutter:
   generate: true

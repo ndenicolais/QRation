@@ -9,7 +9,7 @@
 // GitHub: https://github.com/ndenicolais
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import '../../../support/fake_firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qration/features/codes/models/code_model.dart';
@@ -33,14 +33,14 @@ CodeModel _codeWith({
 
 void main() {
   late FakeFirebaseFirestore firestore;
-  late MockUser user;
-  late MockFirebaseAuth auth;
+  late FakeUser user;
+  late FakeFirebaseAuth auth;
   late CodesService service;
 
   setUp(() {
     firestore = FakeFirebaseFirestore();
-    user = MockUser(uid: 'user-1', email: 'user@example.com');
-    auth = MockFirebaseAuth(mockUser: user, signedIn: true);
+    user = FakeUser(uid: 'user-1', email: 'user@example.com');
+    auth = FakeFirebaseAuth(mockUser: user, signedIn: true);
     service = CodesService(firestore: firestore, auth: auth);
   });
 
@@ -154,7 +154,7 @@ void main() {
 
   test('toggleFavoriteStatus swallows errors when no user is signed in',
       () async {
-    final signedOutAuth = MockFirebaseAuth(signedIn: false);
+    final signedOutAuth = FakeFirebaseAuth(signedIn: false);
     final signedOutService =
         CodesService(firestore: firestore, auth: signedOutAuth);
 
